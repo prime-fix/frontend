@@ -1,0 +1,17 @@
+{
+  "login": {
+    "title": "Iniciar sesión en su cuenta",
+    "username": "Usuario",
+    "usernameRequired": "El nombre de usuario es requerido",
+    "usernameMinLength": "El nombre de usuario debe tener al menos 3 caracteres",
+    "password": "Contraseña",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "submit": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿Todavía no tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "signUp": "Regístrate",
+    "loading": "Iniciando sesión..."
+  }
+}

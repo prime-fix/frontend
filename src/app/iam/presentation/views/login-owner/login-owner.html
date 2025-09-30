@@ -8,9 +8,9 @@
 
     <!-- Registration Link -->
     <div class="register-link">
-      <span>¿Todavía no tienes una cuenta?</span>
+      <span>{{ 'login.noAccount' | translate }}</span>
       <button type="button" class="link-button" (click)="navigateToRegister()">
-        Regístrate
+        {{ 'login.signUp' | translate }}
       </button>
     </div>
 
@@ -21,17 +21,17 @@
         <input
           type="text"
           formControlName="username"
-          placeholder="Usuario"
+          [placeholder]="'login.username' | translate"
           class="form-input"
           [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
         >
         @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
           <div class="error-message">
             @if (loginForm.get('username')?.errors?.['required']) {
-              El nombre de usuario es requerido
+              {{ 'login.usernameRequired' | translate }}
             }
             @if (loginForm.get('username')?.errors?.['minlength']) {
-              El nombre de usuario debe tener al menos 3 caracteres
+              {{ 'login.usernameMinLength' | translate }}
             }
           </div>
         }
@@ -68,10 +68,10 @@
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
           <div class="error-message">
             @if (loginForm.get('password')?.errors?.['required']) {
-              La contraseña es requerida
+              {{ 'login.passwordRequired' | translate }}
             }
             @if (loginForm.get('password')?.errors?.['minlength']) {
-              La contraseña debe tener al menos 6 caracteres
+              {{ 'login.passwordMinLength' | translate }}
             }
           </div>
         }
@@ -86,9 +86,9 @@
       >
         @if (isLoading()) {
           <div class="spinner"></div>
-          Iniciando sesión...
+          <div>{{ 'login.loading' | translate }}</div>
         } @else {
-          Iniciar Sesión
+          <div>{{ 'login.signIn' | translate }}</div>
         }
       </button>
     </form>
