@@ -1,1 +1,97 @@
-<p>login-owner works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo -->
+    <div class="logo-container">
+      <img src="/logo.svg" alt="Prime-Fix Logo" class="logo">
+      <span>PRIME-FIX</span>
+    </div>
+
+    <!-- Registration Link -->
+    <div class="register-link">
+      <span>¿Todavía no tienes una cuenta?</span>
+      <button type="button" class="link-button" (click)="navigateToRegister()">
+        Regístrate
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Username Field -->
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="username"
+          placeholder="Usuario"
+          class="form-input"
+          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        >
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+          <div class="error-message">
+            @if (loginForm.get('username')?.errors?.['required']) {
+              El nombre de usuario es requerido
+            }
+            @if (loginForm.get('username')?.errors?.['minlength']) {
+              El nombre de usuario debe tener al menos 3 caracteres
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <div class="password-container">
+          <input
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••••"
+            class="form-input password-input"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="isPasswordVisible() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            @if (isPasswordVisible()) {
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.12 14.12C13.8454 14.4148 13.5141 14.6512 13.1462 14.8151C12.7782 14.9790 12.3809 15.0673 11.9770 15.0744C11.5731 15.0815 11.1729 15.0074 10.7996 14.8565C10.4263 14.7056 10.0874 14.4811 9.80385 14.1976C9.52034 13.9141 9.29583 13.5752 9.14493 13.2019C8.99403 12.8286 8.91992 12.4284 8.92703 12.0245C8.93414 11.6206 9.02247 11.2233 9.18637 10.8553C9.35027 10.4874 9.58669 10.1561 9.88148 9.88148M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68192 3.96914 7.65663 6.06 6.06M9.9 4.24C10.5883 4.0789 11.2931 3.99836 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2048 20.84 15.19M14.12 14.12L9.88 9.88M14.12 14.12L17.94 17.94M9.88 9.88L6.06 6.06M9.88 9.88L14.12 14.12M6.06 6.06L2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            } @else {
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          </button>
+        </div>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="error-message">
+            @if (loginForm.get('password')?.errors?.['required']) {
+              La contraseña es requerida
+            }
+            @if (loginForm.get('password')?.errors?.['minlength']) {
+              La contraseña debe tener al menos 6 caracteres
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading()"
+        [class.loading]="isLoading()"
+      >
+        @if (isLoading()) {
+          <div class="spinner"></div>
+          Iniciando sesión...
+        } @else {
+          Iniciar Sesión
+        }
+      </button>
+    </form>
+  </div>
+</div>
+
