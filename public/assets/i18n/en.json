@@ -13,5 +13,17 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "loading": "Loading..."
+  },
+  "side-bar-owner": {
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "vehicles": "Vehicles",
+    "searchWorkshop": "Search Workshop",
+    "history": "History",
+    "track": "Track Vehicle",
+    "settings": "Settings"
+  },
+  "button-logout": {
+    "logout": "Logout"
   }
 }

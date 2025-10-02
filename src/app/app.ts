@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {PublicLayout} from '@shared/presentation/views/public-layout/public-layout';
+import {LayoutOwner} from '@shared/presentation/views/layout-owner/layout-owner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PublicLayout],
+  imports: [RouterOutlet, LayoutOwner],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

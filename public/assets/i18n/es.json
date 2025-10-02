@@ -13,5 +13,17 @@
     "signIn": "Iniciar sesión",
     "signUp": "Regístrate",
     "loading": "Iniciando sesión..."
+  },
+  "side-bar-owner": {
+    "profile": "Perfil",
+    "dashboard": "Menú principal",
+    "vehicles": "Coches",
+    "searchWorkshop": "Buscar taller",
+    "history": "Historial",
+    "track": "Seguir estado",
+    "settings": "Configuración"
+  },
+  "button-logout": {
+    "logout": "Cerrar sesión"
   }
 }
