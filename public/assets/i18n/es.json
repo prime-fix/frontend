@@ -23,6 +23,15 @@
     "track": "Seguir estado",
     "settings": "Configuración"
   },
+  "side-bar-workshop": {
+    "profile": "Perfil",
+    "dashboard": "Menu principal",
+    "workshop": "Taller",
+    "requests": "Solicitudes",
+    "manageTechnicians": "Gestionar técnicos",
+    "statusVehicles": "Estados de coches",
+    "settings": "Configuración"
+  },
   "button-logout": {
     "logout": "Cerrar sesión"
   }

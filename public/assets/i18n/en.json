@@ -23,6 +23,15 @@
     "track": "Track Vehicle",
     "settings": "Settings"
   },
+  "side-bar-workshop": {
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "workshop": "Workshop",
+    "requests": "Requests",
+    "manageTechnicians": "Manage Technicians",
+    "statusVehicles": "Status of Vehicles",
+    "settings": "Settings"
+  },
   "button-logout": {
     "logout": "Logout"
   }
