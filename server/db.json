@@ -1,0 +1,36 @@
+{
+  "user_accounts": [
+  {
+    "id_user_account": "UA002",
+    "email": "emily.johnson@hotmail.com",
+    "id_user": "U002",
+    "id_role": "R001",
+    "id_membership": "M002",
+    "password": "hashed_password_2"
+  },
+  {
+    "id_user_account": "UA001",
+    "email": "john.smith@gmail.com",
+    "id_user": "U001",
+    "id_role": "R001",
+    "id_membership": "M001",
+    "password": "hashed_password_1"
+  },
+  {
+    "id_user_account": "UA003",
+    "email": "michael.brown@hotmail.com",
+    "id_user": "U003",
+    "id_role": "R001",
+    "id_membership": "M003",
+    "password": "hashed_password_3"
+  },
+  {
+    "id_user_account": "UA004",
+    "email": "sophia.davis@example.com",
+    "id_user": "U004",
+    "id_role": "R001",
+    "id_membership": "M002",
+    "password": "hashed_password_4"
+  }
+]
+}

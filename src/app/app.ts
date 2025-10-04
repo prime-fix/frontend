@@ -1,11 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {LayoutOwner} from '@shared/presentation/views/layout-owner/layout-owner';
-import {LayoutWorkshop} from '@shared/presentation/views/layout-workshop/layout-workshop';
+import {LoginOwner} from '@iam/presentation/views/login-owner/login-owner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LayoutWorkshop],
+  imports: [LoginOwner],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

@@ -2,6 +2,7 @@ import { Component, signal, ChangeDetectionStrategy, inject } from '@angular/cor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-login-owner',
@@ -12,6 +13,7 @@ import {TranslateModule} from '@ngx-translate/core';
 })
 export class LoginOwner {
   private fb = inject(FormBuilder);
+  readonly store = inject(IamStore);
 
   // Signals for state management
   isPasswordVisible = signal(false);
@@ -29,6 +31,7 @@ export class LoginOwner {
 
   togglePasswordVisibility() {
     this.isPasswordVisible.update(visible => !visible);
+
   }
 
   onSubmit() {

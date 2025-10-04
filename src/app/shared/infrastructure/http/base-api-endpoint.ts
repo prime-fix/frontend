@@ -1,9 +1,10 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {BaseEntity} from './base-entity';
 import {BaseResource, BaseResponse} from './base-response';
 import {BaseAssembler} from './base-assembler';
+import {BaseApiConfig} from '@shared/infrastructure/http/base-api-config';
 
 /**
  * Base class for API endpoint operations with generic CRUD functionality.
@@ -19,10 +20,13 @@ export abstract class BaseApiEndpoint<
   TResponse extends BaseResponse,
   TAssembler extends BaseAssembler<TEntity, TResource, TResponse>
 > {
+  protected abstract readonly idQueryParamKey: string;
+
   constructor(
     protected http: HttpClient,
     protected endpointUrl: string,
-    protected assembler: TAssembler
+    protected assembler: TAssembler,
+    protected config: BaseApiConfig
   ) {}
 
   /**
@@ -30,7 +34,14 @@ export abstract class BaseApiEndpoint<
    * @returns An Observable for an array of entities.
    */
   getAll(): Observable<TEntity[]> {
-    return this.http.get<TResponse | TResource[]>(this.endpointUrl).pipe(
+    let params = new HttpParams();
+    params = params.set('select', '*');
+
+    const options = {
+      params: params,
+    }
+
+    return this.http.get<TResponse | TResource[]>(this.endpointUrl, options).pipe(
       map(response => {
         console.log(response);
         if (Array.isArray(response)) {
@@ -47,8 +58,21 @@ export abstract class BaseApiEndpoint<
    * @param id - The ID of the entity.
    * @returns An Observable of the entity.
    */
-  getById(id: number): Observable<TEntity> {
-    return this.http.get<TResource>(`${this.endpointUrl}/${id}`).pipe(
+  getById(id: number | string): Observable<TEntity> {
+    let url: string;
+    let paramsConfig: {params?: HttpParams } = {};
+    const idString = id.toString();
+
+    if (this.config.usePathParams) {
+      url = `${this.endpointUrl}/${idString}`;
+    } else {
+      url = this.endpointUrl;
+      let params = new HttpParams();
+      params = params.set(this.idQueryParamKey, `eq.${idString}`);
+      paramsConfig = { params };
+    }
+
+    return this.http.get<TResource>(url, paramsConfig).pipe(
       map(resource => this.assembler.toEntityFromResource(resource)),
       catchError(this.handleError('Failed to fetch entity'))
     );
