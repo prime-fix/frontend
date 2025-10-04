@@ -9,7 +9,7 @@ export class UserAccountsApiEndpoint extends BaseApiEndpoint<UserAccount, UserAc
   protected readonly idQueryParamKey: string = environment.userAccountIdQueryParamKey;
 
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderUserAccountsEndpoint}`,
+    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderUserAccountsEndpointPath}`,
       new UserAccountAssembler(), { usePathParams: environment.usePathParams });
   }
 }

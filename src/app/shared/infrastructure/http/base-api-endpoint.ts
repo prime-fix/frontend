@@ -35,7 +35,10 @@ export abstract class BaseApiEndpoint<
    */
   getAll(): Observable<TEntity[]> {
     let params = new HttpParams();
-    params = params.set('select', '*');
+
+    if(!this.config.usePathParams) {
+      params = params.set('select', '*');
+    }
 
     const options = {
       params: params,

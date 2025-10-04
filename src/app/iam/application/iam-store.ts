@@ -36,6 +36,14 @@ export class IamStore {
         console.log(userAccounts);
         this.userAccountsSignal.set(userAccounts);
         this.loadingSignal.set(false);
+
+        const testId = 'UA001';
+
+        const userSignal = this.getUserAccountById(testId);
+
+        const foundUser = userSignal();
+
+        console.log(`Buscando usuario con ID ${testId}:`, foundUser);
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to load user accounts'));

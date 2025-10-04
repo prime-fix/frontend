@@ -27,6 +27,7 @@ export class LoginOwner {
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
   }
 
   togglePasswordVisibility() {
