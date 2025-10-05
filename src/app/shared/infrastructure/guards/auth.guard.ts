@@ -4,8 +4,8 @@ import { IamStore } from '@iam/application/iam-store';
 
 export const authGuard: CanActivateFn = (_r, state) => {
   const router = inject(Router);
-  const store = inject(IamStore);
-  return store.isAuthenticated()
+  const iamStore  = inject(IamStore);
+  return iamStore.isAuthenticated()
     ? true
     : router.createUrlTree(['/login'], { queryParams: { redirect: state.url } });
 };

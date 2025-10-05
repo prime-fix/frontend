@@ -31,6 +31,14 @@
       "id_role": "R001",
       "id_membership": "M002",
       "password": "hashed_password_4"
+    },
+    {
+      "id_user_account": "UA005",
+      "email": "taller1@hotmail.com",
+      "id_user": "U005",
+      "id_role": "R002",
+      "id_membership": "M004",
+      "password": "hashed_password_5"
     }
   ],
   "users": [

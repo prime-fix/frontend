@@ -1,4 +1,22 @@
 {
+  "options-owner": {
+    "profile": "Perfil",
+    "dashboard": "Menú principal",
+    "vehicles": "Coches",
+    "searchWorkshop": "Buscar taller",
+    "history": "Historial",
+    "track": "Seguir estado",
+    "settings": "Configuración"
+  },
+  "options-workshop": {
+    "profile": "Perfil",
+    "dashboard": "Menú principal",
+    "workshop": "Taller",
+    "requests": "Solicitudes",
+    "manageTechnicians": "Gestionar técnicos",
+    "statusVehicles": "Estados de coches",
+    "settings": "Configuración"
+  },
   "login": {
     "title": "Iniciar sesión en su cuenta",
     "email": "Correo electrónico",
@@ -34,5 +52,10 @@
   },
   "button-logout": {
     "logout": "Cerrar sesión"
+  },
+  "page-not-found": {
+    "title": "Página no encontrada",
+    "content": "La ruta <strong>{{ invalid_path }}</strong> no es válida.",
+    "go-home": "Ir al inicio"
   }
 }

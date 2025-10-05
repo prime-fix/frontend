@@ -1,4 +1,22 @@
 {
+  "options-owner": {
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "vehicles": "Vehicles",
+    "searchWorkshop": "Search Workshop",
+    "history": "History",
+    "track": "Track vehicle",
+    "settings": "Settings"
+  },
+  "options-workshop": {
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "workshop": "Workshop",
+    "requests": "Requests",
+    "manageTechnicians": "Manage Technicians",
+    "statusVehicles": "Status of Vehicles",
+    "settings": "Settings"
+  },
   "login": {
     "title": "Login to Your Account",
     "email": "Email",
@@ -34,5 +52,10 @@
   },
   "button-logout": {
     "logout": "Logout"
+  },
+  "page-not-found": {
+    "title": "Page not found",
+    "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
+    "go-home": "Go Home"
   }
 }
