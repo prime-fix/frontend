@@ -24,7 +24,21 @@ export class IamStore {
   readonly userAccountCount = computed(() => this.userAccounts().length);
   readonly userCount = computed(() => this.users().length);
 
+  // Session-related signals
+  private readonly sessionUserAccountSignal = signal<UserAccount | null>(null);
+  private readonly sessionUserSignal = signal<User | null>(null);
 
+  readonly sessionUserAccount = this.sessionUserAccountSignal.asReadonly()
+  readonly sessionUser = this.sessionUserSignal.asReadonly()
+
+  readonly isAuthenticated = computed(() => !!this.sessionUserAccount());
+  readonly roleId = computed(() => this.sessionUserAccount()?.id_role ?? '');
+  readonly fullName = computed(() => {
+    const user = this.sessionUser();
+    return user ? `${user.name} ${user.last_name}` : '';
+  });
+
+  // Methods to manage UserAccounts and Users
   constructor(private iamApi : IamApi) {
     this.loadUserAccounts();
     this.loadUsers();
@@ -157,6 +171,66 @@ export class IamStore {
       }
     })
   }
+
+  // Methods to manage User session
+  login(email: string, password: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    const tryFromMemory = () => {
+      const account = this.userAccounts().find(a => a.email === email);
+      if (!account) {
+        this.errorSignal.set('User account not found');
+        this.loadingSignal.set(false);
+        return;
+      }
+
+      if (password?.length < 1) {
+        this.errorSignal.set('Password is required');
+        this.loadingSignal.set(false);
+        return;
+      }
+
+      const user = this.users().find(u => u.id === account.id_user);
+      if (!user) {
+        this.errorSignal.set('User not found for the account');
+        this.loadingSignal.set(false);
+        return;
+      }
+      this.sessionUserAccountSignal.set(account);
+      this.sessionUserSignal.set(user);
+      this.loadingSignal.set(false);
+    };
+
+    if (!this.userAccounts().length || !this.users().length) {
+      this.iamApi.getUserAccounts().pipe(takeUntilDestroyed()).subscribe({
+        next: userAccounts => {
+          this.userAccountsSignal.set(userAccounts);
+          this.iamApi.getUsers().pipe(takeUntilDestroyed()).subscribe({
+            next: users => {
+              this.usersSignal.set(users);
+              tryFromMemory();
+            },
+            error: err => {
+              this.errorSignal.set(this.formatError(err, 'Failed to load users'));
+              this.loadingSignal.set(false);
+            }
+          });
+        },
+        error: err => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load user accounts'));
+          this.loadingSignal.set(false);
+        }})
+    } else {
+      tryFromMemory();
+    }
+  }
+
+  logout(): void {
+    this.sessionUserAccountSignal.set(null);
+    this.sessionUserSignal.set(null);
+  }
+
 
   /**
    * Formats error messages for user-friendly display.

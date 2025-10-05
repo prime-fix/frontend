@@ -19,19 +19,20 @@
       <!-- Username Field -->
       <div class="form-group">
         <input
-          type="text"
-          formControlName="username"
-          [placeholder]="'login.username' | translate"
+          type="email"
+          formControlName="email"
+          autocomplete="username"
+          [placeholder]="'login.email' | translate"
           class="form-input"
-          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
         >
-        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
           <div class="error-message">
-            @if (loginForm.get('username')?.errors?.['required']) {
-              {{ 'login.usernameRequired' | translate }}
+            @if (loginForm.get('email')?.errors?.['required']) {
+              {{ 'login.emailRequired' | translate }}
             }
-            @if (loginForm.get('username')?.errors?.['minlength']) {
-              {{ 'login.usernameMinLength' | translate }}
+            @if (loginForm.get('email')?.errors?.['email']) {
+              {{ 'login.emailInvalid' | translate }}
             }
           </div>
         }
@@ -80,8 +81,8 @@
       <button
         type="submit"
         class="submit-button"
-        [disabled]="isLoading()"
-        [class.loading]="isLoading()"
+        [disabled]="loginForm.invalid || this.store.loading()"
+        [class.loading]="this.store.loading()"
       >
         @if (isLoading()) {
           <div class="spinner"></div>
@@ -89,7 +90,13 @@
         } @else {
           <div>{{ 'login.signIn' | translate }}</div>
         }
+
       </button>
+
+      <!-- Error from store -->
+        @if (store.error()) {
+        <p class="error-message" style="margin-top:.75rem">{{ store.error() }}</p>
+      }
     </form>
   </div>
 </div>

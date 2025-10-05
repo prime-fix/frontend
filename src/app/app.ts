@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import {LoginOwner} from '@iam/presentation/views/login-owner/login-owner';
+import {Login} from '@iam/presentation/views/login/login';
 
 @Component({
   selector: 'app-root',
-  imports: [LoginOwner],
+  imports: [Login],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

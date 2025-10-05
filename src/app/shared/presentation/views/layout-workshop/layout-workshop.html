@@ -5,33 +5,9 @@
     <header class="main-header">
       <h1>Solicitudes</h1>
     </header>
-
+    <router-outlet />
     <div class="content-area">
-      <div class="requests-container">
-        <div class="request-card">
-          <div class="request-info">
-            <h3>Luis Vergara</h3>
-            <p class="request-date">29/09/2025</p>
-            <p class="request-time">10:00</p>
-          </div>
-          <div class="request-actions">
-            <button class="accept-button">Aceptar</button>
-            <button class="reject-button">Rechazar</button>
-          </div>
-        </div>
-
-        <div class="request-card">
-          <div class="request-info">
-            <h3>Carmen Villanueva</h3>
-            <p class="request-date">20/09/2025</p>
-            <p class="request-time">18:00</p>
-          </div>
-          <div class="request-actions">
-            <button class="accept-button">Aceptar</button>
-            <button class="reject-button">Rechazar</button>
-          </div>
-        </div>
-      </div>
+      <app-language-switcher />
     </div>
   </main>
 </div>
