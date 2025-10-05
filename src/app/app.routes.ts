@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import {RegisterOwner} from '@iam/presentation/views/register-owner/register-owner';
-import {HomeOwner} from '@shared/presentation/views/home-owner/home-owner';
-import {HomeWorkshop} from '@shared/presentation/views/home-workshop/home-workshop';
 import {authGuard} from '@shared/infrastructure/guards/auth.guard';
 import {Login} from '@iam/presentation/views/login/login';
 
+const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
+const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
+const registerWorkshop = () => import('@iam/presentation/views/register-workshop/register-workshop').then(m => m.RegisterWorkshop);
 const layoutOwner = () => import('@shared/presentation/components/layout-owner/layout-owner').then(m => m.LayoutOwner);
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
@@ -18,6 +18,21 @@ export const routes: Routes = [
     path: 'login',
     component: Login,
     title: `${baseTitle} -  Login`
+  },
+  {
+    path: 'user-role',
+    loadComponent: userRole,
+    title: `${baseTitle} -  User Role`
+  },
+  {
+    path: 'register-owner',
+    loadComponent: registerOwner,
+    title: `${baseTitle} -  Register Vehicle Owner`
+  },
+  {
+    path: 'register-workshop',
+    loadComponent: registerWorkshop,
+    title: `${baseTitle} -  Register Workshop`
   },
   {
     path: 'layout-owner',

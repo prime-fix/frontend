@@ -52,6 +52,6 @@ export class Login {
   }
 
   navigateToRegister() {
-    void this.router.navigateByUrl('/register');
+    void this.router.navigateByUrl('/user-role');
   }
 }

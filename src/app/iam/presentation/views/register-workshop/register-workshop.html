@@ -1,1 +1,221 @@
-<p>register-workshop works!</p>
+<section class="register-container">
+  <div class="register-card">
+    <div class="register-content">
+      <div class="register-form-section">
+        <h1 class="title">{{ 'register-workshop.title' | translate }}</h1>
+        <p class="subtitle">
+          {{ 'register-workshop.haveAccount' | translate }}
+          <a class="link" (click)="navigateToLogin()">{{ 'register-workshop.signIn' | translate }}</a>
+        </p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" novalidate>
+          <div class="form-group">
+            <label for="workshopName" class="label">{{ 'register-workshop.workshopName' | translate }}</label>
+            <input
+              id="workshopName"
+              type="text"
+              class="input"
+              formControlName="workshopName"
+              [placeholder]="'register-workshop.workshopNamePlaceholder' | translate" />
+            @if (registerForm.controls.workshopName.invalid && (registerForm.controls.workshopName.dirty || registerForm.controls.workshopName.touched)) {
+              <span class="error">
+                @if (registerForm.controls.workshopName.errors?.['required']) {
+                  {{ 'register-workshop.workshopNameRequired' | translate }}
+                }
+                @if (registerForm.controls.workshopName.errors?.['minlength']) {
+                  {{ 'register-workshop.workshopNameMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="username" class="label">{{ 'register-workshop.username' | translate }}</label>
+            <input
+              id="username"
+              type="text"
+              class="input"
+              formControlName="username"
+              [placeholder]="'register-workshop.usernamePlaceholder' | translate" />
+            @if (registerForm.controls.username.invalid && (registerForm.controls.username.dirty || registerForm.controls.username.touched)) {
+              <span class="error">
+                @if (registerForm.controls.username.errors?.['required']) {
+                  {{ 'register-workshop.usernameRequired' | translate }}
+                }
+                @if (registerForm.controls.username.errors?.['minlength']) {
+                  {{ 'register-workshop.usernameMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="ruc" class="label">{{ 'register-workshop.ruc' | translate }}</label>
+            <input
+              id="ruc"
+              type="text"
+              class="input"
+              formControlName="ruc"
+              [placeholder]="'register-workshop.rucPlaceholder' | translate"
+              maxlength="11" />
+            @if (registerForm.controls.ruc.invalid && (registerForm.controls.ruc.dirty || registerForm.controls.ruc.touched)) {
+              <span class="error">
+                @if (registerForm.controls.ruc.errors?.['required']) {
+                  {{ 'register-workshop.rucRequired' | translate }}
+                }
+                @if (registerForm.controls.ruc.errors?.['pattern']) {
+                  {{ 'register-workshop.rucPattern' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="label">{{ 'register-workshop.phone' | translate }}</label>
+            <input
+              id="phone"
+              type="tel"
+              class="input"
+              formControlName="phone"
+              [placeholder]="'register-workshop.phonePlaceholder' | translate"
+              maxlength="9" />
+            @if (registerForm.controls.phone.invalid && (registerForm.controls.phone.dirty || registerForm.controls.phone.touched)) {
+              <span class="error">
+                @if (registerForm.controls.phone.errors?.['required']) {
+                  {{ 'register-workshop.phoneRequired' | translate }}
+                }
+                @if (registerForm.controls.phone.errors?.['pattern']) {
+                  {{ 'register-workshop.phonePattern' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="department" class="label">{{ 'register-workshop.department' | translate }}</label>
+              <input
+                id="department"
+                type="text"
+                class="input"
+                formControlName="department"
+                [placeholder]="'register-workshop.departmentPlaceholder' | translate" />
+              @if (registerForm.controls.department.invalid && (registerForm.controls.department.dirty || registerForm.controls.department.touched)) {
+                <span class="error">
+                  {{ 'register-workshop.departmentRequired' | translate }}
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="district" class="label">{{ 'register-workshop.district' | translate }}</label>
+              <input
+                id="district"
+                type="text"
+                class="input"
+                formControlName="district"
+                [placeholder]="'register-workshop.districtPlaceholder' | translate" />
+              @if (registerForm.controls.district.invalid && (registerForm.controls.district.dirty || registerForm.controls.district.touched)) {
+                <span class="error">
+                  {{ 'register-workshop.districtRequired' | translate }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="label">{{ 'register-workshop.address' | translate }}</label>
+            <input
+              id="address"
+              type="text"
+              class="input"
+              formControlName="address"
+              [placeholder]="'register-workshop.addressPlaceholder' | translate" />
+            @if (registerForm.controls.address.invalid && (registerForm.controls.address.dirty || registerForm.controls.address.touched)) {
+              <span class="error">
+                @if (registerForm.controls.address.errors?.['required']) {
+                  {{ 'register-workshop.addressRequired' | translate }}
+                }
+                @if (registerForm.controls.address.errors?.['minlength']) {
+                  {{ 'register-workshop.addressMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="label">{{ 'register-workshop.email' | translate }}</label>
+            <input
+              id="email"
+              type="email"
+              class="input"
+              formControlName="email"
+              [placeholder]="'register-workshop.emailPlaceholder' | translate" />
+            @if (registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)) {
+              <span class="error">
+                @if (registerForm.controls.email.errors?.['required']) {
+                  {{ 'register-workshop.emailRequired' | translate }}
+                }
+                @if (registerForm.controls.email.errors?.['email']) {
+                  {{ 'register-workshop.emailInvalid' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="label">{{ 'register-workshop.password' | translate }}</label>
+            <div class="password-container">
+              <input
+                id="password"
+                [type]="isPasswordVisible() ? 'text' : 'password'"
+                formControlName="password"
+                [placeholder]="'register-workshop.passwordPlaceholder' | translate"
+                class="input password-input"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="isPasswordVisible() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              >
+                @if (isPasswordVisible()) {
+                  <svg class="icon">
+                    <use href="assets/icons/sprite.symbol.svg#eye-off"></use>
+                  </svg>
+                } @else {
+                  <svg class="icon">
+                    <use href="assets/icons/sprite.symbol.svg#eye"></use>
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)) {
+              <span class="error">
+                @if (registerForm.controls.password.errors?.['required']) {
+                  {{ 'register-workshop.passwordRequired' | translate }}
+                }
+                @if (registerForm.controls.password.errors?.['minlength']) {
+                  {{ 'register-workshop.passwordMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()">
+            @if (store.loading()) {
+              {{ 'register-workshop.registering' | translate }}
+            } @else {
+              {{ 'register-workshop.register' | translate }}
+            }
+          </button>
+        </form>
+      </div>
+
+      <div class="register-image-section">
+        <img src="assets/images/register-workshop.webp" alt="Workshop Manager" class="register-image" />
+      </div>
+    </div>
+  </div>
+</section>
