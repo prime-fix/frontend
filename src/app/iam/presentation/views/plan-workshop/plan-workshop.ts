@@ -13,8 +13,7 @@ export class PlanWorkshop {
 
   selectPlan(planType: string) {
     console.log('Plan seleccionado:', planType);
-    // TODO: Implementar lógica para guardar el plan seleccionado y redirigir
-    // Por ahora, redirigir al layout del taller
-    void this.router.navigateByUrl('/layout-workshop');
+    // Redirigir a la página de pago con el parámetro del plan
+    void this.router.navigate(['/payment'], { queryParams: { plan: planType } });
   }
 }

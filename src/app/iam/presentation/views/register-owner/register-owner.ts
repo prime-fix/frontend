@@ -29,7 +29,7 @@ export class RegisterOwner {
 
   private _autoRedirect = effect(() => {
     if (!this.store.isAuthenticated()) return;
-    const target = '/layout-owner';
+    const target = '/plan-owner';
     if (this.router.url !== target) {
       void this.router.navigateByUrl(target);
     }
@@ -54,6 +54,6 @@ export class RegisterOwner {
   }
 
   navigateToLogin() {
-    void this.router.navigateByUrl('/login');
+    void this.router.navigateByUrl('/plan-owner');
   }
 }

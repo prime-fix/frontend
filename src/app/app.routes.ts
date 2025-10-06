@@ -7,7 +7,7 @@ const registerOwner = () => import('@iam/presentation/views/register-owner/regis
 const registerWorkshop = () => import('@iam/presentation/views/register-workshop/register-workshop').then(m => m.RegisterWorkshop);
 const planOwner = () => import('@iam/presentation/views/plan-owner/plan-owner').then(m => m.PlanOwner);
 const planWorkshop = () => import('@iam/presentation/views/plan-workshop/plan-workshop').then(m => m.PlanWorkshop);
-const payment = () => import('@iam/presentation/views/payment/payment').then(m => m.Payment);
+const paymentView = () => import('@iam/presentation/views/payment-view/payment-view').then(m => m.PaymentView);
 const layoutOwner = () => import('@shared/presentation/components/layout-owner/layout-owner').then(m => m.LayoutOwner);
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
@@ -48,8 +48,8 @@ export const routes: Routes = [
     title: `${baseTitle} -  Plan Workshop`
   },
   {
-    path: 'payment',
-    loadComponent: payment,
+    path: 'payment-view',
+    loadComponent: paymentView,
     title: `${baseTitle} -  Payment`
   },
   {

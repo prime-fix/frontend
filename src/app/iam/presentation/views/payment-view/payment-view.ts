@@ -13,11 +13,11 @@ interface PlanInfo {
 @Component({
   selector: 'app-payment',
   imports: [ReactiveFormsModule, TranslateModule, CommonModule],
-  templateUrl: './payment.html',
-  styleUrl: './payment.css',
+  templateUrl: './payment-view.html',
+  styleUrl: './payment-view.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Payment implements OnInit {
+export class PaymentView implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);

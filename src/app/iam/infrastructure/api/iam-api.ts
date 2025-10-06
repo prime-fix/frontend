@@ -6,6 +6,8 @@ import {Observable} from 'rxjs';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {UserApiEndpoint} from '@iam/infrastructure/api/user-api-endpoint';
 import {User} from '@iam/domain/model/user.entity';
+import {PaymentApiEndpoint} from '@iam/infrastructure/api/payment-api-endpoint';
+import {Payment} from '@iam/domain/model/payment.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +15,13 @@ import {User} from '@iam/domain/model/user.entity';
 export class IamApi extends BaseApi {
   private readonly userAccountsEndpoint:     UserAccountsApiEndpoint;
   private readonly usersEndpoint:            UserApiEndpoint;
+  private readonly paymentsEndpoint:         PaymentApiEndpoint;
 
   constructor(http: HttpClient) {
     super();
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
     this.usersEndpoint = new UserApiEndpoint(http);
+    this.paymentsEndpoint = new PaymentApiEndpoint(http);
   }
 
   getUserAccounts(): Observable<UserAccount[]> {
@@ -60,4 +64,23 @@ export class IamApi extends BaseApi {
     return this.usersEndpoint.delete(id);
   }
 
+  getPayments(): Observable<Payment[]> {
+    return this.paymentsEndpoint.getAll();
+  }
+
+  getPayment(id: string): Observable<Payment> {
+    return this.paymentsEndpoint.getById(id);
+  }
+
+  createPayment(payment: Payment): Observable<Payment> {
+    return this.paymentsEndpoint.create(payment);
+  }
+
+  updatePayment(payment: Payment): Observable<Payment> {
+    return this.paymentsEndpoint.update(payment, payment.id);
+  }
+
+  deletePayment(id: string): Observable<void> {
+    return this.paymentsEndpoint.delete(id);
+  }
 }
