@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {BaseEntity} from './base-entity';
@@ -8,7 +8,7 @@ import {BaseApiConfig} from '@shared/infrastructure/http/base-api-config';
 
 /**
  * Base class for API endpoint operations with generic CRUD functionality.
- *
+ * Supports configuration for path parameters or query parameters.
  * @template TEntity - The entity type, which must extend BaseEntity.
  * @template TResource - The resource type, must extend BaseResource.
  * @template TResponse - The response type, must extend BaseResponse.
@@ -31,6 +31,7 @@ export abstract class BaseApiEndpoint<
 
   /**
    * Retrieves all entities from the API, handling both response objects and arrays.
+   * Supports configuration for path parameters or query parameters.
    * @returns An Observable for an array of entities.
    */
   getAll(): Observable<TEntity[]> {
@@ -58,6 +59,7 @@ export abstract class BaseApiEndpoint<
 
   /**
    * Retrieves a single entity by ID.
+   * Supports configuration for path parameters or query parameters.
    * @param id - The ID of the entity.
    * @returns An Observable of the entity.
    */
@@ -83,38 +85,82 @@ export abstract class BaseApiEndpoint<
 
   /**
    * Creates a new entity.
+   * Supports configuration for path parameters or query parameters.
    * @param entity - The entity to create.
    * @returns An Observable of the created entity.
    */
   create(entity: TEntity): Observable<TEntity> {
     const resource = this.assembler.toResourceFromEntity(entity);
-    return this.http.post<TResource>(this.endpointUrl, resource).pipe(
-      map(created => this.assembler.toEntityFromResource(created)),
+
+    if (this.config.usePathParams) {
+      return this.http.post<TResource>(this.endpointUrl, resource).pipe(
+        map(created => this.assembler.toEntityFromResource(created)),
+        catchError(this.handleError('Failed to create entity'))
+      );
+    }
+
+    const params = new HttpParams().set('select', '*');
+    const headers = new HttpHeaders().set('Prefer', 'return=representation');
+
+    return this.http.post<TResource | TResource[]>(this.endpointUrl, resource, { params, headers }).pipe(
+      map((body) => {
+        const res = Array.isArray(body) ? body[0] : body;
+        return this.assembler.toEntityFromResource(res);
+      }),
       catchError(this.handleError('Failed to create entity'))
     );
   }
 
   /**
    * Updates an existing entity.
+   * Supports configuration for path parameters or query parameters.
    * @param entity - The entity to update.
    * @param id - The ID of the entity.
    * @returns An Observable of the updated entity.
    */
   update(entity: TEntity, id: number | string): Observable<TEntity> {
     const resource = this.assembler.toResourceFromEntity(entity);
-    return this.http.put<TResource>(`${this.endpointUrl}/${id}`, resource).pipe(
-      map(updated => this.assembler.toEntityFromResource(updated)),
+    const idString = id.toString();
+
+    if (this.config.usePathParams) {
+      return this.http.put<TResource>(`${this.endpointUrl}/${idString}`, resource).pipe(
+        map(updated => this.assembler.toEntityFromResource(updated)),
+        catchError(this.handleError('Failed to update entity'))
+      );
+    }
+
+    const params = new HttpParams()
+      .set(this.idQueryParamKey, `eq.${idString}`)
+      .set('select', '*');
+    const headers = new HttpHeaders()
+      .set('Prefer', 'return=representation');
+
+    return this.http.patch<TResource | TResource[]>(this.endpointUrl, resource, { params, headers }).pipe(
+      map((body) => {
+        const res = Array.isArray(body) ? body[0] : body;
+        return this.assembler.toEntityFromResource(res);
+      }),
       catchError(this.handleError('Failed to update entity'))
     );
   }
 
   /**
    * Deletes an entity by ID.
+   * Supports configuration for path parameters or query parameters.
    * @param id - The ID of the entity to delete.
    * @returns An Observable of void.
    */
   delete(id: number | string): Observable<void> {
-    return this.http.delete<void>(`${this.endpointUrl}/${id}`).pipe(
+    const idString = id.toString();
+
+    if (this.config.usePathParams) {
+      return this.http.delete<void>(`${this.endpointUrl}/${idString}`).pipe(
+        catchError(this.handleError('Failed to delete entity'))
+      );
+    }
+
+    const params = new HttpParams().set(this.idQueryParamKey, `eq.${idString}`);
+    return this.http.delete<void>(this.endpointUrl, { params }).pipe(
       catchError(this.handleError('Failed to delete entity'))
     );
   }

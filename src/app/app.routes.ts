@@ -5,6 +5,9 @@ import {Login} from '@iam/presentation/views/login/login';
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
 const registerWorkshop = () => import('@iam/presentation/views/register-workshop/register-workshop').then(m => m.RegisterWorkshop);
+const planOwner = () => import('@iam/presentation/views/plan-owner/plan-owner').then(m => m.PlanOwner);
+const planWorkshop = () => import('@iam/presentation/views/plan-workshop/plan-workshop').then(m => m.PlanWorkshop);
+const payment = () => import('@iam/presentation/views/payment/payment').then(m => m.Payment);
 const layoutOwner = () => import('@shared/presentation/components/layout-owner/layout-owner').then(m => m.LayoutOwner);
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
@@ -33,6 +36,21 @@ export const routes: Routes = [
     path: 'register-workshop',
     loadComponent: registerWorkshop,
     title: `${baseTitle} -  Register Workshop`
+  },
+  {
+    path: 'plan-owner',
+    loadComponent: planOwner,
+    title: `${baseTitle} -  Plan Vehicle Owner`
+  },
+  {
+    path: 'plan-workshop',
+    loadComponent: planWorkshop,
+    title: `${baseTitle} -  Plan Workshop`
+  },
+  {
+    path: 'payment',
+    loadComponent: payment,
+    title: `${baseTitle} -  Payment`
   },
   {
     path: 'layout-owner',
