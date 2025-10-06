@@ -1,0 +1,117 @@
+.plan-container {
+  min-height: 100vh;
+  background: var(--color-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.plan-title {
+  color: white;
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 4rem;
+  max-width: 1400px;
+  width: 100%;
+}
+
+.plan-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.plan-feature {
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.plan-box {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 2rem;
+  padding: 4rem 3.5rem;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.plan-box:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.plan-duration {
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+.plan-price {
+  color: white;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.plan-button {
+  background-color: var(--color-first-complementary);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  padding: 1.25rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: 320px;
+}
+
+.plan-button:hover {
+  background-color: #ffb700;
+  transform: scale(1.05);
+}
+
+.plan-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .plan-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .plan-price {
+    font-size: 2.5rem;
+  }
+}

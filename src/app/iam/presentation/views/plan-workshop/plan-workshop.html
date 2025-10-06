@@ -1,1 +1,48 @@
-<p>plan-workshop works!</p>
+<div class="plan-container">
+  <h1 class="plan-title">{{ 'plan-workshop.title' | translate }}</h1>
+
+  <div class="plans-grid">
+    <!-- Plan 3 months -->
+    <div class="plan-card">
+      <p class="plan-feature">· {{ 'plan-workshop.fullAccess' | translate }}</p>
+
+      <div class="plan-box">
+        <h2 class="plan-duration">{{ 'plan-workshop.threeMonths' | translate }}</h2>
+        <p class="plan-price">S/.59</p>
+      </div>
+
+      <button type="button" class="plan-button" (click)="selectPlan('3-months')">
+        {{ 'plan-workshop.chooseThisPlan' | translate }}
+      </button>
+    </div>
+
+    <!-- Plan 12 months -->
+    <div class="plan-card">
+      <p class="plan-feature">· {{ 'plan-workshop.fullAccess' | translate }}</p>
+
+      <div class="plan-box">
+        <h2 class="plan-duration">{{ 'plan-workshop.twelveMonths' | translate }}</h2>
+        <p class="plan-price">S/.219</p>
+      </div>
+
+      <button type="button" class="plan-button" (click)="selectPlan('12-months')">
+        {{ 'plan-workshop.chooseThisPlan' | translate }}
+      </button>
+    </div>
+
+    <!-- Plan 1 moth -->
+    <div class="plan-card">
+      <p class="plan-feature">· {{ 'plan-workshop.limitedAccess' | translate }}</p>
+
+      <div class="plan-box">
+        <h2 class="plan-duration">{{ 'plan-workshop.oneMonth' | translate }}</h2>
+        <p class="plan-price">S/.19</p>
+      </div>
+
+      <button type="button" class="plan-button" (click)="selectPlan('1-month')">
+        {{ 'plan-workshop.chooseThisPlan' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+

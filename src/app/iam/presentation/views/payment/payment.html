@@ -1,0 +1,154 @@
+<div class="payment-container">
+  <h1 class="payment-title">{{ 'payment.title' | translate }}</h1>
+
+  <div class="payment-info">
+    <p class="plan-info">{{ 'payment.selectedPlan' | translate: {plan: planInfo().name} }}</p>
+    <p class="amount-info">{{ 'payment.amountToPay' | translate: {amount: planInfo().amount} }}</p>
+  </div>
+
+  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
+    <div class="form-card">
+      <div class="form-row two-columns">
+        <!-- Card Number -->
+        <div class="form-group">
+          <label for="cardNumber" class="form-label">{{ 'payment.cardNumber' | translate }}</label>
+          <input
+            type="text"
+            id="cardNumber"
+            formControlName="cardNumber"
+            class="form-input"
+            placeholder="1149849846611161"
+            maxlength="16"
+            (input)="formatCardNumber($event)"
+          />
+          @if (paymentForm.get('cardNumber')?.touched && paymentForm.get('cardNumber')?.errors) {
+            <span class="error-message">
+              @if (paymentForm.get('cardNumber')?.errors?.['required']) {
+                {{ 'payment.cardNumberRequired' | translate }}
+              }
+              @if (paymentForm.get('cardNumber')?.errors?.['pattern']) {
+                {{ 'payment.cardNumberInvalid' | translate }}
+              }
+            </span>
+          }
+        </div>
+
+        <!-- Card Type -->
+        <div class="form-group">
+          <label for="cardType" class="form-label">{{ 'payment.cardType' | translate }}</label>
+          <input
+            type="text"
+            id="cardType"
+            class="form-input"
+            value="Visa/Mastercard"
+            readonly
+          />
+        </div>
+      </div>
+
+      <div class="form-row three-columns">
+        <!-- Month -->
+        <div class="form-group">
+          <label for="month" class="form-label">{{ 'payment.month' | translate }}</label>
+          <select id="month" formControlName="month" class="form-select">
+            <option value="">Julio</option>
+            @for (month of months; track month) {
+              <option [value]="month">{{ month }}</option>
+            }
+          </select>
+          @if (paymentForm.get('month')?.touched && paymentForm.get('month')?.errors?.['required']) {
+            <span class="error-message">{{ 'payment.monthRequired' | translate }}</span>
+          }
+        </div>
+
+        <!-- Year -->
+        <div class="form-group">
+          <label for="year" class="form-label">{{ 'payment.year' | translate }}</label>
+          <select id="year" formControlName="year" class="form-select">
+            <option value="">2029</option>
+            @for (year of years; track year) {
+              <option [value]="year">{{ year }}</option>
+            }
+          </select>
+          @if (paymentForm.get('year')?.touched && paymentForm.get('year')?.errors?.['required']) {
+            <span class="error-message">{{ 'payment.yearRequired' | translate }}</span>
+          }
+        </div>
+
+        <!-- CVV -->
+        <div class="form-group">
+          <label for="cvv" class="form-label">{{ 'payment.cvv' | translate }}</label>
+          <input
+            type="text"
+            id="cvv"
+            formControlName="cvv"
+            class="form-input"
+            placeholder="333"
+            maxlength="3"
+            (input)="formatCVV($event)"
+          />
+          @if (paymentForm.get('cvv')?.touched && paymentForm.get('cvv')?.errors) {
+            <span class="error-message">
+              @if (paymentForm.get('cvv')?.errors?.['required']) {
+                {{ 'payment.cvvRequired' | translate }}
+              }
+              @if (paymentForm.get('cvv')?.errors?.['pattern']) {
+                {{ 'payment.cvvInvalid' | translate }}
+              }
+            </span>
+          }
+        </div>
+      </div>
+
+      <div class="form-row two-columns">
+        <!-- Document type -->
+        <div class="form-group">
+          <label for="documentType" class="form-label">{{ 'payment.documentType' | translate }}</label>
+          <select id="documentType" formControlName="documentType" class="form-select">
+            @for (docType of documentTypes; track docType) {
+              <option [value]="docType">{{ docType }}</option>
+            }
+          </select>
+          @if (paymentForm.get('documentType')?.touched && paymentForm.get('documentType')?.errors?.['required']) {
+            <span class="error-message">{{ 'payment.documentTypeRequired' | translate }}</span>
+          }
+        </div>
+
+        <!-- Document number -->
+        <div class="form-group">
+          <label for="documentNumber" class="form-label">{{ 'payment.documentNumber' | translate }}</label>
+          <input
+            type="text"
+            id="documentNumber"
+            formControlName="documentNumber"
+            class="form-input"
+            placeholder="99999999999999"
+            (input)="formatDocumentNumber($event)"
+          />
+          @if (paymentForm.get('documentNumber')?.touched && paymentForm.get('documentNumber')?.errors) {
+            <span class="error-message">
+              @if (paymentForm.get('documentNumber')?.errors?.['required']) {
+                {{ 'payment.documentNumberRequired' | translate }}
+              }
+              @if (paymentForm.get('documentNumber')?.errors?.['minlength']) {
+                {{ 'payment.documentNumberInvalid' | translate }}
+              }
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="payment-button"
+      [disabled]="isProcessing()"
+    >
+      @if (isProcessing()) {
+        {{ 'payment.processing' | translate }}
+      } @else {
+        {{ 'payment.pay' | translate }}
+      }
+    </button>
+  </form>
+</div>
