@@ -8,6 +8,8 @@ import {UserApiEndpoint} from '@iam/infrastructure/api/user-api-endpoint';
 import {User} from '@iam/domain/model/user.entity';
 import {PaymentApiEndpoint} from '@iam/infrastructure/api/payment-api-endpoint';
 import {Payment} from '@iam/domain/model/payment.entity';
+import {Location} from '@iam/domain/model/location.entity';
+import {LocationApiEndpoint} from '@iam/infrastructure/api/location-api-endpoint';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +18,14 @@ export class IamApi extends BaseApi {
   private readonly userAccountsEndpoint:     UserAccountsApiEndpoint;
   private readonly usersEndpoint:            UserApiEndpoint;
   private readonly paymentsEndpoint:         PaymentApiEndpoint;
+  private readonly locationsEndpoint:        LocationApiEndpoint;
 
   constructor(http: HttpClient) {
     super();
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
     this.usersEndpoint = new UserApiEndpoint(http);
     this.paymentsEndpoint = new PaymentApiEndpoint(http);
+    this.locationsEndpoint = new LocationApiEndpoint(http);
   }
 
   getUserAccounts(): Observable<UserAccount[]> {
@@ -83,4 +87,25 @@ export class IamApi extends BaseApi {
   deletePayment(id: string): Observable<void> {
     return this.paymentsEndpoint.delete(id);
   }
+
+  getLocations(): Observable<Location[]> {
+    return this.locationsEndpoint.getAll();
+  }
+
+  getLocation(id: string): Observable<Location> {
+    return this.locationsEndpoint.getById(id);
+  }
+
+  createLocation(location: Location): Observable<Location> {
+    return this.locationsEndpoint.create(location);
+  }
+
+  updateLocation(location: Location): Observable<Location> {
+    return this.locationsEndpoint.update(location, location.id);
+  }
+
+  deleteLocation(id: string): Observable<void> {
+    return this.locationsEndpoint.delete(id);
+  }
+
 }

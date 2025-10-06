@@ -14,6 +14,7 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
       name: resource.name,
       last_name: resource.last_name,
       dni: resource.dni,
+      phone_number: resource.phone_number,
       id_location: resource.id_location
     });
   }
@@ -24,6 +25,7 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
       name: entity.name,
       last_name: entity.last_name,
       dni: entity.dni,
+      phone_number: entity.phone_number,
       id_location: entity.id_location
     } as UserResource;
   }

@@ -1,7 +1,7 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {RoleChoice} from '@iam/domain/types/role-choice';
+import {RoleChoiceType} from '@iam/domain/types/role-choice.type';
 import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
@@ -20,7 +20,7 @@ export class UserRole {
     role: ['', Validators.required] // 'Vehicle Owner' | 'Workshop'
   });
 
-  selectRole(role: RoleChoice) {
+  selectRole(role: RoleChoiceType) {
     this.form.patchValue({ role });
     this.form.controls.role.markAsTouched();
   }
@@ -32,7 +32,7 @@ export class UserRole {
     }
     this.submitting.set(true);
 
-    const choice = this.form.value.role as RoleChoice;
+    const choice = this.form.value.role as RoleChoiceType;
 
     const target = choice === 'Vehicle Owner'
         ? '/register-owner'

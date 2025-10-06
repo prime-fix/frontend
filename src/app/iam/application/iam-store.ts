@@ -5,6 +5,7 @@ import {User} from '@iam/domain/model/user.entity';
 import {IamApi} from '@iam/infrastructure/api/iam-api';
 import {retry} from 'rxjs';
 import {Payment} from '@iam/domain/model/payment.entity';
+import {Location} from '@iam/domain/model/location.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,12 @@ export class IamStore {
   private readonly userAccountsSignal = signal<UserAccount[]>([]);
   private readonly usersSignal = signal<User[]>([]);
   private readonly paymentsSignal = signal<Payment[]>([]);
+  private readonly locationsSignal = signal<Location[]>([]);
 
   readonly userAccounts = this.userAccountsSignal.asReadonly();
   readonly users = this.usersSignal.asReadonly();
   readonly payments = this.paymentsSignal.asReadonly();
+  readonly locations = this.locationsSignal.asReadonly();
 
   private readonly loadingSignal = signal<boolean>(false);
   readonly loading = this.loadingSignal.asReadonly();
@@ -27,6 +30,7 @@ export class IamStore {
   readonly userAccountCount = computed(() => this.userAccounts().length);
   readonly userCount = computed(() => this.users().length);
   readonly paymentCount = computed(() => this.payments().length);
+  readonly locationCount = computed(() => this.locations().length);
 
   // Session-related signals
   private readonly sessionUserAccountSignal = signal<UserAccount | null>(null);
@@ -42,11 +46,25 @@ export class IamStore {
     return user ? `${user.name} ${user.last_name}` : '';
   });
 
+  // Register Transition Flow
+  private readonly registerUserSignal = signal<User | null>(null);
+  private readonly registerUserAccountSignal = signal<UserAccount | null>(null);
+  private readonly registerPaymentSignal = signal<Payment | null>(null);
+  private readonly registerRoleSignal = signal<string | null>(null);
+  private readonly registerMemberShipTypeSignal = signal<string | null>(null);
+
+  readonly registerUser = this.registerUserSignal.asReadonly()
+  readonly registerUserAccount = this.registerUserAccountSignal.asReadonly()
+  readonly registerPayment = this.registerPaymentSignal.asReadonly()
+  readonly registerRole = this.registerRoleSignal.asReadonly()
+  readonly registerMemberShipType = this.registerMemberShipTypeSignal.asReadonly()
+
   // Methods to manage UserAccounts and Users
   constructor(private iamApi : IamApi) {
     this.loadUserAccounts();
     this.loadUsers();
     this.loadPayments();
+    this.loadLocations();
   }
 
   getUserById(id: string | null  | undefined): Signal<User | undefined> {
@@ -191,6 +209,56 @@ export class IamStore {
     });
   }
 
+  getLocationById(id: string | null  | undefined): Signal<Location | undefined> {
+    return computed(() => id ? this.locations().find(l => l.id === id) : undefined);
+  }
+
+  addLocation(location: Location): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.createLocation(location).pipe(retry(2)).subscribe({
+      next: createdLocation => {
+        this.locationsSignal.set([...this.locations(), createdLocation]);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create location'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  updateLocation(location: Location): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.updateLocation(location).pipe(retry(2)).subscribe({
+      next: updatedLocation => {
+        this.locationsSignal.update(locations =>
+          locations.map(l => l.id === updatedLocation.id ? updatedLocation : l))
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update location'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  deleteLocation(id: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.deleteLocation(id).pipe(retry(2)).subscribe({
+      next: () => {
+        this.locationsSignal.update(locations => locations.filter(l => l.id !== id))
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete location'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
   private loadUserAccounts(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -234,6 +302,22 @@ export class IamStore {
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to load payments'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  private loadLocations(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.getLocations().pipe(takeUntilDestroyed()).subscribe({
+      next: locations => {
+        console.log(locations);
+        this.locationsSignal.set(locations);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load locations'));
         this.loadingSignal.set(false);
       }
     })
@@ -304,9 +388,17 @@ export class IamStore {
     }
   }
 
+  /**
+   * Logs out the current user by clearing session-related signals.
+   */
   logout(): void {
     this.sessionUserAccountSignal.set(null);
     this.sessionUserSignal.set(null);
+  }
+
+  saveRegisterOwner(form: { fullName: string; username: string; dni: string; phone_number:
+      string; department: string; district: string; address: string; email: string; password: string }): void {
+
   }
 
   /**

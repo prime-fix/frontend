@@ -9,5 +9,6 @@ export interface UserResource extends BaseResource {
   name: string;
   last_name: string;
   dni: string;
+  phone_number: string;
   id_location: string;
 }
