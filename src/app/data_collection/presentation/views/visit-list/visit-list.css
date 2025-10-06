@@ -1,0 +1,133 @@
+.vehicles-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.add-button {
+  background-color: #fdb825 !important;
+  color: #333 !important;
+  font-weight: 600;
+  padding: 10px 30px !important;
+  border-radius: 25px !important;
+  text-transform: none !important;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.add-button:hover {
+  background-color: #e5a620 !important;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  color: #d32f2f;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vehicle-card {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.vehicle-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card-content {
+  flex: 1;
+}
+
+.vehicle-model {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.vehicle-color {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.vehicle-plate {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 120px;
+}
+
+.edit-button,
+.delete-button {
+  background-color: #fdb825 !important;
+  color: #333 !important;
+  font-weight: 600;
+  border-radius: 20px !important;
+  text-transform: none !important;
+  font-size: 14px;
+  padding: 8px 20px !important;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  background-color: #e5a620 !important;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .vehicle-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-actions {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
+  }
+}

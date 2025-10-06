@@ -1,0 +1,71 @@
+<div class="workshop-form-container">
+  <h1 class="form-title">Buscar taller</h1>
+
+  <div class="form-card">
+    <h2 class="section-title">Programación de visita</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="form-group">
+        <label class="form-label">Modelo de coche</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="id_vehicle" placeholder="Selecciona un modelo">
+            <mat-option [value]="null">Elegir un vehículo</mat-option>
+            @for (vehicle of vehicles(); track $index) {
+              <mat-option [value]="vehicle.id">
+                {{ vehicle.model }} - {{vehicle.vehicle_brand}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Fallas</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea
+            matInput
+            formControlName="failure"
+            placeholder="Describe las fallas del vehículo"
+            rows="3"
+            required>
+          </textarea>
+          @if (form.get('failure')?.touched && form.get('failure')?.hasError('required')) {
+            <mat-error>La falla es requerida</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="date-time-row">
+        <div class="form-group half-width">
+          <label class="form-label">Fecha</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="time_visit"
+              placeholder="dd/mm/yyyy"
+              required>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (form.get('time_visit')?.touched && form.get('time_visit')?.hasError('required')) {
+              <mat-error>La fecha es requerida</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="button-container">
+        <button
+          mat-raised-button
+          class="submit-button"
+          type="submit"
+          [disabled]="form.invalid">
+          Agendar visita
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

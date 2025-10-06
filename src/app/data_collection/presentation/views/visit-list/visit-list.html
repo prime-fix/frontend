@@ -1,0 +1,48 @@
+<div class="vehicles-container">
+  <div class="header-section">
+    <button mat-raised-button class="add-button" (click)="router.navigate(['visits/new'])">
+      Agregar coche
+    </button>
+  </div>
+
+  @if (dataStore.loading()){
+    <div class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (dataStore.error()) {
+    <mat-error class="error-message">{{dataStore.error()}}</mat-error>
+  }
+
+  <div class="cards-container">
+    @for (visit of dataStore.visits(); track visit.id) {
+      <div class="vehicle-card">
+        <div class="card-content">
+          <h3 class="vehicle-model">
+            {{ getVehicle(visit.id)?.()?.model }}
+          </h3>
+          <p class="vehicle-color">
+            {{ getVehicle(visit.id)?.()?.vehicle_brand }}
+          </p>
+          <p class="vehicle-plate">{{ visit.failure }}</p>
+        </div>
+
+        <div class="card-actions">
+          <button mat-raised-button class="edit-button" (click)="editVisit(visit.id)">
+            Editar
+          </button>
+          <button mat-raised-button class="delete-button" (click)="deleteVisit(visit.id)">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (dataStore.visits().length === 0 && !dataStore.loading()) {
+    <div class="empty-state">
+      <p>No hay vehículos registrados</p>
+    </div>
+  }
+</div>

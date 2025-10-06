@@ -1,0 +1,26 @@
+@if (dataStore.loading()){
+  <mat-spinner diameter="40"></mat-spinner>
+}
+@if (dataStore.error()) {
+  <mat-error>{{dataStore.error()}}</mat-error>
+}
+
+<div class="repair-cards-container">
+  @for(repair of repair(); track repair.id ){
+    <mat-card class="repair-card">
+      <mat-card-header>
+        <mat-card-title>{{ repair.id }}</mat-card-title>
+        <mat-card-subtitle>RUC: {{ repair.RUC }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Email: {{ repair.contact_email }}</p>
+        <p>Técnicos: {{ repair.technician_count }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="selectRepair(repair.id)">
+          Agendar Visita
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>
