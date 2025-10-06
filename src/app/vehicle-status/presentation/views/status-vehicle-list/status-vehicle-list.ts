@@ -1,12 +1,10 @@
 import {Component, inject} from '@angular/core';
-import {NgForOf} from '@angular/common';
 import {StatusVehicleStore} from '../../../application/status-vehicle-store';
 import { StatusVehicleForm } from '../status-vehicle-form/status-vehicle-form';
 
 @Component({
   selector: 'app-status-vehicle-list',
   imports: [
-    NgForOf,
     StatusVehicleForm
   ],
   templateUrl: './status-vehicle-list.html',

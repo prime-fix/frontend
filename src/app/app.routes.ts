@@ -5,6 +5,7 @@ import {StatusVehicleForm} from './vehicle-status/presentation/views/status-vehi
 import {StatusVehicleList} from './vehicle-status/presentation/views/status-vehicle-list/status-vehicle-list';
 
 export const routes: Routes = [
-  { path: '', component: StatusVehicleList }, // página inicial
+  { path: '', redirectTo: 'vehicle-status', pathMatch: 'full' },
+  { path: 'vehicle-status', component: StatusVehicleList }, // página inicial
   { path: 'vehicle-status/vehicle-diagnosis/:id', component: Diagnosis }, // sección de diagnóstico
 ];

@@ -3,11 +3,11 @@
     {
       "id": 1,
       "vehicle": "Coche 1",
-      "license_plate": "ABC-123",
-      "owner": "Victus",
+      "license_plate": "DEF-646",
+      "owner": "Renso",
       "status": "En diagnostico",
       "diagnostic": "Falla en transmisión",
-      "price": 500
+      "price": 123
     },
     {
       "id": 2,
@@ -24,7 +24,7 @@
       "license_plate": "GHI-789",
       "owner": "Jorge",
       "status": "Recogido",
-      "diagnostic": "Falla en motor",
+      "diagnostic": "Llanta baja",
       "price": 365
     },
     {

@@ -35,9 +35,15 @@
 
 <div class="content-area">
   <div class="requests-container">
-    <app-status-vehicle-form
+    <!-- <app-status-vehicle-form
       *ngFor="let v of vehicles"
       [vehicle]="v">
-    </app-status-vehicle-form>
+    </app-status-vehicle-form> -->
+    @for (v of vehicles; track v.id) {
+      <app-status-vehicle-form [vehicle]="v"></app-status-vehicle-form>
+    } @empty {
+      <p>No hay vehículos registrados.</p>
+    }
+
   </div>
 </div>
