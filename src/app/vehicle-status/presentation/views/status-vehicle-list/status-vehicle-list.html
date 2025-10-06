@@ -1,0 +1,43 @@
+<!--<div class="requests-container">
+  <div class="request-card" *ngFor="let item of store.status(); let i = index">
+    <div class="request-info">
+      <p class="request-vehicle">Coche: {{ item.vehicle }}</p>
+      <p class="request-license-plate">Placa: {{ item.license_plate }}</p>
+      <p class="request-owner">Dueño: {{ item.owner }}</p>
+    </div>
+
+    <div class="request-actions">
+      <button class="modify-button">Modificar</button>
+      <button class="finish-button">Finalizar</button>
+    </div>
+  </div>
+</div>-->
+
+<!-- vehicle-list.component.html
+<div class="requests-container">
+  <div class="request-card" *ngFor="let item of store.status()">
+    <div class="request-info">
+      <p class="request-vehicle">Coche: {{ item.vehicle }}</p>
+      <p class="request-license-plate">Placa: {{ item.license_plate }}</p>
+      <p class="request-owner">Dueño: {{ item.owner }}</p>
+    </div>
+
+    <div class="request-actions">
+      <button class="modify-button">Modificar</button>
+      <button class="finish-button">Finalizar</button>
+    </div>
+  </div>
+</div>
+-->
+<header class="main-header">
+  <h1>Estado de coches</h1>
+</header>
+
+<div class="content-area">
+  <div class="requests-container">
+    <app-status-vehicle-form
+      *ngFor="let v of vehicles"
+      [vehicle]="v">
+    </app-status-vehicle-form>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+{
+  "status-vehicles": [
+    {
+      "id": 1,
+      "vehicle": "Coche 1",
+      "license_plate": "ABC-123",
+      "owner": "Victus",
+      "status": "En diagnostico",
+      "diagnostic": "Falla en transmisión",
+      "price": 500
+    },
+    {
+      "id": 2,
+      "vehicle": "Coche 2",
+      "license_plate": "DEF-456",
+      "owner": "Anthony",
+      "status": "Recogido",
+      "diagnostic": "Cambio de llantas",
+      "price": 120
+    },
+    {
+      "id": 3,
+      "vehicle": "Coche 3",
+      "license_plate": "GHI-789",
+      "owner": "Jorge",
+      "status": "Recogido",
+      "diagnostic": "Falla en motor",
+      "price": 365
+    },
+    {
+      "id": 4,
+      "vehicle": "Coche 4",
+      "license_plate": "JKL-012",
+      "owner": "Ricardo",
+      "status": "En diagnostico",
+      "diagnostic": "Falla en frenos",
+      "price": 160
+    },
+    {
+      "id": 5,
+      "vehicle": "Coche 5",
+      "license_plate": "MNO-345",
+      "owner": "Victor",
+      "status": "En diagnostico",
+      "diagnostic": "Cambio de aceite",
+      "price": 300
+    }
+  ]
+}

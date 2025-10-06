@@ -1,0 +1,47 @@
+<header class="main-header">
+  <h1>Estado de coches</h1>
+</header>
+<main *ngIf="vehicle()">
+
+  <div>
+    <p>Modificación del estado de los coches</p>
+    <div class="content-area">
+      <div class="requests-container">
+
+        <div class="request-card">
+
+          <div class="request-info">
+            <p class="request-vehicle">Coche: {{ vehicle()?.vehicle }}</p>
+            <p class="request-license-plate">Placa: {{ vehicle()?.license_plate }}</p>
+            <p class="request-owner">Dueño: {{ vehicle()?.owner }}</p>
+          </div>
+
+          <div class="request-actions">
+            <form class="example-form">
+              <p>Estado</p>
+              <mat-form-field class="example-full-width">
+                <input matInput id="estado" placeholder="" [(ngModel)]="vehicle()?.status" [value]="vehicle()?.status">
+              </mat-form-field>
+
+              <p>Diagnóstico</p>
+              <mat-form-field class="example-full-width">
+                <textarea id="diagnostico" name="diagnostic" matInput placeholder="" [(ngModel)]="vehicle()?.diagnostic" [value]="vehicle()?.diagnostic">
+                </textarea>
+              </mat-form-field>
+              <p>Precio</p>
+              <mat-form-field class="example-full-width">
+                <input matInput id="precio" name="price" type="number" placeholder="" [(ngModel)]="vehicle()?.price" [value]="vehicle()?.price">
+              </mat-form-field>
+            </form>
+          </div>
+
+          <div class="button-container">
+            <button class="modify-button">Modificar</button>
+            <button class="return-button" [routerLink]="['/']">Volver</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
