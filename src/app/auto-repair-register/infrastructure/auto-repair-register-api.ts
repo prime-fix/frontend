@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-
 import { BaseApi } from '@shared/infrastructure/http/base-api';
 import { AutoRepairRegister } from '../domain/model/auto-repair-register.entity';
 import { TechnicianRegister } from '../domain/model/technician-register.entity';
-
 import { HttpClient } from '@angular/common/http';
-
 import { AutoRepairRegisterApiEndpoint } from './auto-repair-register-api-endpoint';
 import { TechnicianRegisterApiEndpoint } from './technician-register-api-endpoint';
 

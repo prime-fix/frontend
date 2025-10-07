@@ -38,7 +38,7 @@
         Solicitudes
       </a>
 
-      <a routerLink="/gestionar-tecnicos" class="nav-item active">
+      <a routerLink="/technicians" class="nav-item active">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/>
         </svg>
@@ -63,73 +63,74 @@
     <button class="btn-cerrar-sesion">Cerrar sesión</button>
   </aside>
 
-  <!-- Main Content -->
+  <!-- Main Content - FORMULARIO -->
   <main class="main-content">
-    <div class="content-header">
-      <h1>Gestionar técnicos</h1>
-      <button class="btn-agregar" (click)="router.navigate(['/gestionar-tecnicos/nuevo'])">
-        Agregar técnico
-      </button>
-    </div>
+    <h1 class="page-title">{{ _technician ? 'Editar' : 'Agregar' }} Técnico</h1>
 
-    <div class="tecnicos-lista">
-      <!-- Técnico Card 1 -->
-      <div class="tecnico-card">
-        <div class="tecnico-info">
-          <h3>Fernando Guevara</h3>
-          <div class="horarios">
-            <div class="horario-item">
-              <span class="dia">Lunes</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-            <div class="horario-item">
-              <span class="dia">Martes</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-            <div class="horario-item">
-              <span class="dia">Miércoles</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-          </div>
+    <div class="form-container">
+      <form class="technician-form" (ngSubmit)="submit()">
+        <div class="form-group">
+          <label for="nombre-tecnico">Nombre del técnico *</label>
+          <input
+            type="text"
+            id="nombre-tecnico"
+            placeholder="Jesús Grimaldo"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            name="name"
+            required
+          />
         </div>
-        <div class="tecnico-acciones">
-          <button class="btn-editar" (click)="router.navigate(['/gestionar-tecnicos/editar', 'TECH001'])">
-            Editar
-          </button>
-          <button class="btn-eliminar">
-            Eliminar
-          </button>
-        </div>
-      </div>
 
-      <!-- Técnico Card 2 -->
-      <div class="tecnico-card">
-        <div class="tecnico-info">
-          <h3>Jesús Grimaldo</h3>
-          <div class="horarios">
-            <div class="horario-item">
-              <span class="dia">Lunes</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-            <div class="horario-item">
-              <span class="dia">Martes</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-            <div class="horario-item">
-              <span class="dia">Miércoles</span>
-              <span class="horas">9:00 - 17:00</span>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="edad">Edad *</label>
+          <input
+            type="number"
+            id="edad"
+            placeholder="25"
+            [ngModel]="age()"
+            (ngModelChange)="age.set($event)"
+            name="age"
+            required
+          />
         </div>
-        <div class="tecnico-acciones">
-          <button class="btn-editar" (click)="router.navigate(['/gestionar-tecnicos/editar', 'TECH002'])">
-            Editar
+
+        <div class="form-group">
+          <label for="id-usuario">ID de Usuario *</label>
+          <input
+            type="text"
+            id="id-usuario"
+            placeholder="USER001"
+            [ngModel]="id_user_account()"
+            (ngModelChange)="id_user_account.set($event)"
+            name="id_user_account"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="id-taller">ID del Taller *</label>
+          <input
+            type="text"
+            id="id-taller"
+            placeholder="AR001"
+            [ngModel]="id_auto_repair()"
+            (ngModelChange)="id_auto_repair.set($event)"
+            name="id_auto_repair"
+            required
+          />
+          <small *ngIf="selectedAutoRepair()">Taller: {{ selectedAutoRepair() }}</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" (click)="router.navigate(['/technicians'])">
+            Cancelar
           </button>
-          <button class="btn-eliminar">
-            Eliminar
+          <button type="submit" class="btn-agregar">
+            {{ _technician ? 'Actualizar' : 'Agregar' }}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </main>
 </div>

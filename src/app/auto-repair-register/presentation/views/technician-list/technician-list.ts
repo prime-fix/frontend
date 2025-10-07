@@ -1,5 +1,5 @@
-import { Component, inject, Signal, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { TechnicianRegisterApiEndpoint } from '../../../infrastructure/technician-register-api-endpoint';
 import { TechnicianRegister } from '../../../domain/model/technician-register.entity';
 import { AutoRepairRegisterStore } from '../../../application/auto-repair-register-store';
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-technician-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './technician-list.html',
   styleUrls: ['./technician-list.css']
 })
@@ -18,13 +18,16 @@ export class TechnicianList {
   public router = inject(Router);
   readonly autoRepairStore = inject(AutoRepairRegisterStore);
 
-  // Signals
   technicians = signal<TechnicianRegister[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
 
-  // Propiedad para ngModel
-  name: string = '';
+  name = signal('');
+  schedules = signal<Array<{ day: string, start: string, end: string }>>([
+    { day: 'Miércoles', start: '10:00', end: '18:00' },
+    { day: 'Jueves', start: '10:00', end: '18:00' },
+    { day: 'Viernes', start: '10:00', end: '18:00' }
+  ]);
 
   constructor() {
     this.loadTechnicians();
@@ -36,19 +39,19 @@ export class TechnicianList {
     this.error.set(null);
 
     this.api.getAll().subscribe({
-      next: (list) => {
-        // Solo asignamos la lista directamente, sin schedules
+      next: (list: TechnicianRegister[]) => {
+        console.log('Technicians loaded:', list);
         this.technicians.set(list);
         this.loading.set(false);
       },
-      error: (err) => {
-        this.error.set(err.message ?? 'Failed to load technicians');
+      error: (err: Error) => {
+        console.error('Failed to fetch technicians:', err);
+        this.error.set('Failed to fetch technicians: ' + (err.message || 'Unknown error'));
         this.loading.set(false);
       }
     });
   }
 
-  /** Deletes a technician */
   deleteTechnician(tech: TechnicianRegister): void {
     if (!confirm(`¿Seguro que deseas eliminar al técnico ${tech.name}?`)) return;
 
@@ -57,23 +60,47 @@ export class TechnicianList {
         this.technicians.update(list => list.filter(t => t.id !== tech.id));
         alert('Técnico eliminado correctamente.');
       },
-      error: (err) => alert('No se pudo eliminar el técnico: ' + err.message)
+      error: (err: Error) => alert('No se pudo eliminar el técnico: ' + err.message)
     });
   }
 
-  /** Navigate to edit page */
+  getAutoRepairName(id_auto_repair: string): string {
+    const ar = this.autoRepairStore.getAutoRepairRegisterById(id_auto_repair)();
+    return ar?.RUC ?? 'Unknown';
+  }
+
   editTechnician(id: string): void {
-    this.router.navigate([`auto-repair-register/technicians/edit/${id}`]).then();
+    this.router.navigate(['/technicians/edit', id]).then();
   }
 
-  /** Submit method usado en el template para agregar técnico */
   submit(): void {
-    console.log('Agregar técnico:', this.name);
-    alert(`Se intentaría agregar el técnico: ${this.name}`);
+    if (!this.name()) {
+      alert('Por favor ingresa el nombre del técnico.');
+      return;
+    }
+
+    console.log('Agregar técnico:', this.name());
+    console.log('Horarios:', this.schedules());
+    alert(`Se intentaría agregar el técnico: ${this.name()}`);
   }
 
-  /** Navigate to new technician page */
   createNew(): void {
-    this.router.navigate(['auto-repair-register/technicians/new']).then();
+    this.router.navigate(['/technicians/new']).then();
+  }
+
+  addScheduleDay(): void {
+    this.schedules.update(s => [...s, { day: 'Lunes', start: '10:00', end: '18:00' }]);
+  }
+
+  removeScheduleDay(index: number): void {
+    this.schedules.update(s => s.filter((_, i) => i !== index));
+  }
+
+  updateSchedule(index: number, field: 'day' | 'start' | 'end', value: string): void {
+    this.schedules.update(s => {
+      const updated = [...s];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   }
 }

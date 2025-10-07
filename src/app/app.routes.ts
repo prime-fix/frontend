@@ -10,4 +10,3 @@ export const routes: Routes = [
   { path: 'technicians/:id', component: TechnicianDetails },
   { path: '**', redirectTo: 'auto-repair-register' }
 ];
-

@@ -1,14 +1,15 @@
 import { Component, inject, Input, Signal, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { TechnicianRegisterApiEndpoint } from '../../../infrastructure/technician-register-api-endpoint';
 import { TechnicianRegister } from '../../../domain/model/technician-register.entity';
 import { AutoRepairRegisterStore } from '../../../application/auto-repair-register-store';
 
 @Component({
   selector: 'app-technician-details',
-  imports: [RouterLink, FormsModule],
+  standalone: true,
+  imports: [RouterLink, FormsModule, CommonModule],
   templateUrl: './technician-details.html',
   styleUrls: ['./technician-details.css']
 })
@@ -17,7 +18,7 @@ export class TechnicianDetails {
   readonly autoRepairStore = inject(AutoRepairRegisterStore);
   public router = inject(Router);
 
-  // Signals for form fields
+  // Signals para el FORMULARIO
   name = signal('');
   age = signal(0);
   id_user_account = signal('');
@@ -29,6 +30,9 @@ export class TechnicianDetails {
     return ar?.RUC ?? '';
   });
 
+  // 👉 Propiedad pública (antes privada)
+  public _technician?: TechnicianRegister;
+
   @Input() set technician(value: TechnicianRegister | undefined) {
     if (value) {
       this.name.set(value.name);
@@ -39,11 +43,9 @@ export class TechnicianDetails {
     }
   }
 
-  private _technician?: TechnicianRegister;
-
-  submit() {
+  submit(): void {
     if (!this.name() || !this.age() || !this.id_user_account() || !this.id_auto_repair()) {
-      alert('Please fill in all required fields.');
+      alert('Por favor completa todos los campos requeridos.');
       return;
     }
 
@@ -58,18 +60,18 @@ export class TechnicianDetails {
     if (this._technician) {
       this.api.update(tech, tech.id).subscribe({
         next: () => {
-          alert('Technician updated successfully.');
-          this.router.navigate(['auto-repair-register/technicians']).then();
+          alert('Técnico actualizado correctamente.');
+          this.router.navigate(['/technicians']).then();
         },
-        error: (err) => alert('Failed to update technician: ' + err.message)
+        error: (err: Error) => alert('Error al actualizar técnico: ' + err.message)
       });
     } else {
       this.api.create(tech).subscribe({
         next: () => {
-          alert('Technician created successfully.');
-          this.router.navigate(['auto-repair-register/technicians']).then();
+          alert('Técnico creado correctamente.');
+          this.router.navigate(['/technicians']).then();
         },
-        error: (err) => alert('Failed to create technician: ' + err.message)
+        error: (err: Error) => alert('Error al crear técnico: ' + err.message)
       });
     }
   }
