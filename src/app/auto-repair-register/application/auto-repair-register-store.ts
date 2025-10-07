@@ -3,15 +3,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { retry } from 'rxjs';
 
 import { AutoRepairRegister } from '../domain/model/auto-repair-register.entity';
+import { TechnicianRegister } from '../domain/model/technician-register.entity';
 import { AutoRepairRegisterApi } from '../infrastructure/auto-repair-register-api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AutoRepairRegisterStore {
+  // ------------------ AutoRepairRegister ------------------
   private readonly autoRepairRegistersSignal = signal<AutoRepairRegister[]>([]);
   readonly autoRepairRegisters = this.autoRepairRegistersSignal.asReadonly();
 
+  // ------------------ TechnicianRegister ------------------
+  private readonly techniciansSignal = signal<TechnicianRegister[]>([]);
+  readonly technicians = this.techniciansSignal.asReadonly();
+
+  // ------------------ Loading & Error ------------------
   private readonly loadingSignal = signal<boolean>(false);
   readonly loading = this.loadingSignal.asReadonly();
 
@@ -20,9 +27,8 @@ export class AutoRepairRegisterStore {
 
   constructor(private autoRepairRegisterApi: AutoRepairRegisterApi) {}
 
-  // ======= METHODS ======= //
+  // ======= AutoRepairRegister METHODS ======= //
 
-  /** Loads all auto repair registers from the backend */
   loadAutoRepairRegisters(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -40,7 +46,6 @@ export class AutoRepairRegisterStore {
       });
   }
 
-  /** Creates a new auto repair register and adds it to the state */
   addAutoRepairRegister(register: AutoRepairRegister): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -58,7 +63,6 @@ export class AutoRepairRegisterStore {
       });
   }
 
-  /** Updates an existing auto repair register */
   updateAutoRepairRegister(register: AutoRepairRegister): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -78,7 +82,6 @@ export class AutoRepairRegisterStore {
       });
   }
 
-  /** Deletes a register by its ID */
   deleteAutoRepairRegister(id: string | number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -86,7 +89,6 @@ export class AutoRepairRegisterStore {
       .pipe(retry(2))
       .subscribe({
         next: () => {
-          // Compare as strings because entity.id is string
           this.autoRepairRegistersSignal.update(list =>
             list.filter(r => r.id !== String(id))
           );
@@ -99,11 +101,89 @@ export class AutoRepairRegisterStore {
       });
   }
 
-  /** Returns a reactive signal for a specific register already loaded in memory */
   getAutoRepairRegisterById(id: string | number): Signal<AutoRepairRegister | undefined> {
-    // Compare as strings because entity.id is string
     return computed(() =>
       this.autoRepairRegisters().find(r => r.id === String(id))
+    );
+  }
+
+  // ======= TechnicianRegister METHODS ======= //
+
+  loadTechnicians(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairRegisterApi.getTechnicians()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (techs) => {
+          this.techniciansSignal.set(techs);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load technicians'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  addTechnician(technician: TechnicianRegister): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairRegisterApi.createTechnician(technician)
+      .pipe(retry(2))
+      .subscribe({
+        next: (created) => {
+          this.techniciansSignal.update(list => [...list, created]);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to create technician'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  updateTechnician(technician: TechnicianRegister): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairRegisterApi.updateTechnician(technician)
+      .pipe(retry(2))
+      .subscribe({
+        next: (updated) => {
+          this.techniciansSignal.update(list =>
+            list.map(t => t.id === updated.id ? updated : t)
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to update technician'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  deleteTechnician(id: string | number): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairRegisterApi.deleteTechnician(id)
+      .pipe(retry(2))
+      .subscribe({
+        next: () => {
+          this.techniciansSignal.update(list =>
+            list.filter(t => t.id !== String(id))
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to delete technician'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  getTechnicianById(id: string | number): Signal<TechnicianRegister | undefined> {
+    return computed(() =>
+      this.technicians().find(t => t.id === String(id))
     );
   }
 

@@ -20,19 +20,4 @@ export interface AutoRepairRegisterResource extends BaseResource {
   technicians_count: number;
   id_location: string;
 
-  /**
-   * Optional list of technicians associated with this AutoRepair.
-   */
-  technicians?: TechnicianResource[];
-}
-
-/**
- * Represents a Technician associated with an AutoRepair.
- */
-export interface TechnicianResource extends BaseResource {
-  id_technisian: string;
-  name: string;
-  age: number;
-  id_user_acount: string;
-  id_auto_repair: string;
 }
