@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"
+     role="img" aria-label="Favicon - pin con check estilizado" shape-rendering="geometricPrecision">
+  <defs>
+    <!-- Gradient for the pin body -->
+    <linearGradient id="pinGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#114358"/>
+      <stop offset="100%" stop-color="#114358"/>
+    </linearGradient>
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#F2AA1F" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Pin body with gradient and shadow -->
+  <path d="M32 4
+           C22 4 14 12.7 14 23
+           C14 38 32 60 32 60
+           C32 60 50 38 50 23
+           C50 12.7 42 4 32 4 Z"
+        fill="url(#pinGradient)"
+        stroke="#F2AA1F"
+        stroke-width="2"
+        filter="url(#shadow)"
+        stroke-linejoin="round"/>
+
+  <!-- Check mark (rounded, slightly smaller stroke for elegance) -->
+  <path d="M21 29 L28.5 36.5 L44 21.5"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="4.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>

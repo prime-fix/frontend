@@ -1,0 +1,75 @@
+<div class="track-vehicle-container">
+  <div class="track-content">
+    <div class="header-with-notification">
+      <h1 class="track-title">{{ 'track-vehicle.title' | translate }}</h1>
+
+      <!-- Notification Bell Icon -->
+      <button
+        class="notification-button"
+        (click)="openNotificationModal()"
+        [class.has-notification]="hasNotification()"
+        type="button"
+        aria-label="Notifications">
+        <svg class="bell-icon">
+          <use href="assets/icons/sprite.symbol.svg#bell"></use>
+        </svg>
+        @if (hasNotification()) {
+          <span class="notification-badge"></span>
+        }
+      </button>
+    </div>
+
+    <form [formGroup]="trackForm" (ngSubmit)="onSelect()" class="track-form">
+      <div class="form-group">
+        <label for="vehicle" class="form-label">{{ 'track-vehicle.selectVehicle' | translate }}</label>
+        <select
+          id="vehicle"
+          formControlName="selectedVehicle"
+          class="form-select">
+          <option value="" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
+          @for (vehicle of vehicles; track vehicle.id) {
+            <option [value]="vehicle.id">{{ vehicle.name }}</option>
+          }
+        </select>
+        @if (trackForm.get('selectedVehicle')?.invalid && trackForm.get('selectedVehicle')?.touched) {
+          <span class="error-message">
+            {{ 'track-vehicle.vehicleRequired' | translate }}
+          </span>
+        }
+      </div>
+
+      <button type="submit" class="select-button" [disabled]="trackForm.invalid">
+        {{ 'track-vehicle.select' | translate }}
+      </button>
+    </form>
+
+    <!-- Error State Component -->
+    @if (showError()) {
+      <div class="vehicle-info-section">
+        <app-state-error></app-state-error>
+      </div>
+    }
+
+    <!-- Vehicle Information and Progress Bar Section -->
+    @if (showProgressBar() && selectedVehicleData()) {
+      <div class="vehicle-info-section">
+        <div class="vehicle-details">
+          <p class="vehicle-info">
+            <strong>{{ 'track-vehicle.vehicle' | translate }}:</strong> {{ selectedVehicleData()?.name }}
+          </p>
+          <p class="status-info">
+            <strong>{{ 'track-vehicle.status' | translate }}:</strong>
+          </p>
+        </div>
+        <div class="progress-section">
+          <app-progress-bar [currentStep]="selectedVehicleData()?.maintenanceStatus || 1"></app-progress-bar>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Notification Modal -->
+@if (showNotificationModal()) {
+  <app-state-notification (close)="closeNotificationModal()"></app-state-notification>
+}

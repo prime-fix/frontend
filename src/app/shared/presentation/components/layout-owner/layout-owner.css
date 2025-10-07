@@ -1,0 +1,146 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  background-color: var(--color-light);
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.main-header {
+  margin-bottom: 2rem;
+}
+
+.main-header h1 {
+  font-size: 2.5rem;
+  font-family: var(--font-bold);
+  color: var(--color-primary);
+  margin: 0;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.main-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 4px;
+  background-color: var(--color-primary);
+}
+
+.content-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+.notification-card {
+  background-color: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.notification-card h2 {
+  font-size: 2rem;
+  font-family: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0 0 1rem 0;
+}
+
+.notification-card p {
+  font-size: 1rem;
+  font-family: var(--font-regular);
+  color: var(--color-dark);
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+.accept-button {
+  background-color: var(--color-first-complementary);
+  color: var(--color-dark);
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-family: var(--font-medium);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.accept-button:hover {
+  background-color: #e6991a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 1rem;
+    height: calc(100vh - 80px);
+  }
+
+  .main-header h1 {
+    font-size: 2rem;
+  }
+
+  .main-header h1::after {
+    width: 150px;
+    height: 3px;
+  }
+
+  .content-area {
+    padding-top: 1rem;
+    min-height: calc(100vh - 150px);
+  }
+
+  .notification-card {
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+
+  .notification-card h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+
+  .main-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .notification-card {
+    padding: 1.5rem;
+    margin: 0 0.5rem;
+  }
+
+  .notification-card h2 {
+    font-size: 1.25rem;
+  }
+
+  .accept-button {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,483 @@
+{
+  "user_accounts": [
+    {
+      "id_user_account": "UA002",
+      "username": "Emily33",
+      "email": "emily.johnson@hotmail.com",
+      "id_user": "U002",
+      "id_role": "R001",
+      "id_membership": "M002",
+      "password": "hashed_password_2"
+    },
+    {
+      "id_user_account": "UA001",
+      "username": "John23",
+      "email": "john.smith@gmail.com",
+      "id_user": "U001",
+      "id_role": "R001",
+      "id_membership": "M001",
+      "password": "hashed_password_1"
+    },
+    {
+      "id_user_account": "UA003",
+      "username": "MikeB",
+      "email": "michael.brown@hotmail.com",
+      "id_user": "U003",
+      "id_role": "R001",
+      "id_membership": "M003",
+      "password": "hashed_password_3"
+    },
+    {
+      "id_user_account": "UA004",
+      "username": "SophiaD",
+      "email": "sophia.davis@example.com",
+      "id_user": "U004",
+      "id_role": "R001",
+      "id_membership": "M002",
+      "password": "hashed_password_4"
+    },
+    {
+      "id_user_account": "UA005",
+      "username": "Taller1",
+      "email": "taller1@hotmail.com",
+      "id_user": "U005",
+      "id_role": "R002",
+      "id_membership": "M004",
+      "password": "hashed_password_5"
+    },
+    {
+      "id_user_account": "UA006",
+      "username": "Taller2",
+      "email": "taller2@hotmail.com",
+      "id_user": "U006",
+      "id_role": "R002",
+      "id_membership": "M001",
+      "password": "hashed_password_6"
+    },
+    {
+      "id_user_account": "UA007",
+      "username": "Taller3",
+      "email": "taller3@gmail.com",
+      "id_user": "U007",
+      "id_role": "R002",
+      "id_membership": "M002",
+      "password": "hashed_password_7"
+    },
+    {
+      "id_user_account": "UA008",
+      "username": "Taller4",
+      "email": "taller4@hotmail.com",
+      "id_user": "U008",
+      "id_role": "R002",
+      "id_membership": "M001",
+      "password": "hashed_password_8"
+    },
+    {
+      "id_user_account": "UA009",
+      "username": "Taller5",
+      "email": "taller5@hotmail.com",
+      "id_user": "U009",
+      "id_role": "R002",
+      "id_membership": "M003",
+      "password": "hashed_password_9"
+    }
+  ],
+  "users": [
+    {
+      "id_user": "U001",
+      "name": "John",
+      "last_name": "Smith",
+      "dni": "123456789",
+      "phone_number": "952-123-232",
+      "id_location": "L001"
+    },
+    {
+      "id_user": "U002",
+      "name": "Emily",
+      "last_name": "Johnson",
+      "dni": "987654321",
+      "phone_number": "942-321-123",
+      "id_location": "L002"
+    },
+    {
+      "id_user": "U003",
+      "name": "Michael",
+      "last_name": "Brown",
+      "dni": "456789012",
+      "phone_number": "933213231",
+      "id_location": "L003"
+    },
+    {
+      "id_user": "U004",
+      "name": "Sophia",
+      "last_name": "Davis",
+      "dni": "654321987",
+      "phone_number": "921312312",
+      "id_location": "L004"
+    },
+    {
+      "id_user": "U005",
+      "name": "Manuel",
+      "last_name": "Ibarra",
+      "dni": "20123456",
+      "phone_number": "912345678",
+      "id_location": "L005"
+    },
+    {
+      "id_user": "U006",
+      "name": "Carlos",
+      "last_name": "Lopez",
+      "dni": "30123456",
+      "phone_number": "923456789",
+      "id_location": "L006"
+    },
+    {
+      "id_user": "U007",
+      "name": "Ana",
+      "last_name": "Martinez",
+      "dni": "40123456",
+      "phone_number": "934567890",
+      "id_location": "L007"
+    },
+    {
+      "id_user": "U008",
+      "name": "Luis",
+      "last_name": "Garcia",
+      "dni": "50123456",
+      "phone_number": "945678901",
+      "id_location": "L008"
+    },
+    {
+      "id_user": "U009",
+      "name": "Marta",
+      "last_name": "Rodriguez",
+      "dni": "60123456",
+      "phone_number": "956789012",
+      "id_location": "L009"
+    }
+  ],
+  "payments": [
+    {
+      "id_payment": "PY001",
+      "card_number": 12442442424,
+      "card_type": "Visa",
+      "month": 12,
+      "year": 2025,
+      "cvv": 123,
+      "id_user_account": "UA001"
+    },
+    {
+      "id_payment": "PY002",
+      "card_number": 5678567856785678,
+      "card_type": "MasterCard",
+      "month": 6,
+      "year": 2024,
+      "cvv": 456,
+      "id_user_account": "UA002"
+    },
+    {
+      "id_payment": "PY003",
+      "card_number": 9876987698769876,
+      "card_type": "American Express",
+      "month": 9,
+      "year": 2026,
+      "cvv": 789,
+      "id_user_account": "UA003"
+    },
+    {
+      "id_payment": "PY004",
+      "card_number": 4321432143214321,
+      "card_type": "Discover",
+      "month": 3,
+      "year": 2025,
+      "cvv": 321,
+      "id_user_account": "UA004"
+    },
+    {
+      "id_payment": "PY005",
+      "card_number": 8765876587658765,
+      "card_type": "Visa",
+      "month": 11,
+      "year": 2024,
+      "cvv": 654,
+      "id_user_account": "UA005"
+    }
+  ],
+  "locations": [
+    {
+      "id_location": "L001",
+      "address": "Av. Javier Prado 1234",
+      "district": "San Isidro",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L002",
+      "address": "Av. Larco 789",
+      "district": "Miraflores",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L003",
+      "address": "Av. Abancay 250",
+      "district": "Cercado de Lima",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L004",
+      "address": "Av. Primavera 456",
+      "district": "Santiago de Surco",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L005",
+      "address": "Av. Alfredo Mendiola 8900",
+      "district": "Los Olivos",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L006",
+      "address": "Av. Universitaria 1500",
+      "district": "San Miguel",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L007",
+      "address": "Av. Arequipa 3000",
+      "district": "Lince",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L008",
+      "address": "Av. La Marina 4000",
+      "district": "San Miguel",
+      "department": "Lima"
+    },
+    {
+      "id_location": "L009",
+      "address": "Av. Angamos 5000",
+      "district": "Surquillo",
+      "department": "Lima"
+    }
+  ],
+  "auto_repairs": [
+    {
+      "id_auto_repair": "AR001",
+      "ruc": "987654321",
+      "contact_email": "taller1.contacto@hotmail.com",
+      "technicians_count": 10,
+      "id_location": "L005"
+    },
+    {
+      "id_auto_repair": "AR002",
+      "ruc": "123456789",
+      "contact_email": "taller2.contacto@hotmail.com",
+      "technicians_count": 8,
+      "id_location": "L006"
+    },
+    {
+      "id_auto_repair": "AR003",
+      "ruc": "456789123",
+      "contact_email": "taller3.contacto@hotmail.com",
+      "technicians_count": 15,
+      "id_location": "L007"
+    },
+    {
+      "id_auto_repair": "AR004",
+      "ruc": "789123456",
+      "contact_email": "taller4.contacto@hotmail.com",
+      "technicians_count": 12,
+      "id_location": "L008"
+    },
+    {
+      "id_auto_repair": "AR005",
+      "ruc": "321654987",
+      "contact_email": "taller5.contacto@hotmail.com",
+      "technicians_count": 20,
+      "id_location": "L009"
+    }
+  ],
+  "ratings": [
+    {
+      "id_rating": "RT001",
+      "star_rating": 5,
+      "comment": "Excellent service and friendly staff!",
+      "id_auto_repair": "AR001",
+      "id_user_account": "UA001"
+    },
+    {
+      "id_rating": "RT002",
+      "star_rating": 4,
+      "comment": "Good experience, but room for improvement.",
+      "id_auto_repair": "AR001",
+      "id_user_account": "UA002"
+    },
+    {
+      "id_rating": "RT003",
+      "star_rating": 3,
+      "comment": "Average service, nothing special.",
+      "id_auto_repair": "AR001",
+      "id_user_account": "UA003"
+    },
+    {
+      "id_rating": "RT004",
+      "star_rating": 5,
+      "comment": "Highly recommend! Very professional.",
+      "id_auto_repair": "AR001",
+      "id_user_account": "UA004"
+    },
+    {
+      "id_rating": "RT005",
+      "star_rating": 2,
+      "comment": "Not satisfied with the service provided.",
+      "id_auto_repair": "AR001",
+      "id_user_account": "UA005"
+    }
+  ],
+  "vehicles": [
+    {
+      "id_vehicle": "RV001",
+      "model": "Corolla",
+      "id_user": "U001",
+      "vehicle_brand": "Toyota",
+      "vehicle_plate": "ABC-123",
+      "vehicle_type": "Sedan",
+      "color": "Rojo"
+    },
+    {
+      "id_vehicle": "RV002",
+      "model": "Civic",
+      "id_user": "U002",
+      "vehicle_brand": "Honda",
+      "vehicle_plate": "XYZ-789",
+      "vehicle_type": "Sedan",
+      "color": "Azul"
+    },
+    {
+      "id_vehicle": "RV003",
+      "model": "Rav4",
+      "id_user": "U001",
+      "vehicle_brand": "Toyota",
+      "vehicle_plate": "DEF-456",
+      "vehicle_type": "SUV",
+      "color": "Negro"
+    },
+    {
+      "id_vehicle": "RV004",
+      "model": "Hilux",
+      "id_user": "U003",
+      "vehicle_brand": "Toyota",
+      "vehicle_plate": "GHI-321",
+      "vehicle_type": "Truck",
+      "color": "Blanco"
+    },
+    {
+      "id_vehicle": "RV005",
+      "model": "Sportage",
+      "id_user": "U004",
+      "vehicle_brand": "Kia",
+      "vehicle_plate": "JKL-654",
+      "vehicle_type": "SUV",
+      "color": "Blanco"
+    },
+    {
+      "id_vehicle": "RV006",
+      "model": "Mazda3",
+      "id_user": "U004",
+      "vehicle_brand": "Mazda",
+      "vehicle_plate": "MNO-987",
+      "vehicle_type": "Sedan",
+      "color": "Plata"
+    }
+  ],
+  "visits": [
+    {
+      "id_visit": "V001",
+      "failure": "El motor hace un ruido extraño",
+      "time_visit": "2025-10-16",
+      "id_auto_repair": "AR001",
+      "id_service": "S002",
+      "status": "Completado",
+      "id_vehicle": "RV002"
+    },
+    {
+      "id_visit": "V002",
+      "failure": "Frenos desgastados",
+      "time_visit": "2025-10-24",
+      "id_auto_repair": "AR",
+      "id_service": "S003",
+      "status": "Pendiente",
+      "id_vehicle": "RV001"
+    }
+  ],
+  "services": [
+    [
+      {
+        "id_service": "S001",
+        "name": "Mantenimiento de frenos",
+        "description": "Revisión y cambio de pastillas y discos de freno"
+      },
+      {
+        "id_service": "S002",
+        "name": "Cambio de aceite",
+        "description": "Cambio de aceite de motor y filtro"
+      },
+      {
+        "id_service": "S003",
+        "name": "Diagnóstico de motor",
+        "description": "Escaneo y diagnóstico completo del motor"
+      },
+      {
+        "id_service": "S004",
+        "name": "Reparación de suspensión",
+        "description": "Cambio y reparación de amortiguadores y componentes"
+      },
+      {
+        "id_service": "S005",
+        "name": "Sistema eléctrico",
+        "description": "Revisión de batería, alternador y sistema eléctrico"
+      },
+      {
+        "id_service": "S006",
+        "name": "Alineación y balanceo",
+        "description": "Alineación de dirección y balanceo de llantas"
+      }
+    ]
+  ],
+  "notifications": [
+    {
+      "id_notification": "N001",
+      "message": "Your is ready for pickup.",
+      "read": false,
+      "id_vehicle": "RV001",
+      "sent": "2025-10-01"
+    },
+    {
+      "id_notification": "N002",
+      "message": "Your service is scheduled for tomorrow.",
+      "read": true,
+      "id_vehicle": "RV002",
+      "sent": "2025-09-30"
+    },
+    {
+      "id_notification": "N003",
+      "message": "Your vehicle inspection is due next week.",
+      "read": false,
+      "id_vehicle": "RV003",
+      "sent": "2025-10-02"
+    },
+    {
+      "id_notification": "N004",
+      "message": "Your payment was successful.",
+      "read": true,
+      "id_vehicle": "RV004",
+      "sent": "2025-09-29"
+    },
+    {
+      "id_notification": "N005",
+      "message": "New promotions available for your vehicle.",
+      "read": false,
+      "id_vehicle": "RV005",
+      "sent": "2025-10-03"
+    }
+  ]
+}

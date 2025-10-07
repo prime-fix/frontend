@@ -1,0 +1,29 @@
+<div class="sidebar">
+  <div class="user-profile">
+    <div class="user-avatar">
+      <img src="assets/images/car_owner.png" alt="Usuario" />
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      @for (item of menuItems; track item.route) {
+        <li
+          class="nav-item"
+          [class.active]="isActiveRoute(item.route)"
+          (click)="navigateTo(item.route)">
+          <svg class="nav-icon">
+            <use [attr.href]="'/assets/icons/sprite.symbol.svg#' + item.icon"></use>
+          </svg>
+          <span>
+            {{ item.label | translate }}
+          </span>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button-logout></button-logout>
+  </div>
+</div>
