@@ -1,0 +1,53 @@
+<div class="gestionar-tecnicos-container">
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 class="page-title">Gestionar técnicos</h1>
+
+    <div *ngIf="loading()" class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando técnicos...</p>
+    </div>
+
+    <div *ngIf="error()" class="error-state">
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadTechnicians()">Reintentar</button>
+    </div>
+
+    <div *ngIf="!loading() && !error()" class="form-container">
+      <form class="technician-form">
+        <div class="form-group">
+          <label for="nombre-tecnico">Nombre de técnico</label>
+          <input
+            type="text"
+            id="nombre-tecnico"
+            placeholder="Jesús Grimaldo"
+            [(ngModel)]="name"
+            name="name"
+            required
+          />
+        </div>
+        <button type="submit" class="btn-agregar" (click)="submit()">Agregar</button>
+      </form>
+    </div>
+
+    <!-- Technician List -->
+    <div class="technicians-list" *ngIf="technicians().length > 0">
+      <div class="technician-card" *ngFor="let tech of technicians()">
+        <div class="technician-info">
+          <h3>{{ tech.name }}</h3>
+          <!-- Valor estático de horario -->
+          <div class="schedules">
+            <div class="schedule-item">
+              <span class="day">Lunes</span>
+              <span class="hours">10:00 - 18:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="technician-actions">
+          <button class="btn-edit" (click)="editTechnician(tech.id)">Editar</button>
+          <button class="btn-delete" (click)="deleteTechnician(tech)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

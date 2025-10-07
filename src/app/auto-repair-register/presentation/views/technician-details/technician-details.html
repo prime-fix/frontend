@@ -1,0 +1,135 @@
+<div class="gestionar-tecnicos-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="profile-section">
+      <img
+        src="assets/images/profile-placeholder.jpg"
+        alt="Perfil"
+        class="profile-image"
+      />
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/perfil" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+        </svg>
+        Perfil
+      </a>
+
+      <a routerLink="/menu-inicial" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zm0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zM13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1z" fill="currentColor"/>
+        </svg>
+        Menú inicial
+      </a>
+
+      <a routerLink="/taller" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" fill="currentColor"/>
+        </svg>
+        Taller
+      </a>
+
+      <a routerLink="/solicitudes" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" fill="currentColor"/>
+        </svg>
+        Solicitudes
+      </a>
+
+      <a routerLink="/gestionar-tecnicos" class="nav-item active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/>
+        </svg>
+        Gestionar técnicos
+      </a>
+
+      <a routerLink="/estado-coches" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" fill="currentColor"/>
+        </svg>
+        Estado de coches
+      </a>
+
+      <a routerLink="/configuracion" class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="currentColor"/>
+        </svg>
+        Configuración
+      </a>
+    </nav>
+
+    <button class="btn-cerrar-sesion">Cerrar sesión</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-header">
+      <h1>Gestionar técnicos</h1>
+      <button class="btn-agregar" (click)="router.navigate(['/gestionar-tecnicos/nuevo'])">
+        Agregar técnico
+      </button>
+    </div>
+
+    <div class="tecnicos-lista">
+      <!-- Técnico Card 1 -->
+      <div class="tecnico-card">
+        <div class="tecnico-info">
+          <h3>Fernando Guevara</h3>
+          <div class="horarios">
+            <div class="horario-item">
+              <span class="dia">Lunes</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+            <div class="horario-item">
+              <span class="dia">Martes</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+            <div class="horario-item">
+              <span class="dia">Miércoles</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="tecnico-acciones">
+          <button class="btn-editar" (click)="router.navigate(['/gestionar-tecnicos/editar', 'TECH001'])">
+            Editar
+          </button>
+          <button class="btn-eliminar">
+            Eliminar
+          </button>
+        </div>
+      </div>
+
+      <!-- Técnico Card 2 -->
+      <div class="tecnico-card">
+        <div class="tecnico-info">
+          <h3>Jesús Grimaldo</h3>
+          <div class="horarios">
+            <div class="horario-item">
+              <span class="dia">Lunes</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+            <div class="horario-item">
+              <span class="dia">Martes</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+            <div class="horario-item">
+              <span class="dia">Miércoles</span>
+              <span class="horas">9:00 - 17:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="tecnico-acciones">
+          <button class="btn-editar" (click)="router.navigate(['/gestionar-tecnicos/editar', 'TECH002'])">
+            Editar
+          </button>
+          <button class="btn-eliminar">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

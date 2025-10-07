@@ -1,0 +1,126 @@
+<div class="registro-taller-container">
+  <div class="form-section">
+    <div class="form-header">
+      <h1>Crea tu cuenta, gestiona las visitas</h1>
+      <p class="login-link">
+        ¿Ya tienes una cuenta? <a routerLink="/login">Iniciar Sesión</a>
+      </p>
+    </div>
+
+    <form (ngSubmit)="submit()" class="registro-form">
+      <div class="form-group">
+        <label for="nombre-taller">Nombre del taller</label>
+        <input
+          type="text"
+          id="nombre-taller"
+          placeholder="AutoReparaciones"
+          disabled
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="nombre-usuario">Nombre de usuario</label>
+        <input
+          type="text"
+          id="nombre-usuario"
+          placeholder="repara123"
+          disabled
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="ruc">R.U.C.</label>
+        <input
+          type="text"
+          id="ruc"
+          placeholder="15151505016105"
+          [(ngModel)]="RUC"
+          name="RUC"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Número de teléfono del taller</label>
+        <input
+          type="tel"
+          id="telefono"
+          placeholder="984988166"
+          disabled
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="departamento">Departamento</label>
+          <input
+            type="text"
+            id="departamento"
+            placeholder="Lima"
+            disabled
+          />
+        </div>
+        <div class="form-group half">
+          <label for="distrito">Distrito</label>
+          <input
+            type="text"
+            id="distrito"
+            [(ngModel)]="id_location"
+            name="id_location"
+            placeholder="Magdalena"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input
+          type="text"
+          id="direccion"
+          placeholder="Castilla 696 C"
+          disabled
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="autoreparaciones@gmail.com"
+          [(ngModel)]="contact_email"
+          name="contact_email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <div class="password-input">
+          <input
+            type="password"
+            id="contrasena"
+            placeholder="••••••••"
+            disabled
+          />
+          <button type="button" class="toggle-password">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5C7 5 2.73 8.11 1 12.5 2.73 16.89 7 20 12 20s9.27-3.11 11-7.5C21.27 8.11 17 5 12 5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-registrarse">Registrarse</button>
+    </form>
+  </div>
+
+  <div class="image-section">
+    <img
+      src="assets/images/mechanic-working.jpg"
+      alt="Mecánico trabajando"
+      class="mechanic-image"
+    />
+  </div>
+</div>
