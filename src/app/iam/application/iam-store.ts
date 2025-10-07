@@ -8,62 +8,187 @@ import {Payment} from '@iam/domain/model/payment.entity';
 import {Location} from '@iam/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
 
+/**
+ * State management service for Identity and Access Management (IAM).
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class IamStore {
+  /**
+   * Signals to hold the state of user accounts, users, payments, and locations.
+   * @private
+   */
   private readonly userAccountsSignal = signal<UserAccount[]>([]);
+  /**
+   * Signals to hold the state of users.
+   * @private
+   */
   private readonly usersSignal = signal<User[]>([]);
+  /**
+   * Signals to hold the state of payments.
+   * @private
+   */
   private readonly paymentsSignal = signal<Payment[]>([]);
+  /**
+   *
+   * @private
+   */
   private readonly locationsSignal = signal<Location[]>([]);
 
+  /**
+   * Readonly versions of the state signals for external access.
+   */
   readonly userAccounts = this.userAccountsSignal.asReadonly();
+  /**
+   * Readonly version of users signal.
+   */
   readonly users = this.usersSignal.asReadonly();
+  /**
+   * Readonly version of payments signal.
+   */
   readonly payments = this.paymentsSignal.asReadonly();
+  /**
+   * Readonly version of locations signal.
+   */
   readonly locations = this.locationsSignal.asReadonly();
 
+  /**
+   * Signal to track loading state.
+   * @private
+   */
   private readonly loadingSignal = signal<boolean>(false);
+  /**
+   * Readonly version of loading signal.
+   */
   readonly loading = this.loadingSignal.asReadonly();
 
+  /**
+   * Signal to track error messages.
+   * @private
+   */
   private readonly errorSignal = signal<string | null>(null);
+  /**
+   * Readonly version of error signal.
+   */
   readonly error = this.errorSignal.asReadonly();
 
+  /**
+   * Computed properties to get counts of user accounts, users, payments, and locations.
+   */
   readonly userAccountCount = computed(() => this.userAccounts().length);
+  /**
+   * Computed property to get the count of users.
+   */
   readonly userCount = computed(() => this.users().length);
+  /**
+   * Computed property to get the count of payments.
+   */
   readonly paymentCount = computed(() => this.payments().length);
+  /**
+   * Computed property to get the count of locations.
+   */
   readonly locationCount = computed(() => this.locations().length);
 
   // Session-related signals
+  /**
+   * Signal to hold the currently authenticated user account.
+   * @private
+   */
   private readonly sessionUserAccountSignal = signal<UserAccount | null>(null);
+  /**
+   * Signal to hold the currently authenticated user.
+   * @private
+   */
   private readonly sessionUserSignal = signal<User | null>(null);
 
+  /**
+   * Readonly versions of session signals for external access.
+   */
   readonly sessionUserAccount = this.sessionUserAccountSignal.asReadonly()
+  /**
+   * Readonly version of session user signal.
+   */
   readonly sessionUser = this.sessionUserSignal.asReadonly()
 
+  /**
+   * Computed properties for session state
+   */
   readonly isAuthenticated = computed(() => !!this.sessionUserAccount());
+  /**
+   * Computed property to get the role ID of the authenticated user.
+   */
   readonly roleId = computed(() => this.sessionUserAccount()?.id_role ?? '');
+  /**
+   * Computed property to get the full name of the authenticated user.
+   */
   readonly fullName = computed(() => {
     const user = this.sessionUser();
     return user ? `${user.name} ${user.last_name}` : '';
   });
 
   // Register Transition Flow
+  /**
+   * Signals to manage the registration flow state.
+   * @private
+   */
   private readonly registerUserSignal = signal<User | null>(null);
+  /**
+   * Signal to hold the user account being registered.
+   * @private
+   */
   private readonly registerUserAccountSignal = signal<UserAccount | null>(null);
+  /**
+   * Signal to hold the payment information during registration.
+   * @private
+   */
   private readonly registerPaymentSignal = signal<Payment | null>(null);
+  /**
+   * Signal to hold the role selected during registration.
+   * @private
+   */
   private readonly registerRoleSignal = signal<string | null>(null);
+  /**
+   * Signal to hold the location being registered.
+   * @private
+   */
   private readonly registerLocationSignal = signal<Location | null>(null);
+  /**
+   * Signal to hold the membership type selected during registration.
+   * @private
+   */
   private readonly registerMemberShipTypeSignal = signal<string | null>(null);
 
-  readonly registerUser = this.registerUserSignal.asReadonly()
-  readonly registerUserAccount = this.registerUserAccountSignal.asReadonly()
-  readonly registerPayment = this.registerPaymentSignal.asReadonly()
-  readonly registerRole = this.registerRoleSignal.asReadonly()
-  readonly registerLocation = this.registerLocationSignal.asReadonly()
-  readonly registerMemberShipType = this.registerMemberShipTypeSignal.asReadonly()
+  /**
+   * Readonly versions of registration signals for external access.
+   */
+  readonly registerUser = this.registerUserSignal.asReadonly();
+  /**
+   * Readonly version of registerUserAccount signal.
+   */
+  readonly registerUserAccount = this.registerUserAccountSignal.asReadonly();
+  /**
+   * Readonly version of registerPayment signal.
+   */
+  readonly registerPayment = this.registerPaymentSignal.asReadonly();
+  /**
+   * Readonly version of registerRole signal.
+   */
+  readonly registerRole = this.registerRoleSignal.asReadonly();
+  /**
+   * Readonly version of registerLocation signal.
+   */
+  readonly registerLocation = this.registerLocationSignal.asReadonly();
+  /**
+   * Readonly version of registerMemberShipType signal.
+   */
+  readonly registerMemberShipType = this.registerMemberShipTypeSignal.asReadonly();
 
-  // Methods to manage UserAccounts and Users
-  constructor(private iamApi : IamApi) {
+  /**
+   * Constructor to initialize the IAM store and load initial data.
+   * @param iamApi
+   */
+  constructor(private iamApi: IamApi) {
     this.loadUserAccounts();
     this.loadUsers();
     this.loadPayments();
@@ -80,7 +205,7 @@ export class IamStore {
     try {
       const sessionData = localStorage.getItem('prime-fix-session');
       if (sessionData) {
-        const { userAccount, user } = JSON.parse(sessionData);
+        const {userAccount, user} = JSON.parse(sessionData);
         if (userAccount && user) {
           this.sessionUserAccountSignal.set(userAccount);
           this.sessionUserSignal.set(user);
@@ -124,10 +249,19 @@ export class IamStore {
     }
   }
 
-  getUserById(id: string | null  | undefined): Signal<User | undefined> {
+  /**
+   * Gets a user by their ID.
+   * @param id - The ID of the user to retrieve.
+   * @return A signal containing the user or undefined if not found.
+   */
+  getUserById(id: string | null | undefined): Signal<User | undefined> {
     return computed(() => id ? this.users().find(u => u.id === id) : undefined);
   }
 
+  /**
+   * Adds a new user account.
+   * @param userAccount - The user account to add.
+   */
   addUserAccount(userAccount: UserAccount): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -143,6 +277,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Updates an existing user account.
+   * @param updatedUserAccount - The user account with updated information.
+   */
   updateUserAccount(updatedUserAccount: UserAccount): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -159,6 +297,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Deletes a user account by ID.
+   * @param id - The ID of the user account to delete.
+   */
   deleteUserAccount(id: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -174,6 +316,10 @@ export class IamStore {
     })
   }
 
+  /**
+   * Adds a new user.
+   * @param user - The user to add.
+   */
   addUser(user: User): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -189,6 +335,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Updates an existing user.
+   * @param updatedUser - The user with updated information.
+   */
   updateUser(updatedUser: User): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -205,6 +355,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Deletes a user by ID.
+   * @param id - The ID of the user to delete.
+   */
   deleteUser(id: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -220,6 +374,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Gets a payment by its ID.
+   * @param payment - The ID of the payment to retrieve.
+   */
   addPayment(payment: Payment): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -235,6 +393,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Updates an existing payment.
+   * @param updatedPayment - The payment with updated information.
+   */
   updatePayment(updatedPayment: Payment): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -251,6 +413,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Deletes a payment by ID.
+   * @param id - The ID of the payment to delete.
+   */
   deletePayment(id: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -266,10 +432,18 @@ export class IamStore {
     });
   }
 
+  /**
+   * Gets a location by its ID.
+   * @param id - The ID of the location to retrieve.
+   */
   getLocationById(id: string | null  | undefined): Signal<Location | undefined> {
     return computed(() => id ? this.locations().find(l => l.id === id) : undefined);
   }
 
+  /**
+   * Adds a new location.
+   * @param location - The location to add.
+   */
   addLocation(location: Location): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -285,6 +459,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Updates an existing location.
+   * @param location - The location with updated information.
+   */
   updateLocation(location: Location): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -301,6 +479,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Deletes a location by ID.
+   * @param id - The ID of the location to delete.
+   */
   deleteLocation(id: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -316,6 +498,10 @@ export class IamStore {
     });
   }
 
+  /**
+   * Loads user accounts from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
   private loadUserAccounts(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -332,6 +518,10 @@ export class IamStore {
     })
   }
 
+  /**
+   * Loads users from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
   private loadUsers(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -348,6 +538,10 @@ export class IamStore {
     })
   }
 
+  /**
+   * Loads payments from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
   private loadPayments(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -364,6 +558,10 @@ export class IamStore {
     })
   }
 
+  /**
+   * Loads locations from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
   private loadLocations(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -506,6 +704,10 @@ export class IamStore {
     this.registerUserAccountSignal.set(newUserAccount);
   }
 
+  /**
+   * Saves the registration details for an auto repair shop.
+   * @param form - The registration form data.
+   */
   saveRegisterWorkshop(form: { name_workshop: string; username: string; ruc:
       string; phone_number: string; department: string; district: string; address: string; email: string; password: string }): void {
 
@@ -555,7 +757,10 @@ export class IamStore {
     }
   }
 
-
+  /**
+   * Finalizes the registration process by creating and storing all related entities.
+   * @param payment - The payment information provided during registration.
+   */
   finishRegister(payment: { card_number: number; month: number; year:number; cvv: number; card_type: string; }): void {
     const role = this.registerRoleSignal();
     const user = this.registerUserSignal();
@@ -589,6 +794,9 @@ export class IamStore {
     this.addPayment(newPayment);
   }
 
+  /**
+   * Resets the entire registration flow, clearing all related signals.
+   */
   resetRegistrationFlow() {
     this.registerRoleSignal.set(null);
     this.registerUserSignal.set(null);

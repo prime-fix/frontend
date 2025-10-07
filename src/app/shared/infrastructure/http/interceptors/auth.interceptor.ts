@@ -17,8 +17,20 @@ interface SessionShape {
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  /**
+   * The API key used for authentication.
+   * @private
+   */
   private readonly API_KEY = environment.primeFixProviderApiKey;
+  /**
+   * The base URL of the API to which the interceptor applies.
+   * @private
+   */
   private readonly API_BASE = environment.primeFixProviderApiBaseUrl;
+  /**
+   * The key used to store authentication data in local storage.
+   * @private
+   */
   private readonly AUTH_STORAGE_KEY = 'pf_iam_auth';
 
   /**
