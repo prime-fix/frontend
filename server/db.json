@@ -7,7 +7,7 @@
       "owner": "Renso",
       "status": "En diagnostico",
       "diagnostic": "Falla en transmisión",
-      "price": 123
+      "price": 234
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "owner": "Anthony",
       "status": "Recogido",
       "diagnostic": "Cambio de llantas",
-      "price": 120
+      "price": 456
     },
     {
       "id": 3,
