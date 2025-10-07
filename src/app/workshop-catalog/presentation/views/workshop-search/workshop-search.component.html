@@ -1,0 +1,24 @@
+<div class="search-container">
+  <h2>{{ 'workshop.search' | translate }}</h2>
+
+  <form [formGroup]="searchForm" (ngSubmit)="searchWorkshops()">
+
+    <mat-form-field>
+      <mat-label>{{ 'workshop.select-department' | translate }}</mat-label>
+      <mat-select formControlName="department">
+        <mat-option *ngFor="let dept of departments()" [value]="dept">{{ dept }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'workshop.select-district' | translate }}</mat-label>
+      <mat-select formControlName="district">
+        <mat-option *ngFor="let dist of districts()" [value]="dist">{{ dist }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="searchForm.invalid">
+      {{ 'workshop.search-button' | translate }}
+    </button>
+  </form>
+</div>

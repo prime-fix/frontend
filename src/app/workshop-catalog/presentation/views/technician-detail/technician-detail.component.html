@@ -1,0 +1,11 @@
+<div class="detail-container">
+  <h2>Técnicos disponibles</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let t of technicians()">
+      <div class="tech-info">
+        <strong>{{ t.name }}</strong><br />
+        Disponible: {{ t.available }}
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
