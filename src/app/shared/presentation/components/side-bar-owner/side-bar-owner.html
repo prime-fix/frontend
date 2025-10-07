@@ -1,0 +1,72 @@
+<div class="sidebar">
+  <div class="user-profile">
+    <div class="user-avatar">
+      <img src="assets/images/car_owner.png" alt="Usuario" />
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li class="nav-item active">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#user"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.profile' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#category"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.dashboard' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#car-suv"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.vehicles' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#tool"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.searchWorkshop' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#history"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.history' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#diamonds"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.track' | translate }}
+        </span>
+      </li>
+      <li class="nav-item">
+        <svg class="nav-icon">
+          <use href="/assets/icons/sprite.symbol.svg#settings-bolt"></use>
+        </svg>
+        <span>
+          {{ 'side-bar-owner.settings' | translate }}
+        </span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button-logout></button-logout>
+  </div>
+</div>

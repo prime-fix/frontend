@@ -1,5 +1,5 @@
 {
-  "auto_repair_register": [
+  "AutoRepair": [
     {
       "id_auto_repair": "AR0001",
       "RUC": "20547896541",
@@ -37,58 +37,58 @@
     }
   ],
 
-  "technician_register": [
+  "Technician": [
     {
-      "id_technisian": "TCH001",
+      "id_technician": "TCH001",
       "name": "Luis Ramírez",
       "age": 29,
       "id_user_acount": "USR001",
       "id_auto_repair": "AR0001"
     },
     {
-      "id_technisian": "TCH002",
+      "id_technician": "TCH002",
       "name": "Carlos Mendoza",
       "age": 34,
       "id_user_acount": "USR002",
       "id_auto_repair": "AR0001"
     },
     {
-      "id_technisian": "TCH003",
+      "id_technician": "TCH003",
       "name": "María López",
       "age": 27,
       "id_user_acount": "USR003",
       "id_auto_repair": "AR0002"
     },
     {
-      "id_technisian": "TCH004",
+      "id_technician": "TCH004",
       "name": "Jorge Torres",
       "age": 40,
       "id_user_acount": "USR004",
       "id_auto_repair": "AR0003"
     },
     {
-      "id_technisian": "TCH005",
+      "id_technician": "TCH005",
       "name": "Ana Castillo",
       "age": 31,
       "id_user_acount": "USR005",
       "id_auto_repair": "AR0003"
     },
     {
-      "id_technisian": "TCH006",
+      "id_technician": "TCH006",
       "name": "Ricardo Díaz",
       "age": 25,
       "id_user_acount": "USR006",
       "id_auto_repair": "AR0004"
     },
     {
-      "id_technisian": "TCH007",
+      "id_technician": "TCH007",
       "name": "Valeria Soto",
       "age": 28,
       "id_user_acount": "USR007",
       "id_auto_repair": "AR0005"
     },
     {
-      "id_technisian": "TCH008",
+      "id_technician": "TCH008",
       "name": "Pedro Gutiérrez",
       "age": 36,
       "id_user_acount": "USR008",
@@ -96,3 +96,4 @@
     }
   ]
 }
+

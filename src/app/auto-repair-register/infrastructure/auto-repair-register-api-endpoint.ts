@@ -4,6 +4,7 @@ import { AutoRepairRegisterResponse, AutoRepairRegisterResource } from './auto-r
 import { AutoRepairRegisterAssembler } from './auto-repair-register-assembler';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
+import { BaseApiConfig } from '@shared/infrastructure/http/base-api-config';
 
 /**
  * API endpoint class for AutoRepairRegister operations.
@@ -14,15 +15,18 @@ export class AutoRepairRegisterApiEndpoint extends BaseApiEndpoint<
   AutoRepairRegisterResponse,
   AutoRepairRegisterAssembler
 > {
-  /**
-   * Creates an instance of AutoRepairRegisterApiEndpoint.
-   * @param http - The HttpClient to be used for making API requests.
-   */
+  /** Key used for identifying the entity by ID in query parameters. */
+  protected readonly idQueryParamKey = 'id';
+
   constructor(http: HttpClient) {
     super(
       http,
       `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderAutoRepairRegisterEndpointPath}`,
-      new AutoRepairRegisterAssembler()
+      new AutoRepairRegisterAssembler(),
+      {
+        usePathParams: false
+      }
     );
   }
 }
+
