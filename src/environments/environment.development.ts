@@ -32,4 +32,9 @@ export const environment = {
   userAccountIdQueryParamKey: "id_user_account",
   userIdQueryParamKey: "id_user",
   visitIdQueryParamKey: "id_visit",
+
+  // BC autorepair-register
+  platformProviderApiBaseUrl: 'http://localhost:3000/api/v1',
+  primeFixProviderAutoRepairRegisterEndpointPath: '/auto_repair_register',
+  primeFixProviderTechnicianRegisterEndpointPath: '/technician_register',
 };
