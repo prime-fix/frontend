@@ -11,15 +11,39 @@ import {Payment} from '@iam/domain/model/payment.entity';
 import {Location} from '@iam/domain/model/location.entity';
 import {LocationApiEndpoint} from '@iam/infrastructure/api/location-api-endpoint';
 
+/**
+ * IAM API service that provides methods to interact with the IAM backend.
+ * It uses various API endpoints to perform CRUD operations on user accounts, users, payments, and locations.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class IamApi extends BaseApi {
+  /**
+   * API endpoints for different IAM resources.
+   * @private
+   */
   private readonly userAccountsEndpoint:     UserAccountsApiEndpoint;
+  /**
+   * API endpoint for user-related operations.
+   * @private
+   */
   private readonly usersEndpoint:            UserApiEndpoint;
+  /**
+   * API endpoint for payment-related operations.
+   * @private
+   */
   private readonly paymentsEndpoint:         PaymentApiEndpoint;
+  /**
+   * API endpoint for location-related operations.
+   * @private
+   */
   private readonly locationsEndpoint:        LocationApiEndpoint;
 
+  /**
+   * Constructor to initialize the IAM API service with the necessary endpoints.
+   * @param http - The HttpClient instance for making HTTP requests.
+   */
   constructor(http: HttpClient) {
     super();
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
@@ -28,82 +52,174 @@ export class IamApi extends BaseApi {
     this.locationsEndpoint = new LocationApiEndpoint(http);
   }
 
+  /**
+   * Fetches all user accounts from the backend.
+   * @returns An Observable emitting an array of UserAccount entities.
+   */
   getUserAccounts(): Observable<UserAccount[]> {
     return this.userAccountsEndpoint.getAll();
   }
 
+  /**
+   * Fetches a specific user account by its ID.
+   * @param id
+   */
   getUserAccount(id: string): Observable<UserAccount> {
     return this.userAccountsEndpoint.getById(id);
   }
 
+  /**
+   * Creates a new user account.
+   * @param userAccount - The UserAccount entity to be created.
+   */
   createUserAccount(userAccount: UserAccount): Observable<UserAccount> {
     return this.userAccountsEndpoint.create(userAccount);
   }
 
+  /**
+   * Updates an existing user account.
+   * @param userAccount - The UserAccount entity with updated information.
+   */
   updateUserAccount(userAccount: UserAccount): Observable<UserAccount> {
     return this.userAccountsEndpoint.update(userAccount, userAccount.id);
   }
 
+  /**
+   * Deletes a user account by its ID.
+   * @param id - The ID of the user account to be deleted.
+   */
   deleteUserAccount(id: string): Observable<void> {
     return this.userAccountsEndpoint.delete(id);
   }
 
+  /**
+   * Fetches all users from the backend.
+   * @returns An Observable emitting an array of User entities.
+   */
   getUsers(): Observable<User[]> {
     return this.usersEndpoint.getAll();
   }
 
+  /**
+   * Fetches a specific user by its ID.
+   * @param id - The ID of the user to be fetched.
+   * @return An Observable emitting the User entity.
+   */
   getUser(id: string): Observable<User> {
     return this.usersEndpoint.getById(id);
   }
 
+  /**
+   * Creates a new user.
+   * @param user - The User entity to be created.
+   * @return An Observable emitting the created User entity.
+   */
   createUser(user: User): Observable<User> {
     return this.usersEndpoint.create(user);
   }
 
+  /**
+   * Updates an existing user.
+   * @param user - The User entity with updated information.
+   * @return An Observable emitting the updated User entity.
+   */
   updateUser(user: User): Observable<User> {
     return this.usersEndpoint.update(user, user.id);
   }
 
+  /**
+   * Deletes a user by its ID.
+   * @param id - The ID of the user to be deleted.
+   * @return An Observable emitting void upon successful deletion.
+   */
   deleteUser(id: string): Observable<void> {
     return this.usersEndpoint.delete(id);
   }
 
+  /**
+   * Fetches all payments from the backend.
+   * @returns An Observable emitting an array of Payment entities.
+   */
   getPayments(): Observable<Payment[]> {
     return this.paymentsEndpoint.getAll();
   }
 
+  /**
+   * Fetches a specific payment by its ID.
+   * @param id - The ID of the payment to be fetched.
+   * @return An Observable emitting the Payment entity.
+   */
   getPayment(id: string): Observable<Payment> {
     return this.paymentsEndpoint.getById(id);
   }
 
+  /**
+   * Creates a new payment.
+   * @param payment - The Payment entity to be created.
+   * @return An Observable emitting the created Payment entity.
+   */
   createPayment(payment: Payment): Observable<Payment> {
     return this.paymentsEndpoint.create(payment);
   }
 
+  /**
+   * Updates an existing payment.
+   * @param payment - The Payment entity with updated information.
+   * @return An Observable emitting the updated Payment entity.
+   */
   updatePayment(payment: Payment): Observable<Payment> {
     return this.paymentsEndpoint.update(payment, payment.id);
   }
 
+  /**
+   * Deletes a payment by its ID.
+   * @param id - The ID of the payment to be deleted.
+   * @return An Observable emitting void upon successful deletion.
+   */
   deletePayment(id: string): Observable<void> {
     return this.paymentsEndpoint.delete(id);
   }
 
+  /**
+   * Fetches all locations from the backend.
+   * @returns An Observable emitting an array of Location entities.
+   */
   getLocations(): Observable<Location[]> {
     return this.locationsEndpoint.getAll();
   }
 
+  /**
+   * Fetches a specific location by its ID.
+   * @param id - The ID of the location to be fetched.
+   * @return An Observable emitting the Location entity.
+   */
   getLocation(id: string): Observable<Location> {
     return this.locationsEndpoint.getById(id);
   }
 
+  /**
+   * Creates a new location.
+   * @param location - The Location entity to be created.
+   * @return An Observable emitting the created Location entity.
+   */
   createLocation(location: Location): Observable<Location> {
     return this.locationsEndpoint.create(location);
   }
 
+  /**
+   * Updates an existing location.
+   * @param location - The Location entity with updated information.
+   * @return An Observable emitting the updated Location entity.
+   */
   updateLocation(location: Location): Observable<Location> {
     return this.locationsEndpoint.update(location, location.id);
   }
 
+  /**
+   * Deletes a location by its ID.
+   * @param id - The ID of the location to be deleted.
+   * @return An Observable emitting void upon successful deletion.
+   */
   deleteLocation(id: string): Observable<void> {
     return this.locationsEndpoint.delete(id);
   }

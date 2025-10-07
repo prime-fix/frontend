@@ -19,6 +19,7 @@
       "@env/*": ["environments/*"],
       "@shared/*": ["app/shared/*"],
       "@iam/*": ["app/iam/*"],
+      "@tracking/*": ["app/maintenance-tracking/*"],
     }
   },
   "angularCompilerOptions": {

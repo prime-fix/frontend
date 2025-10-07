@@ -169,7 +169,8 @@
     "searchWorkshop": "Buscar taller",
     "history": "Historial",
     "track": "Seguir estado",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "notifications": "Notificaciones"
   },
   "side-bar-workshop": {
     "profile": "Perfil",
@@ -182,6 +183,39 @@
   },
   "button-logout": {
     "logout": "Cerrar sesión"
+  },
+  "home-owner": {
+    "searchWorkshop": "Buscar taller",
+    "selectDepartment": "Seleccionar departamento",
+    "selectDistrict": "Seleccionar distrito",
+    "departmentRequired": "El departamento es obligatorio",
+    "districtRequired": "El distrito es obligatorio"
+  },
+  "progress-bar": {
+    "waiting": "En espera",
+    "diagnosis": "En diagnóstico",
+    "repair": "En reparación",
+    "testing": "En prueba",
+    "readyPickup": "Listo para recoger",
+    "collected": "Recogido"
+  },
+  "track-vehicle": {
+    "title": "Seguir estado",
+    "selectVehicle": "Seleccionar coche",
+    "selectVehiclePlaceholder": "Selecciona un vehículo",
+    "vehicleRequired": "Debe seleccionar un vehículo",
+    "select": "Seleccionar",
+    "vehicle": "Vehículo",
+    "status": "Estado"
+  },
+  "state-error": {
+    "title": "Error",
+    "message": "Este coche no está siendo reparado"
+  },
+  "state-notification": {
+    "title": "Atento",
+    "message": "Tu coche actualmente está \"Listo para recoger\"",
+    "accept": "Aceptar"
   },
   "page-not-found": {
     "title": "Página no encontrada",

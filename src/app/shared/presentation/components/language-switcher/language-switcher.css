@@ -1,0 +1,88 @@
+.language-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-toggle-group {
+  display: flex;
+  background: var(--color-light);
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(17, 67, 88, 0.1);
+  border: 1px solid rgba(17, 67, 88, 0.1);
+  overflow: hidden;
+}
+
+.language-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-medium);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 50px;
+  position: relative;
+}
+
+.language-button:hover:not(.active) {
+  background: rgba(17, 67, 88, 0.05);
+  color: var(--color-primary);
+}
+
+.language-button.active {
+  background: var(--color-first-complementary);
+  color: var(--color-dark);
+  box-shadow: 0 2px 4px rgba(242, 170, 31, 0.3);
+}
+
+.language-button.active:hover {
+  background: #e59a1c;
+}
+
+.language-code {
+  font-family: var(--font-semibold);
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Focus states for accessibility */
+.language-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-first-complementary);
+}
+
+.language-button:focus:not(.active) {
+  background: rgba(17, 67, 88, 0.05);
+}
+
+/* Animation for smooth transitions */
+.language-button {
+  transform: scale(1);
+}
+
+.language-button:active {
+  transform: scale(0.98);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .language-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 45px;
+  }
+
+  .language-code {
+    font-size: 0.75rem;
+  }
+}

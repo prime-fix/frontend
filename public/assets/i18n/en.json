@@ -179,7 +179,8 @@
     "searchWorkshop": "Search Workshop",
     "history": "History",
     "track": "Track Vehicle",
-    "settings": "Settings"
+    "settings": "Settings",
+    "notifications": "Notifications"
   },
   "side-bar-workshop": {
     "profile": "Profile",
@@ -192,6 +193,39 @@
   },
   "button-logout": {
     "logout": "Logout"
+  },
+  "home-owner": {
+    "searchWorkshop": "Search Workshop",
+    "selectDepartment": "Select Department",
+    "selectDistrict": "Select District",
+    "departmentRequired": "Department is required",
+    "districtRequired": "District is required"
+  },
+  "progress-bar": {
+    "waiting": "Waiting",
+    "diagnosis": "In diagnosis",
+    "repair": "In repair",
+    "testing": "Testing",
+    "readyPickup": "Ready for pickup",
+    "collected": "Collected"
+  },
+  "track-vehicle": {
+    "title": "Track Vehicle",
+    "selectVehicle": "Select Vehicle",
+    "selectVehiclePlaceholder": "Choose a vehicle",
+    "vehicleRequired": "You must select a vehicle",
+    "select": "Select",
+    "vehicle": "Vehicle",
+    "status": "Status"
+  },
+  "state-error": {
+    "title": "Error",
+    "message": "This car is not being repaired"
+  },
+  "state-notification": {
+    "title": "Attention",
+    "message": "Your car is currently \"Ready for pickup\"",
+    "accept": "Accept"
   },
   "page-not-found": {
     "title": "Page not found",
