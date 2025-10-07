@@ -5,9 +5,20 @@ import {UserAccountAssembler} from '@iam/infrastructure/api/user-account-assembl
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 
+/**
+ * API endpoint for managing user accounts.
+ */
 export class UserAccountsApiEndpoint extends BaseApiEndpoint<UserAccount, UserAccountResource, UserAccountResponse, UserAccountAssembler>{
+  /**
+   * The key used for the user account ID in query parameters.
+   * @protected
+   */
   protected readonly idQueryParamKey: string = environment.userAccountIdQueryParamKey;
 
+  /**
+   * Constructor for UserAccountsApiEndpoint.
+   * @param http - The HttpClient instance for making HTTP requests.
+   */
   constructor(http: HttpClient) {
     super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderUserAccountsEndpointPath}`,
       new UserAccountAssembler(), { usePathParams: environment.usePathParams });

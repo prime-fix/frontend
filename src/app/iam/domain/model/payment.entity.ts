@@ -1,6 +1,9 @@
 import {BaseEntity} from '@shared/infrastructure/http/base-entity';
 
-export class Payment implements BaseEntity{
+/**
+ * Represents a payment method associated with a user account.
+ */
+export class Payment implements BaseEntity {
   _id_payment: string;
   _card_number: number;
   _card_type: string;
@@ -9,7 +12,19 @@ export class Payment implements BaseEntity{
   _cvv: number
   _id_user_account: string;
 
-  constructor(payment: { id_payment: string; card_number: number; card_type: string; month: number; year: number; cvv: number; id_user_account: string; }) {
+  /**
+   * Creates a new Payment instance.
+   * @param payment - An object containing payment details.
+   */
+  constructor(payment: {
+    id_payment: string;
+    card_number: number;
+    card_type: string;
+    month: number;
+    year: number;
+    cvv: number;
+    id_user_account: string;
+  }) {
     this._id_payment = payment.id_payment;
     this._card_number = payment.card_number;
     this._card_type = payment.card_type;
@@ -19,6 +34,7 @@ export class Payment implements BaseEntity{
     this._id_user_account = payment.id_user_account;
   }
 
+  /** Getters and Setters */
   get id (): string { return this._id_payment; }
   set id (value: string) { this._id_payment = value; }
   get card_number (): number { return this._card_number; }

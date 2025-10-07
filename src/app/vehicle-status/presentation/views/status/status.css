@@ -1,0 +1,253 @@
+.main-header {
+  margin-bottom: 2rem;
+}
+
+.main-header h1 {
+  font-size: 2.5rem;
+  font-family: var(--font-bold);
+  color: var(--color-primary);
+  margin: 0;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.main-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 4px;
+  background-color: var(--color-primary);
+}
+
+.content-area {
+  padding-top: 1rem;
+  min-height: calc(100vh - 180px);
+}
+
+.requests-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.request-card {
+  background-color: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.request-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.request-info h3 {
+  font-size: 1.25rem;
+  font-family: var(--font-bold);
+  color: var(--color-dark);
+  margin: 0 0 0.5rem 0;
+}
+
+.request-vehicle, .request-license-plate, .request-owner {
+  font-size: 1rem;
+  font-family: var(--font-regular);
+  color: var(--color-dark);
+  margin: 0 0 0.25rem 0;
+}
+
+.request-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modify-button,
+.finish-button {
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-medium);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 100px;
+}
+
+.modify-button {
+  background-color: var(--color-first-complementary);
+  color: var(--color-dark);
+}
+
+.modify-button:hover {
+  background-color: #e6991a;
+}
+
+.finish-button {
+  background-color: #dc3545;
+  color: var(--color-light);
+}
+
+.finish-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 1rem;
+    height: calc(100vh - 80px);
+  }
+
+  .main-header h1 {
+    font-size: 2rem;
+  }
+
+  .main-header h1::after {
+    width: 150px;
+    height: 3px;
+  }
+
+  .content-area {
+    padding-top: 0.5rem;
+    min-height: calc(100vh - 140px);
+  }
+
+  .requests-container {
+    gap: 1rem;
+    max-width: none;
+  }
+
+  .request-card {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .request-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+
+  .main-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .request-card {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .request-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .request-date,
+  .request-time {
+    font-size: 0.9rem;
+  }
+
+  .request-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .accept-button,
+  .reject-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .requests-container {
+    gap: 0.75rem;
+  }
+
+  .request-card {
+    padding: 0.75rem;
+  }
+
+  .request-info h3 {
+    font-size: 1rem;
+  }
+
+  .request-date,
+  .request-time {
+    font-size: 0.85rem;
+  }
+
+  .accept-button,
+  .reject-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+
+
+
+.request-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3ede8;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  margin: 15px auto;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.request-info p {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.request-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.modify-button {
+  background-color: #eea816;
+  color: black;
+  font-weight: 500;
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+.finish-button {
+  background-color: #d63c47;
+  color: white;
+  font-weight: 500;
+  border-radius: 50px;
+  padding: 10px 20px;
+}

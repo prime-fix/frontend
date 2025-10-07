@@ -1,11 +1,18 @@
 import {BaseEntity} from '@shared/infrastructure/http/base-entity';
 
+/**
+ * Represents a Location entity.
+ */
 export class Location implements BaseEntity {
   _id_location: string;
   _address: string;
   _district: string;
   _department: string;
 
+  /**
+   * Constructor
+   * @param location - Location data
+   */
   constructor(location: { id_location: string; address: string; district: string; department: string }) {
     this._id_location = location.id_location;
     this._address = location.address;
@@ -13,6 +20,7 @@ export class Location implements BaseEntity {
     this._department = location.department;
   }
 
+  /** Getters and Setters */
   get id(): string { return this._id_location; }
   set id(value: string) { this._id_location = value; }
   get address(): string { return this._address; }

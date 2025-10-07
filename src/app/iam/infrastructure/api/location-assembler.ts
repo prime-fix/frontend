@@ -2,11 +2,24 @@ import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
 import {Location} from '@iam/domain/model/location.entity';
 import {LocationResource, LocationResponse} from '@iam/infrastructure/api/location-response';
 
+/**
+ * Assembler for Location entities and resources.
+ */
 export class LocationAssembler implements BaseAssembler<Location, LocationResource, LocationResponse> {
+  /**
+   * Convert a LocationResponse to an array of Location entities.
+   * @param response - The LocationResponse to convert.
+   * @return An array of Location entities.
+   */
   toEntitiesFromResponse(response: LocationResponse): Location[] {
     return response.locations.map(resource => this.toEntityFromResource(resource as LocationResource));
   }
 
+  /**
+   * Convert a LocationResource to a Location entity.
+   * @param resource - The LocationResource to convert.
+   * @return A Location entity.
+   */
   toEntityFromResource(resource: LocationResource): Location {
     return new Location({
       id_location: resource.id_location,
@@ -16,6 +29,11 @@ export class LocationAssembler implements BaseAssembler<Location, LocationResour
     })
   }
 
+  /**
+   * Convert a Location entity to a LocationResource.
+   * @param entity - The Location entity to convert.
+   * @return A LocationResource.
+   */
   toResourceFromEntity(entity: Location): LocationResource {
     return {
       id_location: entity.id,

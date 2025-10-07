@@ -1,0 +1,31 @@
+<div class="progress-container">
+  <div class="progress-steps">
+    @for (step of steps; track step.id; let isLast = $last) {
+      <div class="step-wrapper">
+        <div class="step-item">
+          <div
+            class="step-circle"
+            [class.completed]="isStepCompleted(step.id)"
+            [class.current]="isCurrentStep(step.id)"
+            [class.pending]="isStepPending(step.id)">
+            {{ step.id }}
+          </div>
+          <span
+            class="step-label"
+            [class.completed]="isStepCompleted(step.id)"
+            [class.current]="isCurrentStep(step.id)"
+            [class.pending]="isStepPending(step.id)">
+            {{ step.translationKey | translate }}
+          </span>
+        </div>
+        @if (!isLast) {
+          <div
+            class="progress-line"
+            [class.completed]="isStepCompleted(step.id + 1) || isCurrentStep(step.id + 1)">
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+

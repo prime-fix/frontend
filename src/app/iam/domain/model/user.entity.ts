@@ -1,5 +1,8 @@
 import {BaseEntity} from '@shared/infrastructure/http/base-entity';
 
+/**
+ * Represents a user in the system.
+ */
 export class User implements BaseEntity{
   _id_user: string;
   _name: string;
@@ -8,6 +11,10 @@ export class User implements BaseEntity{
   _phone_number: string;
   _id_location: string;
 
+  /**
+   * Creates a new User instance.
+   * @param user - An object containing user details.
+   */
   constructor(user: { id_user: string; name: string; last_name: string; dni: string; phone_number: string; id_location: string; }) {
     this._id_user = user.id_user;
     this._name = user.name;
@@ -17,6 +24,7 @@ export class User implements BaseEntity{
     this._id_location = user.id_location;
   }
 
+  /** Getters and Setters */
   get id (): string { return this._id_user; }
   set id (value: string) { this._id_user = value; }
   get name (): string { return this._name; }
