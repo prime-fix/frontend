@@ -25,4 +25,3 @@ export const autoRepairRegisterRoutes: Routes = [
   { path: 'auto-repairs/new', loadComponent: autoRepairRegisterForm },
   { path: 'auto-repairs/edit/:id', loadComponent: autoRepairRegisterForm }
 ];
-

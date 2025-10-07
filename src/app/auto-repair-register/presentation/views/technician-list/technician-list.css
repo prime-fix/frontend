@@ -11,12 +11,10 @@
     font-weight: 700;
     color: var(--primary-color, #2c3e50);
     margin-bottom: 2rem;
-    text-align: left;
   }
 
-  /* Loading and Error States */
-  .loading-state,
-  .error-state {
+  /* States */
+  .loading-state, .error-state {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,21 +38,26 @@
     100% { transform: rotate(360deg); }
   }
 
-  .btn-retry {
-    background-color: var(--primary-color, #007bff);
-    color: white;
+  /* Buttons */
+  .btn-retry, .btn-agregar-tecnico, .btn-anadir-dia, .btn-agregar {
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    margin-top: 1rem;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
   }
 
-  .btn-retry:hover {
-    background-color: var(--primary-dark, #0056b3);
-  }
+  .btn-retry { background-color: var(--primary-color, #007bff); color: white; }
+  .btn-agregar-tecnico { background-color: var(--warning-color, #f39c12); color: white; font-weight: 600; }
+  .btn-anadir-dia { background-color: var(--secondary-color, #6c757d); color: white; }
+  .btn-agregar { background-color: var(--success-color, #28a745); color: white; font-weight: 600; }
+
+  .btn-retry:hover { background-color: var(--primary-dark, #0056b3); }
+  .btn-agregar-tecnico:hover, .btn-agregar:hover { transform: translateY(-2px); }
+  .btn-agregar-tecnico:hover { background-color: #e67e22; }
+  .btn-agregar:hover { background-color: #218838; }
+  .btn-anadir-dia:hover { background-color: #5a6268; }
 
   /* Header Actions */
   .header-actions {
@@ -63,24 +66,7 @@
     margin-bottom: 2rem;
   }
 
-  .btn-agregar-tecnico {
-    background-color: var(--warning-color, #f39c12);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-agregar-tecnico:hover {
-    background-color: #e67e22;
-    transform: translateY(-2px);
-  }
-
-  /* Technicians Grid */
+  /* Grid */
   .technicians-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -109,36 +95,24 @@
     margin-bottom: 1rem;
   }
 
-  .schedule-info {
-    margin-bottom: 1.5rem;
-  }
+  .technician-info { margin-bottom: 1rem; }
+  .technician-info p { margin: 0.25rem 0; }
+
+  .schedule-info { margin-bottom: 1.5rem; }
+  .schedule-info h4 { margin-bottom: 0.5rem; font-size: 1rem; }
 
   .schedule-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 0.5rem 0;
     border-bottom: 1px solid #f1f3f4;
   }
+  .schedule-row:last-child { border-bottom: none; }
 
-  .schedule-row:last-child {
-    border-bottom: none;
-  }
+  .day { font-weight: 500; color: var(--text-secondary, #6c757d); }
+  .time { font-weight: 600; color: var(--primary-color, #007bff); }
 
-  .day {
-    font-weight: 500;
-    color: var(--text-secondary, #6c757d);
-  }
-
-  .time {
-    font-weight: 600;
-    color: var(--primary-color, #007bff);
-  }
-
-  .card-actions {
-    display: flex;
-    gap: 0.75rem;
-  }
+  .card-actions { display: flex; gap: 0.75rem; }
 
   .btn-editar, .btn-eliminar {
     flex: 1;
@@ -151,25 +125,12 @@
     transition: all 0.3s ease;
   }
 
-  .btn-editar {
-    background-color: var(--warning-color, #f39c12);
-    color: white;
-  }
+  .btn-editar { background-color: var(--warning-color, #f39c12); color: white; }
+  .btn-eliminar { background-color: var(--danger-color, #e74c3c); color: white; }
+  .btn-editar:hover { background-color: #e67e22; }
+  .btn-eliminar:hover { background-color: #c0392b; }
 
-  .btn-editar:hover {
-    background-color: #e67e22;
-  }
-
-  .btn-eliminar {
-    background-color: var(--danger-color, #e74c3c);
-    color: white;
-  }
-
-  .btn-eliminar:hover {
-    background-color: #c0392b;
-  }
-
-  /* Form Container */
+  /* Form */
   .form-container {
     background: white;
     border-radius: 12px;
@@ -185,17 +146,8 @@
     margin-bottom: 1.5rem;
   }
 
-  .technician-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+  .technician-form { display: flex; flex-direction: column; gap: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
 
   .form-group label {
     font-weight: 600;
@@ -211,12 +163,8 @@
     transition: border-color 0.3s ease;
   }
 
-  .form-group input:focus {
-    outline: none;
-    border-color: var(--primary-color, #007bff);
-  }
+  .form-group input:focus { outline: none; border-color: var(--primary-color, #007bff); }
 
-  /* Schedule Section */
   .horarios-section h3 {
     font-size: 1.25rem;
     font-weight: 600;
@@ -248,10 +196,7 @@
     gap: 0.75rem;
     border-bottom: 1px solid #f1f3f4;
   }
-
-  .horario-row:last-child {
-    border-bottom: none;
-  }
+  .horario-row:last-child { border-bottom: none; }
 
   .select-dia, .input-hora {
     padding: 0.5rem;
@@ -265,61 +210,11 @@
     border-color: var(--primary-color, #007bff);
   }
 
-  .btn-anadir-dia {
-    background-color: var(--secondary-color, #6c757d);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    align-self: flex-start;
-  }
-
-  .btn-anadir-dia:hover {
-    background-color: #5a6268;
-  }
-
-  .btn-agregar {
-    background-color: var(--success-color, #28a745);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    align-self: flex-start;
-  }
-
-  .btn-agregar:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-  }
-
-  /* Responsive Design */
+  /* Responsive */
   @media (max-width: 768px) {
-    .technician-management-container {
-      padding: 1rem;
-    }
-
-    .page-title {
-      font-size: 2rem;
-    }
-
-    .technicians-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .horario-header,
-    .horario-row {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-
-    .card-actions {
-      flex-direction: column;
-    }
+    .technician-management-container { padding: 1rem; }
+    .page-title { font-size: 2rem; }
+    .technicians-grid { grid-template-columns: 1fr; }
+    .horario-header, .horario-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    .card-actions { flex-direction: column; }
   }
