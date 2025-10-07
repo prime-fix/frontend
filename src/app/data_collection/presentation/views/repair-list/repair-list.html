@@ -1,3 +1,7 @@
+<header class="main-header">
+  <h1>{{'visit-form.header'|translate}}</h1>
+</header>
+
 @if (dataStore.loading()){
   <mat-spinner diameter="40"></mat-spinner>
 }
@@ -14,11 +18,11 @@
       </mat-card-header>
       <mat-card-content>
         <p>Email: {{ repair.contact_email }}</p>
-        <p>Técnicos: {{ repair.technician_count }}</p>
+        <p> {{'auto_repair.technician'| translate}} {{ repair._technician_count }}</p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button color="primary" (click)="selectRepair(repair.id)">
-          Agendar Visita
+          {{'auto_repair.search_visit'| translate}}
         </button>
       </mat-card-actions>
     </mat-card>

@@ -63,23 +63,33 @@
   flex: 1;
 }
 
-.vehicle-model {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 8px 0;
-}
 
-.vehicle-color {
-  font-size: 14px;
+.visit-title {
+  font-size: 22px;
   color: #666;
   margin: 0 0 4px 0;
 }
 
-.vehicle-plate {
-  font-size: 14px;
+.visit-feature {
+  font-size: 18px;
   color: #666;
   margin: 0;
+}
+
+.visit-contact{
+  color: #666;
+  font-size: 18px;
+  margin: 0;
+}
+
+.email-text{
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.email-text:hover {
+  color: #e6cc34;
+  cursor: pointer;
 }
 
 .card-actions {
@@ -131,3 +141,13 @@
     width: 100%;
   }
 }
+.form-title {
+  color: #1a4d6d;
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-bottom: 6px solid #1a4d6d;
+  padding-bottom: 15px;
+}
+
+

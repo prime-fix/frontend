@@ -88,6 +88,10 @@ export class DataCollection {
     return computed(() => id ? this.services().find(c => c.id === id) : undefined);
   }
 
+  getAutoRepairById(id: number |string| null|undefined): Signal<Repair | undefined> {
+    return computed(() => id ? this.repairs().find(c => c.id === id) : undefined);
+  }
+
   private loadVisits(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);

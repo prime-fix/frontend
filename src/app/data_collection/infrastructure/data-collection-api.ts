@@ -64,7 +64,6 @@ export class DataCollectionApi extends BaseApi {
     return this.visitEndpoint.create(visit);
   }
 
-
   updateVisit(visit: Visit): Observable<Visit> {
     return this.visitEndpoint.update(visit, visit.id);
   }

@@ -6,10 +6,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {MatError} from '@angular/material/form-field';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-repair-list',
-  imports: [MatCardModule, MatButtonModule, MatProgressSpinner, MatError,],
+  imports: [MatCardModule, MatButtonModule, MatProgressSpinner, MatError, TranslatePipe,],
   templateUrl: './repair-list.html',
   styleUrl: './repair-list.css'
 })

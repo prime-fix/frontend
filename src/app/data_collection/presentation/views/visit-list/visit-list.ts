@@ -5,11 +5,12 @@ import {Router} from '@angular/router';
 import {MatError} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-visit-list',
-  imports: [ MatError, MatButton, MatProgressSpinner],
+  imports: [MatError, MatButton, MatProgressSpinner, TranslatePipe],
   templateUrl: './visit-list.html',
   styleUrl: './visit-list.css'
 })
@@ -33,6 +34,8 @@ export class VisitList {
     return this.dataStore.getServiceById(ServiceID);
   }
 
-
+  getAutoRepair(autoRepairID: number |string | null | undefined) {
+    return this.dataStore.getAutoRepairById(autoRepairID);
+  }
 
 }

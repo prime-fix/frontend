@@ -1,17 +1,17 @@
 <header class="main-header">
-  <h1>Buscar Taller</h1>
+  <h1>{{'visit-form.header'|translate}}</h1>
 </header>
 
 <div class="workshop-form-container">
-  <h1 class="form-title">Programación de visita</h1>
+  <h2 class="form-title">{{'visit-form.title'|translate}}</h2>
   <div class="form-card">
     <form [formGroup]="form" (ngSubmit)="submit()">
 
       <div class="form-group">
-        <label class="form-label">Modelo de coche</label>
+        <label class="form-label">{{'visit-form.vehicle_model'|translate}}</label>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-select formControlName="id_vehicle" placeholder="Selecciona un modelo">
-            <mat-option [value]="null">Elegir un vehículo</mat-option>
+          <mat-select formControlName="id_vehicle" placeholder="{{'visit-form.select_model'| translate }}">
+            <mat-option [value]="null">{{'visit-form.select_model'| translate }}</mat-option>
             @for (vehicle of vehicles(); track $index) {
               <mat-option [value]="vehicle.id">
                 {{ vehicle.model }} - {{vehicle.vehicle_brand}}
@@ -22,26 +22,26 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Fallas</label>
+        <label class="form-label">{{'visit-form.failure'| translate }}</label>
         <mat-form-field appearance="outline" class="full-width">
           <textarea
             matInput
             formControlName="failure"
-            placeholder="Describe las fallas del vehículo"
+            placeholder="{{'visit-form.failure_details'| translate }}"
             rows="3"
             required>
           </textarea>
           @if (form.get('failure')?.touched && form.get('failure')?.hasError('required')) {
-            <mat-error>La falla es requerida</mat-error>
+            <mat-error>{{'visit-form.failure_message'| translate }}</mat-error>
           }
         </mat-form-field>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Tipo de Servicio</label>
+        <label class="form-label">{{'visit-form.type_of_service'| translate }}</label>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-select formControlName="id_service" placeholder="Selecciona un modelo">
-            <mat-option [value]="null">Elegir un Servicio</mat-option>
+          <mat-select formControlName="id_service" placeholder="{{'visit-form.select_service'| translate }}">
+            <mat-option [value]="null">{{'visit-form.select_service'| translate }}</mat-option>
             @for (service of services(); track $index) {
               <mat-option [value]="service.id">
                 {{ service.name }}
@@ -55,7 +55,7 @@
 
       <div class="date-time-row">
         <div class="form-group half-width">
-          <label class="form-label">Fecha</label>
+          <label class="form-label">{{'visit-form.preferred_date'| translate }}</label>
           <mat-form-field appearance="outline" class="full-width">
             <input
               matInput
@@ -66,7 +66,7 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             @if (form.get('time_visit')?.touched && form.get('time_visit')?.hasError('required')) {
-              <mat-error>La fecha es requerida</mat-error>
+              <mat-error>{{'visit-form.date_message'| translate }}</mat-error>
             }
           </mat-form-field>
         </div>
@@ -79,7 +79,7 @@
           class="submit-button"
           type="submit"
           [disabled]="form.invalid">
-          Agendar visita
+          {{isEdit? 'Update' : 'Add' }}
         </button>
 
         <button
@@ -88,7 +88,7 @@
           class="back-button"
           type="button"
           (click)="goBack()">
-          Volver
+          {{'visit-form.back'| translate }}
         </button>
 
       </div>

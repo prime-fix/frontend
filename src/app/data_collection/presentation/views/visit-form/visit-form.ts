@@ -11,10 +11,11 @@ import {MatInput} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Location } from '@angular/common';
+import {TranslateModule, TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-visit-form',
-  imports: [ReactiveFormsModule, MatNativeDateModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatInput, MatDatepickerInput, MatDatepickerToggle, MatDatepicker],
+  imports: [ReactiveFormsModule, MatNativeDateModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatInput, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, TranslatePipe],
   templateUrl: './visit-form.html',
   styleUrl: './visit-form.css'
 })
@@ -92,7 +93,7 @@ export class VisitForm {
       this.store.addVisit(visit);
     }
 
-    this.router.navigate(['visits/alert']).then();
+    this.router.navigate(['visits/alert'], { state: { visit } }).then();
   }
 
   goBack() {
