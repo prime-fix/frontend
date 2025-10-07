@@ -1,0 +1,12 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <div class="modal-content">
+      <h2 class="modal-title">{{ 'state-notification.title' | translate }}</h2>
+      <p class="modal-message">{{ 'state-notification.message' | translate }}</p>
+      <button class="modal-button" (click)="onAccept()">
+        {{ 'state-notification.accept' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+

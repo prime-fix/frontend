@@ -1,14 +1,14 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {LayoutOwner} from '@shared/presentation/views/layout-owner/layout-owner';
-import {LayoutWorkshop} from '@shared/presentation/views/layout-workshop/layout-workshop';
+import {RouterOutlet} from '@angular/router';
+import { LanguageSwitcher } from '@shared/presentation/components/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LayoutWorkshop],
+  imports: [RouterOutlet, LanguageSwitcher],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly userRole = signal('Vehicle Owner');
+  title = 'prime-fix';
 }

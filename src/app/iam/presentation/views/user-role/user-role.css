@@ -1,0 +1,233 @@
+.role-container {
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: var(--font-sans);
+}
+
+.role-card {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  background: var(--color-light);
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.title {
+  margin: 0 0 .5rem 0;
+  font-family: var(--font-bold);
+  font-size: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.subtitle {
+  margin: 0 0 2rem 0;
+  color: #4b5563;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.role-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all .25s ease;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+}
+
+.option:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .1);
+}
+
+.option.selected {
+  border-color: var(--color-first-complementary);
+  background: #fffef7;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
+}
+
+.option.selected:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.radio-indicator {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  transition: all .25s ease;
+  background: #fff;
+}
+
+.option:hover .radio-indicator {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.1);
+}
+
+.option.selected .radio-indicator {
+  border-color: var(--color-first-complementary);
+  border-width: 2px;
+}
+
+.option.selected .radio-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-first-complementary);
+  animation: scaleIn .2s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.option-label {
+  font-size: 1.125rem;
+  font-family: var(--font-medium);
+  color: var(--color-dark);
+  transition: all .2s ease;
+}
+
+.option.selected .option-label {
+  font-family: var(--font-semibold);
+  color: var(--color-primary);
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-first-complementary);
+  color: var(--color-dark);
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 52px;
+}
+
+.submit:hover:not(:disabled) {
+  background-color: #ffb700;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .role-card {
+    max-width: 100%;
+    padding: 2.5rem 2rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .role-container {
+    padding: 1rem;
+  }
+
+  .role-card {
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .option {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .option-label {
+    font-size: 1rem;
+  }
+
+  .submit {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Focus and Accessibility */
+.submit:focus-visible,
+.option:focus-visible {
+  outline: 2px solid var(--color-first-complementary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .option {
+    border: 2px solid var(--color-dark);
+  }
+
+  .submit {
+    border: 2px solid var(--color-dark);
+  }
+}

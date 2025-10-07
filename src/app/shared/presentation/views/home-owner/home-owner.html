@@ -1,0 +1,47 @@
+<div class="search-workshop-container">
+  <div class="search-content">
+    <h1 class="search-title">{{ 'home-owner.searchWorkshop' | translate }}</h1>
+
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+      <div class="form-group">
+        <label for="department" class="form-label">{{ 'home-owner.selectDepartment' | translate }}</label>
+        <select
+          id="department"
+          formControlName="department"
+          class="form-select">
+          <option value="" disabled selected>{{ 'home-owner.selectDepartment' | translate }}</option>
+          @for (department of departments; track department) {
+            <option [value]="department">{{ department }}</option>
+          }
+        </select>
+        @if (searchForm.get('department')?.invalid && searchForm.get('department')?.touched) {
+          <span class="error-message">
+            {{ 'home-owner.departmentRequired' | translate }}
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="district" class="form-label">{{ 'home-owner.selectDistrict' | translate }}</label>
+        <select
+          id="district"
+          formControlName="district"
+          class="form-select">
+          <option value="" disabled selected>{{ 'home-owner.selectDistrict' | translate }}</option>
+          @for (district of districts; track district) {
+            <option [value]="district">{{ district }}</option>
+          }
+        </select>
+        @if (searchForm.get('district')?.invalid && searchForm.get('district')?.touched) {
+          <span class="error-message">
+            {{ 'home-owner.districtRequired' | translate }}
+          </span>
+        }
+      </div>
+
+      <button type="submit" class="search-button" [disabled]="searchForm.invalid">
+        {{ 'home-owner.searchWorkshop' | translate }}
+      </button>
+    </form>
+  </div>
+</div>
