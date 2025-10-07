@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import {ProgressBar} from '@tracking/presentation/components/progress-bar/progress-bar';
 import {StateError} from '@tracking/presentation/components/state-error/state-error';
 import {StateNotification} from '@tracking/presentation/views/state-notification/state-notification';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Component({
   selector: 'app-track-vehicle',
@@ -14,12 +15,19 @@ import {StateNotification} from '@tracking/presentation/views/state-notification
 })
 export class TrackVehicle {
   private fb = inject(FormBuilder);
+  private store = inject(TrackingStore);
   currentVehicle = signal<string | undefined>("");
   selectedVehicleData = signal<any>(null);
   showProgressBar = signal<boolean>(false);
   showError = signal<boolean>(false);
   showNotificationModal = signal<boolean>(false);
   hasNotification = signal<boolean>(true);
+
+
+  constructor() {
+
+  }
+
 
   // Vehicle sample data with maintenance status
   vehicles = [

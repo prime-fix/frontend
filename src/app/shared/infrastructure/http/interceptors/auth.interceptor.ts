@@ -3,6 +3,9 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 
+/**
+ * Shape of the session object stored in local storage.
+ */
 interface SessionShape {
   token?: { accessToken?: string };
 }
@@ -18,6 +21,11 @@ export class AuthInterceptor implements HttpInterceptor {
   private readonly API_BASE = environment.primeFixProviderApiBaseUrl;
   private readonly AUTH_STORAGE_KEY = 'pf_iam_auth';
 
+  /**
+   * Intercepts HTTP requests to add authentication headers.
+   * @param request - The outgoing HTTP request.
+   * @param next - The next handler in the HTTP request chain.
+   */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (this.isAssetsRequest(request.url) || !this.matchesApiBase(request.url)) {
       return next.handle(request);
@@ -39,6 +47,11 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq);
   }
 
+  /**
+   * Reads the access token from local storage.
+   * @private - This method is intended for internal use only.
+   * @returns The access token if available, otherwise null.
+   */
   private readAccessToken(): string | null {
     try {
       const raw = localStorage.getItem(this.AUTH_STORAGE_KEY);
@@ -50,10 +63,22 @@ export class AuthInterceptor implements HttpInterceptor {
     }
   }
 
+  /**
+   * Determines if the request URL is for assets.
+   * @param url - The request URL.
+   * @private - This method is intended for internal use only.
+   * @returns True if the URL is for assets, otherwise false.
+   */
   private isAssetsRequest(url: string): boolean {
     return url.startsWith('/assets/') || url.includes('/assets/i18n/');
   }
 
+  /**
+   * Checks if the request URL matches the API base URL.
+   * @param url - The request URL.
+   * @private - This method is intended for internal use only.
+   * @returns True if the URL matches the API base, otherwise false.
+   */
   private matchesApiBase(url: string): boolean {
     try {
       const req = new URL(url, window.location.origin);

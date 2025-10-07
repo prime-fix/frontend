@@ -442,5 +442,42 @@
         "description": "Alineación de dirección y balanceo de llantas"
       }
     ]
+  ],
+  "notifications": [
+    {
+      "id_notification": "N001",
+      "message": "Your is ready for pickup.",
+      "read": false,
+      "id_vehicle": "RV001",
+      "sent": "2025-10-01"
+    },
+    {
+      "id_notification": "N002",
+      "message": "Your service is scheduled for tomorrow.",
+      "read": true,
+      "id_vehicle": "RV002",
+      "sent": "2025-09-30"
+    },
+    {
+      "id_notification": "N003",
+      "message": "Your vehicle inspection is due next week.",
+      "read": false,
+      "id_vehicle": "RV003",
+      "sent": "2025-10-02"
+    },
+    {
+      "id_notification": "N004",
+      "message": "Your payment was successful.",
+      "read": true,
+      "id_vehicle": "RV004",
+      "sent": "2025-09-29"
+    },
+    {
+      "id_notification": "N005",
+      "message": "New promotions available for your vehicle.",
+      "read": false,
+      "id_vehicle": "RV005",
+      "sent": "2025-10-03"
+    }
   ]
 }
