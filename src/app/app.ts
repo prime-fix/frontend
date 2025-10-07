@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
-import {LoginOwner} from '@iam/presentation/views/login-owner/login-owner';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [LoginOwner],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly userRole = signal('Vehicle Owner');
 }

@@ -6,6 +6,7 @@ export interface UserAccountResponse extends BaseResponse{
 
 export interface UserAccountResource extends BaseResource {
   id_user_account: string;
+  username: string;
   email: string;
   id_user: string;
   id_role: string;

@@ -1,0 +1,46 @@
+<section class="role-container">
+  <div class="role-card">
+    <h1 class="title">{{ 'user-role.role-question' | translate }}</h1>
+    <p class="subtitle">{{ 'user-role.option' | translate }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="role-form" novalidate>
+      <div
+        class="option"
+        [class.selected]="form.value.role === 'Vehicle Owner'"
+        (click)="selectRole('Vehicle Owner')"
+        tabindex="0"
+        (keydown.enter)="selectRole('Vehicle Owner')"
+        (keydown.space)="selectRole('Vehicle Owner')">
+        <div class="option-content">
+          <div class="radio-indicator"></div>
+          <span class="option-label">{{ 'user-role.role-owner' | translate }}</span>
+        </div>
+      </div>
+
+      <div
+        class="option"
+        [class.selected]="form.value.role === 'Auto repair Workshop'"
+        (click)="selectRole('Auto repair Workshop')"
+        tabindex="0"
+        (keydown.enter)="selectRole('Auto repair Workshop')"
+        (keydown.space)="selectRole('Auto repair Workshop')">
+        <div class="option-content">
+          <div class="radio-indicator"></div>
+          <span class="option-label">{{ 'user-role.role-workshop' | translate }}</span>
+        </div>
+      </div>
+
+      @if (form.controls.role.invalid && (form.controls.role.dirty || form.controls.role.touched)) {
+        <div class="error">{{ 'user-role.not-touched-option' | translate }}</div>
+      }
+
+      <button class="submit" type="submit" [disabled]="form.invalid || submitting()">
+        @if (submitting()) {
+          {{ 'user-role.redirecting' | translate }}
+        } @else {
+          {{ 'user-role.continue' | translate }}
+        }
+      </button>
+    </form>
+  </div>
+</section>
