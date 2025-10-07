@@ -15,14 +15,14 @@
               id="workshopName"
               type="text"
               class="input"
-              formControlName="workshopName"
+              formControlName="name_workshop"
               [placeholder]="'register-workshop.workshopNamePlaceholder' | translate" />
-            @if (registerForm.controls.workshopName.invalid && (registerForm.controls.workshopName.dirty || registerForm.controls.workshopName.touched)) {
+            @if (registerForm.controls.name_workshop.invalid && (registerForm.controls.name_workshop.dirty || registerForm.controls.name_workshop.touched)) {
               <span class="error">
-                @if (registerForm.controls.workshopName.errors?.['required']) {
+                @if (registerForm.controls.name_workshop.errors?.['required']) {
                   {{ 'register-workshop.workshopNameRequired' | translate }}
                 }
-                @if (registerForm.controls.workshopName.errors?.['minlength']) {
+                @if (registerForm.controls.name_workshop.errors?.['minlength']) {
                   {{ 'register-workshop.workshopNameMinLength' | translate }}
                 }
               </span>
@@ -76,15 +76,15 @@
               id="phone"
               type="tel"
               class="input"
-              formControlName="phone"
+              formControlName="phone_number"
               [placeholder]="'register-workshop.phonePlaceholder' | translate"
               maxlength="9" />
-            @if (registerForm.controls.phone.invalid && (registerForm.controls.phone.dirty || registerForm.controls.phone.touched)) {
+            @if (registerForm.controls.phone_number.invalid && (registerForm.controls.phone_number.dirty || registerForm.controls.phone_number.touched)) {
               <span class="error">
-                @if (registerForm.controls.phone.errors?.['required']) {
+                @if (registerForm.controls.phone_number.errors?.['required']) {
                   {{ 'register-workshop.phoneRequired' | translate }}
                 }
-                @if (registerForm.controls.phone.errors?.['pattern']) {
+                @if (registerForm.controls.phone_number.errors?.['pattern']) {
                   {{ 'register-workshop.phonePattern' | translate }}
                 }
               </span>
@@ -203,7 +203,7 @@
             }
           </div>
 
-          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()">
+          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()" (submit)="onSubmit()" >
             @if (store.loading()) {
               {{ 'register-workshop.registering' | translate }}
             } @else {

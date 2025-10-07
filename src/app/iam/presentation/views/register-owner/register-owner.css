@@ -85,6 +85,16 @@
   gap: 0.5rem;
 }
 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  margin: 0;
+}
+
 .label {
   font-family: var(--font-medium);
   font-size: 0.9rem;

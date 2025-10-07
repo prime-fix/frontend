@@ -1,5 +1,5 @@
 import {Component, inject, signal, ChangeDetectionStrategy, effect} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
@@ -18,13 +18,20 @@ export class RegisterOwner {
 
   isPasswordVisible = signal(false);
 
+  constructor() {
+    this.store.startRegistrationFlow('Vehicle Owner');
+  }
+
   registerForm = this.fb.group({
-    firstName: ['', [Validators.required, Validators.minLength(2)]],
-    lastName: ['', [Validators.required, Validators.minLength(2)]],
-    dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-    phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    fullName: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
+    username: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
+    dni: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
+    phone_number: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
+    department: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
+    district: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
+    address: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
+    email: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] })
   });
 
   private _autoRedirect = effect(() => {
@@ -46,14 +53,18 @@ export class RegisterOwner {
     }
 
     const formData = this.registerForm.getRawValue();
-    // TODO: Implementar registro en el store
     console.log('Register owner data:', formData);
 
-    // Simular registro exitoso por ahora
-    // this.store.registerOwner(formData);
+    this.store.startRegistrationFlow('Vehicle Owner');
+    this.store.saveRegisterOwner(formData);
+    this.navigateToPlanOwner();
   }
 
   navigateToLogin() {
+    void this.router.navigateByUrl('/login');
+  }
+
+  navigateToPlanOwner() {
     void this.router.navigateByUrl('/plan-owner');
   }
 }

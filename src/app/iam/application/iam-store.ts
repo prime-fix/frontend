@@ -6,6 +6,7 @@ import {IamApi} from '@iam/infrastructure/api/iam-api';
 import {retry} from 'rxjs';
 import {Payment} from '@iam/domain/model/payment.entity';
 import {Location} from '@iam/domain/model/location.entity';
+import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
 
 @Injectable({
   providedIn: 'root'
@@ -51,12 +52,14 @@ export class IamStore {
   private readonly registerUserAccountSignal = signal<UserAccount | null>(null);
   private readonly registerPaymentSignal = signal<Payment | null>(null);
   private readonly registerRoleSignal = signal<string | null>(null);
+  private readonly registerLocationSignal = signal<Location | null>(null);
   private readonly registerMemberShipTypeSignal = signal<string | null>(null);
 
   readonly registerUser = this.registerUserSignal.asReadonly()
   readonly registerUserAccount = this.registerUserAccountSignal.asReadonly()
   readonly registerPayment = this.registerPaymentSignal.asReadonly()
   readonly registerRole = this.registerRoleSignal.asReadonly()
+  readonly registerLocation = this.registerLocationSignal.asReadonly()
   readonly registerMemberShipType = this.registerMemberShipTypeSignal.asReadonly()
 
   // Methods to manage UserAccounts and Users
@@ -396,9 +399,148 @@ export class IamStore {
     this.sessionUserSignal.set(null);
   }
 
+  /**
+   * Initiates the registration process by setting the role and resetting other registration signals.
+   * @param role - The role of the user ('Vehicle Owner' or 'Auto Repair Shop').
+   */
+  startRegistrationFlow(role: 'Vehicle Owner' | 'Auto Repair Shop'): void {
+    this.registerRoleSignal.set(role);
+    this.registerUserSignal.set(null);
+    this.registerUserAccountSignal.set(null);
+    this.registerPaymentSignal.set(null);
+    this.registerMemberShipTypeSignal.set(null);
+    this.errorSignal.set(null);
+  }
+
+  /**
+   * Saves the registration details for a vehicle owner.
+   * @param form - The registration form data.
+   */
   saveRegisterOwner(form: { fullName: string; username: string; dni: string; phone_number:
       string; department: string; district: string; address: string; email: string; password: string }): void {
 
+    const newLocation = new Location({
+      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      department: form.department,
+      district: form.district,
+      address: form.address
+    })
+
+    const newUser = new User({
+      id_user: 'U0' + (this.userCount() + 1).toString(),
+      name: form.fullName.split(' ')[0] || '',
+      last_name: form.fullName.split(' ').slice(1).join(' '),
+      dni: form.dni,
+      phone_number: form.phone_number,
+      id_location: newLocation.id,
+    })
+
+    const newUserAccount = new UserAccount({
+      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      username: form.username.trim(),
+      email: form.email.trim(),
+      id_user: newUser.id,
+      id_role: 'R001',
+      id_membership: '', // No membership at registration
+      password: form.password
+    });
+
+    this.registerLocationSignal.set(newLocation);
+    this.registerUserSignal.set(newUser);
+    this.registerUserAccountSignal.set(newUserAccount);
+  }
+
+  saveRegisterWorkshop(form: { name_workshop: string; username: string; ruc:
+      string; phone_number: string; department: string; district: string; address: string; email: string; password: string }): void {
+
+    const newLocation = new Location({
+      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      department: form.department,
+      district: form.district,
+      address: form.address
+    })
+
+    const newUser = new User({
+      id_user: 'U0' + (this.userCount() + 1).toString(),
+      name: form.name_workshop,
+      last_name: '',
+      dni: form.ruc,
+      phone_number: form.phone_number,
+      id_location: newLocation.id,
+    })
+
+    const newUserAccount = new UserAccount({
+      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      username: form.username.trim(),
+      email: form.email.trim(),
+      id_user: newUser.id,
+      id_role: 'R002',
+      id_membership: '', // No membership at registration
+      password: form.password
+    });
+
+    this.registerLocationSignal.set(newLocation);
+    this.registerUserSignal.set(newUser);
+    this.registerUserAccountSignal.set(newUserAccount);
+  }
+
+  /**
+   * Sets the selected membership plan during registration.
+   * @param plan - The selected plan ('1m', '3m', or '12m').
+   */
+  selectPlan(plan: '1m'| '3m' | '12m') {
+    const membershipId = MembershipChoiceType[plan];
+    this.registerMemberShipTypeSignal.set(membershipId);
+
+    const userAccountNoMembership = this.registerUserAccountSignal();
+    if (userAccountNoMembership) {
+      userAccountNoMembership.id_membership = membershipId;
+      this.registerUserAccountSignal.set(userAccountNoMembership);
+    }
+  }
+
+
+  finishRegister(payment: { card_number: number; month: number; year:number; cvv: number; card_type: string; }): void {
+    const role = this.registerRoleSignal();
+    const user = this.registerUserSignal();
+    const userAccount = this.registerUserAccountSignal();
+    const location = this.registerLocationSignal();
+    const membershipId = this.registerMemberShipTypeSignal();
+
+    if(!role || !user || !userAccount || !location || !membershipId || !payment) {
+      this.errorSignal.set('Incomplete registration flow');
+      return;
+    }
+
+    const newPayment = new Payment({
+      id_payment: 'PY0' + (this.paymentCount() + 1).toString(),
+      card_number: payment.card_number,
+      card_type: payment.card_type,
+      month: payment.month,
+      year: payment.year,
+      cvv: payment.cvv,
+      id_user_account: userAccount.id
+    });
+
+    console.log(location);
+    console.log(user);
+    console.log(userAccount);
+    console.log(newPayment);
+
+    this.addLocation(location);
+    this.addUser(user);
+    this.addUserAccount(userAccount);
+    this.addPayment(newPayment);
+  }
+
+  resetRegistrationFlow() {
+    this.registerRoleSignal.set(null);
+    this.registerUserSignal.set(null);
+    this.registerUserAccountSignal.set(null);
+    this.registerPaymentSignal.set(null);
+    this.registerLocationSignal.set(null);
+    this.registerMemberShipTypeSignal.set(null);
+    this.errorSignal.set(null);
   }
 
   /**

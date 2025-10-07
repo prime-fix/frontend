@@ -95,7 +95,7 @@
       "card_type": "Visa",
       "month": 12,
       "year": 2025,
-      "CVV": 123,
+      "cvv": 123,
       "id_user_account": "UA001"
     },
     {
@@ -104,7 +104,7 @@
       "card_type": "MasterCard",
       "month": 6,
       "year": 2024,
-      "CVV": 456,
+      "cvv": 456,
       "id_user_account": "UA002"
     },
     {
@@ -113,7 +113,7 @@
       "card_type": "American Express",
       "month": 9,
       "year": 2026,
-      "CVV": 789,
+      "cvv": 789,
       "id_user_account": "UA003"
     },
     {
@@ -122,7 +122,7 @@
       "card_type": "Discover",
       "month": 3,
       "year": 2025,
-      "CVV": 321,
+      "cvv": 321,
       "id_user_account": "UA004"
     },
     {
@@ -131,7 +131,7 @@
       "card_type": "Visa",
       "month": 11,
       "year": 2024,
-      "CVV": 654,
+      "cvv": 654,
       "id_user_account": "UA005"
     }
   ],

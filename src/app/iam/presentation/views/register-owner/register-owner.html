@@ -10,40 +10,40 @@
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" novalidate>
           <div class="form-group">
-            <label for="firstName" class="label">{{ 'register-owner.firstName' | translate }}</label>
+            <label for="fullName" class="label">{{ 'register-owner.fullName' | translate }}</label>
             <input
-              id="firstName"
+              id="fullName"
               type="text"
               class="input"
-              formControlName="firstName"
-              [placeholder]="'register-owner.firstNamePlaceholder' | translate" />
-            @if (registerForm.controls.firstName.invalid && (registerForm.controls.firstName.dirty || registerForm.controls.firstName.touched)) {
+              formControlName="fullName"
+              [placeholder]="'register-owner.fullNamePlaceholder' | translate" />
+            @if (registerForm.controls.fullName.invalid && (registerForm.controls.fullName.dirty || registerForm.controls.fullName.touched)) {
               <span class="error">
-                @if (registerForm.controls.firstName.errors?.['required']) {
-                  {{ 'register-owner.firstNameRequired' | translate }}
+                @if (registerForm.controls.fullName.errors?.['required']) {
+                  {{ 'register-owner.fullNameRequired' | translate }}
                 }
-                @if (registerForm.controls.firstName.errors?.['minlength']) {
-                  {{ 'register-owner.firstNameMinLength' | translate }}
+                @if (registerForm.controls.fullName.errors?.['minlength']) {
+                  {{ 'register-owner.fullNameMinLength' | translate }}
                 }
               </span>
             }
           </div>
 
           <div class="form-group">
-            <label for="lastName" class="label">{{ 'register-owner.lastName' | translate }}</label>
+            <label for="username" class="label">{{ 'register-owner.username' | translate }}</label>
             <input
-              id="lastName"
+              id="username"
               type="text"
               class="input"
-              formControlName="lastName"
-              [placeholder]="'register-owner.lastNamePlaceholder' | translate" />
-            @if (registerForm.controls.lastName.invalid && (registerForm.controls.lastName.dirty || registerForm.controls.lastName.touched)) {
+              formControlName="username"
+              [placeholder]="'register-owner.usernamePlaceholder' | translate" />
+            @if (registerForm.controls.username.invalid && (registerForm.controls.username.dirty || registerForm.controls.username.touched)) {
               <span class="error">
-                @if (registerForm.controls.lastName.errors?.['required']) {
-                  {{ 'register-owner.lastNameRequired' | translate }}
+                @if (registerForm.controls.username.errors?.['required']) {
+                  {{ 'register-owner.usernameRequired' | translate }}
                 }
-                @if (registerForm.controls.lastName.errors?.['minlength']) {
-                  {{ 'register-owner.lastNameMinLength' | translate }}
+                @if (registerForm.controls.username.errors?.['minlength']) {
+                  {{ 'register-owner.usernameMinLength' | translate }}
                 }
               </span>
             }
@@ -76,16 +76,69 @@
               id="phone"
               type="tel"
               class="input"
-              formControlName="phone"
+              formControlName="phone_number"
               [placeholder]="'register-owner.phonePlaceholder' | translate"
               maxlength="9" />
-            @if (registerForm.controls.phone.invalid && (registerForm.controls.phone.dirty || registerForm.controls.phone.touched)) {
+            @if (registerForm.controls.phone_number.invalid && (registerForm.controls.phone_number.dirty || registerForm.controls.phone_number.touched)) {
               <span class="error">
-                @if (registerForm.controls.phone.errors?.['required']) {
+                @if (registerForm.controls.phone_number.errors?.['required']) {
                   {{ 'register-owner.phoneRequired' | translate }}
                 }
-                @if (registerForm.controls.phone.errors?.['pattern']) {
+                @if (registerForm.controls.phone_number.errors?.['pattern']) {
                   {{ 'register-owner.phonePattern' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="department" class="label">{{ 'register-owner.department' | translate }}</label>
+              <input
+                id="department"
+                type="text"
+                class="input"
+                formControlName="department"
+                [placeholder]="'register-owner.departmentPlaceholder' | translate" />
+              @if (registerForm.controls.department.invalid && (registerForm.controls.department.dirty || registerForm.controls.department.touched)) {
+                <span class="error">
+                  @if (registerForm.controls.department.errors?.['required']) {
+                    {{ 'register-owner.departmentRequired' | translate }}
+                  }
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="district" class="label">{{ 'register-owner.district' | translate }}</label>
+              <input
+                id="district"
+                type="text"
+                class="input"
+                formControlName="district"
+                [placeholder]="'register-owner.districtPlaceholder' | translate" />
+              @if (registerForm.controls.district.invalid && (registerForm.controls.district.dirty || registerForm.controls.district.touched)) {
+                <span class="error">
+                  @if (registerForm.controls.district.errors?.['required']) {
+                    {{ 'register-owner.districtRequired' | translate }}
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="label">{{ 'register-owner.address' | translate }}</label>
+            <input
+              id="address"
+              type="text"
+              class="input"
+              formControlName="address"
+              [placeholder]="'register-owner.addressPlaceholder' | translate" />
+            @if (registerForm.controls.address.invalid && (registerForm.controls.address.dirty || registerForm.controls.address.touched)) {
+              <span class="error">
+                @if (registerForm.controls.address.errors?.['required']) {
+                  {{ 'register-owner.addressRequired' | translate }}
                 }
               </span>
             }
@@ -151,7 +204,7 @@
             }
           </div>
 
-          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()">
+          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()" (submit)="onSubmit()">
             @if (store.loading()) {
               {{ 'register-owner.registering' | translate }}
             } @else {

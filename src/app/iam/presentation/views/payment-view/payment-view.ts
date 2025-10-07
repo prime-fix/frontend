@@ -1,58 +1,67 @@
 import {Component, inject, signal, ChangeDetectionStrategy, OnInit} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
-
-interface PlanInfo {
-  type: string;
-  name: string;
-  amount: string;
-}
+import {IamStore} from '@iam/application/iam-store';
+import {AmountDetails, PlanDetails} from '@iam/domain/types/membership-choice.type';
 
 @Component({
   selector: 'app-payment',
   imports: [ReactiveFormsModule, TranslateModule, CommonModule],
   templateUrl: './payment-view.html',
   styleUrl: './payment-view.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentView implements OnInit {
+export class PaymentView{
   private fb = inject(FormBuilder);
+  private store = inject(IamStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   isProcessing = signal(false);
-  planInfo = signal<PlanInfo>({type: '3-months', name: '3 meses', amount: 'S/.59'});
+  planInfo = this.store.registerMemberShipType;
 
-  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  months = [
+    { value: 1, name: 'Enero' },
+    { value: 2, name: 'Febrero' },
+    { value: 3, name: 'Marzo' },
+    { value: 4, name: 'Abril' },
+    { value: 5, name: 'Mayo' },
+    { value: 6, name: 'Junio' },
+    { value: 7, name: 'Julio' },
+    { value: 8, name: 'Agosto' },
+    { value: 9, name: 'Septiembre' },
+    { value: 10, name: 'Octubre' },
+    { value: 11, name: 'Noviembre' },
+    { value: 12, name: 'Diciembre' }
+  ];
   years = Array.from({length: 10}, (_, i) => new Date().getFullYear() + i);
   documentTypes = ['DNI', 'Pasaporte', 'Carné de Extranjería'];
+  document_number_value = this.store.registerUser()?.dni;
+  planSelected: string;
+  AmountSelected: string;
 
   paymentForm = this.fb.group({
-    cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
-    month: ['', Validators.required],
-    year: ['', Validators.required],
-    cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
-    documentType: ['DNI', Validators.required],
-    documentNumber: ['', [Validators.required, Validators.minLength(8)]]
+    card_number: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    month: new FormControl<number>(1, { nonNullable: true, validators: [Validators.required] }),
+    year: new FormControl<number>(new Date().getFullYear(), { nonNullable: true, validators: [Validators.required] }),
+    cvv: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    card_type: new FormControl<string>('Visa', { nonNullable: true, validators: [Validators.required] }),
+    document_number: new FormControl<string>(this.document_number_value || '', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
   });
 
-  ngOnInit() {
-    // Obtener información del plan desde los parámetros de ruta
-    this.route.queryParams.subscribe(params => {
-      const planType = params['plan'] || '3-months';
-      this.updatePlanInfo(planType);
-    });
-  }
-
-  private updatePlanInfo(planType: string) {
-    const plans: Record<string, PlanInfo> = {
-      '3-months': {type: '3-months', name: '3 meses', amount: 'S/.59'},
-      '12-months': {type: '12-months', name: '12 meses', amount: 'S/.219'},
-      '1-month': {type: '1-month', name: '1 mes', amount: 'S/.19'}
-    };
-    this.planInfo.set(plans[planType] || plans['3-months']);
+  constructor() {
+    const planId = this.planInfo();
+    if(planId === "M001") {
+      this.planSelected = PlanDetails.M001;
+      this.AmountSelected = AmountDetails.M001;
+    } else if(planId === "M002") {
+      this.planSelected = PlanDetails.M002;
+      this.AmountSelected = AmountDetails.M002;
+    } else {
+      this.planSelected = PlanDetails.M003;
+      this.AmountSelected = AmountDetails.M003;
+    }
   }
 
   onSubmit() {
@@ -60,35 +69,13 @@ export class PaymentView implements OnInit {
       this.paymentForm.markAllAsTouched();
       return;
     }
-
     this.isProcessing.set(true);
 
-    // Simular procesamiento de pago
-    setTimeout(() => {
-      console.log('Pago procesado:', this.paymentForm.value);
-      this.isProcessing.set(false);
-      // Redirigir al layout después del pago exitoso
-      void this.router.navigateByUrl('/layout-owner');
-    }, 2000);
-  }
+    const formData = this.paymentForm.getRawValue();
 
-  formatCardNumber(event: Event) {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-    if (value.length > 16) value = value.slice(0, 16);
-    this.paymentForm.patchValue({cardNumber: value});
-  }
+    this.store.finishRegister(formData);
+    this.store.resetRegistrationFlow();
 
-  formatCVV(event: Event) {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-    if (value.length > 3) value = value.slice(0, 3);
-    this.paymentForm.patchValue({cvv: value});
-  }
-
-  formatDocumentNumber(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '');
-    this.paymentForm.patchValue({documentNumber: value});
+    this.router.navigateByUrl('/login').then();
   }
 }

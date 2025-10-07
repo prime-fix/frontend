@@ -1,6 +1,7 @@
 import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {Router} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-plan-owner',
@@ -11,10 +12,15 @@ import {TranslateModule} from '@ngx-translate/core';
 })
 export class PlanOwner {
   private router = inject(Router);
+  private store = inject(IamStore);
 
-  selectPlan(planType: string) {
+  selectPlan(planType: "1m" | "3m" | "12m") {
     console.log('Plan seleccionado:', planType);
-    // Redirigir a la página de pago con el parámetro del plan
-    void this.router.navigate(['/payment'], { queryParams: { plan: planType } });
+    this.store.selectPlan(planType);
+    this.goToPayment();
+  }
+
+  goToPayment() {
+    this.router.navigate(['/payment-view']).then();
   }
 }
