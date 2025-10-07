@@ -53,6 +53,11 @@ export class SideBarOwner {
       route: '/layout-owner/settings',
       icon: 'settings-bolt',
       label: 'side-bar-owner.settings'
+    },
+    {
+      "route": '/layout-owner/maintenance-tracking/notification-view',
+      "icon": 'bell',
+      "label": 'side-bar-owner.notifications'
     }
   ];
 
@@ -74,8 +79,9 @@ export class SideBarOwner {
       return true;
     }
 
-    // For nested routes like maintenance-tracking
-    return route.includes('/maintenance-tracking/') && this.currentRoute.startsWith('/layout-owner/maintenance-tracking');
+    // Check if current route starts with the menu item route
+    // This handles child routes properly
+    return this.currentRoute.startsWith(route + '/') || this.currentRoute.startsWith(route + '?');
   }
 
   navigateTo(route: string): void {

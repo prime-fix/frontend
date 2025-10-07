@@ -169,7 +169,8 @@
     "searchWorkshop": "Buscar taller",
     "history": "Historial",
     "track": "Seguir estado",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "notifications": "Notificaciones"
   },
   "side-bar-workshop": {
     "profile": "Perfil",

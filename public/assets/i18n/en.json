@@ -179,7 +179,8 @@
     "searchWorkshop": "Search Workshop",
     "history": "History",
     "track": "Track Vehicle",
-    "settings": "Settings"
+    "settings": "Settings",
+    "notifications": "Notifications"
   },
   "side-bar-workshop": {
     "profile": "Profile",

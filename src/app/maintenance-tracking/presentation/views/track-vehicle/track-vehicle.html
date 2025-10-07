@@ -10,7 +10,9 @@
         [class.has-notification]="hasNotification()"
         type="button"
         aria-label="Notifications">
-        <span class="bell-icon">🔔</span>
+        <svg class="bell-icon">
+          <use href="assets/icons/sprite.symbol.svg#bell"></use>
+        </svg>
         @if (hasNotification()) {
           <span class="notification-badge"></span>
         }
