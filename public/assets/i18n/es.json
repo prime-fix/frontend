@@ -1,38 +1,22 @@
 {
-  "login": {
-    "title": "Iniciar sesión en su cuenta",
-    "username": "Usuario",
-    "usernameRequired": "El nombre de usuario es requerido",
-    "usernameMinLength": "El nombre de usuario debe tener al menos 3 caracteres",
-    "password": "Contraseña",
-    "passwordRequired": "La contraseña es obligatoria",
-    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
-    "submit": "Iniciar sesión",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
-    "noAccount": "¿Todavía no tienes una cuenta?",
-    "signIn": "Iniciar sesión",
-    "signUp": "Regístrate",
-    "loading": "Iniciando sesión..."
-  },
-  "side-bar-owner": {
-    "profile": "Perfil",
-    "dashboard": "Menú principal",
-    "vehicles": "Coches",
-    "searchWorkshop": "Buscar taller",
-    "history": "Historial",
-    "track": "Seguir estado",
-    "settings": "Configuración"
-  },
-  "side-bar-workshop": {
-    "profile": "Perfil",
-    "dashboard": "Menu principal",
-    "workshop": "Taller",
-    "requests": "Solicitudes",
-    "manageTechnicians": "Gestionar técnicos",
-    "statusVehicles": "Estados de coches",
-    "settings": "Configuración"
-  },
-  "button-logout": {
-    "logout": "Cerrar sesión"
+  "workshop": {
+    "catalog": "Talleres",
+    "search": "Buscar Taller",
+    "select-department": "Seleccionar Departamento",
+    "select-district": "Seleccionar Distrito",
+    "search-button": "Buscar Taller",
+    "workshop-selection": "Selección de Taller",
+    "technician-count": "Cantidad de técnicos",
+    "available-technicians": "Técnicos disponibles",
+    "select-workshop": "Seleccionar Taller",
+    "view-technicians": "Ver Técnicos",
+    "no-workshops-available": "No hay talleres disponibles en este distrito",
+    "available-technicians-at": "Técnicos Disponibles en",
+    "back-to-workshops": "Volver a Talleres",
+    "years-old": "años",
+    "available": "Disponible",
+    "not-available": "No Disponible",
+    "select-technician": "Seleccionar Técnico",
+    "no-technicians-available": "No hay técnicos disponibles en este taller"
   }
 }

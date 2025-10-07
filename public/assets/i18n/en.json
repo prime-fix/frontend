@@ -1,38 +1,22 @@
 {
-  "login": {
-    "title": "Login to Your Account",
-    "username": "Username",
-    "usernameRequired": "Username is required",
-    "usernameMinLength": "Username must be at least 3 characters",
-    "password": "Password",
-    "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least 6 characters",
-    "submit": "Login",
-    "forgotPassword": "Forgot Password?",
-    "noAccount": "Don't have an account?",
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
-    "loading": "Loading..."
-  },
-  "side-bar-owner": {
-    "profile": "Profile",
-    "dashboard": "Dashboard",
-    "vehicles": "Vehicles",
-    "searchWorkshop": "Search Workshop",
-    "history": "History",
-    "track": "Track Vehicle",
-    "settings": "Settings"
-  },
-  "side-bar-workshop": {
-    "profile": "Profile",
-    "dashboard": "Dashboard",
-    "workshop": "Workshop",
-    "requests": "Requests",
-    "manageTechnicians": "Manage Technicians",
-    "statusVehicles": "Status of Vehicles",
-    "settings": "Settings"
-  },
-  "button-logout": {
-    "logout": "Logout"
+  "workshop": {
+    "catalog": "Workshops",
+    "search": "Search Workshop",
+    "select-department": "Select Department",
+    "select-district": "Select District",
+    "search-button": "Search Workshop",
+    "workshop-selection": "Workshop Selection",
+    "technician-count": "Number of technicians",
+    "available-technicians": "Available technicians",
+    "select-workshop": "Select Workshop",
+    "view-technicians": "View Technicians",
+    "no-workshops-available": "No workshops available in this district",
+    "available-technicians-at": "Available Technicians at",
+    "back-to-workshops": "Back to Workshops",
+    "years-old": "years old",
+    "available": "Available",
+    "not-available": "Not Available",
+    "select-technician": "Select Technician",
+    "no-technicians-available": "No technicians available at this workshop"
   }
 }

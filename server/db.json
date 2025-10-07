@@ -1,0 +1,107 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "address": "Av. Universitaria 648",
+      "district": "San Miguel",
+      "department": "Lima"
+    },
+    {
+      "id": 2,
+      "address": "Av. la Marina 3000",
+      "district": "San Miguel",
+      "department": "Lima"
+    },
+    {
+      "id": 3,
+      "address": "Av. Los Incas 250",
+      "district": "Surco",
+    "department": "Lima"
+    },
+    {
+      "id": 4,
+      "address": "Jr. Huancavelica 123",
+      "district": "Cercado de Lima",
+      "department": "Lima"
+    }
+  ],
+  "autoRepairs": [
+    {
+      "id": 1,
+      "ruc": "988747988",
+      "contactEmail": "contact@alvillantas.com",
+      "name": "Alvillantas",
+      "locationId": 1,
+      "rating": 5.0,
+      "totalTechnicians": 15,
+      "availableTechnicians": 8
+    },
+    {
+      "id": 2,
+      "ruc": "989747989",
+      "contactEmail": "info@mecamotriz.com",
+      "name": "MecaMotriz",
+      "locationId": 2,
+      "rating": 4.8,
+      "totalTechnicians": 10,
+      "availableTechnicians": 10
+    },
+    {
+      "id": 3,
+      "ruc": "987654321",
+      "contactEmail": "contact@tallercentral.com",
+      "name": "Taller Central",
+      "locationId": 3,
+      "rating": 4.5,
+      "totalTechnicians": 12,
+      "availableTechnicians": 6
+    },
+    {
+      "id": 4,
+      "ruc": "912345678",
+      "contactEmail": "info@rapidfix.com",
+      "name": "RapidFix",
+      "locationId": 4,
+      "rating": 4.2,
+      "totalTechnicians": 8,
+      "availableTechnicians": 3
+    }
+  ],
+  "technicians": [
+    {
+      "id": 1,
+      "name": "Juan Pérez",
+      "age": 28,
+      "autoRepairId": 1,
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "María González",
+      "age": 32,
+      "autoRepairId": 1,
+      "available": true
+    },
+    {
+      "id": 3,
+      "name": "Carlos López",
+      "age": 35,
+      "autoRepairId": 2,
+      "available": false
+    },
+    {
+      "id": 4,
+      "name": "Ana Torres",
+      "age": 29,
+      "autoRepairId": 3,
+      "available": true
+    },
+    {
+      "id": 5,
+      "name": "Pedro Martínez",
+      "age": 31,
+      "autoRepairId": 4,
+      "available": true
+    }
+  ]
+}
