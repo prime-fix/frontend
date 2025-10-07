@@ -1,0 +1,285 @@
+.gestionar-tecnicos-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  background-color: #1e4a5f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 20px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.nav-item.active {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: #ffa726;
+  font-weight: 600;
+}
+
+.nav-item svg {
+  flex-shrink: 0;
+}
+
+.btn-cerrar-sesion {
+  margin: 20px 20px 0;
+  padding: 14px 24px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: #f57c00;
+}
+
+/* Main Content Styles */
+.main-content {
+  flex: 1;
+  padding: 40px 60px;
+  overflow-y: auto;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #1e4a5f;
+}
+
+.content-header h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1e4a5f;
+  margin: 0;
+}
+
+.btn-agregar {
+  padding: 12px 28px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+.btn-agregar:hover {
+  background-color: #f57c00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+/* Técnicos Lista */
+.tecnicos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tecnico-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s;
+}
+
+.tecnico-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.tecnico-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+}
+
+.horarios {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.horario-item {
+  display: flex;
+  gap: 40px;
+  font-size: 15px;
+}
+
+.dia {
+  color: #333;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.horas {
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.tecnico-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 140px;
+}
+
+.btn-editar,
+.btn-eliminar {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.btn-editar {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.btn-editar:hover {
+  background-color: #f57c00;
+  transform: translateY(-1px);
+}
+
+.btn-eliminar {
+  background-color: #fff;
+  color: #ff9800;
+  border: 2px solid #ff9800;
+}
+
+.btn-eliminar:hover {
+  background-color: #fff3e0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  .main-content {
+    padding: 30px 40px;
+  }
+
+  .content-header h1 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gestionar-tecnicos-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .btn-agregar {
+    width: 100%;
+  }
+
+  .tecnico-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .tecnico-acciones {
+    width: 100%;
+  }
+
+  .horario-item {
+    gap: 20px;
+  }
+
+  .dia {
+    min-width: 70px;
+  }
+}
