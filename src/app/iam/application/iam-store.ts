@@ -68,6 +68,60 @@ export class IamStore {
     this.loadUsers();
     this.loadPayments();
     this.loadLocations();
+
+    // Restore session from localStorage on app initialization
+    this.restoreSessionFromStorage();
+  }
+
+  /**
+   * Restores user session from localStorage if available
+   */
+  private restoreSessionFromStorage(): void {
+    try {
+      const sessionData = localStorage.getItem('prime-fix-session');
+      if (sessionData) {
+        const { userAccount, user } = JSON.parse(sessionData);
+        if (userAccount && user) {
+          this.sessionUserAccountSignal.set(userAccount);
+          this.sessionUserSignal.set(user);
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to restore session from localStorage:', error);
+      this.clearSessionStorage();
+    }
+  }
+
+  /**
+   * Saves current session to localStorage
+   */
+  private saveSessionToStorage(): void {
+    try {
+      const userAccount = this.sessionUserAccount();
+      const user = this.sessionUser();
+
+      if (userAccount && user) {
+        const sessionData = {
+          userAccount,
+          user,
+          timestamp: Date.now()
+        };
+        localStorage.setItem('prime-fix-session', JSON.stringify(sessionData));
+      }
+    } catch (error) {
+      console.warn('Failed to save session to localStorage:', error);
+    }
+  }
+
+  /**
+   * Clears session data from localStorage
+   */
+  private clearSessionStorage(): void {
+    try {
+      localStorage.removeItem('prime-fix-session');
+    } catch (error) {
+      console.warn('Failed to clear session from localStorage:', error);
+    }
   }
 
   getUserById(id: string | null  | undefined): Signal<User | undefined> {
@@ -364,6 +418,7 @@ export class IamStore {
       }
       this.sessionUserAccountSignal.set(account);
       this.sessionUserSignal.set(user);
+      this.saveSessionToStorage(); // Save session to localStorage
       this.loadingSignal.set(false);
     };
 
@@ -397,6 +452,7 @@ export class IamStore {
   logout(): void {
     this.sessionUserAccountSignal.set(null);
     this.sessionUserSignal.set(null);
+    this.clearSessionStorage(); // Clear session from localStorage on logout
   }
 
   /**

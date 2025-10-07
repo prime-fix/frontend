@@ -12,7 +12,7 @@ const layoutOwner = () => import('@shared/presentation/components/layout-owner/l
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
 const homeWorkshop = () => import('@shared/presentation/views/home-workshop/home-workshop').then(m => m.HomeWorkshop);
-const trackVehicle = () => import('@shared/presentation/views/track-vehicle/track-vehicle').then(m => m.TrackVehicle);
+const trackVehicle = () => import('@tracking/presentation/views/track-vehicle/track-vehicle').then(m => m.TrackVehicle);
 const pageNotFound = () => import('@shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
 const baseTitle = 'Prime Fix';
 
@@ -58,13 +58,13 @@ export const routes: Routes = [
     loadComponent: layoutOwner,
     children: [
       {
-        path: '',
+        path: 'home-owner',
         loadComponent: homeOwner,
         title: `${baseTitle} -  Home Owner`,
       },
       {
-        path: 'track-vehicle',
-        loadComponent: trackVehicle,
+        path: 'maintenance-tracking',
+        loadChildren : () => import('@tracking/presentation/views/tracking.routes').then(m => m.trackingRoutes),
         title: `${baseTitle} -  Track Vehicle`,
       },
       {
@@ -74,7 +74,7 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: ''
+        redirectTo: 'home-owner'
       }
     ]
   },
@@ -84,7 +84,7 @@ export const routes: Routes = [
     loadComponent: layoutWorkshop,
     children: [
       {
-        path: '',
+        path: 'home-workshop',
         loadComponent: homeWorkshop,
         title: `${baseTitle} -  Home Workshop`,
       },
