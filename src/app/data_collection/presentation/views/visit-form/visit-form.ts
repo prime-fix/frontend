@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-visit-form',
@@ -22,6 +23,7 @@ export class VisitForm {
   private router=inject(Router)
   private route=inject(ActivatedRoute);
   private store=inject(DataCollection);
+  private location = inject(Location);
 
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -71,7 +73,7 @@ export class VisitForm {
     const formValue = this.form.value;
     if (this.form.invalid) return;
     const visit = new Visit({
-      id_visit: this.visitId ?? 0,
+      id_visit: this.visitId ?? `V${Date.now()}`,
       failure: formValue.failure ?? '',
       id_vehicle: formValue.id_vehicle ?? '',
       time_visit: formValue.time_visit
@@ -85,14 +87,15 @@ export class VisitForm {
 
     if (this.isEdit) {
       this.store.updateVisit(visit);
+
     } else {
       this.store.addVisit(visit);
     }
 
-    this.router.navigate(['visits']).then();
+    this.router.navigate(['visits/alert']).then();
   }
 
   goBack() {
-    this.router.navigate(['auto_repair']).then();
+    this.location.back();
   }
 }
