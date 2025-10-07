@@ -11,6 +11,6 @@ export const dataRoutes: Routes = [
   { path: 'new', loadComponent: visitForm},
   { path:'list', loadComponent: visitList},
   { path:'auto_list', loadComponent:repairList},
-  { path:'edit/:id', loadComponent: visitForm},
-  {path:'alert', loadComponent:completedScreen}
+  { path:'edit/:id', loadComponent: visitForm,data:{renderMode:'client'}},
+  { path:'alert', loadComponent:completedScreen}
 ];
