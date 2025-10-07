@@ -1,0 +1,98 @@
+{
+  "auto_repair_register": [
+    {
+      "id_auto_repair": "AR0001",
+      "RUC": "20547896541",
+      "contact_email": "tallerlima@example.com",
+      "technicians_count": 12,
+      "id_location": "LOC001"
+    },
+    {
+      "id_auto_repair": "AR0002",
+      "RUC": "20658974512",
+      "contact_email": "autorepairnorth@example.com",
+      "technicians_count": 8,
+      "id_location": "LOC002"
+    },
+    {
+      "id_auto_repair": "AR0003",
+      "RUC": "20789562147",
+      "contact_email": "speedfix@example.com",
+      "technicians_count": 15,
+      "id_location": "LOC003"
+    },
+    {
+      "id_auto_repair": "AR0004",
+      "RUC": "20865471235",
+      "contact_email": "autopower@example.com",
+      "technicians_count": 6,
+      "id_location": "LOC004"
+    },
+    {
+      "id_auto_repair": "AR0005",
+      "RUC": "20987451236",
+      "contact_email": "fastservice@example.com",
+      "technicians_count": 10,
+      "id_location": "LOC005"
+    }
+  ],
+
+  "technician_register": [
+    {
+      "id_technisian": "TCH001",
+      "name": "Luis Ramírez",
+      "age": 29,
+      "id_user_acount": "USR001",
+      "id_auto_repair": "AR0001"
+    },
+    {
+      "id_technisian": "TCH002",
+      "name": "Carlos Mendoza",
+      "age": 34,
+      "id_user_acount": "USR002",
+      "id_auto_repair": "AR0001"
+    },
+    {
+      "id_technisian": "TCH003",
+      "name": "María López",
+      "age": 27,
+      "id_user_acount": "USR003",
+      "id_auto_repair": "AR0002"
+    },
+    {
+      "id_technisian": "TCH004",
+      "name": "Jorge Torres",
+      "age": 40,
+      "id_user_acount": "USR004",
+      "id_auto_repair": "AR0003"
+    },
+    {
+      "id_technisian": "TCH005",
+      "name": "Ana Castillo",
+      "age": 31,
+      "id_user_acount": "USR005",
+      "id_auto_repair": "AR0003"
+    },
+    {
+      "id_technisian": "TCH006",
+      "name": "Ricardo Díaz",
+      "age": 25,
+      "id_user_acount": "USR006",
+      "id_auto_repair": "AR0004"
+    },
+    {
+      "id_technisian": "TCH007",
+      "name": "Valeria Soto",
+      "age": 28,
+      "id_user_acount": "USR007",
+      "id_auto_repair": "AR0005"
+    },
+    {
+      "id_technisian": "TCH008",
+      "name": "Pedro Gutiérrez",
+      "age": 36,
+      "id_user_acount": "USR008",
+      "id_auto_repair": "AR0005"
+    }
+  ]
+}
