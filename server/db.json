@@ -1,32 +1,40 @@
 {
-  "AutoRepair": [
+  "user_accounts": [
     {
-      "id_auto_repair": "AR0001",
-      "RUC": "20547896541",
-      "contact_email": "tallerlima@example.com",
-      "technicians_count": 12,
-      "id_location": "LOC001"
+      "id_user_account": "UA002",
+      "username": "Emily33",
+      "email": "emily.johnson@hotmail.com",
+      "id_user": "U002",
+      "id_role": "R001",
+      "id_membership": "M002",
+      "password": "hashed_password_2"
     },
     {
-      "id_auto_repair": "AR0002",
-      "RUC": "20658974512",
-      "contact_email": "autorepairnorth@example.com",
-      "technicians_count": 8,
-      "id_location": "LOC002"
+      "id_user_account": "UA001",
+      "username": "John23",
+      "email": "john.smith@gmail.com",
+      "id_user": "U001",
+      "id_role": "R001",
+      "id_membership": "M001",
+      "password": "hashed_password_1"
     },
     {
-      "id_auto_repair": "AR0003",
-      "RUC": "20789562147",
-      "contact_email": "speedfix@example.com",
-      "technicians_count": 15,
-      "id_location": "LOC003"
+      "id_user_account": "UA003",
+      "username": "MikeB",
+      "email": "michael.brown@hotmail.com",
+      "id_user": "U003",
+      "id_role": "R001",
+      "id_membership": "M003",
+      "password": "hashed_password_3"
     },
     {
-      "id_auto_repair": "AR0004",
-      "RUC": "20865471235",
-      "contact_email": "autopower@example.com",
-      "technicians_count": 6,
-      "id_location": "LOC004"
+      "id_user_account": "UA004",
+      "username": "SophiaD",
+      "email": "sophia.davis@example.com",
+      "id_user": "U004",
+      "id_role": "R001",
+      "id_membership": "M002",
+      "password": "hashed_password_4"
     },
     {
       "id_user_account": "UA005",
@@ -74,35 +82,38 @@
       "password": "hashed_password_9"
     }
   ],
-
-  "Technician": [
+  "users": [
     {
-      "id_technician": "TCH001",
-      "name": "Luis Ramírez",
-      "age": 29,
-      "id_user_acount": "USR001",
-      "id_auto_repair": "AR0001"
+      "id_user": "U001",
+      "name": "John",
+      "last_name": "Smith",
+      "dni": "123456789",
+      "phone_number": "952-123-232",
+      "id_location": "L001"
     },
     {
-      "id_technician": "TCH002",
-      "name": "Carlos Mendoza",
-      "age": 34,
-      "id_user_acount": "USR002",
-      "id_auto_repair": "AR0001"
+      "id_user": "U002",
+      "name": "Emily",
+      "last_name": "Johnson",
+      "dni": "987654321",
+      "phone_number": "942-321-123",
+      "id_location": "L002"
     },
     {
-      "id_technician": "TCH003",
-      "name": "María López",
-      "age": 27,
-      "id_user_acount": "USR003",
-      "id_auto_repair": "AR0002"
+      "id_user": "U003",
+      "name": "Michael",
+      "last_name": "Brown",
+      "dni": "456789012",
+      "phone_number": "933213231",
+      "id_location": "L003"
     },
     {
-      "id_technician": "TCH004",
-      "name": "Jorge Torres",
-      "age": 40,
-      "id_user_acount": "USR004",
-      "id_auto_repair": "AR0003"
+      "id_user": "U004",
+      "name": "Sophia",
+      "last_name": "Davis",
+      "dni": "654321987",
+      "phone_number": "921312312",
+      "id_location": "L004"
     },
     {
       "id_user": "U005",
@@ -206,18 +217,16 @@
       "department": "Lima"
     },
     {
-      "id_technician": "TCH006",
-      "name": "Ricardo Díaz",
-      "age": 25,
-      "id_user_acount": "USR006",
-      "id_auto_repair": "AR0004"
+      "id_location": "L003",
+      "address": "Av. Abancay 250",
+      "district": "Cercado de Lima",
+      "department": "Lima"
     },
     {
-      "id_technician": "TCH007",
-      "name": "Valeria Soto",
-      "age": 28,
-      "id_user_acount": "USR007",
-      "id_auto_repair": "AR0005"
+      "id_location": "L004",
+      "address": "Av. Primavera 456",
+      "district": "Santiago de Surco",
+      "department": "Lima"
     },
     {
       "id_location": "L005",
@@ -472,4 +481,3 @@
     }
   ]
 }
-

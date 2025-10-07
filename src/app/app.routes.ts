@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {authGuard} from '@shared/infrastructure/guards/auth.guard';
 import {Login} from '@iam/presentation/views/login/login';
+import {autoRepairRegisterRoutes} from './auto-repair-register/presentation/views/auto-repair-register.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -87,6 +88,11 @@ export const routes: Routes = [
         path: 'home-workshop',
         loadComponent: homeWorkshop,
         title: `${baseTitle} -  Home Workshop`,
+      },
+      {
+        path: 'manage-technicians',
+        loadChildren : () => import('@repair-register/presentation/views/auto-repair-register.routes').then(m => m.autoRepairRegisterRoutes),
+        title: `${baseTitle} -  Manage Technicians`,
       },
       {
         path: '404',

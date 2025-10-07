@@ -6,9 +6,6 @@ import { LanguageSwitcher } from '@shared/presentation/components/language-switc
   selector: 'app-root',
   imports: [RouterOutlet, LanguageSwitcher],
   templateUrl: './app.html',
-  imports: [
-    LayoutWorkshop
-  ],
   styleUrls: ['./app.css']
 })
 export class App {
