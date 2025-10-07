@@ -7,12 +7,14 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 
 export class StatusVehicleApiEndpoint extends BaseApiEndpoint<StatusVehicle, StatusVehicleResource, StatusVehicleResponse, StatusVehicleAssembler> {
+  protected override idQueryParamKey: string = environment.vehicleIdQueryParamKey;
+
   /**
    * Creates an instance of StatusVehicleApiEndpoint.
    * @param http - The HttpClient to be used for making API requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.platformProviderApiBaseUrl}${environment.platformProviderStatusVehicleEndpointPath}`,
-      new StatusVehicleAssembler());
+    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderVehiclesEndpointPath}`,
+      new StatusVehicleAssembler(), { usePathParams: environment.usePathParams });
   }
 }
