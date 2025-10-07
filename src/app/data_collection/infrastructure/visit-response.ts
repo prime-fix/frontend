@@ -4,11 +4,11 @@ export interface VisitsResponse extends BaseResponse{
   visits:VisitResource[];
 }
 export interface VisitResource extends BaseResource{
-  id:number;
+  id_visit:number| string;
   failure:string;
-  id_vehicle:number;
+  id_vehicle:number|string;
   time_visit:string;
-  id_auto_repair:number;
-  id_service:number
+  id_auto_repair:number|string;
+  id_service:number|string;
   status:string
 }

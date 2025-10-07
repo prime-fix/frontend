@@ -3,7 +3,7 @@ import {BaseApi} from '@shared/infrastructure/http/base-api';
 import {ServiceApiEndpoint} from './service-api-endpoint';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {MainService} from '../domain/model/service.entity';
+import {Service} from '../domain/model/service.entity';
 import {AutoRepairApiEndpoint} from './auto-repair-api-endpoint';
 import {Repair} from '../domain/model/auto-repair.entity';
 import {VehicleApiEndpoint} from './vehicle-api-endpoint';
@@ -28,11 +28,11 @@ export class DataCollectionApi extends BaseApi {
     this.repairEndpoint = new AutoRepairApiEndpoint(http);
   }
 
-  getServices(): Observable<MainService[]> {
+  getServices(): Observable<Service[]> {
     return this.mainServiceEndpoint.getAll();
   }
 
-  getService(id: number): Observable<MainService> {
+  getService(id: number |string): Observable<Service> {
     return this.mainServiceEndpoint.getById(id);
   }
 
@@ -64,11 +64,12 @@ export class DataCollectionApi extends BaseApi {
     return this.visitEndpoint.create(visit);
   }
 
+
   updateVisit(visit: Visit): Observable<Visit> {
     return this.visitEndpoint.update(visit, visit.id);
   }
 
-  deleteVisit(id: number): Observable<void> {
+  deleteVisit(id: number | string): Observable<void> {
     return this.visitEndpoint.delete(id);
   }
 }

@@ -1,6 +1,6 @@
 import {computed, Injectable, Signal, signal} from '@angular/core';
 import {Vehicle} from '../domain/model/vehicle.entity';
-import {MainService} from '../domain/model/service.entity';
+import {Service} from '../domain/model/service.entity';
 import {Repair} from '../domain/model/auto-repair.entity';
 import {Visit} from '../domain/model/visit.entity';
 import {DataCollectionApi} from '../infrastructure/data-collection-api';
@@ -14,7 +14,7 @@ export class DataCollection {
 
   private readonly vehicleSignal = signal<Vehicle[]>([]);
   private readonly repairSignal = signal<Repair[]>([]);
-  private readonly serviceSignal= signal<MainService[]>([]);
+  private readonly serviceSignal= signal<Service[]>([]);
   private readonly visitSignal= signal<Visit[]>([]);
 
   readonly vehicles = this.vehicleSignal.asReadonly();
@@ -41,7 +41,7 @@ export class DataCollection {
     return fallbackMessage
   }
 
-  getVehicleById(id: number | null|undefined): Signal<Vehicle | undefined> {
+  getVehicleById(id: number | string | null|undefined): Signal<Vehicle | undefined> {
     return computed(() => id ? this.vehicles().find(c => c.id === id) : undefined);
   }
 
@@ -50,7 +50,7 @@ export class DataCollection {
     this.errorSignal.set(null);
     this.dataApi.createVisit(visit).pipe(retry(2)).subscribe({
       next: createVisit => {
-        this.visitSignal.update(visits => [...visits, createVisit]);
+        this.visitSignal.set([...this.visits(), createVisit]);
         this.loadingSignal.set(false);
       },
       error: err => {
@@ -73,7 +73,7 @@ export class DataCollection {
     })
   }
 
-  deleteVisit(id: number): void {
+  deleteVisit(id: number| string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.dataApi.deleteVisit(id).pipe(retry(2)).subscribe({
@@ -84,7 +84,7 @@ export class DataCollection {
     })
   }
 
-  getServiceById(id: number | null|undefined): Signal<MainService | undefined> {
+  getServiceById(id: number |string| null|undefined): Signal<Service | undefined> {
     return computed(() => id ? this.services().find(c => c.id === id) : undefined);
   }
 

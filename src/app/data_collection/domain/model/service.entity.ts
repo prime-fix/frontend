@@ -1,6 +1,6 @@
 import {BaseEntity} from '@shared/infrastructure/http/base-entity';
 
-export class MainService implements BaseEntity {
+export class Service implements BaseEntity {
    _id_service: number;
    _name: string;
    _description: string;

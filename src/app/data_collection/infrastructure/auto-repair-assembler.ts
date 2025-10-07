@@ -1,15 +1,15 @@
 import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
 import {Repair} from '../domain/model/auto-repair.entity';
-import {AutoRepairResponse, RepairResource} from './auto-repair-response';
+import {RepairResponse, RepairResource} from './auto-repair-response';
 
-export class AutoRepairAssembler implements BaseAssembler<Repair, RepairResource, AutoRepairResponse>{
-  toEntitiesFromResponse(response: AutoRepairResponse): Repair[] {
+export class AutoRepairAssembler implements BaseAssembler<Repair, RepairResource, RepairResponse>{
+  toEntitiesFromResponse(response: RepairResponse): Repair[] {
     return response.auto_repairs.map(resource => this.toEntityFromResource(resource as RepairResource));
   }
 
   toEntityFromResource(resource: RepairResource): Repair {
     return new Repair({
-      id: resource.id,
+      id_auto_repair: resource.id_auto_repair,
       RUC: resource.RUC,
       contact_email: resource.contact_email,
       technician_count: resource.technician_count
@@ -18,11 +18,11 @@ export class AutoRepairAssembler implements BaseAssembler<Repair, RepairResource
 
   toResourceFromEntity(entity: Repair): RepairResource {
     return {
-      id: entity.id,
+      id_auto_repair: entity.id,
       RUC: entity.RUC,
       contact_email: entity.contact_email,
       technician_count: entity.technician_count
-    };
+    } as RepairResource;
   }
 
 }

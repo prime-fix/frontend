@@ -8,5 +8,6 @@ const repairList=() => import('./repair-list/repair-list').then(m=>m.RepairList)
 export const dataRoutes: Routes = [
   { path: 'new', loadComponent: visitForm},
   { path:'list', loadComponent: visitList},
-  { path:'auto_list', loadComponent:repairList}
+  { path:'auto_list', loadComponent:repairList},
+  { path:'edit/:id', loadComponent: visitForm},
 ];

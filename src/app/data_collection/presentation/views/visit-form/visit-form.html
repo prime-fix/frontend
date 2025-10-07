@@ -1,9 +1,6 @@
 <div class="workshop-form-container">
-  <h1 class="form-title">Buscar taller</h1>
-
+  <h1 class="form-title">Programación de visita</h1>
   <div class="form-card">
-    <h2 class="section-title">Programación de visita</h2>
-
     <form [formGroup]="form" (ngSubmit)="submit()">
 
       <div class="form-group">
@@ -36,6 +33,22 @@
         </mat-form-field>
       </div>
 
+      <div class="form-group">
+        <label class="form-label">Tipo de Servicio</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="id_service" placeholder="Selecciona un modelo">
+            <mat-option [value]="null">Elegir un Servicio</mat-option>
+            @for (service of services(); track $index) {
+              <mat-option [value]="service.id">
+                {{ service.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+
       <div class="date-time-row">
         <div class="form-group half-width">
           <label class="form-label">Fecha</label>
@@ -65,7 +78,6 @@
           Agendar visita
         </button>
       </div>
-
     </form>
   </div>
 </div>

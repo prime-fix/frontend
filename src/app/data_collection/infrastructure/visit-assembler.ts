@@ -1,6 +1,7 @@
 import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
 import {Visit} from '../domain/model/visit.entity';
 import {VisitResource, VisitsResponse} from './visit-response';
+import {formatDate} from '@angular/common';
 
 export class VisitAssembler implements BaseAssembler<Visit, VisitResource, VisitsResponse>{
   toEntitiesFromResponse(response: VisitsResponse): Visit[] {
@@ -9,7 +10,7 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
 
   toEntityFromResource(resource: VisitResource): Visit {
     return new Visit({
-      id: resource.id,
+      id_visit: resource.id_visit,
       failure: resource.failure,
       id_vehicle: resource.id_vehicle,
       time_visit: resource.time_visit,
@@ -21,10 +22,10 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
 
   toResourceFromEntity(entity: Visit): VisitResource {
     return{
-      id: entity.id,
+      id_visit: entity.id,
       failure: entity.failure,
       id_vehicle: entity.id_vehicle,
-      time_visit: entity.time_visit,
+      time_visit:  entity.time_visit ? formatDate(entity.time_visit, 'yyyy-MM-dd', 'en-US') : null,
       id_auto_repair: entity.id_auto_repair,
       id_service: entity.id_service,
       status: entity.status

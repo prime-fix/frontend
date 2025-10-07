@@ -20,8 +20,8 @@ export class RepairList {
 
   repair = this.dataStore.repairs;
 
-  selectRepair(repairId: number) {
-    this.router.navigate(['/visits/new'], { queryParams: { id_auto_repair:Number(repairId)} });
+  selectRepair(repairId: number|string) {
+    this.router.navigate(['/visits/new'], { queryParams: { id_auto_repair:repairId} });
   }
 
 }

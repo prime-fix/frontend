@@ -99,10 +99,9 @@ export abstract class BaseApiEndpoint<
       );
     }
 
-    const params = new HttpParams().set('select', '*');
     const headers = new HttpHeaders().set('Prefer', 'return=representation');
 
-    return this.http.post<TResource | TResource[]>(this.endpointUrl, resource, { params, headers }).pipe(
+    return this.http.post<TResource | TResource[]>(this.endpointUrl, resource, { headers }).pipe(
       map((body) => {
         const res = Array.isArray(body) ? body[0] : body;
         return this.assembler.toEntityFromResource(res);
@@ -184,4 +183,3 @@ export abstract class BaseApiEndpoint<
     };
   }
 }
-

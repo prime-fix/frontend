@@ -26,20 +26,21 @@ export class VisitForm {
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     id_vehicle: new FormControl<number|string|null>(null),
-    time_visit: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    time_visit: new FormControl<string|null>('', { nonNullable: true, validators: [Validators.required] }),
     id_auto_repair: new FormControl<number|string|null>(null),
     id_service: new FormControl<number|string|null>(null),
     status: new FormControl<string>('Pendiente', { nonNullable: true, validators: [Validators.required] }),
   });
   visits = this.store.visits;
-  visitId: number | null = null;
+  visitId: number |string | null = null;
   isEdit = false;
   vehicles = this.store.vehicles;
   services = this.store.services;
 
+
   constructor() {
     this.route.params.subscribe(params => {
-      this.visitId = params['id'] ? +params['id'] : null;
+      this.visitId = params['id'] ?? null;
       this.isEdit = !!this.visitId;
 
       if (this.isEdit) {
@@ -63,20 +64,24 @@ export class VisitForm {
         this.form.patchValue({ id_auto_repair: repairId });
       }
     });
+
   }
 
   submit() {
-    console.log('Form values:', this.form.value);
+    const formValue = this.form.value;
     if (this.form.invalid) return;
     const visit = new Visit({
-      id: this.visitId ?? 0,
-      failure: this.form.value.failure!,
-      id_vehicle: Number(this.form.value.id_vehicle),
-      time_visit: this.form.value.time_visit!,
-      id_auto_repair: Number(this.form.value.id_auto_repair),
-      id_service: Number(this.form.value.id_service),
-      status: this.form.value.status!
+      id_visit: this.visitId ?? 0,
+      failure: formValue.failure ?? '',
+      id_vehicle: formValue.id_vehicle ?? '',
+      time_visit: formValue.time_visit
+        ? new Date(formValue.time_visit).toISOString().split('T')[0]
+        : null,
+      id_auto_repair: formValue.id_auto_repair ? formValue.id_auto_repair : null,
+      id_service: formValue.id_service ?? '',
+      status: formValue.status ?? ''
     });
+    console.log('Visit to send:', visit);
 
     if (this.isEdit) {
       this.store.updateVisit(visit);
