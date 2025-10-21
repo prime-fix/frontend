@@ -10,7 +10,7 @@ export const environment = {
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",
   primeFixProviderPaymentsEndpointPath: "/payments",
-  primeFixProviderRegisteredVehiclesEndpointPath: "/registered_vehicles",
+  primeFixProviderRegisteredVehiclesEndpointPath: "/vehicles",
   primeFixProviderRolesEndpointPath: "/roles",
   primeFixProviderServicesEndpointPath: "/services",
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",
