@@ -24,7 +24,7 @@ export abstract class BaseApiEndpoint<
 > {
   protected abstract readonly idQueryParamKey: string;
 
-  constructor(
+  protected constructor(
     protected http: HttpClient,
     protected endpointUrl: string,
     protected assembler: TAssembler,
