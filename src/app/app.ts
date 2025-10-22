@@ -9,6 +9,5 @@ import { LanguageSwitcher } from '@shared/presentation/components/language-switc
   styleUrls: ['./app.css']
 })
 export class App {
-  protected readonly userRole = signal('Vehicle Owner');
-  title = 'prime-fix';
+
 }
