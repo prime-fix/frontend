@@ -4,6 +4,8 @@ import { retry } from 'rxjs';
 import {AutoRepair} from '@register/domain/model/auto-repair.entity';
 import {Technician} from '@register/domain/model/technician.entity';
 import {RegisterApi} from '@register/infrastructure/register-api';
+import {UserAccount} from '@iam/domain/model/user-account.entity';
+import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -15,50 +17,72 @@ export class RegisterStore {
   /**
    * The Auto Repair registers signal.
    * @private
+   * @readonly
    */
   private readonly autoRepairsSignal = signal<AutoRepair[]>([]);
 
   /**
    * The Auto Repair registers as a readonly signal.
+   * @readonly
    */
   readonly autoRepairs = this.autoRepairsSignal.asReadonly();
 
   /**
    * The Technicians signal.
    * @private
+   * @readonly
    */
   private readonly techniciansSignal = signal<Technician[]>([]);
 
   /**
    * The Technicians as a readonly signal.
+   * @readonly
    */
   readonly technicians = this.techniciansSignal.asReadonly();
 
   /**
+   * The Technicians Schedules signal.
+   * @private
+   * @readonly
+   */
+  private readonly techniciansSchedulesSignal = signal<TechnicianSchedule[]>([]);
+
+  /**
+   * The Technician Schedules as a readonly signal.
+   * @readonly
+   */
+  readonly techniciansSchedules = this.techniciansSchedulesSignal.asReadonly();
+
+  /**
    * The loading state signal.
    * @private
+   * @readonly
    */
   private readonly loadingSignal = signal<boolean>(false);
+
   /**
    * The loading state as a readonly signal.
+   * @readonly
    */
   readonly loading = this.loadingSignal.asReadonly();
 
   /**
    * The error state signal.
    * @private
+   * @readonly
    */
   private readonly errorSignal = signal<string | null>(null);
 
   /**
    * The error state as a readonly signal.
+   * @readonly
    */
   readonly error = this.errorSignal.asReadonly();
-
 
   constructor(private autoRepairApi: RegisterApi) {
     this.loadAutoRepairs();
     this.loadTechnicians();
+    this.loadTechniciansSchedules();
   }
 
   /**
@@ -96,6 +120,7 @@ export class RegisterStore {
    * @param autoRepair - The Auto Repair register to add.
    * @returns void
    */
+
   addAutoRepair(autoRepair: AutoRepair): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
@@ -236,6 +261,97 @@ export class RegisterStore {
         },
         error: (err) => {
           this.errorSignal.set(this.formatError(err, 'Failed to delete technician'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  /**
+   * Loads the list of technician schedules.
+   * @private
+   * @returns void
+   */
+  private loadTechniciansSchedules(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairApi.getTechnicianSchedules().pipe(takeUntilDestroyed()).subscribe({
+        next: (schedules) => {
+          this.techniciansSchedulesSignal.set(schedules);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load technician schedules'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  /**
+   * Gets a Technician Schedule by ID.
+   * @param id - The ID of the Technician Schedule.
+   * @returns A signal containing the Technician Schedule or undefined if not found.
+   */
+  getTechnicianScheduleById(id: string | number | undefined): Signal<TechnicianSchedule | undefined> {
+    return computed(() => id ? this.techniciansSchedules().find(ts => ts.id === id) : undefined);
+  }
+
+  /**
+   * Adds a new Technician Schedule.
+   * @param schedule - The Technician Schedule to add.
+   * @returns void
+   */
+  addTechnicianSchedule(schedule: TechnicianSchedule): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairApi.createTechnicianSchedule(schedule).pipe(retry(2)).subscribe({
+        next: (createdSchedule) => {
+          this.techniciansSchedulesSignal.set([ ...this.techniciansSchedules(), createdSchedule ]);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to create technician schedule'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  /**
+   * Updates an existing Technician Schedule.
+   * @param schedule - The Technician Schedule to update.
+   * @returns void
+   */
+  updateTechnicianSchedule(schedule: TechnicianSchedule): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairApi.updateTechnicianSchedule(schedule).pipe(retry(2)).subscribe({
+        next: (updatedSchedule) => {
+          this.techniciansSchedulesSignal.update(schedules =>
+            schedules.map(ts => ts.id === updatedSchedule.id ? updatedSchedule : ts)
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to update technician schedule'));
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  /**
+   * Deletes a Technician Schedule by ID.
+   * @param id - The ID of the Technician Schedule to delete.
+   * @returns void
+   */
+  deleteTechnicianSchedule(id: string | number): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.autoRepairApi.deleteTechnicianSchedule(id).pipe(retry(2)).subscribe({
+        next: () => {
+          this.techniciansSchedulesSignal.update(schedules => schedules.filter(ts => ts.id !== id));
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to delete technician schedule'));
           this.loadingSignal.set(false);
         }
       });

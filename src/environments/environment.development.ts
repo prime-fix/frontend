@@ -7,7 +7,7 @@ export const environment = {
   // Endpoints Paths
   primeFixProviderAutoRepairsEndpointPath: "/auto_repairs",
   primeFixProviderTechniciansEndpointPath: "/technicians",
-  PrimeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",
+  primeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",
   primeFixProviderLocationsEndpointPath: "/locations",
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",

@@ -6,7 +6,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'layout-workshop/manage-technicians/auto-repairs/edit/**',
+    path: 'layout-workshop/manage-technicians/technicians/edit/**',
     renderMode: RenderMode.Server
   },
   {

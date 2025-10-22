@@ -368,6 +368,36 @@
       "name": "Andres",
       "last_name": "Silva",
       "id_auto_repair": "AR005"
+    },
+    {
+      "id_technician": "T007",
+      "name": "Rafael",
+      "last_name": "Mendoza",
+      "id_auto_repair": "AR002"
+    },
+    {
+      "id_technician": "T008",
+      "name": "Santiago",
+      "last_name": "Cruz",
+      "id_auto_repair": "AR003"
+    },
+    {
+      "id_technician": "T009",
+      "name": "Diego",
+      "last_name": "Flores",
+      "id_auto_repair": "AR004"
+    },
+    {
+      "id_technician": "T010",
+      "name": "Felipe",
+      "last_name": "Rojas",
+      "id_auto_repair": "AR005"
+    },
+    {
+      "id_technician": "T011",
+      "name": "Alberto",
+      "last_name": "Santos",
+      "id_auto_repair": "AR003"
     }
   ],
   "technician_schedules": [

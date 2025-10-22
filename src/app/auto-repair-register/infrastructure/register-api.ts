@@ -6,6 +6,8 @@ import {AutoRepairApiEndpoint} from '@register/infrastructure/auto-repair-api-en
 import {TechnicianApiEndpoint} from '@register/infrastructure/technician-api-endpoint';
 import {AutoRepair} from '@register/domain/model/auto-repair.entity';
 import {Technician} from '@register/domain/model/technician.entity';
+import {TechnicianScheduleApiEndpoint} from '@register/infrastructure/technician-schedule-api-endpoint';
+import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
 
 /**
  * API service for managing Auto Repair and Technician registers.
@@ -26,6 +28,13 @@ export class RegisterApi extends BaseApi {
    */
   private readonly technicianRegisterEndpoint: TechnicianApiEndpoint;
 
+
+  /**
+   * The TechnicianScheduleApiEndpoint instance for managing technician schedules.
+   * @private
+   */
+  private readonly technicianSchedulesEndpoint: TechnicianScheduleApiEndpoint;
+
   /**
    * Constructs a new instance of the Auto Repair Register Api.
    * @param http - The HttpClient used for making HTTP requests.
@@ -34,6 +43,7 @@ export class RegisterApi extends BaseApi {
     super();
     this.autoRepairEndpoint = new AutoRepairApiEndpoint(http);
     this.technicianRegisterEndpoint = new TechnicianApiEndpoint(http);
+    this.technicianSchedulesEndpoint = new TechnicianScheduleApiEndpoint(http);
   }
 
   /**
@@ -121,5 +131,49 @@ export class RegisterApi extends BaseApi {
    */
   deleteTechnician(id: string | number): Observable<void> {
     return this.technicianRegisterEndpoint.delete(Number(id));
+  }
+
+  /**
+   * Gets all Technician Schedules.
+   * @returns An Observable of an array of Technician Schedules.
+   */
+  getTechnicianSchedules(): Observable<TechnicianSchedule[]> {
+    return this.technicianSchedulesEndpoint.getAll();
+  }
+
+  /**
+   * Gets a Technician Schedule by its ID.
+   * @param id - The ID of the Technician Schedule.
+   * @returns An Observable of the Technician Schedule.
+   */
+  getTechnicianScheduleById(id: string | number): Observable<TechnicianSchedule> {
+    return this.technicianSchedulesEndpoint.getById(Number(id));
+  }
+
+  /**
+   * Creates a new Technician Schedule.
+   * @param technicianSchedule - The Technician Schedule to create.
+   * @returns An Observable of the created Technician Schedule.
+   */
+  createTechnicianSchedule(technicianSchedule: TechnicianSchedule): Observable<TechnicianSchedule> {
+    return this.technicianSchedulesEndpoint.create(technicianSchedule);
+  }
+
+  /**
+   * Updates an existing Technician Schedule.
+   * @param technicianSchedule - The Technician Schedule to update.
+   * @returns An Observable of the updated Technician Schedule.
+   */
+  updateTechnicianSchedule(technicianSchedule: TechnicianSchedule): Observable<TechnicianSchedule> {
+    return this.technicianSchedulesEndpoint.update(technicianSchedule, Number(technicianSchedule.id));
+  }
+
+  /**
+   * Deletes a Technician Schedule by its ID.
+   * @param id - The ID of the Technician Schedule to delete.
+   * @returns An Observable of void.
+   */
+  deleteTechnicianSchedule(id: string | number): Observable<void> {
+    return this.technicianSchedulesEndpoint.delete(Number(id));
   }
 }
