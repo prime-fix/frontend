@@ -6,9 +6,8 @@ import { LanguageSwitcher } from '@shared/presentation/components/language-switc
   selector: 'app-root',
   imports: [RouterOutlet, LanguageSwitcher],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
-  protected readonly userRole = signal('Vehicle Owner');
-  title = 'prime-fix';
+
 }

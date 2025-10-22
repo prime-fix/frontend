@@ -3,10 +3,13 @@ import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angula
 import {Router} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-register-workshop',
-  imports: [ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule,
+    ReactiveFormsModule,
+    TranslateModule],
   templateUrl: './register-workshop.html',
   styleUrl: './register-workshop.css',
   changeDetection: ChangeDetectionStrategy.OnPush

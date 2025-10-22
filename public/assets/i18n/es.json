@@ -191,6 +191,26 @@
     "departmentRequired": "El departamento es obligatorio",
     "districtRequired": "El distrito es obligatorio"
   },
+  "home-workshop": {
+    "welcome": "Bienvenido a tu panel de taller"
+  },
+  "manage-technicians": {
+    "title": "Gestionar técnicos",
+    "addTechnician": "Agregar técnico",
+    "noTechnicians": "No hay técnicos registrados",
+    "technician-card": {
+      "no-schedules-message": "Este técnico no tiene horarios",
+      "edit-button": "Editar",
+      "delete-button": "Eliminar",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado",
+      "sunday": "Domingo"
+    }
+  },
   "progress-bar": {
     "waiting": "En espera",
     "diagnosis": "En diagnóstico",

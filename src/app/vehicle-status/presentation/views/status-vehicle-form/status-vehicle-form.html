@@ -1,0 +1,32 @@
+<!-- <header class="main-header">
+  <h1>Estado de coches</h1>
+</header>-->
+
+<!-- vehicle-form.component.html
+<div class="request-card">
+  <div class="request-info">
+    <p class="request-vehicle">Coche: {{ store.vehicle }}</p>
+    <p class="request-license-plate">Placa: {{ store.license_plate }}</p>
+    <p class="request-owner">Dueño: {{ store.owner }}</p>
+  </div>
+
+  <div class="request-actions">
+    <button class="modify-button">Guardar</button>
+    <button class="finish-button">Cancelar</button>
+  </div>
+</div>
+-->
+<div class="request-card">
+  <div class="request-info">
+    <p class="request-vehicle">Coche: {{ vehicle.vehicle }}</p>
+    <p class="request-license-plate">Placa: {{ vehicle.license_plate }}</p>
+    <p class="request-owner">Dueño: {{ vehicle.owner }}</p>
+  </div>
+
+  <div class="request-actions">
+    <button class="modify-button" [routerLink]="['/vehicle-status/vehicle-diagnosis', vehicle.id]">
+      Modificar
+    </button>
+    <button class="finish-button">Finalizar</button>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import {authGuard} from '@shared/infrastructure/guards/auth.guard';
+import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 import {Login} from '@iam/presentation/views/login/login';
+import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -54,7 +55,7 @@ export const routes: Routes = [
   },
   {
     path: 'layout-owner',
-    canActivate: [authGuard],
+    canActivate: [roleGuard(['R001'])],
     loadComponent: layoutOwner,
     children: [
       {
@@ -80,13 +81,18 @@ export const routes: Routes = [
   },
   {
     path: 'layout-workshop',
-    canActivate: [authGuard],
+    canActivate: [roleGuard(['R002'])],
     loadComponent: layoutWorkshop,
     children: [
       {
         path: 'home-workshop',
         loadComponent: homeWorkshop,
         title: `${baseTitle} -  Home Workshop`,
+      },
+      {
+        path: 'manage-technicians',
+        loadChildren : () => autoRepairRegisterRoutes,
+        title: `${baseTitle} -  Manage Technicians`,
       },
       {
         path: '404',
@@ -103,4 +109,3 @@ export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: '**', redirectTo: 'login' },
 ];
-

@@ -201,6 +201,26 @@
     "departmentRequired": "Department is required",
     "districtRequired": "District is required"
   },
+  "home-workshop": {
+    "welcome": "Welcome to your workshop dashboard"
+  },
+  "manage-technicians": {
+    "title": "Manage Technicians",
+    "addTechnician": "Add Technician",
+    "noTechnicians": "No technicians added yet",
+    "technician-card": {
+      "no-schedules-message": "This technician has no schedules yet",
+      "edit-button": "Edit",
+      "delete-button": "Delete",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    }
+  },
   "progress-bar": {
     "waiting": "Waiting",
     "diagnosis": "In diagnosis",

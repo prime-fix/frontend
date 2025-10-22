@@ -199,20 +199,70 @@ export class IamStore {
   }
 
   /**
-   * Restores user session from localStorage if available
+   * Restores session from localStorage if valid session data exists.
+   * @private
    */
   private restoreSessionFromStorage(): void {
+    if (typeof localStorage === 'undefined') {
+      console.warn("localStorage is not available in this environment.");
+      return;
+    }
+
     try {
       const sessionData = localStorage.getItem('prime-fix-session');
       if (sessionData) {
-        const {userAccount, user} = JSON.parse(sessionData);
-        if (userAccount && user) {
+        const parsed = JSON.parse(sessionData);
+        const {userAccount: rawUserAccount, user: rawUser} = parsed;
+        const hasUserAccountData = rawUserAccount
+          && typeof rawUserAccount._id_role === 'string'
+          && rawUserAccount._id_role.length > 0
+          && (rawUserAccount._id_role === 'R001' || rawUserAccount._id_role === 'R002');
+
+        const hasUserData = rawUser
+          && typeof rawUser._id_user === 'string'
+          && rawUser._id_user.length > 0;
+
+        if (hasUserAccountData && hasUserData) {
+          const userAccount = new UserAccount({
+            id_user_account: rawUserAccount._id_user_account,
+            username: rawUserAccount._username,
+            email: rawUserAccount._email,
+            id_user: rawUserAccount._id_user,
+            id_role: rawUserAccount._id_role,
+            id_membership: rawUserAccount._id_membership,
+            password: rawUserAccount._password
+          });
+
+          const user = new User({
+            id_user: rawUser._id_user,
+            name: rawUser._name,
+            last_name: rawUser._last_name,
+            dni: rawUser._dni,
+            phone_number: rawUser._phone_number,
+            id_location: rawUser._id_location
+          });
+
           this.sessionUserAccountSignal.set(userAccount);
           this.sessionUserSignal.set(user);
+          const roleName = userAccount.id_role === 'R001' ? 'Vehicle Owner' : 'Auto Repair Workshop';
+          console.log(`Session restored: User ${userAccount.username || userAccount.email || user.name || 'Unknown'} with role ${userAccount.id_role} (${roleName})`);
+        } else {
+          console.error('NOT LOGGED - Corrupted session detected and cleared:', {
+            hasUserAccount: !!rawUserAccount,
+            hasValidRole: hasUserAccountData,
+            roleValue: rawUserAccount?._id_role,
+            hasUser: !!rawUser,
+            hasValidUserId: hasUserData
+          });
+          console.error('Corrupted session data:', parsed);
+          this.clearSessionStorage();
+          console.log('Please login again to create a new valid session');
         }
+      } else {
+        console.log('NOT LOGGED - No session found in localStorage');
       }
     } catch (error) {
-      console.warn('Failed to restore session from localStorage:', error);
+      console.warn('NOT LOGGED - Failed to restore session from localStorage:', error);
       this.clearSessionStorage();
     }
   }
@@ -242,6 +292,11 @@ export class IamStore {
    * Clears session data from localStorage
    */
   private clearSessionStorage(): void {
+    if (typeof localStorage === 'undefined') {
+      console.warn("localStorage is not available in this environment.");
+      return;
+    }
+
     try {
       localStorage.removeItem('prime-fix-session');
     } catch (error) {
