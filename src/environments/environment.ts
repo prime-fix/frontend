@@ -6,6 +6,8 @@ export const environment = {
 
   // Endpoints Paths
   primeFixProviderAutoRepairsEndpointPath: "/auto_repairs",
+  primeFixProviderTechniciansEndpointPath: "/technicians",
+  PrimeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",
   primeFixProviderLocationsEndpointPath: "/locations",
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",
@@ -22,6 +24,8 @@ export const environment = {
 
   // Query Param Keys
   autoRepairIdQueryParamKey: "id_auto_repair",
+  technicianIdQueryParamKey: "id_technician",
+  technicianScheduleIdQueryParamKey: "id_schedule",
   locationIdQueryParamKey: "id_location",
   membershipIdQueryParamKey: "id_membership",
   notificationIdQueryParamKey: "id_notification",
@@ -32,9 +36,4 @@ export const environment = {
   userAccountIdQueryParamKey: "id_user_account",
   userIdQueryParamKey: "id_user",
   visitIdQueryParamKey: "id_visit",
-
-  // BC autorepair-register
-  platformProviderApiBaseUrl: 'http://localhost:3000/api/v1',
-  primeFixProviderAutoRepairRegisterEndpointPath: '/auto_repair_register',
-  primeFixProviderTechnicianRegisterEndpointPath: '/technician_register',
 };

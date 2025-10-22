@@ -201,6 +201,42 @@
       "year": 2024,
       "cvv": 654,
       "id_user_account": "UA005"
+    },
+    {
+      "id_payment": "PY006",
+      "card_number": 3456345634563456,
+      "card_type": "MasterCard",
+      "month": 8,
+      "year": 2027,
+      "cvv": 987,
+      "id_user_account": "UA006"
+    },
+    {
+      "id_payment": "PY007",
+      "card_number": 2103210321032103,
+      "card_type": "American Express",
+      "month": 5,
+      "year": 2027,
+      "cvv": 159,
+      "id_user_account": "UA007"
+    },
+    {
+      "id_payment": "PY008",
+      "card_number": 6543654365436543,
+      "card_type": "Discover",
+      "month": 2,
+      "year": 2027,
+      "cvv": 753,
+      "id_user_account": "UA008"
+    },
+    {
+      "id_payment": "PY009",
+      "card_number": 7890789078907890,
+      "card_type": "Visa",
+      "month": 10,
+      "year": 2027,
+      "cvv": 852,
+      "id_user_account": "UA009"
     }
   ],
   "locations": [
@@ -265,35 +301,195 @@
       "ruc": "987654321",
       "contact_email": "taller1.contacto@hotmail.com",
       "technicians_count": 10,
-      "id_location": "L005"
+      "id_user_account": "UA005"
     },
     {
       "id_auto_repair": "AR002",
       "ruc": "123456789",
       "contact_email": "taller2.contacto@hotmail.com",
       "technicians_count": 8,
-      "id_location": "L006"
+      "id_user_account": "UA006"
     },
     {
       "id_auto_repair": "AR003",
       "ruc": "456789123",
       "contact_email": "taller3.contacto@hotmail.com",
       "technicians_count": 15,
-      "id_location": "L007"
+      "id_user_account": "UA007"
     },
     {
       "id_auto_repair": "AR004",
       "ruc": "789123456",
       "contact_email": "taller4.contacto@hotmail.com",
       "technicians_count": 12,
-      "id_location": "L008"
+      "id_user_account": "UA008"
     },
     {
       "id_auto_repair": "AR005",
       "ruc": "321654987",
       "contact_email": "taller5.contacto@hotmail.com",
       "technicians_count": 20,
-      "id_location": "L009"
+      "id_user_account": "UA009"
+    }
+  ],
+  "technicians": [
+    {
+      "id_technician": "T001",
+      "name": "Pedro",
+      "last_name": "Gomez",
+      "id_auto_repair": "AR001"
+    },
+    {
+      "id_technician": "T002",
+      "name": "Luis",
+      "last_name": "Fernandez",
+      "id_auto_repair": "AR001"
+    },
+    {
+      "id_technician": "T003",
+      "name": "Jorge",
+      "last_name": "Ramirez",
+      "id_auto_repair": "AR002"
+    },
+    {
+      "id_technician": "T004",
+      "name": "Miguel",
+      "last_name": "Torres",
+      "id_auto_repair": "AR003"
+    },
+    {
+      "id_technician": "T005",
+      "name": "Carlos",
+      "last_name": "Vargas",
+      "id_auto_repair": "AR004"
+    },
+    {
+      "id_technician": "T006",
+      "name": "Andres",
+      "last_name": "Silva",
+      "id_auto_repair": "AR005"
+    }
+  ],
+  "technician_schedules": [
+    {
+      "id_schedule": "TS001",
+      "id_technician": "T001",
+      "day_of_week": "Lunes",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS002",
+      "id_technician": "T001",
+      "day_of_week": "Martes",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS003",
+      "id_technician": "T001",
+      "day_of_week": "Wednesday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS004",
+      "id_technician": "T002",
+      "day_of_week": "Monday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS005",
+      "id_technician": "T002",
+      "day_of_week": "Tuesday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS006",
+      "id_technician": "T002",
+      "day_of_week": "Wednesday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS007",
+      "id_technician": "T003",
+      "day_of_week": "Thursday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS008",
+      "id_technician": "T003",
+      "day_of_week": "Friday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS009",
+      "id_technician": "T004",
+      "day_of_week": "Thursday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS010",
+      "id_technician": "T004",
+      "day_of_week": "Friday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS011",
+      "id_technician": "T005",
+      "day_of_week": "Monday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS012",
+      "id_technician": "T005",
+      "day_of_week": "Tuesday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS013",
+      "id_technician": "T006",
+      "day_of_week": "Wednesday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS014",
+      "id_technician": "T006",
+      "day_of_week": "Thursday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id_schedule": "TS015",
+      "id_technician": "T006",
+      "day_of_week": "Friday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
     }
   ],
   "ratings": [

@@ -19,7 +19,9 @@
       "@env/*": ["environments/*"],
       "@shared/*": ["app/shared/*"],
       "@iam/*": ["app/iam/*"],
-      "@repair-register/*": ["app/auto-repair-register/*"],
+      "@register/*": ["app/auto-repair-register/*"],
+      "@catalog/*": ["app/auto-repair-catalog/*"],
+      "@collections/*": ["app/data-collection/*"],
       "@tracking/*": ["app/maintenance-tracking/*"],
     }
   },
