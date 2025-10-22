@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import {authGuard} from '@shared/infrastructure/guards/auth.guard';
+import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 import {Login} from '@iam/presentation/views/login/login';
-import {autoRepairRegisterRoutes} from './auto-repair-register/presentation/views/auto-repair-register.routes';
+import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -55,7 +55,7 @@ export const routes: Routes = [
   },
   {
     path: 'layout-owner',
-    canActivate: [authGuard],
+    canActivate: [roleGuard(['R001'])],
     loadComponent: layoutOwner,
     children: [
       {
@@ -81,7 +81,7 @@ export const routes: Routes = [
   },
   {
     path: 'layout-workshop',
-    canActivate: [authGuard],
+    canActivate: [roleGuard(['R002'])],
     loadComponent: layoutWorkshop,
     children: [
       {
@@ -91,7 +91,7 @@ export const routes: Routes = [
       },
       {
         path: 'manage-technicians',
-        loadChildren : () => import('@repair-register/presentation/views/auto-repair-register.routes').then(m => m.autoRepairRegisterRoutes),
+        loadChildren : () => autoRepairRegisterRoutes,
         title: `${baseTitle} -  Manage Technicians`,
       },
       {
