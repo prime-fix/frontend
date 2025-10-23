@@ -1,0 +1,27 @@
+<div class="payment-selection-container">
+  <h2 class="title">Pago a realizar</h2>
+
+  <mat-card class="payment-selection-card">
+    <h1 class="card-title">Elegir método</h1>
+
+    <mat-form-field appearance="outline" class="payment-select">
+      <mat-label>Método</mat-label>
+      <mat-select [(value)]="selectedPayment">
+
+        @for (p of payments(); track p.id) {
+          <mat-option [value]="p.card_number">
+            {{ p.card_type }} - {{ p.card_number }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="buttons">
+      <button mat-stroked-button class="btn-secondary" (click)="goBack()">Volver</button>
+      <button mat-flat-button class="btn-primary" (click)="addMethod()">Añadir método</button>
+      <button mat-flat-button  class="btn-primary" (click)="pay()">Pagar</button>
+    </div>
+
+
+  </mat-card>
+</div>

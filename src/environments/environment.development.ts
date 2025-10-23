@@ -18,6 +18,8 @@ export const environment = {
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",
   primeFixProviderUsersEndpointPath: "/users",
   primeFixVisitsEndpointPath: "/visits",
+  primeFixProviderRatingsEndpointPath: "/ratings",
+  primeFixProviderVehiclesEndpointPath: "/vehicles",
 
   // API Key
   primeFixProviderApiKey: 'API_KEY',
@@ -36,4 +38,5 @@ export const environment = {
   userAccountIdQueryParamKey: "id_user_account",
   userIdQueryParamKey: "id_user",
   visitIdQueryParamKey: "id_visit",
+  ratingIdQueryParamKey: "id_rating"
 };

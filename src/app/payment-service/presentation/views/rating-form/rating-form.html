@@ -1,0 +1,40 @@
+<div class="rating-container">
+  <h2 class="title">Calificar servicio</h2>
+
+  <mat-card class="rating-card">
+    <form [formGroup]="form">
+      <h1 class="rating-title">Calificación del servicio</h1>
+      <p class="rating-text">
+        ¿Cómo se siente con el servicio brindado?<br />
+        (5 es completamente satisfecho y 1 es completamente insatisfecho)
+      </p>
+
+      <div class="stars">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <button
+            type="button"
+            class="star-button"
+            [class.selected]="form.value.star_rating && form.value.star_rating >= i"
+            (click)="selectRating(i)"
+          >
+            {{ i }}
+          </button>
+        }
+      </div>
+
+      <p class="comment-label">Dejar un comentario (opcional)</p>
+      <mat-form-field appearance="outline" class="comment-field">
+        <mat-label>Comentario</mat-label>
+        <input
+          matInput
+          formControlName="comment"
+          placeholder="Escriba su comentario aquí"
+        />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-flat-button class="btn-accept" (click)="submit()">Calificar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

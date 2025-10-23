@@ -1,0 +1,66 @@
+<div class="payment-form-container">
+  <h1 class="title">Añadir método de pago</h1>
+
+  <mat-card class="payment-form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Número de la tarjeta</mat-label>
+        <input matInput formControlName="card_number" />
+        @if (form.controls.card_number.touched && form.controls.card_number.invalid) {
+          <mat-error>Número inválido (16 dígitos requeridos)</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de tarjeta</mat-label>
+        <mat-select formControlName="card_type">
+          @for (type of cardTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mes</mat-label>
+        <mat-select formControlName="month">
+          @for (m of months; track m) {
+            <mat-option [value]="m">{{ m }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Año</mat-label>
+        <mat-select formControlName="year">
+          @for (y of years; track y) {
+            <mat-option [value]="y">{{ y }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CCV</mat-label>
+        <input matInput formControlName="cvv" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento</mat-label>
+        <mat-select formControlName="doc_type">
+          @for (d of docTypes; track d) {
+            <mat-option [value]="d">{{ d }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número de documento</mat-label>
+        <input matInput formControlName="doc_number" />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-flat-button color="primary" class="btn-add" type="submit">Añadir</button>
+      </div>
+    </form>
+  </mat-card>
+
+</div>
