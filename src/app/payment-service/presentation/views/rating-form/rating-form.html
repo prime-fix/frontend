@@ -1,12 +1,11 @@
 <div class="rating-container">
-  <h2 class="title">Calificar servicio</h2>
+  <h2 class="title">{{'rating-form.title' | translate}}</h2>
 
   <mat-card class="rating-card">
     <form [formGroup]="form">
-      <h1 class="rating-title">Calificación del servicio</h1>
+      <h1 class="rating-title">{{'rating-form.serviceRating' | translate}}</h1>
       <p class="rating-text">
-        ¿Cómo se siente con el servicio brindado?<br />
-        (5 es completamente satisfecho y 1 es completamente insatisfecho)
+        {{'rating-form.question' | translate}}
       </p>
 
       <div class="stars">
@@ -22,18 +21,18 @@
         }
       </div>
 
-      <p class="comment-label">Dejar un comentario (opcional)</p>
+      <p class="comment-label">{{'rating-form.commentLabel' | translate}}</p>
       <mat-form-field appearance="outline" class="comment-field">
-        <mat-label>Comentario</mat-label>
+        <mat-label>{{'rating-form.commentPlaceholder' | translate}}</mat-label>
         <input
           matInput
           formControlName="comment"
-          placeholder="Escriba su comentario aquí"
+          placeholder= "{{'rating-form.commentField' | translate}}"
         />
       </mat-form-field>
 
       <div class="button-container">
-        <button mat-flat-button class="btn-accept" (click)="submit()">Calificar</button>
+        <button mat-flat-button class="btn-accept" (click)="submit()">{{'rating-form.rateButton' | translate}}</button>
       </div>
     </form>
   </mat-card>

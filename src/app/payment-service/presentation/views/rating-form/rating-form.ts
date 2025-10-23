@@ -6,13 +6,14 @@ import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angula
 import {Router} from '@angular/router';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Rating} from '../../../domain/model/rating.entity';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rating-form',
   imports: [MatCardModule,
     MatButtonModule,
     MatInputModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule, TranslatePipe],
   templateUrl: './rating-form.html',
   styleUrl: './rating-form.css'
 })

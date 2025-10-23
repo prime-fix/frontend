@@ -237,6 +237,67 @@
     "message": "Tu coche actualmente está \"Listo para recoger\"",
     "accept": "Aceptar"
   },
+
+  "payment-service": {
+    "title": "Pago a realizar",
+    "detail": "Detalle",
+    "idVisit": "ID de la visita",
+    "status": "Estado",
+    "visitDate": "Fecha de la visita",
+    "cash": "Efectivo",
+    "virtualPayment": "Pago virtual",
+    "btnAccept": "Aceptar"
+  },
+  "payment-done": {
+    "title": "Pago a realizar",
+    "paid": "Servicio ya pagado",
+    "done": "Pago completado con éxito",
+    "btnAccept": "Aceptar"
+  },
+  "payment-form": {
+    "title": "Añadir un nuevo método de pago",
+    "cardNumber": "Número de la tarjeta",
+    "invalidCardNumber": "Número inválido (se requieren 16 dígitos)",
+    "cardType": "Tipo de tarjeta",
+    "month": "Mes",
+    "year": "Año",
+    "cvv": "CVV",
+    "docType": "Tipo de documento",
+    "docNumber": "Número de documento",
+    "addButton": "Añadir"
+  },
+  "payment-selection": {
+    "title": "Pago a realizar",
+    "chooseMethod": "Elegir método",
+    "method": "Método",
+    "backButton": "Volver",
+    "addMethodButton": "Añadir método",
+    "payButton": "Pagar"
+  },
+  "rating": {
+    "title": "Calificar servicio",
+    "serviceRating": "Calificación del servicio",
+    "message": "Se ha completado el servicio. <br/> ¿Desea calificarlo?",
+    "laterButton": "Ahora no",
+    "rateNowButton": "Calificar"
+  },
+  "rating-done": {
+    "title": "Calificar servicio",
+    "doneTitle": "Listo",
+    "message": "Proceso de calificación terminado",
+    "acceptButton": "Aceptar"
+  },
+  "rating-form": {
+    "title": "Calificar servicio",
+    "serviceRating": "Calificación del servicio",
+    "question": "¿Cómo se siente con el servicio brindado?<br /> (5 significa completamente satisfecho y 1 completamente insatisfecho)",
+    "commentLabel": "Dejar un comentario (opcional)",
+    "commentPlaceholder": "Escriba su comentario aquí",
+    "commentField": "Comentario",
+    "rateButton": "Calificar"
+  },
+
+
   "page-not-found": {
     "title": "Página no encontrada",
     "content": "La ruta <strong>{{ invalid_path }}</strong> no es válida.",

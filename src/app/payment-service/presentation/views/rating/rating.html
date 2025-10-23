@@ -1,16 +1,15 @@
 <div class="rating-container">
-  <h2 class="title">Calificar servicio</h2>
+  <h2 class="title">{{'rating.title' | translate}}</h2>
 
   <mat-card class="rating-card">
-    <h1 class="rating-title">Calificación del servicio</h1>
+    <h1 class="rating-title">{{'serviceRating.title' | translate}}</h1>
     <p class="rating-text">
-      Se ha culminado con la atención. <br/>
-      ¿Desea calificar el servicio?
+      {{'serviceRating.message' | translate}}
     </p>
 
     <div class="button-container">
-      <button mat-flat-button class="btn-cancel" (click)="onLater()">Ahora no</button>
-      <button mat-flat-button class="btn-accept" (click)="onRateNow()">Calificar</button>
+      <button mat-flat-button class="btn-cancel" (click)="onLater()">{{'serviceRating.laterButton' | translate}}</button>
+      <button mat-flat-button class="btn-accept" (click)="onRateNow()">{{'serviceRating.rateNowButton' | translate}}</button>
     </div>
   </mat-card>
 

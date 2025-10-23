@@ -6,12 +6,13 @@ import {MatRadioModule} from '@angular/material/radio';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Router} from '@angular/router';
 import {Visit} from '../../../domain/model/visit.entity';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 
 @Component({
   selector: 'app-payment',
-  imports: [MatButtonModule,MatCardModule,MatRadioModule],
+  imports: [MatButtonModule, MatCardModule, MatRadioModule, TranslatePipe],
   templateUrl: './payment.html',
   styleUrl: './payment.css'
 })

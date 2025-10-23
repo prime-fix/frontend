@@ -1,9 +1,9 @@
 <div class="payment-done-container">
-  <h2 class="title">Pago a realizar</h2>
+  <h2 class="title">{{'payment-done.title' |translate}}</h2>
 
   <mat-card class="payment-done-card">
-    <h1 class="payment-done-title">Servicio pagado</h1>
-    <p class="payment-done-text">El pago fue concretado con éxito</p>
+    <h1 class="payment-done-title">{{'payment-done.paid' |translate}}</h1>
+    <p class="payment-done-text">{{'payment-done.done' |translate}}</p>
 
     <div>
       <button
@@ -12,7 +12,7 @@
         class="btn-accept"
         (click)="next()"
       >
-        Aceptar
+        {{'payment-done.btnAccept' |translate}}
       </button>
     </div>
 

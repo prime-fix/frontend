@@ -6,13 +6,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {Router} from '@angular/router';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Payment} from '../../../domain/model/payment.entity';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payment-selection',
   imports: [MatButtonModule,
     MatCardModule,
     MatSelectModule,
-    MatFormFieldModule],
+    MatFormFieldModule, TranslatePipe],
   templateUrl: './payment-selection.html',
   styleUrl: './payment-selection.css'
 })

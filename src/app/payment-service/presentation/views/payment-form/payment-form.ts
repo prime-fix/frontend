@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { PaymentServiceStore } from '../../../application/payment-service-store';
 import { Payment } from '../../../domain/model/payment.entity';
 import {MatCardModule} from '@angular/material/card';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payment-form',
@@ -16,7 +17,7 @@ import {MatCardModule} from '@angular/material/card';
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
-    MatCardModule],
+    MatCardModule, TranslatePipe],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.css'
 })
