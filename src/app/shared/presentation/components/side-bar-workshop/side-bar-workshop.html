@@ -7,62 +7,19 @@
 
   <nav class="sidebar-nav">
     <ul>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#user"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.profile' | translate }}
-        </span>
-      </li>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#category"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.dashboard' | translate }}
-        </span>
-      </li>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#tool"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.workshop' | translate }}
-        </span>
-      </li>
-      <li class="nav-item active">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#clipboard"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.requests' | translate }}
-        </span>
-      </li>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#users"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.manageTechnicians' | translate }}
-        </span>
-      </li>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#diamonds"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.statusVehicles' | translate }}
-        </span>
-      </li>
-      <li class="nav-item">
-        <svg class="nav-icon">
-          <use href="/assets/icons/sprite.symbol.svg#settings-bolt"></use>
-        </svg>
-        <span>
-          {{ 'side-bar-workshop.settings' | translate }}
-        </span>
-      </li>
+      @for (item of menuItems; track item.route) {
+        <li
+          class="nav-item"
+          [class.active]="isActiveRoute(item.route)"
+          (click)="navigateTo(item.route)">
+          <svg class="nav-icon">
+            <use [attr.href]="'/assets/icons/sprite.symbol.svg#' + item.icon"></use>
+          </svg>
+          <span>
+            {{ item.label | translate }}
+          </span>
+        </li>
+      }
     </ul>
   </nav>
 

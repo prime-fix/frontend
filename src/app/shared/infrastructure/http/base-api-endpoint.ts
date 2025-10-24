@@ -1,10 +1,11 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {BaseEntity} from './base-entity';
-import {BaseResource, BaseResponse} from './base-response';
-import {BaseAssembler} from './base-assembler';
-import {BaseApiConfig} from '@shared/infrastructure/http/base-api-config';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { BaseEntity } from './base-entity';
+import { BaseResource, BaseResponse } from './base-response';
+import { BaseAssembler } from './base-assembler';
+import { BaseApiConfig } from '@shared/infrastructure/http/base-api-config';
 
 /**
  * Base class for API endpoint operations with generic CRUD functionality.
@@ -14,6 +15,7 @@ import {BaseApiConfig} from '@shared/infrastructure/http/base-api-config';
  * @template TResponse - The response type, must extend BaseResponse.
  * @template TAssembler - The assembler type implementing BaseAssembler with matching generics.
  */
+@Injectable()
 export abstract class BaseApiEndpoint<
   TEntity extends BaseEntity,
   TResource extends BaseResource,
@@ -22,7 +24,7 @@ export abstract class BaseApiEndpoint<
 > {
   protected abstract readonly idQueryParamKey: string;
 
-  constructor(
+  protected constructor(
     protected http: HttpClient,
     protected endpointUrl: string,
     protected assembler: TAssembler,
@@ -36,15 +38,12 @@ export abstract class BaseApiEndpoint<
    */
   getAll(): Observable<TEntity[]> {
     let params = new HttpParams();
-
-    if(!this.config.usePathParams) {
+    if (!this.config.usePathParams) {
       params = params.set('select', '*');
     }
-
     const options = {
       params: params,
     }
-
     return this.http.get<TResponse | TResource[]>(this.endpointUrl, options).pipe(
       map(response => {
         console.log(response);
@@ -65,7 +64,7 @@ export abstract class BaseApiEndpoint<
    */
   getById(id: number | string): Observable<TEntity> {
     let url: string;
-    let paramsConfig: {params?: HttpParams } = {};
+    let paramsConfig: { params?: HttpParams } = {};
     const idString = id.toString();
 
     if (this.config.usePathParams) {
@@ -100,7 +99,6 @@ export abstract class BaseApiEndpoint<
     }
 
     const headers = new HttpHeaders().set('Prefer', 'return=representation');
-
     return this.http.post<TResource | TResource[]>(this.endpointUrl, resource, { headers }).pipe(
       map((body) => {
         const res = Array.isArray(body) ? body[0] : body;

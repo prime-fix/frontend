@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
-import {LoginOwner} from '@iam/presentation/views/login-owner/login-owner';
-import {LayoutOwner} from '@shared/presentation/views/layout-owner/layout-owner';
+import {RouterOutlet} from '@angular/router';
+import { LanguageSwitcher } from '@shared/presentation/components/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-root',
-  imports: [ LayoutOwner],
+  imports: [RouterOutlet, LanguageSwitcher],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
-  protected readonly title = signal('frontend');
+
 }

@@ -1,1 +1,222 @@
-<p>register-owner works!</p>
+<section class="register-container">
+  <div class="register-card">
+    <div class="register-content">
+      <div class="register-form-section">
+        <h1 class="title">{{ 'register-owner.title' | translate }}</h1>
+        <p class="subtitle">
+          {{ 'register-owner.haveAccount' | translate }}
+          <a class="link" (click)="navigateToLogin()">{{ 'register-owner.signIn' | translate }}</a>
+        </p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" novalidate>
+          <div class="form-group">
+            <label for="fullName" class="label">{{ 'register-owner.fullName' | translate }}</label>
+            <input
+              id="fullName"
+              type="text"
+              class="input"
+              formControlName="fullName"
+              [placeholder]="'register-owner.fullNamePlaceholder' | translate" />
+            @if (registerForm.controls.fullName.invalid && (registerForm.controls.fullName.dirty || registerForm.controls.fullName.touched)) {
+              <span class="error">
+                @if (registerForm.controls.fullName.errors?.['required']) {
+                  {{ 'register-owner.fullNameRequired' | translate }}
+                }
+                @if (registerForm.controls.fullName.errors?.['minlength']) {
+                  {{ 'register-owner.fullNameMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="username" class="label">{{ 'register-owner.username' | translate }}</label>
+            <input
+              id="username"
+              type="text"
+              class="input"
+              formControlName="username"
+              [placeholder]="'register-owner.usernamePlaceholder' | translate" />
+            @if (registerForm.controls.username.invalid && (registerForm.controls.username.dirty || registerForm.controls.username.touched)) {
+              <span class="error">
+                @if (registerForm.controls.username.errors?.['required']) {
+                  {{ 'register-owner.usernameRequired' | translate }}
+                }
+                @if (registerForm.controls.username.errors?.['minlength']) {
+                  {{ 'register-owner.usernameMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="dni" class="label">{{ 'register-owner.dni' | translate }}</label>
+            <input
+              id="dni"
+              type="text"
+              class="input"
+              formControlName="dni"
+              [placeholder]="'register-owner.dniPlaceholder' | translate"
+              maxlength="8" />
+            @if (registerForm.controls.dni.invalid && (registerForm.controls.dni.dirty || registerForm.controls.dni.touched)) {
+              <span class="error">
+                @if (registerForm.controls.dni.errors?.['required']) {
+                  {{ 'register-owner.dniRequired' | translate }}
+                }
+                @if (registerForm.controls.dni.errors?.['pattern']) {
+                  {{ 'register-owner.dniPattern' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="label">{{ 'register-owner.phone' | translate }}</label>
+            <input
+              id="phone"
+              type="tel"
+              class="input"
+              formControlName="phone_number"
+              [placeholder]="'register-owner.phonePlaceholder' | translate"
+              maxlength="9" />
+            @if (registerForm.controls.phone_number.invalid && (registerForm.controls.phone_number.dirty || registerForm.controls.phone_number.touched)) {
+              <span class="error">
+                @if (registerForm.controls.phone_number.errors?.['required']) {
+                  {{ 'register-owner.phoneRequired' | translate }}
+                }
+                @if (registerForm.controls.phone_number.errors?.['pattern']) {
+                  {{ 'register-owner.phonePattern' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="department" class="label">{{ 'register-owner.department' | translate }}</label>
+              <input
+                id="department"
+                type="text"
+                class="input"
+                formControlName="department"
+                [placeholder]="'register-owner.departmentPlaceholder' | translate" />
+              @if (registerForm.controls.department.invalid && (registerForm.controls.department.dirty || registerForm.controls.department.touched)) {
+                <span class="error">
+                  @if (registerForm.controls.department.errors?.['required']) {
+                    {{ 'register-owner.departmentRequired' | translate }}
+                  }
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="district" class="label">{{ 'register-owner.district' | translate }}</label>
+              <input
+                id="district"
+                type="text"
+                class="input"
+                formControlName="district"
+                [placeholder]="'register-owner.districtPlaceholder' | translate" />
+              @if (registerForm.controls.district.invalid && (registerForm.controls.district.dirty || registerForm.controls.district.touched)) {
+                <span class="error">
+                  @if (registerForm.controls.district.errors?.['required']) {
+                    {{ 'register-owner.districtRequired' | translate }}
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="label">{{ 'register-owner.address' | translate }}</label>
+            <input
+              id="address"
+              type="text"
+              class="input"
+              formControlName="address"
+              [placeholder]="'register-owner.addressPlaceholder' | translate" />
+            @if (registerForm.controls.address.invalid && (registerForm.controls.address.dirty || registerForm.controls.address.touched)) {
+              <span class="error">
+                @if (registerForm.controls.address.errors?.['required']) {
+                  {{ 'register-owner.addressRequired' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="label">{{ 'register-owner.email' | translate }}</label>
+            <input
+              id="email"
+              type="email"
+              class="input"
+              formControlName="email"
+              [placeholder]="'register-owner.emailPlaceholder' | translate" />
+            @if (registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)) {
+              <span class="error">
+                @if (registerForm.controls.email.errors?.['required']) {
+                  {{ 'register-owner.emailRequired' | translate }}
+                }
+                @if (registerForm.controls.email.errors?.['email']) {
+                  {{ 'register-owner.emailInvalid' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="label">{{ 'register-owner.password' | translate }}</label>
+            <div class="password-container">
+              <input
+                id="password"
+                [type]="isPasswordVisible() ? 'text' : 'password'"
+                formControlName="password"
+                [placeholder]="'register-owner.passwordPlaceholder' | translate"
+                class="input password-input"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="isPasswordVisible() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              >
+                @if (isPasswordVisible()) {
+                  <svg class="icon">
+                    <use href="assets/icons/sprite.symbol.svg#eye-off"></use>
+                  </svg>
+                } @else {
+                  <svg class="icon">
+                    <use href="assets/icons/sprite.symbol.svg#eye"></use>
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)) {
+              <span class="error">
+                @if (registerForm.controls.password.errors?.['required']) {
+                  {{ 'register-owner.passwordRequired' | translate }}
+                }
+                @if (registerForm.controls.password.errors?.['minlength']) {
+                  {{ 'register-owner.passwordMinLength' | translate }}
+                }
+              </span>
+            }
+          </div>
+
+          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()" (submit)="onSubmit()">
+            @if (store.loading()) {
+              {{ 'register-owner.registering' | translate }}
+            } @else {
+              {{ 'register-owner.register' | translate }}
+            }
+          </button>
+        </form>
+      </div>
+
+      <div class="register-image-section">
+        <img src="assets/images/register-owner.webp" alt="Car Owner" class="register-image" />
+      </div>
+    </div>
+  </div>
+</section>

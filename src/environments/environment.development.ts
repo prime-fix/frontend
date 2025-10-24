@@ -6,9 +6,13 @@ export const environment = {
 
   // Endpoints Paths
   primeFixProviderAutoRepairsEndpointPath: "/auto_repairs",
+  primeFixProviderTechniciansEndpointPath: "/technicians",
+  primeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",
   primeFixProviderLocationsEndpointPath: "/locations",
   primeFixProviderMembershipsEndpointPath: "/memberships",
-  primeFixProviderRegisteredVehiclesEndpointPath: "/registered_vehicles",
+  primeFixProviderNotificationsEndpointPath: "/notifications",
+  primeFixProviderPaymentsEndpointPath: "/payments",
+  primeFixProviderRegisteredVehiclesEndpointPath: "/vehicles",
   primeFixProviderRolesEndpointPath: "/roles",
   primeFixProviderServicesEndpointPath: "/services",
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",
@@ -20,8 +24,12 @@ export const environment = {
 
   // Query Param Keys
   autoRepairIdQueryParamKey: "id_auto_repair",
+  technicianIdQueryParamKey: "id_technician",
+  technicianScheduleIdQueryParamKey: "id_schedule",
   locationIdQueryParamKey: "id_location",
   membershipIdQueryParamKey: "id_membership",
+  notificationIdQueryParamKey: "id_notification",
+  paymentIdQueryParamKey: "id_payment",
   registeredVehicleIdQueryParamKey: "id_vehicle",
   roleIdQueryParamKey: "id_role",
   serviceIdQueryParamKey: "id_service",

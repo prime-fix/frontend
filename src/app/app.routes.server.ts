@@ -2,12 +2,12 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'visits/edit/:id',
-    renderMode: RenderMode.Client
+    path: 'layout-workshop/manage-technicians/technicians/edit/**',
+    renderMode: RenderMode.Server
   },
   {
-    path: 'auto_repair/edit/:id',
-    renderMode: RenderMode.Client
+    path: 'layout-workshop/manage-technicians/technicians/edit/**',
+    renderMode: RenderMode.Server
   },
   {
     path: '**',

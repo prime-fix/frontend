@@ -1,0 +1,152 @@
+.main-header {
+  margin-bottom: 2rem;
+}
+
+.main-header h1 {
+  font-size: 2.5rem;
+  font-family: var(--font-bold);
+  color: var(--color-primary);
+  margin: 0;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.main-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 4px;
+  background-color: var(--color-primary);
+}
+
+.content-area {
+  padding-top: 1rem;
+  min-height: calc(100vh - 180px);
+}
+
+.requests-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.request-card {
+  background-color: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.request-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.request-vehicle, .request-license-plate, .request-owner {
+  font-size: 1rem;
+  font-family: var(--font-regular);
+  color: var(--color-dark);
+  margin: 0 0 0.25rem 0;
+}
+
+p {
+  font-size: 1rem;
+  font-family: var(--font-regular);
+  color: var(--color-dark);
+}
+
+.request-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.request-actions form {
+  display: flex;
+  flex-direction: column; /* apila los elementos verticalmente */
+  gap: 1rem; /* espacio entre campos */
+  width: 100%;
+}
+
+.request-actions label {
+  font-family: var(--font-regular);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: 0.25rem;
+}
+
+.example-full-width {
+  width: 100%;
+  height: 100%;
+}
+
+.modify-button,
+.return-button {
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-medium);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 100px;
+}
+
+.modify-button,
+.return-button {
+  background-color: var(--color-first-complementary);
+  color: var(--color-dark);
+  display: block;
+  margin: 0 auto 0 auto;
+}
+
+.modify-button:hover {
+  background-color: #e6991a;
+}
+
+.return-button {
+  background-color: #dc3545;
+  color: var(--color-light);
+}
+
+.request-actions p {
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  gap: 1rem;               /* espacio entre botones */
+  margin-top: 0.5rem;      /* separación superior del formulario */
+}
+
+
+.modify-button,
+.return-button {
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-medium);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 100px;
+}
+
+.modify-button {
+  background-color: var(--color-first-complementary);
+  color: var(--color-dark);
+}
+
+.modify-button:hover {
+  background-color: #e6991a;
+}
+
+.return-button {
+  background-color: #dc3545;
+  color: var(--color-light);
+}

@@ -1,0 +1,107 @@
+<div class="notification-view-container">
+  <div class="notification-content">
+    <!-- Header -->
+    <div class="notification-header">
+      <h1 class="notification-title">Notificaciones</h1>
+      @if (unreadCount() > 0) {
+        <button
+          class="mark-all-read-btn"
+          (click)="markAllAsRead()"
+          type="button">
+          Marcar todas como leídas
+        </button>
+      }
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando notificaciones...</p>
+      </div>
+    }
+
+    <!-- Error State -->
+    @if (error() && !loading()) {
+      <div class="error-state">
+        <svg class="error-icon">
+          <use href="assets/icons/sprite.symbol.svg#bell"></use>
+        </svg>
+        <p class="error-message">{{ error() }}</p>
+        <p class="error-hint">Por favor, intenta recargar la página</p>
+      </div>
+    }
+
+    <!-- Notifications Content -->
+    @if (!loading() && !error()) {
+      <!-- Unread Notifications Section -->
+      @if (unreadNotifications().length > 0) {
+        <div class="notifications-section">
+          <h2 class="section-title">
+            Sin leer
+            <span class="badge">{{ unreadCount() }}</span>
+          </h2>
+          <div class="notifications-list">
+            @for (notification of unreadNotifications(); track notification.id) {
+              <div class="notification-card unread" (click)="markAsRead(notification)">
+                <div class="notification-indicator"></div>
+                <div class="notification-body">
+                  <div class="notification-icon">
+                    <svg>
+                      <use href="assets/icons/sprite.symbol.svg#bell"></use>
+                    </svg>
+                  </div>
+                  <div class="notification-content-text">
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <div class="notification-meta">
+                      <span class="notification-time">{{ formatDate(notification.sent) }}</span>
+                      <span class="notification-vehicle">Vehículo: {{ notification.id_vehicle }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Read Notifications Section -->
+      @if (readNotifications().length > 0) {
+        <div class="notifications-section">
+          <h2 class="section-title">Leídas</h2>
+          <div class="notifications-list">
+            @for (notification of readNotifications(); track notification.id) {
+              <div class="notification-card read" (click)="markAsUnread(notification)">
+                <div class="notification-body">
+                  <div class="notification-icon">
+                    <svg>
+                      <use href="assets/icons/sprite.symbol.svg#bell"></use>
+                    </svg>
+                  </div>
+                  <div class="notification-content-text">
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <div class="notification-meta">
+                      <span class="notification-time">{{ formatDate(notification.sent) }}</span>
+                      <span class="notification-vehicle">Vehículo: {{ notification.id_vehicle }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (notifications().length === 0) {
+        <div class="empty-state">
+          <svg class="empty-icon">
+            <use href="assets/icons/sprite.symbol.svg#bell"></use>
+          </svg>
+          <h3>No tienes notificaciones</h3>
+          <p>Cuando recibas actualizaciones sobre tus vehículos, aparecerán aquí</p>
+        </div>
+      }
+    }
+  </div>
+</div>

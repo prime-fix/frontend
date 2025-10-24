@@ -1,9 +1,111 @@
 import { Routes } from '@angular/router';
-import {Home} from '@shared/presentation/views/home/home';
+import {roleGuard} from '@shared/infrastructure/guards/role.guard';
+import {Login} from '@iam/presentation/views/login/login';
+import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
+
+const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
+const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
+const registerWorkshop = () => import('@iam/presentation/views/register-workshop/register-workshop').then(m => m.RegisterWorkshop);
+const planOwner = () => import('@iam/presentation/views/plan-owner/plan-owner').then(m => m.PlanOwner);
+const planWorkshop = () => import('@iam/presentation/views/plan-workshop/plan-workshop').then(m => m.PlanWorkshop);
+const paymentView = () => import('@iam/presentation/views/payment-view/payment-view').then(m => m.PaymentView);
+const layoutOwner = () => import('@shared/presentation/components/layout-owner/layout-owner').then(m => m.LayoutOwner);
+const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
+const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
+const homeWorkshop = () => import('@shared/presentation/views/home-workshop/home-workshop').then(m => m.HomeWorkshop);
+const trackVehicle = () => import('@tracking/presentation/views/track-vehicle/track-vehicle').then(m => m.TrackVehicle);
+const pageNotFound = () => import('@shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
+const baseTitle = 'Prime Fix';
 
 export const routes: Routes = [
-  { path:'home',component: Home},
-  { path: '', redirectTo: 'home', pathMatch: 'full'  },
-  { path:'visits', loadChildren: () => import('./data_collection/presentation/views/data.routes').then(m => m.dataRoutes),data:{renderMode:'client'} },
-  {path:'auto_repair', loadChildren:() => import('./data_collection/presentation/views/data.routes').then(m => m.dataRoutes),data:{renderMode:'client'} }
+  {
+    path: 'login',
+    component: Login,
+    title: `${baseTitle} -  Login`
+  },
+  {
+    path: 'user-role',
+    loadComponent: userRole,
+    title: `${baseTitle} -  User Role`
+  },
+  {
+    path: 'register-owner',
+    loadComponent: registerOwner,
+    title: `${baseTitle} -  Register Vehicle Owner`
+  },
+  {
+    path: 'register-workshop',
+    loadComponent: registerWorkshop,
+    title: `${baseTitle} -  Register Workshop`
+  },
+  {
+    path: 'plan-owner',
+    loadComponent: planOwner,
+    title: `${baseTitle} -  Plan Vehicle Owner`
+  },
+  {
+    path: 'plan-workshop',
+    loadComponent: planWorkshop,
+    title: `${baseTitle} -  Plan Workshop`
+  },
+  {
+    path: 'payment-view',
+    loadComponent: paymentView,
+    title: `${baseTitle} -  Payment`
+  },
+  {
+    path: 'layout-owner',
+    canActivate: [roleGuard(['R001'])],
+    loadComponent: layoutOwner,
+    children: [
+      {
+        path: 'home-owner',
+        loadComponent: homeOwner,
+        title: `${baseTitle} -  Home Owner`,
+      },
+      {
+        path: 'maintenance-tracking',
+        loadChildren : () => import('@tracking/presentation/views/tracking.routes').then(m => m.trackingRoutes),
+        title: `${baseTitle} -  Track Vehicle`,
+      },
+      {
+        path: '404',
+        loadComponent: pageNotFound,
+        title: `${baseTitle} -  Not Found`,
+      },
+      {
+        path: '**',
+        redirectTo: 'home-owner'
+      }
+    ]
+  },
+  {
+    path: 'layout-workshop',
+    canActivate: [roleGuard(['R002'])],
+    loadComponent: layoutWorkshop,
+    children: [
+      {
+        path: 'home-workshop',
+        loadComponent: homeWorkshop,
+        title: `${baseTitle} -  Home Workshop`,
+      },
+      {
+        path: 'manage-technicians',
+        loadChildren : () => autoRepairRegisterRoutes,
+        title: `${baseTitle} -  Manage Technicians`,
+      },
+      {
+        path: '404',
+        loadComponent: pageNotFound,
+        title: `${baseTitle} -  Not Found`,
+      },
+      {
+        path: '**',
+        redirectTo: ''
+      }
+    ]
+  },
+
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: '**', redirectTo: 'login' },
 ];
