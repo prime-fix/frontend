@@ -705,5 +705,19 @@
       "id_vehicle": "RV005",
       "sent": "2025-10-03"
     }
+  ],
+  "expected_visits": [
+    {
+      "id_expected": "EV001",
+      "state_visit": "Scheduled visit",
+      "id_visit": "V001",
+      "is_scheduled": true
+    },
+    {
+      "id_expected": "EV002",
+      "state_visit": "Visit cannot be scheduled",
+      "id_visit": "V002",
+      "is_scheduled": false
+    }
   ]
 }
