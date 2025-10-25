@@ -59,7 +59,7 @@
                 <label class="schedule-label">{{ 'manage-technicians.technician-form.day' | translate }}</label>
                 <select formControlName="day_of_week" class="form-select">
                   @for (day of availableDays; track day) {
-                    <option [value]="day">{{ day }}</option>
+                    <option [value]="day">{{ translateDay(day)() }}</option>
                   }
                 </select>
               </div>

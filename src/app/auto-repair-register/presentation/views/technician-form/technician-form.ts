@@ -1,11 +1,11 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RegisterStore} from '@register/application/register-store';
 import {Technician} from '@register/domain/model/technician.entity';
 import {IamStore} from '@iam/application/iam-store';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 
 interface ScheduleForm {
@@ -27,10 +27,15 @@ export class TechnicianForm implements OnInit {
   private router = inject(Router);
   private registerStore = inject(RegisterStore);
   private iamStore = inject(IamStore);
+  private translate = inject(TranslateService);
 
   protected isEdit = signal(false);
   protected technicianId = signal<string | null>(null);
   protected currentTechnician = signal<Technician | undefined>(undefined);
+
+  protected currentLang = signal<string>('en');
+
+  private daysMap: Record<string, string> = this.buildDaysMap();
 
   form = this.fb.group({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -81,6 +86,16 @@ export class TechnicianForm implements OnInit {
   }
 
   ngOnInit() {
+    // initialize language and days map
+    this.currentLang.set(this.translate.getCurrentLang());
+    this.daysMap = this.buildDaysMap();
+
+    // react to language changes
+    this.translate.onLangChange.subscribe((e) => {
+      this.currentLang.set(e.lang);
+      this.daysMap = this.buildDaysMap();
+    });
+
     // Check if we are in edit mode
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -92,6 +107,33 @@ export class TechnicianForm implements OnInit {
         this.isEdit.set(false);
         this.addScheduleRow(); // Add one empty row for new technician
       }
+    });
+  }
+
+  /**
+   * Builds a translation map for days of week using TranslateService.instant
+   */
+  private buildDaysMap(): Record<string, string> {
+    return {
+      Monday: this.translate.instant('manage-technicians.technician-card.monday'),
+      Tuesday: this.translate.instant('manage-technicians.technician-card.tuesday'),
+      Wednesday: this.translate.instant('manage-technicians.technician-card.wednesday'),
+      Thursday: this.translate.instant('manage-technicians.technician-card.thursday'),
+      Friday: this.translate.instant('manage-technicians.technician-card.friday'),
+      Saturday: this.translate.instant('manage-technicians.technician-card.saturday'),
+      Sunday: this.translate.instant('manage-technicians.technician-card.sunday'),
+    };
+  }
+
+  /**
+   * Returns a computed signal with the translated day (falls back to the original)
+   */
+  translateDay(day: string): Signal<string> {
+    return computed(() => {
+      if (this.currentLang() === 'es') {
+        return this.daysMap[day] ?? day;
+      }
+      return day;
     });
   }
 
