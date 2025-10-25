@@ -55,6 +55,20 @@ export class TechnicianCard implements OnInit {
   private daysMap = this.buildDaysMap();
 
   /**
+   * Days order for sorting.
+   * @private
+   */
+  private readonly daysOrder: Record<string, number> = {
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+    Sunday: 7
+  };
+
+  /**
    * The current Technician.
    */
   technician = input.required<Technician>();
@@ -62,7 +76,19 @@ export class TechnicianCard implements OnInit {
   /**
    * The current Technician Schedules.
    */
-  technicianSchedules = input.required<TechnicianSchedule[]>()
+  technicianSchedules = input.required<TechnicianSchedule[]>();
+
+  /**
+   * Sorted schedules by day of week (chronological order).
+   */
+  sortedSchedules = computed(() => {
+    const schedules = [...this.technicianSchedules()];
+    return schedules.sort((a, b) => {
+      const orderA = this.daysOrder[a.day_of_week] ?? 999;
+      const orderB = this.daysOrder[b.day_of_week] ?? 999;
+      return orderA - orderB;
+    });
+  });
 
   /**
    * Sets up the Technician Card component.
@@ -117,6 +143,6 @@ export class TechnicianCard implements OnInit {
    * @return void.
    */
   deleteTechnician(id: string) {
-    this.registerStore.deleteTechnician(id);
+    this.registerStore.deleteTechnicianWithSchedules(id);
   }
 }

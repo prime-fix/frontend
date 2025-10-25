@@ -60,7 +60,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of the Auto Repair.
    */
   getAutoRepairById(id: string | number): Observable<AutoRepair> {
-    return this.autoRepairEndpoint.getById(Number(id));
+    return this.autoRepairEndpoint.getById(id);
   }
 
   /**
@@ -78,7 +78,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of the updated Auto Repair.
    */
   updateAutoRepair(autoRepair: AutoRepair): Observable<AutoRepair> {
-    return this.autoRepairEndpoint.update(autoRepair, Number(autoRepair.id));
+    return this.autoRepairEndpoint.update(autoRepair, autoRepair.id);
   }
 
   /**
@@ -87,7 +87,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of void.
    */
   deleteAutoRepair(id: string | number): Observable<void> {
-    return this.autoRepairEndpoint.delete(Number(id));
+    return this.autoRepairEndpoint.delete(id);
   }
 
   /**
@@ -103,7 +103,7 @@ export class RegisterApi extends BaseApi {
    * @param id - The ID of the Technician.
    */
   getTechnicianById(id: string | number): Observable<Technician> {
-    return this.technicianRegisterEndpoint.getById(Number(id));
+    return this.technicianRegisterEndpoint.getById(id);
   }
 
   /**
@@ -121,7 +121,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of the updated Technician.
    */
   updateTechnician(technician: Technician): Observable<Technician> {
-    return this.technicianRegisterEndpoint.update(technician, Number(technician.id));
+    return this.technicianRegisterEndpoint.update(technician, technician.id);
   }
 
   /**
@@ -130,7 +130,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of void.
    */
   deleteTechnician(id: string | number): Observable<void> {
-    return this.technicianRegisterEndpoint.delete(Number(id));
+    return this.technicianRegisterEndpoint.delete(id);
   }
 
   /**
@@ -147,7 +147,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of the Technician Schedule.
    */
   getTechnicianScheduleById(id: string | number): Observable<TechnicianSchedule> {
-    return this.technicianSchedulesEndpoint.getById(Number(id));
+    return this.technicianSchedulesEndpoint.getById(id);
   }
 
   /**
@@ -165,7 +165,7 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of the updated Technician Schedule.
    */
   updateTechnicianSchedule(technicianSchedule: TechnicianSchedule): Observable<TechnicianSchedule> {
-    return this.technicianSchedulesEndpoint.update(technicianSchedule, Number(technicianSchedule.id));
+    return this.technicianSchedulesEndpoint.update(technicianSchedule, technicianSchedule.id);
   }
 
   /**
@@ -174,6 +174,6 @@ export class RegisterApi extends BaseApi {
    * @returns An Observable of void.
    */
   deleteTechnicianSchedule(id: string | number): Observable<void> {
-    return this.technicianSchedulesEndpoint.delete(Number(id));
+    return this.technicianSchedulesEndpoint.delete(id);
   }
 }
