@@ -209,6 +209,25 @@
       "friday": "Viernes",
       "saturday": "Sábado",
       "sunday": "Domingo"
+    },
+    "technician-form": {
+      "edit-title": "Editar técnico",
+      "add-title": "Agregar técnico",
+      "technician-name": "Nombre del técnico",
+      "name-placeholder": "Juan",
+      "name-required": "El nombre del técnico es obligatorio",
+      "technician-lastname": "Apellido del técnico",
+      "lastname-placeholder": "Pérez",
+      "lastname-required": "El apellido del técnico es obligatorio",
+      "schedules-title": "Horarios",
+      "day": "Día",
+      "start-time": "Hora de inicio",
+      "end-time": "Hora de fin",
+      "remove-schedule": "Eliminar horario",
+      "add-schedule": "Agregar horario",
+      "cancel": "Cancelar",
+      "update": "Actualizar",
+      "create": "Crear"
     }
   },
   "progress-bar": {

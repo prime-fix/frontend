@@ -1,10 +1,9 @@
 import { Injectable, computed, signal, Signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { retry } from 'rxjs';
+import { retry, forkJoin } from 'rxjs';
 import {AutoRepair} from '@register/domain/model/auto-repair.entity';
 import {Technician} from '@register/domain/model/technician.entity';
 import {RegisterApi} from '@register/infrastructure/register-api';
-import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
 
 @Injectable({
@@ -125,15 +124,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.createAutoRepair(autoRepair).pipe(retry(2)).subscribe({
-        next: (createdAutoRepair) => {
-          this.autoRepairsSignal.set([...this.autoRepairs(), createdAutoRepair]);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (createdAutoRepair) => {
+        this.autoRepairsSignal.set([...this.autoRepairs(), createdAutoRepair]);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -145,17 +144,17 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.updateAutoRepair(updatedAutoRepair).pipe(retry(2)).subscribe({
-        next: (autoRepair) => {
-          this.autoRepairsSignal.update(autoRepairs =>
-            autoRepairs.map(ar => ar.id === autoRepair.id ? autoRepair : ar)
-          );
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to update auto repair'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (autoRepair) => {
+        this.autoRepairsSignal.update(autoRepairs =>
+          autoRepairs.map(ar => ar.id === autoRepair.id ? autoRepair : ar)
+        );
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update auto repair'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -166,15 +165,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.deleteAutoRepair(id).pipe(retry(2)).subscribe({
-        next: () => {
-          this.autoRepairsSignal.update(autoRepairs => autoRepairs.filter(ar => ar.id !== id));
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to delete register'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: () => {
+        this.autoRepairsSignal.update(autoRepairs => autoRepairs.filter(ar => ar.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete register'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -193,15 +192,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.getTechnicians().pipe(takeUntilDestroyed()).subscribe({
-        next: (technicians) => {
-          this.techniciansSignal.set(technicians);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load technicians'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (technicians) => {
+        this.techniciansSignal.set(technicians);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load technicians'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -213,15 +212,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.createTechnician(technician).pipe(retry(2)).subscribe({
-        next: (createdTechnician) => {
-          this.techniciansSignal.set([ ...this.technicians(), createdTechnician ]);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to create technician'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (createdTechnician) => {
+        this.techniciansSignal.set([ ...this.technicians(), createdTechnician ]);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create technician'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -233,17 +232,17 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.updateTechnician(technician).pipe(retry(2)).subscribe({
-        next: (updatedTechnician) => {
-          this.techniciansSignal.update(technicians =>
-            technicians.map(t => t.id === updatedTechnician.id ? updatedTechnician : t)
-          );
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to update technician'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (updatedTechnician) => {
+        this.techniciansSignal.update(technicians =>
+          technicians.map(t => t.id === updatedTechnician.id ? updatedTechnician : t)
+        );
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update technician'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -255,15 +254,61 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.deleteTechnician(id).pipe(retry(2)).subscribe({
-        next: () => {
-          this.techniciansSignal.update(technicians => technicians.filter(t => t.id !== id));
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to delete technician'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: () => {
+        this.techniciansSignal.update(technicians => technicians.filter(t => t.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete technician'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  /**
+   * Deletes a technician and its schedules in a coordinated way.
+   * Uses the internal API calls and updates the local signals.
+   * @param id - Technician id
+   * @returns void
+   */
+  deleteTechnicianWithSchedules(id: string | number): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    const techId = id;
+    const schedulesToDelete = this.techniciansSchedules().filter(s => s.id_technician === techId);
+
+    if (schedulesToDelete.length === 0) {
+      this.deleteTechnician(techId);
+      return;
+    }
+
+    const deleteScheduleCalls = schedulesToDelete.map(s =>
+      this.autoRepairApi.deleteTechnicianSchedule(s.id).pipe(retry(2))
+    );
+
+    forkJoin(deleteScheduleCalls).subscribe({
+      next: () => {
+        this.techniciansSchedulesSignal.update(schedules =>
+          schedules.filter(ts => ts.id_technician !== techId)
+        );
+
+        this.autoRepairApi.deleteTechnician(techId).pipe(retry(2)).subscribe({
+          next: () => {
+            this.techniciansSignal.update(technicians => technicians.filter(t => t.id !== techId));
+            this.loadingSignal.set(false);
+          },
+          error: (err) => {
+            this.errorSignal.set(this.formatError(err, 'Failed to delete technician'));
+            this.loadingSignal.set(false);
+          }
+        });
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete technician schedules'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -275,15 +320,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.getTechnicianSchedules().pipe(takeUntilDestroyed()).subscribe({
-        next: (schedules) => {
-          this.techniciansSchedulesSignal.set(schedules);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load technician schedules'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (schedules) => {
+        this.techniciansSchedulesSignal.set(schedules);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load technician schedules'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -304,15 +349,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.createTechnicianSchedule(schedule).pipe(retry(2)).subscribe({
-        next: (createdSchedule) => {
-          this.techniciansSchedulesSignal.set([ ...this.techniciansSchedules(), createdSchedule ]);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to create technician schedule'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (createdSchedule) => {
+        this.techniciansSchedulesSignal.set([ ...this.techniciansSchedules(), createdSchedule ]);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create technician schedule'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -324,17 +369,17 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.updateTechnicianSchedule(schedule).pipe(retry(2)).subscribe({
-        next: (updatedSchedule) => {
-          this.techniciansSchedulesSignal.update(schedules =>
-            schedules.map(ts => ts.id === updatedSchedule.id ? updatedSchedule : ts)
-          );
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to update technician schedule'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: (updatedSchedule) => {
+        this.techniciansSchedulesSignal.update(schedules =>
+          schedules.map(ts => ts.id === updatedSchedule.id ? updatedSchedule : ts)
+        );
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update technician schedule'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
@@ -346,15 +391,15 @@ export class RegisterStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.deleteTechnicianSchedule(id).pipe(retry(2)).subscribe({
-        next: () => {
-          this.techniciansSchedulesSignal.update(schedules => schedules.filter(ts => ts.id !== id));
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to delete technician schedule'));
-          this.loadingSignal.set(false);
-        }
-      });
+      next: () => {
+        this.techniciansSchedulesSignal.update(schedules => schedules.filter(ts => ts.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete technician schedule'));
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**

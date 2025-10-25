@@ -2,9 +2,9 @@
   <div class="form-header">
     <h1 class="page-title">
       @if (isEdit()) {
-        {{ 'technician-form.edit-title' | translate }}
+        {{ 'manage-technicians.technician-form.edit-title' | translate }}
       } @else {
-        {{ 'technician-form.add-title' | translate }}
+        {{ 'manage-technicians.technician-form.add-title' | translate }}
       }
     </h1>
   </div>
@@ -14,58 +14,58 @@
       <!-- Technician Name Section -->
       <div class="form-section">
         <label class="form-label" for="technicianName">
-          {{ 'technician-form.technician-name' | translate }}
+          {{ 'manage-technicians.technician-form.technician-name' | translate }}
         </label>
         <input
           id="technicianName"
           type="text"
           class="form-input"
           formControlName="name"
-          [placeholder]="'technician-form.name-placeholder' | translate"
+          [placeholder]="'manage-technicians.technician-form.name-placeholder' | translate"
         />
         @if (form.get('name')?.invalid && form.get('name')?.touched) {
           <span class="error-message">
-            {{ 'technician-form.name-required' | translate }}
+            {{ 'manage-technicians.technician-form.name-required' | translate }}
           </span>
         }
       </div>
 
       <div class="form-section">
         <label class="form-label" for="technicianLastName">
-          {{ 'technician-form.technician-lastname' | translate }}
+          {{ 'manage-technicians.technician-form.technician-lastname' | translate }}
         </label>
         <input
           id="technicianLastName"
           type="text"
           class="form-input"
           formControlName="last_name"
-          [placeholder]="'technician-form.lastname-placeholder' | translate"
+          [placeholder]="'manage-technicians.technician-form.lastname-placeholder' | translate"
         />
         @if (form.get('last_name')?.invalid && form.get('last_name')?.touched) {
           <span class="error-message">
-            {{ 'technician-form.lastname-required' | translate }}
+            {{ 'manage-technicians.technician-form.lastname-required' | translate }}
           </span>
         }
       </div>
 
       <!-- Schedules Section -->
       <div class="schedules-section">
-        <h2 class="section-title">{{ 'technician-form.schedules-title' | translate }}</h2>
+        <h2 class="section-title">{{ 'manage-technicians.technician-form.schedules-title' | translate }}</h2>
 
         <div formArrayName="schedules">
           @for (scheduleGroup of schedules.controls; track $index) {
             <div [formGroupName]="$index" class="schedule-row">
               <div class="schedule-field">
-                <label class="schedule-label">{{ 'technician-form.day' | translate }}</label>
+                <label class="schedule-label">{{ 'manage-technicians.technician-form.day' | translate }}</label>
                 <select formControlName="day_of_week" class="form-select">
                   @for (day of availableDays; track day) {
-                    <option [value]="day">{{ day }}</option>
+                    <option [value]="day">{{ translateDay(day)() }}</option>
                   }
                 </select>
               </div>
 
               <div class="schedule-field">
-                <label class="schedule-label">{{ 'technician-form.start-time' | translate }}</label>
+                <label class="schedule-label">{{ 'manage-technicians.technician-form.start-time' | translate }}</label>
                 <input
                   type="time"
                   formControlName="start_time"
@@ -74,7 +74,7 @@
               </div>
 
               <div class="schedule-field">
-                <label class="schedule-label">{{ 'technician-form.end-time' | translate }}</label>
+                <label class="schedule-label">{{ 'manage-technicians.technician-form.end-time' | translate }}</label>
                 <input
                   type="time"
                   formControlName="end_time"
@@ -87,7 +87,7 @@
                   type="button"
                   class="remove-schedule-btn"
                   (click)="removeScheduleRow($index)"
-                  [title]="'technician-form.remove-schedule' | translate"
+                  [title]="'manage-technicians.technician-form.remove-schedule' | translate"
                 >
                   ✕
                 </button>
@@ -101,7 +101,7 @@
           class="add-schedule-btn"
           (click)="addScheduleRow()"
         >
-          {{ 'technician-form.add-schedule' | translate }}
+          {{ 'manage-technicians.technician-form.add-schedule' | translate }}
         </button>
       </div>
     </div>
@@ -113,7 +113,7 @@
         class="cancel-btn"
         (click)="onCancel()"
       >
-        {{ 'technician-form.cancel' | translate }}
+        {{ 'manage-technicians.technician-form.cancel' | translate }}
       </button>
       <button
         type="submit"
@@ -121,9 +121,9 @@
         [disabled]="form.invalid"
       >
         @if (isEdit()) {
-          {{ 'technician-form.update' | translate }}
+          {{ 'manage-technicians.technician-form.update' | translate }}
         } @else {
-          {{ 'technician-form.create' | translate }}
+          {{ 'manage-technicians.technician-form.create' | translate }}
         }
       </button>
     </div>

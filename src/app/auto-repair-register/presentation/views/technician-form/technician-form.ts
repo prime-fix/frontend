@@ -1,14 +1,15 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RegisterStore} from '@register/application/register-store';
 import {Technician} from '@register/domain/model/technician.entity';
 import {IamStore} from '@iam/application/iam-store';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 
 interface ScheduleForm {
+  id_schedule: FormControl<string | null>;
   day_of_week: FormControl<string>;
   start_time: FormControl<string>;
   end_time: FormControl<string>;
@@ -26,10 +27,15 @@ export class TechnicianForm implements OnInit {
   private router = inject(Router);
   private registerStore = inject(RegisterStore);
   private iamStore = inject(IamStore);
+  private translate = inject(TranslateService);
 
   protected isEdit = signal(false);
   protected technicianId = signal<string | null>(null);
   protected currentTechnician = signal<Technician | undefined>(undefined);
+
+  protected currentLang = signal<string>('en');
+
+  private daysMap: Record<string, string> = this.buildDaysMap();
 
   form = this.fb.group({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -46,6 +52,20 @@ export class TechnicianForm implements OnInit {
     'Saturday',
     'Sunday'
   ];
+
+  /**
+   * Days order for sorting schedules chronologically.
+   * @private
+   */
+  private readonly daysOrder: Record<string, number> = {
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+    Sunday: 7
+  };
 
   /**
    * Gets the current auto repair from the logged user
@@ -66,6 +86,16 @@ export class TechnicianForm implements OnInit {
   }
 
   ngOnInit() {
+    // initialize language and days map
+    this.currentLang.set(this.translate.getCurrentLang());
+    this.daysMap = this.buildDaysMap();
+
+    // react to language changes
+    this.translate.onLangChange.subscribe((e) => {
+      this.currentLang.set(e.lang);
+      this.daysMap = this.buildDaysMap();
+    });
+
     // Check if we are in edit mode
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -77,6 +107,33 @@ export class TechnicianForm implements OnInit {
         this.isEdit.set(false);
         this.addScheduleRow(); // Add one empty row for new technician
       }
+    });
+  }
+
+  /**
+   * Builds a translation map for days of week using TranslateService.instant
+   */
+  private buildDaysMap(): Record<string, string> {
+    return {
+      Monday: this.translate.instant('manage-technicians.technician-card.monday'),
+      Tuesday: this.translate.instant('manage-technicians.technician-card.tuesday'),
+      Wednesday: this.translate.instant('manage-technicians.technician-card.wednesday'),
+      Thursday: this.translate.instant('manage-technicians.technician-card.thursday'),
+      Friday: this.translate.instant('manage-technicians.technician-card.friday'),
+      Saturday: this.translate.instant('manage-technicians.technician-card.saturday'),
+      Sunday: this.translate.instant('manage-technicians.technician-card.sunday'),
+    };
+  }
+
+  /**
+   * Returns a computed signal with the translated day (falls back to the original)
+   */
+  translateDay(day: string): Signal<string> {
+    return computed(() => {
+      if (this.currentLang() === 'es') {
+        return this.daysMap[day] ?? day;
+      }
+      return day;
     });
   }
 
@@ -104,12 +161,19 @@ export class TechnicianForm implements OnInit {
     const allSchedules = this.registerStore.techniciansSchedules();
     const technicianSchedules = allSchedules.filter(s => s.id_technician === id && s.is_active);
 
+    // Sort schedules chronologically
+    const sortedSchedules = technicianSchedules.sort((a, b) => {
+      const orderA = this.daysOrder[a.day_of_week] ?? 999;
+      const orderB = this.daysOrder[b.day_of_week] ?? 999;
+      return orderA - orderB;
+    });
+
     // Clear existing schedules
     this.schedules.clear();
 
     // Add schedules to form
-    if (technicianSchedules.length > 0) {
-      technicianSchedules.forEach(schedule => {
+    if (sortedSchedules.length > 0) {
+      sortedSchedules.forEach(schedule => {
         this.schedules.push(this.createScheduleFormGroup(schedule));
       });
     } else {
@@ -123,6 +187,7 @@ export class TechnicianForm implements OnInit {
    */
   private createScheduleFormGroup(schedule?: TechnicianSchedule): FormGroup<ScheduleForm> {
     return this.fb.group({
+      id_schedule: new FormControl<string | null>(schedule?.id || null),
       day_of_week: new FormControl<string>(schedule?.day_of_week || 'Monday', {
         nonNullable: true,
         validators: [Validators.required]
@@ -179,8 +244,11 @@ export class TechnicianForm implements OnInit {
   }
 
   /**
-   * TODO: FIX THE FUNCTION CREATE TECHNICIAN
-   * Creates a new technician
+   * Creates a new technician and associated schedules
+   * @param formValue - The form values
+   * @param autoRepairId - The auto repair ID
+   * @private
+   * @returns void
    */
   private createTechnician(formValue: any, autoRepairId: string) {
     // Generate a unique ID for the technician
@@ -217,13 +285,17 @@ export class TechnicianForm implements OnInit {
   }
 
   /**
-   * TODO: FIX THE FUNCTION UPDATE TECHNICIAN
-   * Updates an existing technician
+   * Updates an existing technician and associated schedules
+   * @param formValue - The form values
+   * @param autoRepairId - The auto repair ID
+   * @private
+   * @returns void
    */
   private updateTechnician(formValue: any, autoRepairId: string) {
     const technicianId = this.technicianId();
     if (!technicianId) return;
 
+    // Update technician basic info
     const technician = new Technician({
       id_technician: technicianId,
       name: formValue.name,
@@ -231,30 +303,58 @@ export class TechnicianForm implements OnInit {
       id_auto_repair: autoRepairId
     });
 
-    // Update technician
     this.registerStore.updateTechnician(technician);
 
-    // Get existing schedules for this technician and DELETE them
+    // Get existing schedules from the store
     const existingSchedules = this.registerStore.techniciansSchedules()
       .filter(s => s.id_technician === technicianId);
 
-    // Delete all existing schedules
-    existingSchedules.forEach(schedule => {
+    // Get schedules from form
+    const formSchedules = formValue.schedules;
+
+    // Identify schedules to delete (exist in DB but not in form)
+    const schedulesToDelete = existingSchedules.filter(existing =>
+      !formSchedules.some((form: any) => form.id_schedule === existing.id)
+    );
+
+    // Identify schedules to update (have id_schedule and exist in both)
+    const schedulesToUpdate = formSchedules.filter((form: any) =>
+      form.id_schedule && existingSchedules.some(existing => existing.id === form.id_schedule)
+    );
+
+    // Identify schedules to add (don't have id_schedule)
+    const schedulesToAdd = formSchedules.filter((form: any) => !form.id_schedule);
+
+    // Execute deletions
+    schedulesToDelete.forEach(schedule => {
       this.registerStore.deleteTechnicianSchedule(schedule.id);
     });
 
-    // Add new schedules from form
-    formValue.schedules.forEach((schedule: any, index: number) => {
-      const technicianSchedule = new TechnicianSchedule({
-        id_schedule: `TS${Date.now()}_${index}`,
+    // Execute updates
+    schedulesToUpdate.forEach((scheduleForm: any) => {
+      const updatedSchedule = new TechnicianSchedule({
+        id_schedule: scheduleForm.id_schedule,
         id_technician: technicianId,
-        day_of_week: schedule.day_of_week,
-        start_time: schedule.start_time,
-        end_time: schedule.end_time,
+        day_of_week: scheduleForm.day_of_week,
+        start_time: scheduleForm.start_time,
+        end_time: scheduleForm.end_time,
         is_active: true
       });
+      this.registerStore.updateTechnicianSchedule(updatedSchedule);
+    });
 
-      this.registerStore.addTechnicianSchedule(technicianSchedule);
+    // Execute additions
+    const baseTs = Date.now();
+    schedulesToAdd.forEach((scheduleForm: any, index: number) => {
+      const newSchedule = new TechnicianSchedule({
+        id_schedule: `TS${baseTs}_${index}`,
+        id_technician: technicianId,
+        day_of_week: scheduleForm.day_of_week,
+        start_time: scheduleForm.start_time,
+        end_time: scheduleForm.end_time,
+        is_active: true
+      });
+      this.registerStore.addTechnicianSchedule(newSchedule);
     });
 
     // Navigate back to manage technicians

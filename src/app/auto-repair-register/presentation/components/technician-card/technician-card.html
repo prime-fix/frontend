@@ -1,11 +1,11 @@
 <div class="technician-card">
   <div class="technician-info">
     <h3 class="technician-name">{{ technician().name }} {{ technician().last_name }}</h3>
-    @if (technicianSchedules().length === 0) {
+    @if (sortedSchedules().length === 0) {
       <p class="no-schedules-message">{{ 'manage-technicians.technician-card.no-schedules-message' | translate }}</p>
     } @else {
       <div class="schedule-list">
-        @for (schedule of technicianSchedules(); track schedule.id) {
+        @for (schedule of sortedSchedules(); track schedule.id) {
           @if (schedule.is_active) {
             <div class="schedule-item">
               <span class="schedule-day">{{ translateDay(schedule.day_of_week)() }}</span>
@@ -19,7 +19,7 @@
   </div>
   <div class="technician-actions">
     <button class="edit-button" (click)="editTechnician(technician().id)" type="button">{{ 'manage-technicians.technician-card.edit-button' | translate }}</button>
-    <button class="delete-button" type="button">{{ 'manage-technicians.technician-card.delete-button' | translate }}</button>
+    <button class="delete-button" (click)="deleteTechnician(technician().id)" type="button">{{ 'manage-technicians.technician-card.delete-button' | translate }}</button>
   </div>
 </div>
 

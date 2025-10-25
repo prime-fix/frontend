@@ -219,6 +219,25 @@
       "friday": "Friday",
       "saturday": "Saturday",
       "sunday": "Sunday"
+    },
+    "technician-form": {
+      "edit-title": "Edit Technician",
+      "add-title": "Add Technician",
+      "technician-name": "Technician Name",
+      "name-placeholder": "John",
+      "name-required": "Technician name is required",
+      "technician-lastname": "Technician Last Name",
+      "lastname-placeholder": "Doe",
+      "lastname-required": "Technician last name is required",
+      "schedules-title": "Schedules",
+      "day": "Day",
+      "start-time": "Start Time",
+      "end-time": "End Time",
+      "remove-schedule": "Remove Schedule",
+      "add-schedule": "Add Schedule",
+      "cancel": "Cancel",
+      "update": "Update",
+      "create": "Create"
     }
   },
   "progress-bar": {
