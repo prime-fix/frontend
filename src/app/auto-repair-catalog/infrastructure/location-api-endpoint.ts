@@ -1,7 +1,7 @@
 import {BaseApiEndpoint} from '@shared/infrastructure/http/base-api-endpoint';
-import {Location} from '@iam/domain/model/location.entity';
-import {LocationResource, LocationResponse} from '@iam/infrastructure/api/location-response';
-import {LocationAssembler} from '@iam/infrastructure/api/location-assembler';
+import {Location} from '@catalog/domain/model/location.entity';
+import {LocationResource, LocationResponse} from '@catalog/infrastructure/location-response';
+import {LocationAssembler} from '@catalog/infrastructure/location-assembler';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 

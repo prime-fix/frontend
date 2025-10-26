@@ -1,12 +1,13 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {User} from '@iam/domain/model/user.entity';
 import {IamApi} from '@iam/infrastructure/api/iam-api';
 import {retry} from 'rxjs';
 import {Payment} from '@iam/domain/model/payment.entity';
-import {Location} from '@iam/domain/model/location.entity';
+import {Location} from '@catalog/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 /**
  * State management service for Identity and Access Management (IAM).
@@ -15,6 +16,12 @@ import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
   providedIn: 'root'
 })
 export class IamStore {
+  /**
+   * Reference to the CatalogStore for accessing catalog-related data.
+   * @private
+   */
+  private readonly catalogStore = inject(CatalogStore);
+
   /**
    * Signals to hold the state of user accounts, users, payments, and locations.
    * @private
@@ -30,11 +37,6 @@ export class IamStore {
    * @private
    */
   private readonly paymentsSignal = signal<Payment[]>([]);
-  /**
-   *
-   * @private
-   */
-  private readonly locationsSignal = signal<Location[]>([]);
 
   /**
    * Readonly versions of the state signals for external access.
@@ -51,7 +53,7 @@ export class IamStore {
   /**
    * Readonly version of locations signal.
    */
-  readonly locations = this.locationsSignal.asReadonly();
+  readonly locations = this.catalogStore.locations;
 
   /**
    * Signal to track loading state.
@@ -88,7 +90,7 @@ export class IamStore {
   /**
    * Computed property to get the count of locations.
    */
-  readonly locationCount = computed(() => this.locations().length);
+  readonly locationCount = computed(() => this.catalogStore.locationCount());
 
   // Session-related signals
   /**
@@ -192,7 +194,6 @@ export class IamStore {
     this.loadUserAccounts();
     this.loadUsers();
     this.loadPayments();
-    this.loadLocations();
 
     // Restore session from localStorage on app initialization
     this.restoreSessionFromStorage();
@@ -302,6 +303,45 @@ export class IamStore {
     } catch (error) {
       console.warn('Failed to clear session from localStorage:', error);
     }
+  }
+
+  /**
+   * Gets a location by its ID.
+   * @param id
+   */
+  getLocationById(id: string | null | undefined): Signal<Location | undefined> {
+    // delegate to CatalogStore
+    return this.catalogStore.getLocationById(id);
+  }
+
+  /**
+   * Adds a new location.
+   * @param location - The location to add.
+   * @returns void
+   */
+  addLocation(location: Location): void {
+    // delegate to CatalogStore
+    this.catalogStore.addLocation(location);
+  }
+
+  /**
+   * Updates an existing location.
+   * @param location - The location to update.
+   * @returns void
+   */
+  updateLocation(location: Location): void {
+    // delegate to CatalogStore
+    this.catalogStore.updateLocation(location);
+  }
+
+  /**
+   * Deletes a location by ID.
+   * @param id - The ID of the location to delete.
+   * @returns void
+   */
+  deleteLocation(id: string): void {
+    // delegate to CatalogStore
+    this.catalogStore.deleteLocation(id);
   }
 
   /**
@@ -488,72 +528,6 @@ export class IamStore {
   }
 
   /**
-   * Gets a location by its ID.
-   * @param id - The ID of the location to retrieve.
-   */
-  getLocationById(id: string | null  | undefined): Signal<Location | undefined> {
-    return computed(() => id ? this.locations().find(l => l.id === id) : undefined);
-  }
-
-  /**
-   * Adds a new location.
-   * @param location - The location to add.
-   */
-  addLocation(location: Location): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.createLocation(location).pipe(retry(2)).subscribe({
-      next: createdLocation => {
-        this.locationsSignal.set([...this.locations(), createdLocation]);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create location'));
-        this.loadingSignal.set(false);
-      }
-    });
-  }
-
-  /**
-   * Updates an existing location.
-   * @param location - The location with updated information.
-   */
-  updateLocation(location: Location): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.updateLocation(location).pipe(retry(2)).subscribe({
-      next: updatedLocation => {
-        this.locationsSignal.update(locations =>
-          locations.map(l => l.id === updatedLocation.id ? updatedLocation : l))
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update location'));
-        this.loadingSignal.set(false);
-      }
-    });
-  }
-
-  /**
-   * Deletes a location by ID.
-   * @param id - The ID of the location to delete.
-   */
-  deleteLocation(id: string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.deleteLocation(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.locationsSignal.update(locations => locations.filter(l => l.id !== id))
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to delete location'));
-        this.loadingSignal.set(false);
-      }
-    });
-  }
-
-  /**
    * Loads user accounts from the API and updates the state signal.
    * @private - This method is intended for internal use only.
    */
@@ -608,26 +582,6 @@ export class IamStore {
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to load payments'));
-        this.loadingSignal.set(false);
-      }
-    })
-  }
-
-  /**
-   * Loads locations from the API and updates the state signal.
-   * @private - This method is intended for internal use only.
-   */
-  private loadLocations(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.getLocations().pipe(takeUntilDestroyed()).subscribe({
-      next: locations => {
-        console.log(locations);
-        this.locationsSignal.set(locations);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load locations'));
         this.loadingSignal.set(false);
       }
     })
@@ -843,7 +797,7 @@ export class IamStore {
     console.log(userAccount);
     console.log(newPayment);
 
-    this.addLocation(location);
+    this.catalogStore.addLocation(location);
     this.addUser(user);
     this.addUserAccount(userAccount);
     this.addPayment(newPayment);

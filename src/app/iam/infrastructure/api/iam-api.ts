@@ -8,8 +8,6 @@ import {UserApiEndpoint} from '@iam/infrastructure/api/user-api-endpoint';
 import {User} from '@iam/domain/model/user.entity';
 import {PaymentApiEndpoint} from '@iam/infrastructure/api/payment-api-endpoint';
 import {Payment} from '@iam/domain/model/payment.entity';
-import {Location} from '@iam/domain/model/location.entity';
-import {LocationApiEndpoint} from '@iam/infrastructure/api/location-api-endpoint';
 
 /**
  * IAM API service that provides methods to interact with the IAM backend.
@@ -34,11 +32,6 @@ export class IamApi extends BaseApi {
    * @private
    */
   private readonly paymentsEndpoint:         PaymentApiEndpoint;
-  /**
-   * API endpoint for location-related operations.
-   * @private
-   */
-  private readonly locationsEndpoint:        LocationApiEndpoint;
 
   /**
    * Constructor to initialize the IAM API service with the necessary endpoints.
@@ -49,7 +42,6 @@ export class IamApi extends BaseApi {
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
     this.usersEndpoint = new UserApiEndpoint(http);
     this.paymentsEndpoint = new PaymentApiEndpoint(http);
-    this.locationsEndpoint = new LocationApiEndpoint(http);
   }
 
   /**
@@ -179,49 +171,4 @@ export class IamApi extends BaseApi {
   deletePayment(id: string): Observable<void> {
     return this.paymentsEndpoint.delete(id);
   }
-
-  /**
-   * Fetches all locations from the backend.
-   * @returns An Observable emitting an array of Location entities.
-   */
-  getLocations(): Observable<Location[]> {
-    return this.locationsEndpoint.getAll();
-  }
-
-  /**
-   * Fetches a specific location by its ID.
-   * @param id - The ID of the location to be fetched.
-   * @return An Observable emitting the Location entity.
-   */
-  getLocation(id: string): Observable<Location> {
-    return this.locationsEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new location.
-   * @param location - The Location entity to be created.
-   * @return An Observable emitting the created Location entity.
-   */
-  createLocation(location: Location): Observable<Location> {
-    return this.locationsEndpoint.create(location);
-  }
-
-  /**
-   * Updates an existing location.
-   * @param location - The Location entity with updated information.
-   * @return An Observable emitting the updated Location entity.
-   */
-  updateLocation(location: Location): Observable<Location> {
-    return this.locationsEndpoint.update(location, location.id);
-  }
-
-  /**
-   * Deletes a location by its ID.
-   * @param id - The ID of the location to be deleted.
-   * @return An Observable emitting void upon successful deletion.
-   */
-  deleteLocation(id: string): Observable<void> {
-    return this.locationsEndpoint.delete(id);
-  }
-
 }

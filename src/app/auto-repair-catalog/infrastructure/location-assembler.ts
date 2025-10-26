@@ -1,6 +1,6 @@
 import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
-import {Location} from '@iam/domain/model/location.entity';
-import {LocationResource, LocationResponse} from '@iam/infrastructure/api/location-response';
+import {Location} from '@catalog/domain/model/location.entity';
+import {LocationResource, LocationResponse} from '@catalog/infrastructure/location-response';
 
 /**
  * Assembler for Location entities and resources.
