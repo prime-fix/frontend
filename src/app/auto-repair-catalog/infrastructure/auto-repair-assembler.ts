@@ -1,5 +1,5 @@
 import { BaseAssembler } from '@shared/infrastructure/http/base-assembler';
-import {AutoRepair} from '../domain/model/auto-repair.entity';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 import {AutoRepairResource, AutoRepairResponse} from './auto-repair-response';
 
 /**

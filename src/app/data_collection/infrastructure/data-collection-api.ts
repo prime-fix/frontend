@@ -4,12 +4,8 @@ import {ServiceApiEndpoint} from './service-api-endpoint';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Service} from '../domain/model/service.entity';
-import {AutoRepairApiEndpoint} from './auto-repair-api-endpoint';
-import {VehicleApiEndpoint} from './vehicle-api-endpoint';
-import {Vehicle} from '../domain/model/vehicle.entity';
 import {VisitApiEndpoint} from './visit-api-endpoint';
 import {Visit} from '../domain/model/visit.entity';
-import {AutoRepair} from '@collections/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +20,10 @@ export class DataCollectionApi extends BaseApi {
    */
   private readonly mainServiceEndpoint:     ServiceApiEndpoint;
   /**
-   * The VehicleApiEndpoint instance for managing vehicles.
-   * @private
-   */
-  private readonly vehicleEndpoint:     VehicleApiEndpoint;
-  /**
    * The VisitApiEndpoint instance for managing visits.
    * @private
    */
   private readonly visitEndpoint:     VisitApiEndpoint;
-  /**
-   * The AutoRepairApiEndpoint instance for managing auto repairs.
-   * @private
-   */
-  private readonly autoRepairsEndpoint:     AutoRepairApiEndpoint;
 
   /**
    * Constructs a new instance of the DataCollectionApi.
@@ -45,10 +31,8 @@ export class DataCollectionApi extends BaseApi {
    */
   constructor(http: HttpClient) {
     super();
-    this.vehicleEndpoint = new VehicleApiEndpoint(http);
     this.mainServiceEndpoint = new ServiceApiEndpoint(http);
     this.visitEndpoint = new VisitApiEndpoint(http);
-    this.autoRepairsEndpoint = new AutoRepairApiEndpoint(http);
   }
 
   /**
@@ -93,94 +77,6 @@ export class DataCollectionApi extends BaseApi {
    */
   deleteService(id: number | string): Observable<void> {
     return this.mainServiceEndpoint.delete(id);
-  }
-
-  /**
-   * Gets all Auto Repairs.
-   * @returns An Observable of an array of Auto Repairs.
-   */
-  getAutoRepairs(): Observable<AutoRepair[]> {
-    return this.autoRepairsEndpoint.getAll();
-  }
-
-  /**
-   * Gets an Auto Repair by its ID.
-   * @param id - The ID of the Auto Repair.
-   * @returns An Observable of the Auto Repair.
-   */
-  getAutoRepairById(id: number): Observable<AutoRepair> {
-    return this.autoRepairsEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new Auto Repair.
-   * @param repair - The Auto Repair to create.
-   * @returns An Observable of the created Auto Repair.
-   */
-  createAutoRepair(repair: AutoRepair): Observable<AutoRepair> {
-    return this.autoRepairsEndpoint.create(repair);
-  }
-
-  /**
-   * Updates an existing Auto Repair.
-   * @param repair - The Auto Repair to update.
-   * @returns An Observable of the updated Auto Repair.
-   */
-  updateAutoRepair(repair: AutoRepair): Observable<AutoRepair> {
-    return this.autoRepairsEndpoint.update(repair, repair.id);
-  }
-
-  /**
-   * Deletes an Auto Repair by its ID.
-   * @param id - The ID of the Auto Repair to delete.
-   * @returns An Observable of void.
-   */
-  deleteAutoRepair(id: number | string): Observable<void> {
-    return this.autoRepairsEndpoint.delete(id);
-  }
-
-  /**
-   * Gets all Vehicles.
-   * @returns An Observable of an array of Vehicles.
-   */
-  getVehicles(): Observable<Vehicle[]> {
-    return this.vehicleEndpoint.getAll();
-  }
-
-  /**
-   * Gets a Vehicle by its ID.
-   * @param id - The ID of the Vehicle.
-   * @returns An Observable of the Vehicle.
-   */
-  getVehicleById(id: number): Observable<Vehicle> {
-    return this.vehicleEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new Vehicle.
-   * @param vehicle - The Vehicle to create.
-   * @returns An Observable of the created Vehicle.
-   */
-  createVehicle(vehicle: Vehicle): Observable<Vehicle> {
-    return this.vehicleEndpoint.create(vehicle);
-  }
-
-  /**
-   * Updates an existing Vehicle.
-   * @param vehicle - The Vehicle to update.
-   * @returns An Observable of the updated Vehicle.
-   */
-  updateVehicle(vehicle: Vehicle): Observable<Vehicle> {
-    return this.vehicleEndpoint.update(vehicle, vehicle.id);
-  }
-
-  /**
-   * Deletes a Vehicle by its ID.
-   * @param id - The ID of the Vehicle to delete.
-   * @returns An Observable of void.
-   */
-  deleteVehicle(id: number | string): Observable<void> {
-    return this.vehicleEndpoint.delete(id);
   }
 
   /**

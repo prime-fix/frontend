@@ -1,9 +1,9 @@
 import { BaseApiEndpoint } from '@shared/infrastructure/http/base-api-endpoint';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
-import {AutoRepair} from '@collections/domain/model/auto-repair.entity';
-import {AutoRepairResource, AutoRepairResponse} from '@collections/infrastructure/auto-repair-response';
-import {AutoRepairAssembler} from '@collections/infrastructure/auto-repair-assembler';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
+import {AutoRepairResource, AutoRepairResponse} from '@catalog/infrastructure/auto-repair-response';
+import {AutoRepairAssembler} from '@catalog/infrastructure/auto-repair-assembler';
 
 /**
  * API endpoint for managing Auto Repairs.

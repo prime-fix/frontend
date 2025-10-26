@@ -1,11 +1,13 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
-import {Vehicle} from '../domain/model/vehicle.entity';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {Vehicle} from '@tracking/domain/model/vehicle.entity';
 import {Service} from '../domain/model/service.entity';
 import {Visit} from '../domain/model/visit.entity';
 import {DataCollectionApi} from '../infrastructure/data-collection-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
-import {AutoRepair} from '@collections/domain/model/auto-repair.entity';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
+import {CatalogStore} from '@catalog/application/catalog-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +16,9 @@ import {AutoRepair} from '@collections/domain/model/auto-repair.entity';
  * Store for managing data related to Vehicles, Auto Repairs, Services, and Visits.
  */
 export class DataCollectionStore {
-  /**
-   * Signal holding the list of Vehicles.
-   * @private
-   */
-  private readonly vehicleSignal = signal<Vehicle[]>([]);
-  /**
-   * Signal holding the list of Auto Repair registers.
-   * @private
-   */
-  private readonly autoRepairsSignal = signal<AutoRepair[]>([]);
+  private readonly catalogStore = inject(CatalogStore);
+  private readonly trackingStore = inject(TrackingStore);
+
   /**
    * Signal holding the list of Services.
    * @private
@@ -38,11 +33,11 @@ export class DataCollectionStore {
   /**
    * Signal exposing the list of Vehicles.
    */
-  readonly vehicles = this.vehicleSignal.asReadonly();
+  readonly vehicles = this.trackingStore.vehicles;
   /**
    * Signal exposing the list of Auto Repair registers.
    */
-  readonly autoRepairs = this.autoRepairsSignal.asReadonly();
+  readonly autoRepairs = this.catalogStore.autoRepairs;
   /**
    * Signal exposing the list of Services.
    */
@@ -75,11 +70,11 @@ export class DataCollectionStore {
   /**
    * Signal exposing the count of Vehicles, Auto Repairs, Services, and Visits.
    */
-  readonly vehicleCount = computed(() => this.vehicles().length);
+  readonly vehicleCount = computed(() => this.trackingStore.vehicleCount());
   /**
    * Signal exposing the count of Auto Repair registers.
    */
-  readonly autoRepairCount = computed(() => this.autoRepairs().length);
+  readonly autoRepairCount = computed(() => this.catalogStore.autoRepairCount());
   /**
    * Signal exposing the count of Services.
    */
@@ -94,8 +89,6 @@ export class DataCollectionStore {
    * @param dataCollectionApi - The API service for data collection operations.
    */
   constructor(private dataCollectionApi : DataCollectionApi) {
-    this.loadVehicles();
-    this.loadAutoRepairs();
     this.loadServices();
     this.loadVisits()
   }
@@ -115,7 +108,8 @@ export class DataCollectionStore {
    * @returns A signal containing the Auto Repair register or undefined if not found.
    */
   getAutoRepairById(id: string | number | null | undefined): Signal<AutoRepair | undefined> {
-    return computed(() => id ? this.autoRepairs().find(ar => ar.id === String(id)) : undefined);
+    // Delegate to CatalogStore
+    return this.catalogStore.getAutoRepairById(id);
   }
 
   /**
@@ -124,7 +118,8 @@ export class DataCollectionStore {
    * @returns A signal containing the Vehicle or undefined if not found.
    */
   getVehicleById(id: number | string | null | undefined): Signal<Vehicle | undefined> {
-    return computed(() => id ? this.vehicles().find(c => c.id === id) : undefined);
+    // Delegate to TrackingStore
+    return this.trackingStore.getVehicleById(id);
   }
 
   /**
@@ -196,18 +191,8 @@ export class DataCollectionStore {
    * @returns void
    */
   addAutoRepair(autoRepair: AutoRepair): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.createAutoRepair(autoRepair).pipe(retry(2)).subscribe({
-      next: (createdAutoRepair) => {
-        this.autoRepairsSignal.set([...this.autoRepairs(), createdAutoRepair]);
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to CatalogStore
+    this.catalogStore.addAutoRepair(autoRepair);
   }
 
   /**
@@ -216,20 +201,8 @@ export class DataCollectionStore {
    * @returns void
    */
   updateAutoRepair(updatedAutoRepair: AutoRepair): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.updateAutoRepair(updatedAutoRepair).pipe(retry(2)).subscribe({
-      next: (autoRepair) => {
-        this.autoRepairsSignal.update(autoRepairs =>
-          autoRepairs.map(ar => ar.id === autoRepair.id ? autoRepair : ar)
-        );
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update auto repair'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to CatalogStore
+    this.catalogStore.updateAutoRepair(updatedAutoRepair);
   }
 
   /**
@@ -237,18 +210,8 @@ export class DataCollectionStore {
    * @param id - The ID of the Auto Repair register to delete.
    */
   deleteAutoRepair(id: string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.deleteAutoRepair(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.autoRepairsSignal.update(autoRepairs => autoRepairs.filter(ar => ar.id !== id));
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to delete register'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to CatalogStore
+    this.catalogStore.deleteAutoRepair(id);
   }
 
   /**
@@ -257,18 +220,8 @@ export class DataCollectionStore {
    * @returns void
    */
   addVehicle(vehicle: Vehicle): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.createVehicle(vehicle).pipe(retry(2)).subscribe({
-      next: createdVehicle => {
-        this.vehicleSignal.set([...this.vehicles(), createdVehicle]);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create vehicle'));
-        this.loadingSignal.set(false);
-      }
-    })
+    // Delegate to TrackingStore
+    this.trackingStore.addVehicle(vehicle);
   }
 
   /**
@@ -277,16 +230,8 @@ export class DataCollectionStore {
    * @returns void
    */
   updateVehicle(vehicle: Vehicle): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.updateVehicle(vehicle).pipe(retry(2)).subscribe({
-      next: updatedVehicle => {
-        this.vehicleSignal.update(vehicles =>
-          vehicles.map(c => c.id === updatedVehicle.id ? updatedVehicle : c)
-        );
-        this.loadingSignal.set(false)
-      }
-    })
+    // Delegate to TrackingStore
+    this.trackingStore.updateVehicle(vehicle);
   }
 
   /**
@@ -295,14 +240,8 @@ export class DataCollectionStore {
    * @returns void
    */
   deleteVehicle(id: number| string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.deleteVehicle(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.vehicleSignal.update(vehicles => vehicles.filter(c => c.id !== id));
-        this.loadingSignal.set(false);
-      }
-    })
+    // Delegate to TrackingStore
+    this.trackingStore.deleteVehicle(id);
   }
 
   /**
@@ -326,26 +265,6 @@ export class DataCollectionStore {
   }
 
   /**
-   * Loads the list of Vehicles.
-   * @private
-   * @returns void
-   */
-  private loadVehicles(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.getVehicles().pipe(takeUntilDestroyed()).subscribe({
-      next: vehicles => {
-        this.vehicleSignal.set(vehicles);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load vehicles'));
-        this.loadingSignal.set(false);
-      }
-    });
-  }
-
-  /**
    * Loads the list of Services.
    * @private
    * @returns void
@@ -363,28 +282,6 @@ export class DataCollectionStore {
         this.loadingSignal.set(false);
       }
     });
-  }
-
-  /**
-   * Loads the list of Auto Repair registers.
-   * @private
-   * @returns void
-   */
-  private loadAutoRepairs(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.getAutoRepairs()
-      .pipe(takeUntilDestroyed())
-      .subscribe({
-        next: (autoRepairs) => {
-          this.autoRepairsSignal.set(autoRepairs);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load auto repairs'));
-          this.loadingSignal.set(false);
-        }
-      });
   }
 
   /**
