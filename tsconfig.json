@@ -24,6 +24,7 @@
       "@collections/*": ["app/data-collection/*"],
       "@diagnosis/*": ["app/vehicle-diagnosis/*"],
       "@tracking/*": ["app/maintenance-tracking/*"],
+      "@payment/*": ["app/payment-service/*"],
     }
   },
   "angularCompilerOptions": {

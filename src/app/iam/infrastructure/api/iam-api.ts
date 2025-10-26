@@ -6,8 +6,6 @@ import {Observable} from 'rxjs';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {UserApiEndpoint} from '@iam/infrastructure/api/user-api-endpoint';
 import {User} from '@iam/domain/model/user.entity';
-import {PaymentApiEndpoint} from '@iam/infrastructure/api/payment-api-endpoint';
-import {Payment} from '@iam/domain/model/payment.entity';
 
 /**
  * IAM API service that provides methods to interact with the IAM backend.
@@ -27,11 +25,6 @@ export class IamApi extends BaseApi {
    * @private
    */
   private readonly usersEndpoint:            UserApiEndpoint;
-  /**
-   * API endpoint for payment-related operations.
-   * @private
-   */
-  private readonly paymentsEndpoint:         PaymentApiEndpoint;
 
   /**
    * Constructor to initialize the IAM API service with the necessary endpoints.
@@ -41,7 +34,6 @@ export class IamApi extends BaseApi {
     super();
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
     this.usersEndpoint = new UserApiEndpoint(http);
-    this.paymentsEndpoint = new PaymentApiEndpoint(http);
   }
 
   /**
@@ -126,49 +118,5 @@ export class IamApi extends BaseApi {
    */
   deleteUser(id: string): Observable<void> {
     return this.usersEndpoint.delete(id);
-  }
-
-  /**
-   * Fetches all payments from the backend.
-   * @returns An Observable emitting an array of Payment entities.
-   */
-  getPayments(): Observable<Payment[]> {
-    return this.paymentsEndpoint.getAll();
-  }
-
-  /**
-   * Fetches a specific payment by its ID.
-   * @param id - The ID of the payment to be fetched.
-   * @return An Observable emitting the Payment entity.
-   */
-  getPayment(id: string): Observable<Payment> {
-    return this.paymentsEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new payment.
-   * @param payment - The Payment entity to be created.
-   * @return An Observable emitting the created Payment entity.
-   */
-  createPayment(payment: Payment): Observable<Payment> {
-    return this.paymentsEndpoint.create(payment);
-  }
-
-  /**
-   * Updates an existing payment.
-   * @param payment - The Payment entity with updated information.
-   * @return An Observable emitting the updated Payment entity.
-   */
-  updatePayment(payment: Payment): Observable<Payment> {
-    return this.paymentsEndpoint.update(payment, payment.id);
-  }
-
-  /**
-   * Deletes a payment by its ID.
-   * @param id - The ID of the payment to be deleted.
-   * @return An Observable emitting void upon successful deletion.
-   */
-  deletePayment(id: string): Observable<void> {
-    return this.paymentsEndpoint.delete(id);
   }
 }

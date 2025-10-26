@@ -13,7 +13,7 @@ export class StatusVehicleApiEndpoint extends BaseApiEndpoint<StatusVehicle, Sta
    * @param http - The HttpClient to be used for making API requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderRegisteredVehiclesEndpointPath}`,
+    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderVehiclesEndpointPath}`,
       new StatusVehicleAssembler(), { usePathParams: environment.usePathParams });
   }
 }

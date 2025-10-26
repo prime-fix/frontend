@@ -4,10 +4,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {User} from '@iam/domain/model/user.entity';
 import {IamApi} from '@iam/infrastructure/api/iam-api';
 import {retry} from 'rxjs';
-import {Payment} from '@iam/domain/model/payment.entity';
 import {Location} from '@catalog/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
 import {CatalogStore} from '@catalog/application/catalog-store';
+import {PaymentServiceStore} from '@payment/application/payment-service-store';
+import {Payment} from '@payment/domain/model/payment.entity';
 
 /**
  * State management service for Identity and Access Management (IAM).
@@ -23,6 +24,12 @@ export class IamStore {
   private readonly catalogStore = inject(CatalogStore);
 
   /**
+   * Reference to the PaymentServiceStore for accessing payment-related data.
+   * @private
+   */
+  private readonly paymentServiceStore = inject(PaymentServiceStore);
+
+  /**
    * Signals to hold the state of user accounts, users, payments, and locations.
    * @private
    */
@@ -32,11 +39,6 @@ export class IamStore {
    * @private
    */
   private readonly usersSignal = signal<User[]>([]);
-  /**
-   * Signals to hold the state of payments.
-   * @private
-   */
-  private readonly paymentsSignal = signal<Payment[]>([]);
 
   /**
    * Readonly versions of the state signals for external access.
@@ -49,7 +51,7 @@ export class IamStore {
   /**
    * Readonly version of payments signal.
    */
-  readonly payments = this.paymentsSignal.asReadonly();
+  readonly payments = this.paymentServiceStore.payments;
   /**
    * Readonly version of locations signal.
    */
@@ -86,7 +88,7 @@ export class IamStore {
   /**
    * Computed property to get the count of payments.
    */
-  readonly paymentCount = computed(() => this.payments().length);
+  readonly paymentCount = computed(() => this.paymentServiceStore.paymentCount());
   /**
    * Computed property to get the count of locations.
    */
@@ -193,7 +195,6 @@ export class IamStore {
   constructor(private iamApi: IamApi) {
     this.loadUserAccounts();
     this.loadUsers();
-    this.loadPayments();
 
     // Restore session from localStorage on app initialization
     this.restoreSessionFromStorage();
@@ -474,18 +475,8 @@ export class IamStore {
    * @param payment - The ID of the payment to retrieve.
    */
   addPayment(payment: Payment): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.createPayment(payment).pipe(retry(2)).subscribe({
-      next: createdPayment => {
-        this.paymentsSignal.set([...this.payments(), createdPayment]);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create payment'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // delegate to PaymentServiceStore
+    this.paymentServiceStore.addPayment(payment);
   }
 
   /**
@@ -493,19 +484,8 @@ export class IamStore {
    * @param updatedPayment - The payment with updated information.
    */
   updatePayment(updatedPayment: Payment): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.updatePayment(updatedPayment).pipe(retry(2)).subscribe({
-      next: payment => {
-        this.paymentsSignal.update(payments =>
-          payments.map(p => p.id === payment.id ? payment : p))
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update payment'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // delegate to PaymentServiceStore
+    this.paymentServiceStore.updatePayment(updatedPayment);
   }
 
   /**
@@ -513,18 +493,8 @@ export class IamStore {
    * @param id - The ID of the payment to delete.
    */
   deletePayment(id: string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.deletePayment(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.paymentsSignal.update(payments => payments.filter(p => p.id !== id))
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to delete payment'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // delegate to PaymentServiceStore
+    this.paymentServiceStore.deletePayment(id);
   }
 
   /**
@@ -562,26 +532,6 @@ export class IamStore {
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to load users'));
-        this.loadingSignal.set(false);
-      }
-    })
-  }
-
-  /**
-   * Loads payments from the API and updates the state signal.
-   * @private - This method is intended for internal use only.
-   */
-  private loadPayments(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.iamApi.getPayments().pipe(takeUntilDestroyed()).subscribe({
-      next: payments => {
-        console.log(payments);
-        this.paymentsSignal.set(payments);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load payments'));
         this.loadingSignal.set(false);
       }
     })
@@ -797,7 +747,7 @@ export class IamStore {
     console.log(userAccount);
     console.log(newPayment);
 
-    this.catalogStore.addLocation(location);
+    this.addLocation(location);
     this.addUser(user);
     this.addUserAccount(userAccount);
     this.addPayment(newPayment);
