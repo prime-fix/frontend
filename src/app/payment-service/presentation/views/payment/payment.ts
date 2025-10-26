@@ -5,8 +5,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Router} from '@angular/router';
-import {Visit} from '../../../domain/model/visit.entity';
 import {TranslatePipe} from '@ngx-translate/core';
+import {Visit} from '@collections/domain/model/visit.entity';
 
 
 

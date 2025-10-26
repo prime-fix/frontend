@@ -1,11 +1,12 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Payment} from '../domain/model/payment.entity';
-import {Visit} from '../domain/model/visit.entity';
-import {Vehicle} from '../domain/model/vehicle.entity';
 import {Rating} from '../domain/model/rating.entity';
 import {PaymentServiceApi} from '../infrastructure/payment-service-api';
+import {DataCollectionStore} from '@collections/application/data-collection-store';
+import {Visit} from '@collections/domain/model/visit.entity';
+import {Vehicle} from '@collections/domain/model/vehicle.entity';
 
 /**
  * State management service for Payment Service
@@ -15,31 +16,20 @@ import {PaymentServiceApi} from '../infrastructure/payment-service-api';
 })
 export class PaymentServiceStore {
   /**
-   * Signals to hold the state of user payments, visits, vehicles, and ratings.
+   * DataCollectionStore instance for managing related data.
    * @private
    */
-
+  private readonly dataCollectionStore = inject(DataCollectionStore);
   /**
    * Signal to hold the state of payments.
    * @private
    */
   private readonly paymentsSignal = signal<Payment[]>([]);
   /**
-   * Signal to hold the state of visits.
-   * @private
-   */
-  private readonly visitsSignal = signal<Visit[]>([]);
-  /**
-   * Signal to hold the state of vehicles.
-   * @private
-   */
-  private readonly vehiclesSignal = signal<Vehicle[]>([]);
-  /**
    * Signal to hold the state of rating.
    * @private
    */
   private readonly ratingsSignal = signal<Rating[]>([]);
-
 
   /**
    * Readonly versions of the state signals for external access.
@@ -48,11 +38,11 @@ export class PaymentServiceStore {
   /**
    * Readonly versions of the state signals for external access.
    */
-  readonly visits = this.visitsSignal.asReadonly();
+  readonly visits = this.dataCollectionStore.visits;
   /**
    * Readonly versions of the state signals for external access.
    */
-  readonly vehicles = this.vehiclesSignal.asReadonly();
+  readonly vehicles = this.dataCollectionStore.vehicles;
   /**
    * Readonly versions of the state signals for external access.
    */
@@ -84,11 +74,11 @@ export class PaymentServiceStore {
   /**
    * Computed property to get the count of visits.
    */
-  readonly visitCount = computed(() => this.visits().length);
+  readonly visitCount = computed(() => this.dataCollectionStore.visitCount());
   /**
    * Computed property to get the count of vehicles.
    */
-  readonly vehicleCount = computed(() => this.vehicles().length);
+  readonly vehicleCount = computed(() => this.dataCollectionStore.vehicleCount());
   /**
    * Computed property to get the count of ratings.
    */
@@ -97,10 +87,7 @@ export class PaymentServiceStore {
 
   constructor(private paymentServiceClosureApi: PaymentServiceApi) {
     this.loadPayments();
-    this.loadVisits();
     this.loadRatings();
-    this.loadVehicles();
-    this.loadVehicles();
   }
 
   loadPaymentsByUserAccountId(userAccountId: string | number): void {
@@ -304,29 +291,9 @@ export class PaymentServiceStore {
    * @return A signal containing the payment or undefined if not found.
    */
   getVisitById(id: string | null | undefined): Signal<Visit | undefined> {
-    return computed(() => id ? this.visits().find(v => v.id === id) : undefined);
+    // Delegate to DataCollectionStore
+    return this.dataCollectionStore.getVisitById(id);
   }
-
-  /**
-   * Loads visits from the API and updates the state signal.
-   * @private - This method is intended for internal use only.
-   */
-  private loadVisits(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.paymentServiceClosureApi.getVisits().pipe(takeUntilDestroyed()).subscribe({
-      next: visits => {
-        console.log(visits);
-        this.visitsSignal.set(visits);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load visits'));
-        this.loadingSignal.set(false);
-      }
-    })
-  }
-
 
   /**
    * Gets a vehicle by their ID.
@@ -334,29 +301,9 @@ export class PaymentServiceStore {
    * @return A signal containing the payment or undefined if not found.
    */
   getVehicleById(id: string | null | undefined): Signal<Vehicle | undefined> {
-    return computed(() => id ? this.vehicles().find(v => v.id === id) : undefined);
+    // Delegate to DataCollectionStore
+    return this.dataCollectionStore.getVehicleById(id);
   }
-
-  /**
-   * Loads vehicles from the API and updates the state signal.
-   * @private - This method is intended for internal use only.
-   */
-  private loadVehicles(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.paymentServiceClosureApi.getVehicles().pipe(takeUntilDestroyed()).subscribe({
-      next: vehicles => {
-        console.log(vehicles);
-        this.vehiclesSignal.set(vehicles);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load vehicles'));
-        this.loadingSignal.set(false);
-      }
-    })
-  }
-
 
   /**
    * Formats error messages for user-friendly display.
