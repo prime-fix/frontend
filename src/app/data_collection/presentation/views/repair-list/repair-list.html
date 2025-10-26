@@ -10,15 +10,15 @@
 }
 
 <div class="repair-cards-container">
-  @for(repair of repair(); track repair.id ){
+  @for(repair of autoRepairs(); track repair.id ){
     <mat-card class="repair-card">
       <mat-card-header>
         <mat-card-title>{{ repair.id }}</mat-card-title>
-        <mat-card-subtitle>RUC: {{ repair.RUC }}</mat-card-subtitle>
+        <mat-card-subtitle>RUC: {{ repair.ruc }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>Email: {{ repair.contact_email }}</p>
-        <p> {{'auto_repair.technician'| translate}} {{ repair._technician_count }}</p>
+        <p> {{'auto_repair.technician'| translate}} {{ repair.technicians_count }}</p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button color="primary" (click)="selectRepair(repair.id)">

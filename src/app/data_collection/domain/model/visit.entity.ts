@@ -1,14 +1,49 @@
 import {BaseEntity} from '@shared/infrastructure/http/base-entity';
 
+/**
+ * Represents a Visit entity.
+ */
 export class Visit implements BaseEntity{
+  /**
+   * The unique identifier for the visit.
+   */
  _id_visit: number | string;
+  /**
+   * The failure description of the visit.
+   */
  _failure: string;
+  /**
+   * The unique identifier for the vehicle associated with the visit.
+   */
  _id_vehicle: number|string;
+  /**
+   * The time of the visit.
+   */
  _time_visit: string | null;
+ /**
+  * The unique identifier for the auto repair associated with the visit.
+  */
  _id_auto_repair: number|string |null;
+  /**
+   * The unique identifier for the service associated with the visit.
+   */
  _id_service: number | string;
+  /**
+   * The status of the visit.
+   */
  _status: string;
 
+  /**
+   * Creates an instance of Visit.
+   * @param {Object} visit - An object containing the properties of the visit.
+   * @property {number|string} visit.id_visit - The unique identifier for the visit.
+   * @property {string} visit.failure - The failure description of the visit.
+   * @property {number|string} visit.id_vehicle - The unique identifier for the vehicle.
+   * @property {string|null} visit.time_visit - The time of the visit.
+   * @property {number|string|null} visit.id_auto_repair - The unique identifier for the auto repair.
+   * @property {number|string} visit.id_service - The unique identifier for the service.
+   * @property {string} visit.status - The status of the visit.
+   */
   constructor( visit:{ id_visit:number | string, failure:string, id_vehicle:number|string, time_visit:string|null, id_auto_repair:number | string | null
   , id_service:number|string, status:string}) {
     this._id_visit=visit.id_visit;
@@ -19,7 +54,7 @@ export class Visit implements BaseEntity{
     this._id_service = visit.id_service;
     this._status = visit.status;
   }
-
+  /* --- Getters & Setters --- */
   get id(): number | string {return this._id_visit;}
   get failure(): string {return this._failure;}
   get id_vehicle():  number|string{return this._id_vehicle;}

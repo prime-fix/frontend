@@ -1,6 +1,12 @@
 import {BaseResource, BaseResponse} from '@shared/infrastructure/http/base-response';
 
+/**
+ * Represent the API response for Vehicles
+ */
 export interface VehiclesResponse extends BaseResponse{
+  /**
+   * Array of Vehicle resources.
+   */
   vehicles: VehicleResource[];
 }
 

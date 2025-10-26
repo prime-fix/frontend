@@ -5,12 +5,22 @@ import {ServiceAssembler} from './service-assembler';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 
+/**
+ * API endpoint for managing Services.
+ */
 export class ServiceApiEndpoint extends BaseApiEndpoint<Service,MaintenanceServiceResource,MaintenanceServiceResponse,ServiceAssembler>{
+  /**
+   * The query parameter key used to identify the service ID in API requests.
+   * @protected
+   */
   protected readonly idQueryParamKey: string = environment.serviceIdQueryParamKey;
 
+  /**
+   * Constructs a new instance of the ServiceApiEndpoint.
+   * @param http - The HttpClient used for making HTTP requests.
+   */
   constructor(http:HttpClient){
     super(http,`${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderServicesEndpointPath}`,
       new ServiceAssembler(), { usePathParams: environment.usePathParams });
   }
-
 }

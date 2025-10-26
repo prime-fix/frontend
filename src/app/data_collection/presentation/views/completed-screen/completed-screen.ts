@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Visit } from '../../../domain/model/visit.entity';
 import { Location, CommonModule } from '@angular/common';
 import {TranslateModule, TranslatePipe} from '@ngx-translate/core';
-import {DataCollection} from '../../../application/data-collection';
+import {DataCollectionStore} from '../../../application/data-collection-store';
 
 @Component({
   selector: 'app-visit-alert',
@@ -17,7 +17,7 @@ import {DataCollection} from '../../../application/data-collection';
 export class CompletedScreen {
   private router = inject(Router);
   private location = inject(Location);
-  readonly dataStore = inject(DataCollection);
+  readonly dataStore = inject(DataCollectionStore);
 
   visit: Visit | null = null;
 

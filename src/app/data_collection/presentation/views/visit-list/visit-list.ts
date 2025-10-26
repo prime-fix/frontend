@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {inject} from '@angular/core';
-import {DataCollection} from '../../../application/data-collection';
+import {DataCollectionStore} from '../../../application/data-collection-store';
 import {Router} from '@angular/router';
 import {MatError} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
@@ -15,7 +15,7 @@ import {TranslatePipe} from '@ngx-translate/core';
   styleUrl: './visit-list.css'
 })
 export class VisitList {
-  readonly dataStore = inject(DataCollection);
+  readonly dataStore = inject(DataCollectionStore);
   readonly router = inject(Router);
 
   editVisit(id:number|string){
@@ -34,7 +34,7 @@ export class VisitList {
     return this.dataStore.getServiceById(ServiceID);
   }
 
-  getAutoRepair(autoRepairID: number |string | null | undefined) {
+  getAutoRepair(autoRepairID: number | string | null | undefined) {
     return this.dataStore.getAutoRepairById(autoRepairID);
   }
 

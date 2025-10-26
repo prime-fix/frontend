@@ -21,7 +21,7 @@
       "@iam/*": ["app/iam/*"],
       "@register/*": ["app/auto-repair-register/*"],
       "@catalog/*": ["app/auto-repair-catalog/*"],
-      "@collections/*": ["app/data-collection/*"],
+      "@collections/*": ["app/data_collection/*"],
       "@diagnosis/*": ["app/vehicle-diagnosis/*"],
       "@tracking/*": ["app/maintenance-tracking/*"],
       "@payment/*": ["app/payment-service/*"],

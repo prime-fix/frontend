@@ -1,28 +1,48 @@
-import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
-import {Repair} from '../domain/model/auto-repair.entity';
-import {RepairResponse, RepairResource} from './auto-repair-response';
+import { BaseAssembler } from '@shared/infrastructure/http/base-assembler';
+import {AutoRepair} from '../domain/model/auto-repair.entity';
+import {AutoRepairResource, AutoRepairResponse} from './auto-repair-response';
 
-export class AutoRepairAssembler implements BaseAssembler<Repair, RepairResource, RepairResponse>{
-  toEntitiesFromResponse(response: RepairResponse): Repair[] {
-    return response.auto_repairs.map(resource => this.toEntityFromResource(resource as RepairResource));
+/**
+ * Assembler for converting between Auto Repair entities and resources.
+ */
+export class AutoRepairAssembler implements BaseAssembler<AutoRepair, AutoRepairResource, AutoRepairResponse> {
+
+  /**
+   * Converts an AutoRepairResponse to an array of AutoRepair entities.
+   * @param response - The Auto Repair Response to convert.
+   * @returns An array of Auto Repair entities.
+   */
+  toEntitiesFromResponse(response: AutoRepairResponse): AutoRepair[] {
+    return response.autoRepairs.map(resource => this.toEntityFromResource(resource as AutoRepairResource));
   }
 
-  toEntityFromResource(resource: RepairResource): Repair {
-    return new Repair({
+  /**
+   * Converts an Auto Repair Resource to an AutoRepair entity.
+   * @param resource - The Auto Repair Resource to convert.
+   * @returns An Auto Repair entity.
+   */
+  toEntityFromResource(resource: AutoRepairResource): AutoRepair {
+    return new AutoRepair({
       id_auto_repair: resource.id_auto_repair,
-      RUC: resource.RUC,
+      ruc: resource.ruc,
       contact_email: resource.contact_email,
-      technician_count: resource.technician_count
+      technicians_count: resource.technicians_count,
+      id_user_account: resource.id_user_account
     });
   }
 
-  toResourceFromEntity(entity: Repair): RepairResource {
+  /**
+   * Converts an Auto Repair entity to an Auto Repair Resource.
+   * @param entity - The Auto Repair entity to convert.
+   * @returns An Auto Repair Resource.
+   */
+  toResourceFromEntity(entity: AutoRepair): AutoRepairResource {
     return {
       id_auto_repair: entity.id,
-      RUC: entity.RUC,
+      ruc: entity.ruc,
       contact_email: entity.contact_email,
-      technician_count: entity.technician_count
-    } as RepairResource;
+      technicians_count: entity.technicians_count,
+      id_user_account: entity.id_user_account
+    } as AutoRepairResource;
   }
-
 }

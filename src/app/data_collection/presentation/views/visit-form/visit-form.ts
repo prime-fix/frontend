@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {inject} from '@angular/core';
 import {FormBuilder,FormControl,ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DataCollection} from '../../../application/data-collection';
+import {DataCollectionStore} from '../../../application/data-collection-store';
 import {Visit} from '../../../domain/model/visit.entity';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -23,7 +23,7 @@ export class VisitForm {
   private fb=inject(FormBuilder);
   private router=inject(Router)
   private route=inject(ActivatedRoute);
-  private store=inject(DataCollection);
+  private store=inject(DataCollectionStore);
   private location = inject(Location);
 
   form = this.fb.group({
