@@ -9,7 +9,7 @@ export class VehicleApiEndpoint extends BaseApiEndpoint<Vehicle,VehicleResource,
   protected readonly idQueryParamKey: string = environment.registeredVehicleIdQueryParamKey;
 
   constructor(http:HttpClient){
-    super(http,`${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderRegisteredVehiclesEndpointPath}`,
+    super(http,`${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderVehiclesEndpointPath}`,
       new VehicleAssembler(),{ usePathParams: environment.usePathParams });
   }
 }

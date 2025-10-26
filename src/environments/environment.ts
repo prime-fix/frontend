@@ -12,7 +12,7 @@ export const environment = {
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",
   primeFixProviderPaymentsEndpointPath: "/payments",
-  primeFixProviderRegisteredVehiclesEndpointPath: "/registered_vehicles",
+  primeFixProviderVehiclesEndpointPath: "/vehicles",
   primeFixProviderRolesEndpointPath: "/roles",
   primeFixProviderServicesEndpointPath: "/services",
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",

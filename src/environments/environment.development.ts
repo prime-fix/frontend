@@ -12,7 +12,7 @@ export const environment = {
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",
   primeFixProviderPaymentsEndpointPath: "/payments",
-  primeFixProviderRegisteredVehiclesEndpointPath: "/vehicles",
+  primeFixProviderVehiclesEndpointPath: "/vehicles",
   primeFixProviderRolesEndpointPath: "/roles",
   primeFixProviderServicesEndpointPath: "/services",
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",
@@ -21,7 +21,6 @@ export const environment = {
   primeFixExpectedVisitsEndpointPath: "/expected_visits",
   primeFixDiagnosticsEndpointPath: "/diagnostics",
   primeFixProviderRatingsEndpointPath: "/ratings",
-  primeFixProviderVehiclesEndpointPath: "/vehicles",
 
   // API Key
   primeFixProviderApiKey: 'API_KEY',

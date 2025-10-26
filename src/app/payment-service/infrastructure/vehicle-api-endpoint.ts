@@ -17,7 +17,7 @@ export class VehicleApiEndpoint extends BaseApiEndpoint<Vehicle, VehicleResource
    * @param http - The HttpClient instance to use for HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderRegisteredVehiclesEndpointPath}`,
+    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderVehiclesEndpointPath}`,
       new VehicleAssembler(), { usePathParams: environment.usePathParams });
   }
 }
