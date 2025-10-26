@@ -1,0 +1,39 @@
+<div class="rating-container">
+  <h2 class="title">{{'rating-form.title' | translate}}</h2>
+
+  <mat-card class="rating-card">
+    <form [formGroup]="form">
+      <h1 class="rating-title">{{'rating-form.serviceRating' | translate}}</h1>
+      <p class="rating-text">
+        {{'rating-form.question' | translate}}
+      </p>
+
+      <div class="stars">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <button
+            type="button"
+            class="star-button"
+            [class.selected]="form.value.star_rating && form.value.star_rating >= i"
+            (click)="selectRating(i)"
+          >
+            {{ i }}
+          </button>
+        }
+      </div>
+
+      <p class="comment-label">{{'rating-form.commentLabel' | translate}}</p>
+      <mat-form-field appearance="outline" class="comment-field">
+        <mat-label>{{'rating-form.commentPlaceholder' | translate}}</mat-label>
+        <input
+          matInput
+          formControlName="comment"
+          placeholder= "{{'rating-form.commentField' | translate}}"
+        />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-flat-button class="btn-accept" (click)="submit()">{{'rating-form.rateButton' | translate}}</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

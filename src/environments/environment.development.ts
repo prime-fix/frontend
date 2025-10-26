@@ -20,6 +20,8 @@ export const environment = {
   primeFixVisitsEndpointPath: "/visits",
   primeFixExpectedVisitsEndpointPath: "/expected_visits",
   primeFixDiagnosticsEndpointPath: "/diagnostics",
+  primeFixProviderRatingsEndpointPath: "/ratings",
+  primeFixProviderVehiclesEndpointPath: "/vehicles",
 
   // API Key
   primeFixProviderApiKey: 'API_KEY',
@@ -40,4 +42,5 @@ export const environment = {
   visitIdQueryParamKey: "id_visit",
   expectedVisitIdQueryParamKey: "id_expected",
   diagnosticIdQueryParamKey: "id_diagnostic",
+  ratingIdQueryParamKey: "id_rating"
 };

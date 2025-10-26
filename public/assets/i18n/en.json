@@ -308,6 +308,70 @@
     "message": "Your car is currently \"Ready for pickup\"",
     "accept": "Accept"
   },
+
+  "payment-service": {
+    "title": "Payment to make",
+    "detail": "Detail",
+    "idVisit": "Visit ID",
+    "status": "Status",
+    "visitDate": "Date of the visit",
+    "cash": "Cash",
+    "virtualPayment": "Virtual Payment",
+    "btnAccept": "Accept"
+  },
+  "payment-done": {
+    "title": "Payment to make",
+    "paid": "Service already paid",
+    "done": "Payment successfully completed",
+    "btnAccept": "Accept"
+  },
+  "payment-form": {
+    "title": "Add a new payment method",
+    "cardNumber": "Card number",
+    "invalidCardNumber": "Invalid number (16 digits required)",
+    "cardType": "Card type",
+    "month": "Month",
+    "year": "Year",
+    "cvv": "CVV",
+    "docType": "Document type",
+    "docNumber": "Document number",
+    "addButton": "Add"
+  },
+  "payment-selection": {
+    "title": "Payment to make",
+    "chooseMethod": "Choose method",
+    "method": "Method",
+    "backButton": "Back",
+    "addMethodButton": "Add method",
+    "payButton": "Pay"
+  },
+  "rating": {
+    "title": "Rate service",
+    "serviceRating": "Service rating",
+    "message": "The service has been completed. <br/> Would you like to rate it?",
+    "laterButton": "Not now",
+    "rateNowButton": "Rate"
+  },
+  "rating-done": {
+    "title": "Rate service",
+    "doneTitle": "Done",
+    "message": "Rating process completed",
+    "acceptButton": "Accept"
+  },
+  "rating-form": {
+    "title": "Rate service",
+    "serviceRating": "Service rating",
+    "question": "How do you feel about the service provided?<br /> (5 means completely satisfied and 1 means completely dissatisfied)",
+    "commentLabel": "Leave a comment (optional)",
+    "commentPlaceholder": "Write your comment here",
+    "commentField": "Comment",
+    "rateButton": "Rate"
+  },
+
+
+
+
+
   "page-not-found": {
     "title": "Page not found",
     "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
