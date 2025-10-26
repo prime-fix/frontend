@@ -35,7 +35,7 @@ export class SideBarOwner {
       label: 'side-bar-owner.vehicles'
     },
     {
-      route: '/layout-owner/search-workshop',
+      route: '/layout-owner/auto-repair-catalog/search-auto-repair',/**'layout-owner/visits/visit-list'*/
       icon: 'tool',
       label: 'side-bar-owner.searchWorkshop'
     },
