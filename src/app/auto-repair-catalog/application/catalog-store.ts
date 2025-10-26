@@ -1,24 +1,27 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
-import {ExpectedVisit} from '@catalog/domain/model/expected-visit.entity';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 import {Location} from '@catalog/domain/model/location.entity';
 import {CatalogApi} from '@catalog/infrastructure/catalog-api';
 import {retry} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogStore {
   /**
-   * Signal to track expected visits.
+   * Diagnosis store instance for managing expected visits.
    * @private
    */
-  private readonly expectedVisitsSignal = signal<ExpectedVisit[]>([]);
+  private readonly diagnosisStore = inject(DiagnosisStore);
 
   /**
    * Readonly version of expected visits signal.
+   * @readonly
    */
-  readonly expectedVisits = this.expectedVisitsSignal.asReadonly();
+  readonly expectedVisits = this.diagnosisStore.expectedVisits;
 
   /**
    * Signal to track locations.
@@ -27,9 +30,21 @@ export class CatalogStore {
   private readonly locationsSignal = signal<Location[]>([]);
 
   /**
+   * Signal holding the list of Auto Repair registers.
+   * @private
+   */
+  private readonly autoRepairsSignal = signal<AutoRepair[]>([]);
+
+  /**
    * Readonly version of locations signal.
+   * @readonly
    */
   readonly locations = this.locationsSignal.asReadonly();
+
+  /**
+   * Signal exposing the list of Auto Repair registers.
+   */
+  readonly autoRepairs = this.autoRepairsSignal.asReadonly();
 
   /**
    * Signal to track loading state.
@@ -38,6 +53,7 @@ export class CatalogStore {
   private readonly loadingSignal = signal<boolean>(false);
   /**
    * Readonly version of loading signal.
+   * @readonly
    */
   readonly loading = this.loadingSignal.asReadonly();
 
@@ -48,26 +64,34 @@ export class CatalogStore {
   private readonly errorSignal = signal<string | null>(null);
   /**
    * Readonly version of error signal.
+   * @readonly
    */
   readonly error = this.errorSignal.asReadonly();
 
   /**
    * Computed signal for the count of expected visits.
+   * @readonly
    */
-  readonly expectedVisitCount = computed(() => this.expectedVisits().length);
+  readonly expectedVisitCount = computed(() => this.diagnosisStore.expectedVisitCount());
 
   /**
    * Computed signal for the count of locations.
+   * @readonly
    */
   readonly locationCount = computed(() => this.locations().length);
+
+  /**
+   * Signal exposing the count of Auto Repair registers.
+   */
+  readonly autoRepairCount = computed(() => this.autoRepairs().length);
 
   /**
    * Creates an instance of CatalogStore and loads expected visits.
    * @param catalogApi - The Catalog API service.
    */
   constructor(private catalogApi: CatalogApi) {
-    this.loadExpectedVisits();
     this.loadLocations();
+    this.loadAutoRepairs();
   }
 
   /**
@@ -75,7 +99,8 @@ export class CatalogStore {
    * @param id
    */
   getExpectedVisitById(id: string | null | undefined): Signal<ExpectedVisit | undefined> {
-    return computed(() => id ? this.expectedVisits().find(v => v.id === id) : undefined);
+    // Delegate to DiagnosisStore
+    return this.diagnosisStore.getExpectedVisitById(id);
   }
 
   /**
@@ -84,18 +109,8 @@ export class CatalogStore {
    * @returns void
    */
   addExpectedVisit(expectedVisit: ExpectedVisit): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.catalogApi.createExpectedVisit(expectedVisit).pipe(retry(2)).subscribe({
-      next: createdExpectedVisit => {
-        this.expectedVisitsSignal.set([...this.expectedVisits(), createdExpectedVisit]);
-        this.loadingSignal.set(false);
-      },
-      error : err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to add expected visit'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to DiagnosisStore
+    this.diagnosisStore.addExpectedVisit(expectedVisit);
   }
 
   /**
@@ -104,19 +119,8 @@ export class CatalogStore {
    * @returns void
    */
   updatedExpectedVisit(updatedExpectedVisit: ExpectedVisit): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.catalogApi.updateExpectedVisit(updatedExpectedVisit).pipe(retry(2)).subscribe({
-      next: expectedVisit => {
-        this.expectedVisitsSignal.update(expectedVisits =>
-        expectedVisits.map(ev => ev.id === expectedVisit.id ? expectedVisit : ev));
-        this.loadingSignal.set(false);
-      },
-      error : err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update expected visit'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to DiagnosisStore
+    this.diagnosisStore.updateExpectedVisit(updatedExpectedVisit);
   }
 
   /**
@@ -125,19 +129,8 @@ export class CatalogStore {
    * @returns void
    */
   deleteExpectedVisit(id: string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.catalogApi.deleteExpectedVisit(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.expectedVisitsSignal.update(expectedVisits =>
-          expectedVisits.filter(ev => ev.id !== id));
-        this.loadingSignal.set(false);
-      },
-      error : err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to delete expected visit'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegate to DiagnosisStore
+    this.diagnosisStore.deleteExpectedVisit(id);
   }
 
   /**
@@ -188,6 +181,15 @@ export class CatalogStore {
   }
 
   /**
+   * Gets an Auto Repair register by its ID.
+   * @param id - The ID of the Auto Repair register.
+   * @returns A signal containing the Auto Repair register or undefined if not found.
+   */
+  getAutoRepairById(id: string | number | null | undefined): Signal<AutoRepair | undefined> {
+    return computed(() => id ? this.autoRepairs().find(ar => ar.id === String(id)) : undefined);
+  }
+
+  /**
    * Deletes a location by ID.
    * @param id - The ID of the location to delete.
    */
@@ -207,21 +209,61 @@ export class CatalogStore {
   }
 
   /**
-   * Loads expected visits from the API.
+   * Adds a new Auto Repair register.
+   * @param autoRepair - The Auto Repair register to add.
    * @returns void
-   * @private
    */
-  private loadExpectedVisits(): void {
+  addAutoRepair(autoRepair: AutoRepair): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.catalogApi.getExpectedVisits().pipe(takeUntilDestroyed()).subscribe({
-      next: expectedVisits => {
-        console.log(expectedVisits);
-        this.expectedVisitsSignal.set(expectedVisits);
+    this.catalogApi.createAutoRepair(autoRepair).pipe(retry(2)).subscribe({
+      next: (createdAutoRepair) => {
+        this.autoRepairsSignal.set([...this.autoRepairs(), createdAutoRepair]);
         this.loadingSignal.set(false);
       },
-      error : err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load expected visits'));
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  /**
+   * Updates an existing Auto Repair register.
+   * @param updatedAutoRepair - The Auto Repair register to update.
+   * @returns void
+   */
+  updateAutoRepair(updatedAutoRepair: AutoRepair): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.updateAutoRepair(updatedAutoRepair).pipe(retry(2)).subscribe({
+      next: (autoRepair) => {
+        this.autoRepairsSignal.update(autoRepairs =>
+          autoRepairs.map(ar => ar.id === autoRepair.id ? autoRepair : ar)
+        );
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update auto repair'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  /**
+   * Deletes an Auto Repair register by its ID.
+   * @param id - The ID of the Auto Repair register to delete.
+   */
+  deleteAutoRepair(id: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.deleteAutoRepair(id).pipe(retry(2)).subscribe({
+      next: () => {
+        this.autoRepairsSignal.update(autoRepairs => autoRepairs.filter(ar => ar.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete register'));
         this.loadingSignal.set(false);
       }
     });
@@ -245,6 +287,28 @@ export class CatalogStore {
         this.loadingSignal.set(false);
       }
     })
+  }
+
+  /**
+   * Loads the list of Auto Repair registers.
+   * @private
+   * @returns void
+   */
+  private loadAutoRepairs(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.getAutoRepairs()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (autoRepairs) => {
+          this.autoRepairsSignal.set(autoRepairs);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Failed to load auto repairs'));
+          this.loadingSignal.set(false);
+        }
+      });
   }
 
   /**

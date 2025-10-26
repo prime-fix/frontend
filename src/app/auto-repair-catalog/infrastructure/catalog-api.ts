@@ -1,26 +1,20 @@
 import {Injectable} from '@angular/core';
 import {BaseApi} from '@shared/infrastructure/http/base-api';
-import {ExpectedVisitsApiEndpoint} from '@catalog/infrastructure/expected-visits-api-endpoint';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ExpectedVisit} from '@catalog/domain/model/expected-visit.entity';
 import {Location} from '@catalog/domain/model/location.entity';
 import {LocationApiEndpoint} from '@catalog/infrastructure/location-api-endpoint';
+import {AutoRepairApiEndpoint} from '@catalog/infrastructure/auto-repair-api-endpoint';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 /**
  * Catalog API service that provides methods to interact with the AutoRepair catalog backend.
- * It uses the ExpectedVisitsApiEndpoint to perform CRUD operations on expected visits.
+ * This service includes operations for managing locations.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class CatalogApi extends BaseApi {
-  /**
-   * API endpoint for expected visits.
-   * @private
-   * @readonly
-   */
-  private readonly expectedVisitsEndpoint: ExpectedVisitsApiEndpoint;
 
   /**
    * API endpoint for location-related operations.
@@ -29,57 +23,19 @@ export class CatalogApi extends BaseApi {
   private readonly locationsEndpoint: LocationApiEndpoint;
 
   /**
-   * Constructor to initialize the Catalog API service with the ExpectedVisitsApiEndpoint.
+   * The AutoRepairApiEndpoint instance for managing auto repairs.
+   * @private
+   */
+  private readonly autoRepairsEndpoint:     AutoRepairApiEndpoint;
+
+  /**
+   * Constructor to initialize the Catalog API service with the LocationApiEndpoint.
    * @param http - The HttpClient instance for making HTTP requests.
    */
   constructor(http: HttpClient) {
     super();
-    this.expectedVisitsEndpoint = new ExpectedVisitsApiEndpoint(http);
     this.locationsEndpoint = new LocationApiEndpoint(http);
-  }
-
-  /**
-   * Fetches all expected visits from the backend.
-   * @returns An Observable emitting an array of ExpectedVisit entities.
-   */
-  getExpectedVisits(): Observable<ExpectedVisit[]> {
-    return this.expectedVisitsEndpoint.getAll();
-  }
-
-  /**
-   * Fetches a specific expected visit by its ID.
-   * @param id - The ID of the expected visit to fetch.
-   * @returns An Observable emitting the ExpectedVisit entity.
-   */
-  getExpectedVisitById(id: string): Observable<ExpectedVisit> {
-    return this.expectedVisitsEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new expected visit in the backend.
-   * @param expectedVisit - The ExpectedVisit entity to create.
-   * @returns An Observable emitting the created ExpectedVisit entity.
-   */
-  createExpectedVisit(expectedVisit: ExpectedVisit): Observable<ExpectedVisit> {
-    return this.expectedVisitsEndpoint.create(expectedVisit);
-  }
-
-  /**
-   * Updates an existing expected visit in the backend.
-   * @param expectedVisit - The ExpectedVisit entity to update.
-   * @returns An Observable emitting the updated ExpectedVisit entity.
-   */
-  updateExpectedVisit(expectedVisit: ExpectedVisit): Observable<ExpectedVisit> {
-    return this.expectedVisitsEndpoint.update(expectedVisit, expectedVisit.id);
-  }
-
-  /**
-   * Deletes an expected visit by its ID.
-   * @param id - The ID of the expected visit to delete.
-   * @returns An Observable emitting void upon successful deletion.
-   */
-  deleteExpectedVisit(id: string): Observable<void> {
-    return this.expectedVisitsEndpoint.delete(id);
+    this.autoRepairsEndpoint = new AutoRepairApiEndpoint(http);
   }
 
   /**
@@ -124,5 +80,49 @@ export class CatalogApi extends BaseApi {
    */
   deleteLocation(id: string): Observable<void> {
     return this.locationsEndpoint.delete(id);
+  }
+
+  /**
+   * Gets all Auto Repairs.
+   * @returns An Observable of an array of Auto Repairs.
+   */
+  getAutoRepairs(): Observable<AutoRepair[]> {
+    return this.autoRepairsEndpoint.getAll();
+  }
+
+  /**
+   * Gets an Auto Repair by its ID.
+   * @param id - The ID of the Auto Repair.
+   * @returns An Observable of the Auto Repair.
+   */
+  getAutoRepairById(id: number): Observable<AutoRepair> {
+    return this.autoRepairsEndpoint.getById(id);
+  }
+
+  /**
+   * Creates a new Auto Repair.
+   * @param repair - The Auto Repair to create.
+   * @returns An Observable of the created Auto Repair.
+   */
+  createAutoRepair(repair: AutoRepair): Observable<AutoRepair> {
+    return this.autoRepairsEndpoint.create(repair);
+  }
+
+  /**
+   * Updates an existing Auto Repair.
+   * @param repair - The Auto Repair to update.
+   * @returns An Observable of the updated Auto Repair.
+   */
+  updateAutoRepair(repair: AutoRepair): Observable<AutoRepair> {
+    return this.autoRepairsEndpoint.update(repair, repair.id);
+  }
+
+  /**
+   * Deletes an Auto Repair by its ID.
+   * @param id - The ID of the Auto Repair to delete.
+   * @returns An Observable of void.
+   */
+  deleteAutoRepair(id: number | string): Observable<void> {
+    return this.autoRepairsEndpoint.delete(id);
   }
 }

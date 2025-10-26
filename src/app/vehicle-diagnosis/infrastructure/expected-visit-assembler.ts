@@ -1,6 +1,6 @@
 import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
-import {ExpectedVisit} from '@catalog/domain/model/expected-visit.entity';
-import {ExpectedVisitResource, ExpectedVisitResponse} from '@catalog/infrastructure/expected-visit-response';
+import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
+import {ExpectedVisitResource, ExpectedVisitResponse} from '@diagnosis/infrastructure/expected-visit-response';
 
 export class ExpectedVisitAssembler implements BaseAssembler<ExpectedVisit, ExpectedVisitResource, ExpectedVisitResponse> {
   toEntitiesFromResponse(response: ExpectedVisitResponse): ExpectedVisit[] {

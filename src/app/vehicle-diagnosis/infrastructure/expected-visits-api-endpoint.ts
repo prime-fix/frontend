@@ -1,7 +1,7 @@
 import {BaseApiEndpoint} from '@shared/infrastructure/http/base-api-endpoint';
-import {ExpectedVisit} from '@catalog/domain/model/expected-visit.entity';
-import {ExpectedVisitResource, ExpectedVisitResponse} from '@catalog/infrastructure/expected-visit-response';
-import {ExpectedVisitAssembler} from '@catalog/infrastructure/expected-visit-assembler';
+import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
+import {ExpectedVisitResource, ExpectedVisitResponse} from '@diagnosis/infrastructure/expected-visit-response';
+import {ExpectedVisitAssembler} from '@diagnosis/infrastructure/expected-visit-assembler';
 import {environment} from '@env/environment';
 import {HttpClient} from '@angular/common/http';
 
