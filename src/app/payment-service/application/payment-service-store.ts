@@ -6,7 +6,7 @@ import {Rating} from '../domain/model/rating.entity';
 import {PaymentServiceApi} from '../infrastructure/payment-service-api';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {Visit} from '@collections/domain/model/visit.entity';
-import {Vehicle} from '@collections/domain/model/vehicle.entity';
+import {Vehicle} from '@tracking/domain/model/vehicle.entity';
 
 /**
  * State management service for Payment Service

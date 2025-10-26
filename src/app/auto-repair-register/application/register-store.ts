@@ -5,7 +5,7 @@ import {Technician} from '@register/domain/model/technician.entity';
 import {RegisterApi} from '@register/infrastructure/register-api';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
-import {AutoRepair} from '@collections/domain/model/auto-repair.entity';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
