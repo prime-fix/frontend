@@ -21,6 +21,7 @@ export class Payment {
   readonly store = inject(PaymentServiceStore);
   protected router = inject(Router);
 
+
   public card = false;
   public cash = false;
 
@@ -29,9 +30,29 @@ export class Payment {
   /*
   * Usuario de prueba
   * */
-  public userId = "U001";
-  public userAccountId = "UA001";
+  public userId = "U002";
+  public userAccountId = "UA002";
   public visit = "V001";
+
+  public visitAux = {
+    "id_visit": "V001",
+    "failure": "El motor hace un ruido extraño",
+    "time_visit": "2025-10-16",
+    "id_auto_repair": "AR001",
+    "id_service": "S002",
+    "status": "Completado",
+    "price": "500.00",
+    "id_vehicle": "RV001"};
+
+  public vehicle = {
+    "id_vehicle": "RV001",
+    "model": "Corolla",
+    "id_user": "U001",
+    "vehicle_brand": "Toyota",
+    "vehicle_plate": "ABC-123",
+    "vehicle_type": "Sedan",
+    "color": "Rojo"
+  }
 
   onPaymentChange(value: string) {
     this.selectedMethod = value;
@@ -42,13 +63,13 @@ export class Payment {
 
   cardMethod(card:Boolean){
     if(card){
-      this.router.navigate(['payment-service/payment/selection']).then();
+      this.router.navigate(['/layout-owner/payment-service/payment/selection']).then();
     }
   }
 
   cashMethod(cash:Boolean) {
     if(cash){
-      this.router.navigate(['payment-service/payment/done']).then();
+      this.router.navigate(['/layout-owner/payment-service/payment/done']).then();
     }
   }
 

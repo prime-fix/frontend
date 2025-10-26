@@ -15,6 +15,6 @@ export class PaymentDone {
   protected router = inject(Router);
 
   next() {
-    this.router.navigate(['payment-service/rating']).then();
+    this.router.navigate(['/layout-owner/payment-service/rating']).then();
   }
 }

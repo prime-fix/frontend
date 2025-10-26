@@ -4,6 +4,7 @@ import {Login} from '@iam/presentation/views/login/login';
 import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
 import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-catalog-routes';
 import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
+import {paymentServiceRoutes} from '@payment/presentation/views/payment-service.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -73,6 +74,11 @@ export const routes: Routes = [
         path: 'maintenance-tracking',
         loadChildren : () => maintenanceTrackingRoutes,
         title: `${baseTitle} -  Track Vehicle`,
+      },
+      {
+        path: 'payment-service',
+        loadChildren : () => import('./payment-service/presentation/views/payment-service.routes').then(m=>m.paymentServiceRoutes),
+        title: `${baseTitle} -  Payment Service`,
       },
       {
         path:'visits',

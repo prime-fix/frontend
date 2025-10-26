@@ -4,9 +4,9 @@
   <mat-card class="payment-card">
     <h1 class="payment-title">{{ 'payment-service.detail' | translate }}</h1>
     <div class="payment-info">
-      <p><strong>{{'payment-service.idVisit'|translate}}:</strong> {{ visitData()?.id }}</p>
-      <p><strong>{{'payment-service.status'|translate}}:</strong> {{ visitData()?.status }}</p>
-      <p><strong>{{'payment-service.visitDate'|translate}}:</strong> {{ visitData()?.time_visit }}</p>
+      <p><strong>{{'payment-service.idVisit'|translate}}:</strong> {{ visitAux.id_visit }}</p>
+      <p><strong>{{'payment-service.status'|translate}}:</strong> {{ visitAux.status }}</p>
+      <p><strong>{{'payment-service.visitDate'|translate}}:</strong> {{ visitAux.time_visit }}</p>
     </div>
 
     <div class="payment-methods">

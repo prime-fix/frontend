@@ -14,6 +14,6 @@ export class RatingDone {
   protected router = inject(Router)
 
   goBack(){
-    this.router.navigate(['payment-service/']).then()
+    this.router.navigate(['/layout-owner/payment-service/']).then()
   }
 }

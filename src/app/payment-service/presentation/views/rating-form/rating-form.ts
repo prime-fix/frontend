@@ -26,9 +26,29 @@ export class RatingForm {
   /*
   * Usuario de prueba
   * */
-  public userId = 'U001';
-  public userAccountId = 'UA001';
-  public visit = 'V001';
+  public userId = "U002";
+  public userAccountId = "UA002";
+  public visit = "V001";
+
+  public visitAux = {
+    "id_visit": "V001",
+    "failure": "El motor hace un ruido extraño",
+    "time_visit": "2025-10-16",
+    "id_auto_repair": "AR001",
+    "id_service": "S002",
+    "status": "Completado",
+    "price": "500.00",
+    "id_vehicle": "RV001"};
+
+  public vehicle = {
+    "id_vehicle": "RV001",
+    "model": "Corolla",
+    "id_user": "U001",
+    "vehicle_brand": "Toyota",
+    "vehicle_plate": "ABC-123",
+    "vehicle_type": "Sedan",
+    "color": "Rojo"
+  }
   public autoRepairId = 'AR001';
 
   form = this.fb.group({
@@ -56,7 +76,7 @@ export class RatingForm {
 
     this.store.addRating(newRating);
     alert('Calificación registrada correctamente.');
-    this.router.navigate(['payment-service/rating/done']).then();
+    this.router.navigate(['/layout-owner/payment-service/rating/done']).then();
   }
 
 }

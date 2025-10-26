@@ -348,7 +348,7 @@
   "rating": {
     "title": "Rate service",
     "serviceRating": "Service rating",
-    "message": "The service has been completed. <br/> Would you like to rate it?",
+    "message": "The service has been completed. Would you like to rate it?",
     "laterButton": "Not now",
     "rateNowButton": "Rate"
   },

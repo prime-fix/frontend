@@ -337,7 +337,7 @@
   "rating": {
     "title": "Calificar servicio",
     "serviceRating": "Calificación del servicio",
-    "message": "Se ha completado el servicio. <br/> ¿Desea calificarlo?",
+    "message": "Se ha completado el servicio. ¿Desea calificarlo?",
     "laterButton": "Ahora no",
     "rateNowButton": "Calificar"
   },

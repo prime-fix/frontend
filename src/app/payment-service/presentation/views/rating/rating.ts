@@ -14,10 +14,10 @@ export class Rating {
   protected router = inject(Router);
 
   onLater(){
-    this.router.navigate(['payment-service/rating/done'])
+    this.router.navigate(['/layout-owner/payment-service/rating/done'])
   }
 
   onRateNow(){
-    this.router.navigate((['payment-service/rating/form']))
+    this.router.navigate((['/layout-owner/payment-service/rating/form']))
   }
 }
