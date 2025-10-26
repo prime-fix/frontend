@@ -1,0 +1,59 @@
+<div class="vehicles-container">
+
+  @if (dataStore.loading()){
+    <div class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (dataStore.error()) {
+    <mat-error class="error-message">{{dataStore.error()}}</mat-error>
+  }
+
+  <div class="cards-container">
+    <h2 class="form-title">{{'visit_list.title'| translate}}</h2>
+    @for (visit of dataStore.visits(); track visit.id) {
+      <div class="vehicle-card">
+        <div class="card-content">
+          <h3 class="visit-title">
+            {{'visit_list.vehicle_model'| translate}} {{ getVehicle(visit.id_vehicle)()?.model }}
+          </h3>
+          <p class="visit-feature">
+            <b>{{'visit_list.vehicle_brand'| translate}}</b> {{ getVehicle(visit.id_vehicle)()?.vehicle_brand }}
+          </p>
+          <p class="visit-feature">
+            <b>{{'visit_list.service'| translate}} </b> {{ getService(visit.id_service)()?.name }}
+          </p>
+          <p class="visit-feature"><b>{{'visit_list.failure'| translate}} </b>{{ visit.failure }}
+          </p>
+          <p
+            class="visit-feature"><b>{{'visit_list.date'| translate}} </b>{{ visit.time_visit }}
+          </p>
+          <p
+            class="visit-feature"><b>{{'visit_list.status'| translate}} </b>{{ visit.status }}
+          </p>
+          <p class="visit-contact">
+            <b>{{'visit_list.contact'| translate}} </b>
+            <span class="email-text">{{ getAutoRepair(visit.id_auto_repair)()?.contact_email }}</span>
+          </p>
+
+        </div>
+
+        <div class="card-actions">
+          <button mat-raised-button class="edit-button" (click)="editVisit(visit.id)">
+            {{'visit_list.edit'| translate}}
+          </button>
+          <button mat-raised-button class="delete-button" (click)="deleteVisit(visit.id)">
+            {{'visit_list.delete'| translate}}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (dataStore.visits().length === 0 && !dataStore.loading()) {
+    <div class="empty-state">
+      <p>{{'visit_list.noVisits'| translate}}</p>
+    </div>
+  }
+</div>

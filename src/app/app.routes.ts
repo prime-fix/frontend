@@ -75,6 +75,11 @@ export const routes: Routes = [
         title: `${baseTitle} -  Track Vehicle`,
       },
       {
+        path:'visits',
+        loadChildren:()=>import('./data_collection/presentation/views/data.routes').then(m=>m.dataRoutes),
+        title:`${baseTitle} - Visit Workshop `
+      },
+      {
         path: '404',
         loadComponent: pageNotFound,
         title: `${baseTitle} -  Not Found`,

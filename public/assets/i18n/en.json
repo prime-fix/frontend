@@ -194,6 +194,48 @@
   "button-logout": {
     "logout": "Logout"
   },
+  "visit-form": {
+    "header": "Search Workshop",
+    "title": "Schedule a Workshop Visit",
+    "vehicle_model": "Vehicle Model",
+    "failure": "Failure Description",
+    "type_of_service": "Type of Service",
+    "preferred_date": "Preferred Date",
+    "select_model": "Select Model",
+    "select_service": "Select Service",
+    "failure_details":"Describe the vehicle failures",
+    "back": "Back",
+    "failure_message": "Please describe the vehicle failures",
+    "date_message": "Please select a preferred date"
+  },
+  "completed-screen": {
+    "title": "Visit Scheduled Successfully",
+    "message": "Your workshop visit has been scheduled.",
+    "date": "Scheduled Date:",
+    "vehicle": "Vehicle Model:",
+    "service": "Type of Service:",
+    "status": "Status:",
+    "back": "Back to Home",
+    "visit_Scheduled": "Go to Visit Scheduled List"
+  },
+  "visit_list": {
+    "title": "Scheduled Visits",
+    "vehicle_model": "Vehicle Model:",
+    "vehicle_brand": "Vehicle Brand:",
+    "service": "Type of Service:",
+    "date": "Scheduled Date:",
+    "failure": "Failure Description:",
+    "status": "Visit Status:",
+    "contact": "Workshop Contact:",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noVisits": "No scheduled visits available"
+  },
+  "auto_repair":{
+    "title": "Search for Auto Repair Workshops",
+    "search_visit": "Schedule a Visit",
+    "technician": "Technicians:"
+  },
   "home-owner": {
     "searchWorkshop": "Search Workshop",
     "selectDepartment": "Select Department",

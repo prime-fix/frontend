@@ -184,7 +184,48 @@
   "button-logout": {
     "logout": "Cerrar sesión"
   },
-  "home-owner": {
+  "visit-form": {
+    "header": "Buscar Taller",
+    "title": "Programación de Visita",
+    "vehicle_model": "Modelo de Coche",
+    "failure": "Fallas",
+    "type_of_service": "Tipo de Servicio",
+    "preferred_date": "Fecha",
+    "select_model": "Selecciona un modelo",
+    "select_service": "Selecciona un servicio",
+    "failure_details":"Describe las fallas del vehiculo",
+    "back": "Volver",
+    "failure_message": "La descripcion de los fallos son necesarios",
+    "date_message": "La fecha es necesaria"
+  },
+  "completed-screen": {
+    "title": "Visita Programada",
+    "message": "Se logró programa su visita",
+    "date": "Fecha:",
+    "vehicle": "Vehiculo:",
+    "service": "Servicio:",
+    "status": "Estado:",
+    "back": "Volver al menú principal",
+    "visit_Scheduled": "Ir a Visitas Programadas"
+  },
+  "visit_list": {
+    "title": "Visitas Programadas",
+    "vehicle_model": "Modelo Vehiculo:",
+    "vehicle_brand": "Marca Vehiculo:",
+    "service": "Tipo de Servicio:",
+    "date": "Fecha Asignada:",
+    "failure": "Fallas:",
+    "status": "Estado de la Visita:",
+    "contact": "Contacto del Taller:",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "noVisits": "No hay visitas programadas"
+  },
+  "auto_repair":{
+    "title": "Buscar Taller",
+    "search_visit": "Agendar Visita",
+    "technician": "Técnicos:"
+  },"home-owner": {
     "searchWorkshop": "Buscar taller",
     "selectDepartment": "Seleccionar departamento",
     "selectDistrict": "Seleccionar distrito",
