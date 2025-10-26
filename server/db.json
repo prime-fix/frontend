@@ -719,5 +719,23 @@
       "id_visit": "V002",
       "is_scheduled": false
     }
+  ],
+  "diagnostics": [
+    {
+      "id_diagnostic": "D001",
+      "price": 150.00,
+      "id_vehicle": "RV002",
+      "state_diagnostic": "In diagnosis",
+      "diagnosis": "Engine noise detected, further inspection required.",
+      "id_expected": "EV001"
+    },
+    {
+      "id_diagnostic": "D002",
+      "price": 200.00,
+      "id_vehicle": "RV001",
+      "state_diagnostic": "In diagnosis",
+      "diagnosis": "Brake pads worn out, replacement needed.",
+      "id_expected": "EV002"
+    }
   ]
 }
