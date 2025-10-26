@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 import {Login} from '@iam/presentation/views/login/login';
 import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
+import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-catalog-routes';
+import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -13,7 +15,6 @@ const layoutOwner = () => import('@shared/presentation/components/layout-owner/l
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
 const homeWorkshop = () => import('@shared/presentation/views/home-workshop/home-workshop').then(m => m.HomeWorkshop);
-const trackVehicle = () => import('@tracking/presentation/views/track-vehicle/track-vehicle').then(m => m.TrackVehicle);
 const pageNotFound = () => import('@shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
 const baseTitle = 'Prime Fix';
 
@@ -64,8 +65,13 @@ export const routes: Routes = [
         title: `${baseTitle} -  Home Owner`,
       },
       {
+        path: 'auto-repair-catalog',
+        loadChildren : () => autoRepairCatalogRoutes,
+        title: `${baseTitle} -  Auto Repair Catalog`,
+      },
+      {
         path: 'maintenance-tracking',
-        loadChildren : () => import('@tracking/presentation/views/tracking.routes').then(m => m.trackingRoutes),
+        loadChildren : () => maintenanceTrackingRoutes,
         title: `${baseTitle} -  Track Vehicle`,
       },
       {
