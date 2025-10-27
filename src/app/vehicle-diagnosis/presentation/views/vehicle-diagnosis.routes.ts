@@ -5,5 +5,5 @@ const modifyDiagnosis = () => import('./modify-diagnosis/modify-diagnosis').then
 
 export const VehicleDiagnosisRoutes: Routes = [
   { path: 'diagnosis-view', loadComponent: diagnosisView },
-  { path: 'modify-diagnosis/:id', loadComponent: modifyDiagnosis, data:{renderMode:'client'} }
+  { path: 'modify-diagnosis/edit/:id', loadComponent: modifyDiagnosis }
 ];
