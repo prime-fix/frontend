@@ -32,7 +32,6 @@ export class VisitForm {
     time_visit: new FormControl<string|null>('', { nonNullable: true, validators: [Validators.required] }),
     id_auto_repair: new FormControl<number|string|null>(null),
     id_service: new FormControl<number|string|null>(null),
-    status: new FormControl<string>('Pendiente', { nonNullable: true, validators: [Validators.required] }),
   });
   visits = this.store.visits;
   visitId: number |string | null = null;
@@ -55,7 +54,6 @@ export class VisitForm {
             time_visit: visit.time_visit,
             id_auto_repair: visit.id_auto_repair,
             id_service: visit.id_service,
-            status: visit.status
           });
         }
       }
@@ -82,7 +80,6 @@ export class VisitForm {
         : null,
       id_auto_repair: formValue.id_auto_repair ? formValue.id_auto_repair : null,
       id_service: formValue.id_service ?? '',
-      status: formValue.status ?? ''
     });
     console.log('Visit to send:', visit);
 

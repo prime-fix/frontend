@@ -28,10 +28,6 @@ export class Visit implements BaseEntity{
    * The unique identifier for the service associated with the visit.
    */
  _id_service: number | string;
-  /**
-   * The status of the visit.
-   */
- _status: string;
 
   /**
    * Creates an instance of Visit.
@@ -42,17 +38,15 @@ export class Visit implements BaseEntity{
    * @property {string|null} visit.time_visit - The time of the visit.
    * @property {number|string|null} visit.id_auto_repair - The unique identifier for the auto repair.
    * @property {number|string} visit.id_service - The unique identifier for the service.
-   * @property {string} visit.status - The status of the visit.
    */
   constructor( visit:{ id_visit:number | string, failure:string, id_vehicle:number|string, time_visit:string|null, id_auto_repair:number | string | null
-  , id_service:number|string, status:string}) {
+  , id_service:number|string}) {
     this._id_visit=visit.id_visit;
     this._failure=visit.failure;
     this._id_vehicle=visit.id_vehicle;
     this._time_visit=visit.time_visit;
     this._id_auto_repair=visit.id_auto_repair;
     this._id_service = visit.id_service;
-    this._status = visit.status;
   }
   /* --- Getters & Setters --- */
   get id(): number | string {return this._id_visit;}
@@ -61,7 +55,6 @@ export class Visit implements BaseEntity{
   get time_visit(): string|null {return this._time_visit;}
   get id_auto_repair(): number |string |null{return this._id_auto_repair;}
   get id_service(): number|string {return this._id_service;}
-  get status(): string {return this._status;}
 
   set id(value: number| string) {this._id_visit = value;}
   set failure(value: string) {this._failure = value;}
@@ -69,6 +62,5 @@ export class Visit implements BaseEntity{
   set time_visit(value: string) {this._time_visit = value;}
   set id_auto_repair(value: number|string) {this._id_auto_repair = value;}
   set id_service(value: number) {this._id_service = value;}
-  set status(value: string) {this._status = value;}
 
 }

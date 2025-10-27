@@ -38,8 +38,4 @@ export interface VisitResource extends BaseResource{
    * The unique identifier for the service associated with the visit.
    */
   id_service:number|string;
-  /**
-   * The status of the visit.
-   */
-  status:string
 }
