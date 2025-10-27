@@ -1,30 +1,26 @@
-import { Injectable, computed, signal, Signal } from '@angular/core';
+import {Injectable, computed, signal, Signal, inject} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { retry, forkJoin } from 'rxjs';
-import {AutoRepair} from '@register/domain/model/auto-repair.entity';
 import {Technician} from '@register/domain/model/technician.entity';
 import {RegisterApi} from '@register/infrastructure/register-api';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
+import {DataCollectionStore} from '@collections/application/data-collection-store';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
 })
 /**
- * Store for managing Auto Repair and Technician registers.
+ * Store for managing Technician and Technician Schedule data.
  */
 export class RegisterStore {
-  /**
-   * The Auto Repair registers signal.
-   * @private
-   * @readonly
-   */
-  private readonly autoRepairsSignal = signal<AutoRepair[]>([]);
+  private readonly dataCollectionStore = inject(DataCollectionStore);
 
   /**
    * The Auto Repair registers as a readonly signal.
    * @readonly
    */
-  readonly autoRepairs = this.autoRepairsSignal.asReadonly();
+  readonly autoRepairs = this.dataCollectionStore.autoRepairs;
 
   /**
    * The Technicians signal.
@@ -79,101 +75,48 @@ export class RegisterStore {
   readonly error = this.errorSignal.asReadonly();
 
   constructor(private autoRepairApi: RegisterApi) {
-    this.loadAutoRepairs();
     this.loadTechnicians();
     this.loadTechniciansSchedules();
   }
 
   /**
-   * Gets an Auto Repair register by its ID.
-   * @param id - The ID of the Auto Repair register.
-   * @returns A signal containing the Auto Repair register or undefined if not found.
+   * Gets an Auto Repair by ID.
+   * @param id - The ID of the Auto Repair.
+   * @returns A signal containing the Auto Repair or undefined if not found.
    */
   getAutoRepairById(id: string | number | undefined): Signal<AutoRepair | undefined> {
-    return computed(() => id ? this.autoRepairs().find(ar => ar.id === String(id)) : undefined);
+    // Delegates to the DataCollectionStore to get the Auto Repair by ID.
+    return this.dataCollectionStore.getAutoRepairById(id);
   }
 
   /**
-   * Loads the list of Auto Repair registers.
+   * Adds a new Auto Repair.
+   * @param autoRepair - The Auto Repair to add.
    * @returns void
    */
-  private loadAutoRepairs(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.autoRepairApi.getAutoRepairs()
-      .pipe(takeUntilDestroyed())
-      .subscribe({
-        next: (autoRepairs) => {
-          this.autoRepairsSignal.set(autoRepairs);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load auto repairs'));
-          this.loadingSignal.set(false);
-        }
-      });
-  }
-
-  /**
-   * Adds a new Auto Repair register.
-   * @param autoRepair - The Auto Repair register to add.
-   * @returns void
-   */
-
   addAutoRepair(autoRepair: AutoRepair): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.autoRepairApi.createAutoRepair(autoRepair).pipe(retry(2)).subscribe({
-      next: (createdAutoRepair) => {
-        this.autoRepairsSignal.set([...this.autoRepairs(), createdAutoRepair]);
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
-        this.loadingSignal.set(false);
-      }
-    });
+    // Delegates to the DataCollectionStore to add the Auto Repair.
+    this.dataCollectionStore.addAutoRepair(autoRepair);
   }
 
   /**
-   * Updates an existing Auto Repair register.
-   * @param updatedAutoRepair - The Auto Repair register to update.
+   * Updates an existing Auto Repair.
+   * @param autoRepair - The Auto Repair to update.
    * @returns void
    */
-  updateAutoRepair(updatedAutoRepair: AutoRepair): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.autoRepairApi.updateAutoRepair(updatedAutoRepair).pipe(retry(2)).subscribe({
-      next: (autoRepair) => {
-        this.autoRepairsSignal.update(autoRepairs =>
-          autoRepairs.map(ar => ar.id === autoRepair.id ? autoRepair : ar)
-        );
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to update auto repair'));
-        this.loadingSignal.set(false);
-      }
-    });
+  updateAutoRepair(autoRepair: AutoRepair): void {
+    // Delegates to the DataCollectionStore to update the Auto Repair.
+    this.dataCollectionStore.updateAutoRepair(autoRepair);
   }
 
   /**
-   * Deletes an Auto Repair register by its ID.
-   * @param id - The ID of the Auto Repair register to delete.
+   * Deletes an Auto Repair by ID.
+   * @param id - The ID of the Auto Repair to delete.
+   * @returns void
    */
-  deleteAutoRepairRegister(id: string): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.autoRepairApi.deleteAutoRepair(id).pipe(retry(2)).subscribe({
-      next: () => {
-        this.autoRepairsSignal.update(autoRepairs => autoRepairs.filter(ar => ar.id !== id));
-        this.loadingSignal.set(false);
-      },
-      error: (err) => {
-        this.errorSignal.set(this.formatError(err, 'Failed to delete register'));
-        this.loadingSignal.set(false);
-      }
-    });
+  deleteAutoRepair(id: string): void {
+    // Delegates to the DataCollectionStore to delete the Auto Repair.
+    this.dataCollectionStore.deleteAutoRepair(id);
   }
 
   /**

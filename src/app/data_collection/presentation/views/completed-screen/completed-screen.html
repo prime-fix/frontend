@@ -1,0 +1,44 @@
+@if (visit) {
+  <div class="container">
+    <div class="screen-card">
+      <div class="close-icon">
+        <mat-icon>close</mat-icon>
+      </div>
+
+      <h1 class="title">{{'completed-screen.title'| translate}}</h1>
+
+      <div class="info-content">
+        <p class="success-message">{{'completed-screen.message'| translate}}</p>
+        <p class="info-line"><strong>{{'completed-screen.date'| translate}}</strong> {{ visit._time_visit }}</p>
+        <p class="info-line"><strong>{{'completed-screen.vehicle'| translate}}</strong> {{ getVehicle(visit._id_vehicle)()?.model }}</p>
+        <p class="info-line"><strong>{{'completed-screen.service'| translate}}</strong> {{ getService(visit._id_service)()?.name }}</p>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button
+        mat-raised-button
+        color="warn"
+        class="back-button"
+        type="button"
+        (click)="goBack()">
+        {{'completed-screen.back'| translate}}
+      </button>
+
+      <button
+        mat-raised-button
+        color="warn"
+        class="submit-button"
+        type="button"
+        (click)="goVisitList()">
+        {{'completed-screen.visit_Scheduled'| translate}}
+      </button>
+    </div>
+
+  </div>
+} @else {
+  <div class="container">
+    <h2>No hay datos de visita programada</h2>
+    <button mat-raised-button color="primary" (click)="goBack()">Volver</button>
+  </div>
+}

@@ -1,0 +1,30 @@
+<header class="main-header">
+  <h1>{{'visit-form.header'|translate}}</h1>
+</header>
+
+@if (dataStore.loading()){
+  <mat-spinner diameter="40"></mat-spinner>
+}
+@if (dataStore.error()) {
+  <mat-error>{{dataStore.error()}}</mat-error>
+}
+
+<div class="repair-cards-container">
+  @for(repair of autoRepairs(); track repair.id ){
+    <mat-card class="repair-card">
+      <mat-card-header>
+        <mat-card-title>{{ repair.id }}</mat-card-title>
+        <mat-card-subtitle>RUC: {{ repair.ruc }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Email: {{ repair.contact_email }}</p>
+        <p> {{'auto_repair.technician'| translate}} {{ repair.technicians_count }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="selectRepair(repair.id)">
+          {{'auto_repair.search_visit'| translate}}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

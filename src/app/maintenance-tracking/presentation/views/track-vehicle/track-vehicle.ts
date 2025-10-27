@@ -1,21 +1,25 @@
-import {Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
 import {ProgressBar} from '@tracking/presentation/components/progress-bar/progress-bar';
 import {StateError} from '@tracking/presentation/components/state-error/state-error';
 import {StateNotification} from '@tracking/presentation/views/state-notification/state-notification';
 import {TrackingStore} from '@tracking/application/tracking-store';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-track-vehicle',
   imports: [ReactiveFormsModule, TranslateModule, CommonModule, ProgressBar, StateError, StateNotification],
   templateUrl: './track-vehicle.html',
-  styleUrl: './track-vehicle.css'
+  styleUrl: './track-vehicle.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TrackVehicle {
   private fb = inject(FormBuilder);
-  private store = inject(TrackingStore);
+  private trackingStore = inject(TrackingStore);
+  private iamStore = inject(IamStore);
+
   currentVehicle = signal<string | undefined>("");
   selectedVehicleData = signal<any>(null);
   showProgressBar = signal<boolean>(false);
@@ -24,18 +28,11 @@ export class TrackVehicle {
   hasNotification = signal<boolean>(true);
 
 
-  constructor() {
-
-  }
-
-
-  // Vehicle sample data with maintenance status
-  vehicles = [
-    { id: 'V001', name: 'COMFORTABLE 14', brand: 'Toyota', model: 'Corolla', year: 2020, maintenanceStatus: 0 },
-    { id: 'V002', name: 'SPEED DEMON', brand: 'Honda', model: 'Civic', year: 2019, maintenanceStatus: 3 },
-    { id: 'V003', name: 'CITY RUNNER', brand: 'Nissan', model: 'Sentra', year: 2021, maintenanceStatus: 5 },
-    { id: 'V004', name: 'ZEN 1.0 MT', brand: 'Renault', model: 'Zen', year: 2022, maintenanceStatus: 2 }
-  ];
+  // Vehicles filtered by userId
+  vehiclesByUserId = computed(() => {
+    const userId = this.iamStore.sessionUser()?.id;
+    return userId ? this.trackingStore.vehicles().filter(vehicle => vehicle.id_user === userId) : [];
+  });
 
   trackForm = this.fb.group({
     selectedVehicle: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
@@ -48,14 +45,14 @@ export class TrackVehicle {
     }
 
     const selectedVehicleId = this.trackForm.get('selectedVehicle')?.value;
-    const selectedVehicle = this.vehicles.find(v => v.id === selectedVehicleId);
+    const selectedVehicle = this.vehiclesByUserId().find(v => v.id === selectedVehicleId);
 
     if (selectedVehicle) {
-      this.currentVehicle.set(selectedVehicle.name);
-      this.selectedVehicleData.set(selectedVehicle);
+      this.currentVehicle.set(`${selectedVehicle.vehicle_brand} [${selectedVehicle.vehicle_plate}]`);
+      this.selectedVehicleData.set(selectedVehicle.state_maintenance);
 
       // Show error if maintenance status is 0 (not being repaired)
-      if (selectedVehicle.maintenanceStatus === 0) {
+      if (selectedVehicle.state_maintenance === 0) {
         this.showError.set(true);
         this.showProgressBar.set(false);
       } else {

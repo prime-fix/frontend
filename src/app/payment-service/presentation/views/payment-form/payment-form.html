@@ -1,0 +1,66 @@
+<div class="payment-form-container">
+  <h1 class="title">{{'payment-form.title'| translate}}</h1>
+
+  <mat-card class="payment-form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.cardNumber'| translate}}</mat-label>
+        <input matInput formControlName="card_number" />
+        @if (form.controls.card_number.touched && form.controls.card_number.invalid) {
+          <mat-error>{{'payment-form.invalidCardNumber'| translate}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.cardType'| translate}}</mat-label>
+        <mat-select formControlName="card_type">
+          @for (type of cardTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.month'| translate}}</mat-label>
+        <mat-select formControlName="month">
+          @for (m of months; track m) {
+            <mat-option [value]="m">{{ m }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.year'| translate}}</mat-label>
+        <mat-select formControlName="year">
+          @for (y of years; track y) {
+            <mat-option [value]="y">{{ y }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.cvv'| translate}}</mat-label>
+        <input matInput formControlName="cvv" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.docType'| translate}}</mat-label>
+        <mat-select formControlName="doc_type">
+          @for (d of docTypes; track d) {
+            <mat-option [value]="d">{{ d }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{'payment-form.docNumber'| translate}}</mat-label>
+        <input matInput formControlName="doc_number" />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-flat-button color="primary" class="btn-add" type="submit">{{'payment-form.addButton'| translate}}</button>
+      </div>
+    </form>
+  </mat-card>
+
+</div>

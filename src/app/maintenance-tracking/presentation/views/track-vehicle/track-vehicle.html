@@ -27,8 +27,8 @@
           formControlName="selectedVehicle"
           class="form-select">
           <option value="" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
-          @for (vehicle of vehicles; track vehicle.id) {
-            <option [value]="vehicle.id">{{ vehicle.name }}</option>
+          @for (vehicle of vehiclesByUserId(); track vehicle.id) {
+            <option [value]="vehicle.id">{{ vehicle.vehicle_brand }} [{{ vehicle.vehicle_plate }}]</option>
           }
         </select>
         @if (trackForm.get('selectedVehicle')?.invalid && trackForm.get('selectedVehicle')?.touched) {
@@ -55,14 +55,14 @@
       <div class="vehicle-info-section">
         <div class="vehicle-details">
           <p class="vehicle-info">
-            <strong>{{ 'track-vehicle.vehicle' | translate }}:</strong> {{ selectedVehicleData()?.name }}
+            <strong>{{ 'track-vehicle.vehicle' | translate }}:</strong> {{ currentVehicle() }}
           </p>
           <p class="status-info">
             <strong>{{ 'track-vehicle.status' | translate }}:</strong>
           </p>
         </div>
         <div class="progress-section">
-          <app-progress-bar [currentStep]="selectedVehicleData()?.maintenanceStatus || 1"></app-progress-bar>
+          <app-progress-bar [currentStep]="selectedVehicleData() || 1"></app-progress-bar>
         </div>
       </div>
     }

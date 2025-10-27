@@ -194,6 +194,48 @@
   "button-logout": {
     "logout": "Logout"
   },
+  "visit-form": {
+    "header": "Search Workshop",
+    "title": "Schedule a Workshop Visit",
+    "vehicle_model": "Vehicle Model",
+    "failure": "Failure Description",
+    "type_of_service": "Type of Service",
+    "preferred_date": "Preferred Date",
+    "select_model": "Select Model",
+    "select_service": "Select Service",
+    "failure_details":"Describe the vehicle failures",
+    "back": "Back",
+    "failure_message": "Please describe the vehicle failures",
+    "date_message": "Please select a preferred date"
+  },
+  "completed-screen": {
+    "title": "Visit Scheduled Successfully",
+    "message": "Your workshop visit has been scheduled.",
+    "date": "Scheduled Date:",
+    "vehicle": "Vehicle Model:",
+    "service": "Type of Service:",
+    "status": "Status:",
+    "back": "Back to Home",
+    "visit_Scheduled": "Go to Visit Scheduled List"
+  },
+  "visit_list": {
+    "title": "Scheduled Visits",
+    "vehicle_model": "Vehicle Model:",
+    "vehicle_brand": "Vehicle Brand:",
+    "service": "Type of Service:",
+    "date": "Scheduled Date:",
+    "failure": "Failure Description:",
+    "status": "Visit Status:",
+    "contact": "Workshop Contact:",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noVisits": "No scheduled visits available"
+  },
+  "auto_repair":{
+    "title": "Search for Auto Repair Workshops",
+    "search_visit": "Schedule a Visit",
+    "technician": "Technicians:"
+  },
   "home-owner": {
     "searchWorkshop": "Search Workshop",
     "selectDepartment": "Select Department",
@@ -265,6 +307,83 @@
     "title": "Attention",
     "message": "Your car is currently \"Ready for pickup\"",
     "accept": "Accept"
+  },
+
+  "payment-service": {
+    "title": "Payment to make",
+    "detail": "Detail",
+    "idVisit": "Visit ID",
+    "status": "Status",
+    "visitDate": "Date of the visit",
+    "cash": "Cash",
+    "virtualPayment": "Virtual Payment",
+    "btnAccept": "Accept"
+  },
+  "payment-done": {
+    "title": "Payment to make",
+    "paid": "Service already paid",
+    "done": "Payment successfully completed",
+    "btnAccept": "Accept"
+  },
+  "payment-form": {
+    "title": "Add a new payment method",
+    "cardNumber": "Card number",
+    "invalidCardNumber": "Invalid number (16 digits required)",
+    "cardType": "Card type",
+    "month": "Month",
+    "year": "Year",
+    "cvv": "CVV",
+    "docType": "Document type",
+    "docNumber": "Document number",
+    "addButton": "Add"
+  },
+  "payment-selection": {
+    "title": "Payment to make",
+    "chooseMethod": "Choose method",
+    "method": "Method",
+    "backButton": "Back",
+    "addMethodButton": "Add method",
+    "payButton": "Pay"
+  },
+  "rating": {
+    "title": "Rate service",
+    "serviceRating": "Service rating",
+    "message": "The service has been completed. <br/> Would you like to rate it?",
+    "laterButton": "Not now",
+    "rateNowButton": "Rate"
+  },
+  "rating-done": {
+    "title": "Rate service",
+    "doneTitle": "Done",
+    "message": "Rating process completed",
+    "acceptButton": "Accept"
+  },
+  "rating-form": {
+    "title": "Rate service",
+    "serviceRating": "Service rating",
+    "question": "How do you feel about the service provided?<br /> (5 means completely satisfied and 1 means completely dissatisfied)",
+    "commentLabel": "Leave a comment (optional)",
+    "commentPlaceholder": "Write your comment here",
+    "commentField": "Comment",
+    "rateButton": "Rate"
+  },
+  "search-auto-repair": {
+    "title": "Search workshop",
+    "selectDepartment": "Select department",
+    "selectDepartmentError": "Please select a department",
+    "selectDistrict": "Select district",
+    "selectDistrictError": "Please select a district",
+    "searchButton": "Search workshop",
+    "searchingLoading": "Searching...",
+    "selectAutoRepair": "Select an workshop",
+    "loadingAutoRepairs": "Loading workshops...",
+    "notFoundAutoRepairsLocation": "No workshops found in this location",
+    "searchAgainButton": "Search again",
+    "auto-repair-card": {
+      "numberTechnicians": "Number of technicians:",
+      "availableTechnicians": "Available technicians:",
+      "selectButton": "Select workshop"
+    }
   },
   "page-not-found": {
     "title": "Page not found",

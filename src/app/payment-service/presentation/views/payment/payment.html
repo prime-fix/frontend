@@ -1,0 +1,36 @@
+<div class="payment-container">
+  <h2 class="title">{{'payment.title' | translate}}</h2>
+
+  <mat-card class="payment-card">
+    <h1 class="payment-title">{{ 'payment-service.detail' | translate }}</h1>
+    <div class="payment-info">
+      <p><strong>{{'payment-service.idVisit'|translate}}:</strong> {{ visitData()?.id }}</p>
+      <p><strong>{{'payment-service.visitDate'|translate}}:</strong> {{ visitData()?.time_visit }}</p>
+    </div>
+
+    <div class="payment-methods">
+      <mat-radio-group (change)="onPaymentChange($event.value)">
+        <div class="method">
+          <mat-radio-button
+            name="payment"
+            value="cash"
+          >{{'payment-service.cash'|translate}}</mat-radio-button>
+        </div>
+
+        <div class="method">
+          <mat-radio-button
+            name="payment"
+            value="card"
+          >{{'payment-service.virtualPayment'|translate}}</mat-radio-button>
+        </div>
+      </mat-radio-group>
+
+    </div>
+
+    <div class="button-card">
+      <button mat-flat-button color="primary" class="btn-accept" (click)="onAccept()">{{'payment-service.btnAccept'|translate}}</button>
+    </div>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,273 @@
+/* Modify Diagnosis Container */
+.modify-diagnosis-container {
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.modify-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Title and Subtitle */
+.modify-title {
+  font-family: var(--font-bold);
+  font-size: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--color-first-complementary);
+}
+
+.modify-subtitle {
+  font-family: var(--font-medium);
+  font-size: 1.1rem;
+  color: var(--color-dark);
+  text-align: center;
+  margin: 0 0 2rem 0;
+}
+
+/* Card */
+.modify-card {
+  background: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Vehicle Summary */
+.vehicle-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(100, 145, 164, 0.2);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  font-family: var(--font-semibold);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.summary-value {
+  font-family: var(--font-regular);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+/* Form */
+.modify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-family: var(--font-semibold);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+/* Form Inputs */
+.form-input,
+.form-select,
+.form-textarea {
+  font-family: var(--font-regular);
+  font-size: 1rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--color-light);
+  border-radius: 8px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(17, 67, 88, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23114358' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.form-input[type="number"] {
+  appearance: textfield;
+}
+
+.form-input[type="number"]::-webkit-inner-spin-button,
+.form-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Error Text */
+.error-text {
+  font-family: var(--font-regular);
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-cancel,
+.btn-submit {
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.btn-cancel {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  border: 2px solid var(--color-tertiary-complementary);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: var(--color-tertiary-complementary);
+  color: var(--color-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(100, 145, 164, 0.3);
+}
+
+.btn-submit {
+  background-color: var(--color-first-complementary);
+  color: var(--color-light);
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #d99a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(242, 170, 31, 0.4);
+}
+
+.btn-cancel:disabled,
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* No Data */
+.no-data {
+  text-align: center;
+  padding: 3rem 2rem;
+  background-color: var(--color-second-complementary);
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.no-data p {
+  font-family: var(--font-medium);
+  font-size: 1.2rem;
+  color: var(--color-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+.btn-back {
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  padding: 0.875rem 2rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: var(--color-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(17, 67, 88, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modify-title {
+    font-size: 1.75rem;
+  }
+
+  .modify-subtitle {
+    font-size: 1rem;
+  }
+
+  .modify-card {
+    padding: 1.5rem;
+  }
+
+  .summary-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .modify-diagnosis-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .modify-title {
+    font-size: 1.5rem;
+  }
+
+  .modify-card {
+    padding: 1.25rem;
+  }
+}
+

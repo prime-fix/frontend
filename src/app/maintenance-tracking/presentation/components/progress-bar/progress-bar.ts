@@ -15,11 +15,10 @@ interface ProgressStep {
   styleUrl: './progress-bar.css'
 })
 export class ProgressBar {
-  currentVehicle = input<string | undefined>("Vehicle not identified");
-  // Input para recibir el estado actual desde el componente padre
+  // Input to receive the current step from parent component
   currentStep = input<number>(1);
 
-  // Definir los pasos del progreso basándose en el mockup
+  // Definition of progress steps
   steps: ProgressStep[] = [
     { id: 1, label: 'En espera', translationKey: 'progress-bar.waiting' },
     { id: 2, label: 'En diagnóstico', translationKey: 'progress-bar.diagnosis' },
@@ -30,21 +29,21 @@ export class ProgressBar {
   ];
 
   /**
-   * Determina si un paso está completado
+   * Determine if a step is completed
    */
   isStepCompleted(stepId: number): boolean {
     return stepId < this.currentStep();
   }
 
   /**
-   * Determina si un paso es el actual
+   * Determine if a step is the current step
    */
   isCurrentStep(stepId: number): boolean {
     return stepId === this.currentStep();
   }
 
   /**
-   * Determina si un paso está pendiente
+   * Determine if a step is pending
    */
   isStepPending(stepId: number): boolean {
     return stepId > this.currentStep();

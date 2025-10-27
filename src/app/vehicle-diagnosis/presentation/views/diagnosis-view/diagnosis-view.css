@@ -1,0 +1,229 @@
+/* Diagnosis Container */
+.diagnosis-container {
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.diagnosis-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Title and Subtitle */
+.diagnosis-title {
+  font-family: var(--font-bold);
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--color-first-complementary);
+}
+
+.diagnosis-subtitle {
+  font-family: var(--font-regular);
+  font-size: 1rem;
+  color: var(--color-dark);
+  margin: 0 0 2rem 0;
+}
+
+/* Vehicles List */
+.vehicles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Vehicle Card */
+.vehicle-card {
+  background: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Vehicle Info */
+.vehicle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+
+.info-label {
+  font-family: var(--font-regular);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  white-space: nowrap;
+}
+
+.info-value {
+  font-family: var(--font-regular);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  flex: 1;
+}
+
+/* State Row */
+.state-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.state-form {
+  flex: 1;
+  display: flex;
+}
+
+/* State Select */
+.state-select {
+  font-family: var(--font-regular);
+  font-size: 0.95rem;
+  padding: 0.625rem 2.5rem 0.625rem 0.875rem;
+  border: 2px solid var(--color-light);
+  border-radius: 8px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23114358' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  width: 100%;
+}
+
+.state-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(17, 67, 88, 0.1);
+}
+
+.state-select:hover {
+  border-color: var(--color-tertiary-complementary);
+}
+
+/* Update Button */
+.update-button {
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-first-complementary);
+  color: var(--color-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center;
+  min-width: 180px;
+}
+
+.update-button:hover:not(:disabled) {
+  background-color: #d99a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(242, 170, 31, 0.4);
+}
+
+.update-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Messages */
+.loading-message,
+.error-message,
+.no-vehicles {
+  font-family: var(--font-regular);
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.loading-message {
+  color: var(--color-primary);
+  background-color: rgba(100, 145, 164, 0.1);
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.no-vehicles {
+  color: var(--color-dark);
+  background-color: var(--color-second-complementary);
+}
+
+.no-vehicles p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .diagnosis-title {
+    font-size: 1.75rem;
+  }
+
+  .diagnosis-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .vehicle-card {
+    padding: 1.25rem;
+  }
+
+  .info-row {
+    flex-wrap: wrap;
+  }
+
+  .state-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .state-select {
+    max-width: 100%;
+  }
+
+  .update-button {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .diagnosis-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .diagnosis-title {
+    font-size: 1.5rem;
+  }
+
+  .vehicle-card {
+    padding: 1rem;
+  }
+
+  .info-label,
+  .info-value {
+    font-size: 0.9rem;
+  }
+}
+
+
+

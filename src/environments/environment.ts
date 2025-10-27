@@ -12,12 +12,15 @@ export const environment = {
   primeFixProviderMembershipsEndpointPath: "/memberships",
   primeFixProviderNotificationsEndpointPath: "/notifications",
   primeFixProviderPaymentsEndpointPath: "/payments",
-  primeFixProviderRegisteredVehiclesEndpointPath: "/registered_vehicles",
+  primeFixProviderVehiclesEndpointPath: "/vehicles",
   primeFixProviderRolesEndpointPath: "/roles",
   primeFixProviderServicesEndpointPath: "/services",
   primeFixProviderUserAccountsEndpointPath: "/user_accounts",
   primeFixProviderUsersEndpointPath: "/users",
   primeFixVisitsEndpointPath: "/visits",
+  primeFixExpectedVisitsEndpointPath: "/expected_visits",
+  primeFixDiagnosticsEndpointPath: "/diagnostics",
+  primeFixProviderRatingsEndpointPath: "/ratings",
 
   // API Key
   primeFixProviderApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtscnR6Y2plaGJrZmNrb2hydnZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMDc4NjQsImV4cCI6MjA3NDY4Mzg2NH0.abo91QGTMisENqS_a-8QWV0WP3VZSkkOkRUitRv8iBw',
@@ -36,4 +39,7 @@ export const environment = {
   userAccountIdQueryParamKey: "id_user_account",
   userIdQueryParamKey: "id_user",
   visitIdQueryParamKey: "id_visit",
+  expectedVisitIdQueryParamKey: "id_expected",
+  diagnosticIdQueryParamKey: "id_diagnostic",
+  ratingIdQueryParamKey: "id_rating"
 };

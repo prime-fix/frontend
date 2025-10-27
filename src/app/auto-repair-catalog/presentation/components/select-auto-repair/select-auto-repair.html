@@ -1,0 +1,51 @@
+<article class="auto-repair-card">
+  <div class="card-header">
+    @if (true) {
+      <h3 class="workshop-name"> {{ userAccountName() }} - {{ autoRepair().ruc }}</h3>
+    }
+    <div class="rating">
+      <span class="stars">⭐⭐⭐⭐⭐</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    @if (location()) {
+      <div class="location-info">
+        <p class="address">{{ location()!.address }}</p>
+        <p class="district">{{ location()!.district }}, {{ location()!.department }}</p>
+      </div>
+    }
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-icon">
+          <svg>
+            <use href="assets/icons/sprite.symbol.svg#users"></use>
+          </svg>
+        </span>
+        <div class="stat-content">
+          <span class="stat-label">{{ 'search-auto-repair.auto-repair-card.numberTechnicians' | translate }}</span>
+          <span class="stat-value">{{ autoRepair().technicians_count }}</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-icon">
+          <svg>
+            <use href="assets/icons/sprite.symbol.svg#tool"></use>
+          </svg>
+        </span>
+        <div class="stat-content">
+          <span class="stat-label">{{ 'search-auto-repair.auto-repair-card.availableTechnicians' | translate }}</span>
+          <span class="stat-value">{{ autoRepair().technicians_count }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <button type="button" class="btn-select" (click)="onSelect()">
+      {{ 'search-auto-repair.auto-repair-card.selectButton' | translate }}
+    </button>
+  </div>
+</article>
