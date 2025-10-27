@@ -110,7 +110,7 @@ export class DiagnosisView {
     }
 
     // Navigate to modify-diagnosis view with vehicle ID
-    void this.router.navigate(['layout-workshop/vehicle-diagnosis/modify-diagnosis', vehicleId]);
+    void this.router.navigate(['layout-workshop/vehicle-diagnosis/modify-diagnosis/edit', vehicleId]);
   }
 
   getStateName(stateValue: number): string {
