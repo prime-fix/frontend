@@ -49,9 +49,7 @@ export class TrackVehicle {
 
     if (selectedVehicle) {
       this.currentVehicle.set(`${selectedVehicle.vehicle_brand} [${selectedVehicle.vehicle_plate}]`);
-      console.log(this.currentVehicle());
       this.selectedVehicleData.set(selectedVehicle.state_maintenance);
-      console.log(this.selectedVehicleData());
 
       // Show error if maintenance status is 0 (not being repaired)
       if (selectedVehicle.state_maintenance === 0) {

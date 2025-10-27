@@ -354,6 +354,10 @@ export class IamStore {
     return computed(() => id ? this.users().find(u => u.id === id) : undefined);
   }
 
+  getUserAccountById(id: string | null | undefined): Signal<UserAccount | undefined> {
+    return computed(() => id ? this.userAccounts().find(ua => ua.id === id) : undefined);
+  }
+
   /**
    * Adds a new user account.
    * @param userAccount - The user account to add.

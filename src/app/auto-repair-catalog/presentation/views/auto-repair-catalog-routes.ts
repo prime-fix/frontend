@@ -5,5 +5,5 @@ const scheduleVisit = () => import('@catalog/presentation/views/schedule-visit/s
 
 export const autoRepairCatalogRoutes: Routes = [
   { path: 'search-auto-repair', loadComponent: searchAutoRepair },
-  { path: 'schedule-visit', loadComponent: scheduleVisit },
+  { path: 'schedule-visit/:id', loadComponent: scheduleVisit },
 ];

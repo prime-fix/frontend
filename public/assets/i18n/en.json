@@ -367,11 +367,24 @@
     "commentField": "Comment",
     "rateButton": "Rate"
   },
-
-
-
-
-
+  "search-auto-repair": {
+    "title": "Search workshop",
+    "selectDepartment": "Select department",
+    "selectDepartmentError": "Please select a department",
+    "selectDistrict": "Select district",
+    "selectDistrictError": "Please select a district",
+    "searchButton": "Search workshop",
+    "searchingLoading": "Searching...",
+    "selectAutoRepair": "Select an workshop",
+    "loadingAutoRepairs": "Loading workshops...",
+    "notFoundAutoRepairsLocation": "No workshops found in this location",
+    "searchAgainButton": "Search again",
+    "auto-repair-card": {
+      "numberTechnicians": "Number of technicians:",
+      "availableTechnicians": "Available technicians:",
+      "selectButton": "Select workshop"
+    }
+  },
   "page-not-found": {
     "title": "Page not found",
     "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",

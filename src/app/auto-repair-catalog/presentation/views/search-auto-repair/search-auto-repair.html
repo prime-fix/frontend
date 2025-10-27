@@ -1,1 +1,98 @@
-<p>search-auto-repair works!</p>
+<!-- First part: Search form -->
+@if (!showResults()) {
+  <div class="search-workshop-container">
+    <div class="search-content">
+      <h1 class="search-title">{{ 'search-auto-repair.title' | translate }}</h1>
+
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+        <div class="form-group">
+          <label for="department" class="form-label">{{ 'search-auto-repair.selectDepartment' | translate  }}</label>
+          <select
+            id="department"
+            formControlName="department"
+            class="form-select">
+            <option value="" disabled selected></option>
+            @for (department of departments(); track department) {
+              <option [value]="department">{{ department }}</option>
+            }
+          </select>
+          @if (searchForm.get('department')?.invalid && searchForm.get('department')?.touched) {
+            <span class="error-message">
+              {{ 'search-auto-repair.selectDepartmentError' | translate }}
+            </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="district" class="form-label">{{ 'search-auto-repair.selectDistrict' | translate }}</label>
+          <select
+            id="district"
+            formControlName="district"
+            class="form-select"
+            [disabled]="!searchForm.value.department">
+            <option value="" disabled selected></option>
+            @for (district of districts(); track district) {
+              <option [value]="district">{{ district }}</option>
+            }
+          </select>
+          @if (searchForm.get('district')?.invalid && searchForm.get('district')?.touched) {
+            <span class="error-message">
+              {{ 'search-auto-repair.selectDistrictError' | translate }}
+            </span>
+          }
+        </div>
+
+        <button type="submit" class="search-button" [disabled]="searchForm.invalid || loading()">
+          @if (loading()) {
+            {{ 'search-auto-repair.searchingLoading' | translate }}
+          } @else {
+            {{ 'search-auto-repair.searchButton' | translate }}
+          }
+        </button>
+      </form>
+
+      @if (error()) {
+        <div class="error-alert">{{ error() }}</div>
+      }
+    </div>
+  </div>
+}
+
+<!-- Second part: Search results -->
+@if (showResults()) {
+  <div class="results-workshop-container">
+    <div class="results-content">
+      <h1 class="search-title">{{ 'search-auto-repair.selectAutoRepair' | translate }}</h1>
+
+      @if (loading()) {
+        <div class="loading-message">{{ 'search-auto-repair.loadingAutoRepairs' | translate }}</div>
+      }
+
+      @if (error()) {
+        <div class="error-alert">{{ error() }}</div>
+      }
+
+      @if (!loading() && filteredAutoRepairs().length === 0) {
+        <div class="no-results">
+          <p>{{ 'search-auto-repair.notFoundAutoRepairsLocation' | translate }}</p>
+          <button type="button" class="back-button" (click)="onBack()">{{ 'search-auto-repair.searchAgainButton' | translate }}</button>
+        </div>
+      }
+
+      @if (filteredAutoRepairs().length > 0) {
+        <div class="workshops-list">
+          @for (item of filteredAutoRepairs(); track item.autoRepair.id) {
+            <app-select-auto-repair
+              [autoRepair]="item.autoRepair"
+              [location]="item.location">
+            </app-select-auto-repair>
+          }
+        </div>
+
+        <div class="back-button-container">
+          <button type="button" class="back-button" (click)="onBack()">{{ 'search-auto-repair.searchAgainButton' | translate }}</button>
+        </div>
+      }
+    </div>
+  </div>
+}

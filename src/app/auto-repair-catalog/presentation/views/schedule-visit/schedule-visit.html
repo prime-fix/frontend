@@ -1,1 +1,85 @@
-<p>schedule-visit works!</p>
+<div class="schedule-visit-container">
+  <div class="schedule-content">
+    <h1 class="schedule-title">Buscar taller</h1>
+
+    <div class="schedule-card">
+      <h2 class="card-subtitle">Programación de visita</h2>
+
+      <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" class="schedule-form">
+        <!-- Vehicle Selection -->
+        <div class="form-group">
+          <label for="vehicleId" class="form-label">Seleccionar vehículo</label>
+          <select
+            id="vehicleId"
+            formControlName="vehicleId"
+            class="form-select">
+            <option value="" disabled selected></option>
+            @for (vehicle of userVehicles(); track vehicle.id) {
+              <option [value]="vehicle.id">{{ vehicle.vehicle_brand }} {{ vehicle.model }} [{{ vehicle.vehicle_plate }}]</option>
+            }
+          </select>
+          @if (scheduleForm.get('vehicleId')?.invalid && scheduleForm.get('vehicleId')?.touched) {
+            <span class="error-text">Seleccione un vehículo</span>
+          }
+        </div>
+
+        <!-- Issues -->
+        <div class="form-group">
+          <label for="issues" class="form-label">Fallas</label>
+          <textarea
+            id="issues"
+            formControlName="issues"
+            class="form-textarea"
+            rows="4"
+            placeholder="No arranca el motor"></textarea>
+          @if (scheduleForm.get('issues')?.invalid && scheduleForm.get('issues')?.touched) {
+            <span class="error-text">Describa las fallas</span>
+          }
+        </div>
+
+        <!-- Date and Time Row -->
+        <div class="form-row">
+          <!-- Date -->
+          <div class="form-group form-group-half">
+            <label for="date" class="form-label">Fecha</label>
+            <input
+              type="date"
+              id="date"
+              formControlName="date"
+              class="form-input">
+            @if (scheduleForm.get('date')?.invalid && scheduleForm.get('date')?.touched) {
+              <span class="error-text">Seleccione una fecha</span>
+            }
+          </div>
+
+          <!-- Time -->
+          <div class="form-group form-group-half">
+            <label for="time" class="form-label">Hora</label>
+            <input
+              type="time"
+              id="time"
+              formControlName="time"
+              class="form-input">
+            @if (scheduleForm.get('time')?.invalid && scheduleForm.get('time')?.touched) {
+              <span class="error-text">Seleccione una hora</span>
+            }
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="scheduleForm.invalid || submitting()">
+          @if (submitting()) {
+            Agendando...
+          } @else {
+            Agendar visita
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+

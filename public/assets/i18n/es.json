@@ -356,8 +356,24 @@
     "commentField": "Comentario",
     "rateButton": "Calificar"
   },
-
-
+  "search-auto-repair": {
+    "title": "Buscar taller",
+    "selectDepartment": "Seleccionar departamento",
+    "selectDepartmentError": "Por favor seleccione un departamento",
+    "selectDistrict": "Seleccionar distrito",
+    "selectDistrictError": "Por favor seleccione un distrito",
+    "searchButton": "Buscar taller",
+    "searchingLoading": "Buscando talleres...",
+    "selectAutoRepair": "Seleccionar taller",
+    "loadingAutoRepairs": "Cargando talleres...",
+    "notFoundAutoRepairsLocation": "No se encontraron talleres en esta ubicación",
+    "searchAgainButton": "Buscar de nuevo",
+    "auto-repair-card": {
+      "numberTechnicians": "Cantidad de técnicos:",
+      "availableTechnicians": "Técnicos disponibles:",
+      "selectButton": "Seleccionar taller"
+    }
+  },
   "page-not-found": {
     "title": "Página no encontrada",
     "content": "La ruta <strong>{{ invalid_path }}</strong> no es válida.",

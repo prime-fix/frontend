@@ -1,0 +1,195 @@
+/* Schedule Visit Container */
+.schedule-visit-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  min-height: 400px;
+}
+
+.schedule-content {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Title */
+.schedule-title {
+  font-family: var(--font-bold);
+  font-size: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+  margin: 0 0 2rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--color-first-complementary);
+}
+
+/* Card */
+.schedule-card {
+  background: var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-subtitle {
+  font-family: var(--font-semibold);
+  font-size: 1.25rem;
+  color: var(--color-dark);
+  margin: 0 0 2rem 0;
+}
+
+/* Form */
+.schedule-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-family: var(--font-medium);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+/* Form Inputs */
+.form-input,
+.form-select,
+.form-textarea {
+  font-family: var(--font-regular);
+  font-size: 1rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--color-light);
+  border-radius: 8px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(17, 67, 88, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23114358' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+/* Form Row for Date and Time */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group-half {
+  flex: 1;
+}
+
+/* Error Text */
+.error-text {
+  font-family: var(--font-regular);
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+/* Submit Button */
+.submit-button {
+  font-family: var(--font-semibold);
+  font-size: 1.1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-first-complementary);
+  color: var(--color-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #d99a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(242, 170, 31, 0.4);
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Input Date and Time Styling */
+.form-input[type="date"],
+.form-input[type="time"] {
+  cursor: pointer;
+}
+
+.form-input[type="date"]::-webkit-calendar-picker-indicator,
+.form-input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(20%) sepia(35%) saturate(1500%) hue-rotate(160deg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .schedule-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .schedule-title {
+    font-size: 1.75rem;
+  }
+
+  .card-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group-half {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-visit-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .schedule-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .schedule-title {
+    font-size: 1.5rem;
+  }
+
+  .submit-button {
+    font-size: 1rem;
+  }
+}
+
