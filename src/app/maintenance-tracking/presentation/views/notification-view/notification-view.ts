@@ -2,6 +2,7 @@ import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { TrackingStore } from '@tracking/application/tracking-store';
 import { Notification } from '@tracking/domain/model/notification.entity';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-notification-view',
@@ -12,19 +13,29 @@ import { Notification } from '@tracking/domain/model/notification.entity';
 })
 export class NotificationView {
   private trackingStore = inject(TrackingStore);
+  private iamStore = inject(IamStore);
 
-  // Signals from the store
-  notifications = this.trackingStore.notifications;
+  // Vehicles filtered by userId
+  vehiclesByUserId = computed(() => {
+    const userId = this.iamStore.sessionUser()?.id;
+    return userId ? this.trackingStore.vehicles().filter(vehicle => vehicle.id_user === userId) : [];
+  });
+
+  notificationsByVehiclesId = computed(() => {
+    const vehicleIds = this.vehiclesByUserId().map(v => v.id);
+    return this.trackingStore.notifications().filter(notification => vehicleIds.includes(notification.id_vehicle));
+  })
+
   loading = this.trackingStore.loading;
   error = this.trackingStore.error;
 
   // Computed signals for filtered notifications
   unreadNotifications = computed(() =>
-    this.notifications().filter(n => !n.read)
+    this.notificationsByVehiclesId().filter(n => !n.read)
   );
 
   readNotifications = computed(() =>
-    this.notifications().filter(n => n.read)
+    this.notificationsByVehiclesId().filter(n => n.read)
   );
 
   unreadCount = computed(() => this.unreadNotifications().length);

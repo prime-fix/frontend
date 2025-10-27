@@ -567,7 +567,8 @@
       "vehicle_brand": "Toyota",
       "vehicle_plate": "ABC-123",
       "vehicle_type": "Sedan",
-      "color": "Rojo"
+      "color": "Rojo",
+      "state_maintenance": 0
     },
     {
       "id_vehicle": "RV002",
@@ -576,7 +577,8 @@
       "vehicle_brand": "Honda",
       "vehicle_plate": "XYZ-789",
       "vehicle_type": "Sedan",
-      "color": "Azul"
+      "color": "Azul",
+      "state_maintenance": 3
     },
     {
       "id_vehicle": "RV003",
@@ -585,7 +587,8 @@
       "vehicle_brand": "Toyota",
       "vehicle_plate": "DEF-456",
       "vehicle_type": "SUV",
-      "color": "Negro"
+      "color": "Negro",
+      "state_maintenance": 5
     },
     {
       "id_vehicle": "RV004",
@@ -594,7 +597,8 @@
       "vehicle_brand": "Toyota",
       "vehicle_plate": "GHI-321",
       "vehicle_type": "Truck",
-      "color": "Blanco"
+      "color": "Blanco",
+      "state_maintenance": 2
     },
     {
       "id_vehicle": "RV005",
@@ -603,7 +607,8 @@
       "vehicle_brand": "Kia",
       "vehicle_plate": "JKL-654",
       "vehicle_type": "SUV",
-      "color": "Blanco"
+      "color": "Blanco",
+      "state_maintenance": 1
     },
     {
       "id_vehicle": "RV006",
@@ -612,7 +617,8 @@
       "vehicle_brand": "Mazda",
       "vehicle_plate": "MNO-987",
       "vehicle_type": "Sedan",
-      "color": "Plata"
+      "color": "Plata",
+      "state_maintenance": 7
     }
   ],
   "visits": [
@@ -622,16 +628,14 @@
       "time_visit": "2025-10-16",
       "id_auto_repair": "AR001",
       "id_service": "S002",
-      "status": "Completado",
       "id_vehicle": "RV002"
     },
     {
       "id_visit": "V002",
       "failure": "Frenos desgastados",
       "time_visit": "2025-10-24",
-      "id_auto_repair": "AR",
+      "id_auto_repair": "AR002",
       "id_service": "S003",
-      "status": "Pendiente",
       "id_vehicle": "RV001"
     }
   ],
@@ -675,35 +679,40 @@
       "message": "Your is ready for pickup.",
       "read": false,
       "id_vehicle": "RV001",
-      "sent": "2025-10-01"
+      "sent": "2025-10-01",
+      "id_diagnostic": "D002"
     },
     {
       "id_notification": "N002",
       "message": "Your service is scheduled for tomorrow.",
       "read": true,
       "id_vehicle": "RV002",
-      "sent": "2025-09-30"
+      "sent": "2025-09-30",
+      "id_diagnostic": "D001"
     },
     {
       "id_notification": "N003",
       "message": "Your vehicle inspection is due next week.",
       "read": false,
       "id_vehicle": "RV003",
-      "sent": "2025-10-02"
+      "sent": "2025-10-02",
+      "id_diagnostic": "D003"
     },
     {
       "id_notification": "N004",
       "message": "Your payment was successful.",
       "read": true,
       "id_vehicle": "RV004",
-      "sent": "2025-09-29"
+      "sent": "2025-09-29",
+      "id_diagnostic": "D004"
     },
     {
       "id_notification": "N005",
       "message": "New promotions available for your vehicle.",
       "read": false,
       "id_vehicle": "RV005",
-      "sent": "2025-10-03"
+      "sent": "2025-10-03",
+      "id_diagnostic": "D005"
     }
   ],
   "expected_visits": [
@@ -725,7 +734,6 @@
       "id_diagnostic": "D001",
       "price": 150.00,
       "id_vehicle": "RV002",
-      "state_diagnostic": "In diagnosis",
       "diagnosis": "Engine noise detected, further inspection required.",
       "id_expected": "EV001"
     },
@@ -733,9 +741,29 @@
       "id_diagnostic": "D002",
       "price": 200.00,
       "id_vehicle": "RV001",
-      "state_diagnostic": "In diagnosis",
       "diagnosis": "Brake pads worn out, replacement needed.",
       "id_expected": "EV002"
+    },
+    {
+      "id_diagnostic": "D003",
+      "price": 120.00,
+      "id_vehicle": "RV003",
+      "diagnosis": "Oil change required, no other issues found.",
+      "id_expected": "EV001"
+    },
+    {
+      "id_diagnostic": "D004",
+      "price": 180.00,
+      "id_vehicle": "RV004",
+      "diagnosis": "Suspension components need replacement.",
+      "id_expected": "EV002"
+    },
+    {
+      "id_diagnostic": "D005",
+      "price": 160.00,
+      "id_vehicle": "RV005",
+      "diagnosis": "Electrical system functioning normally.",
+      "id_expected": "EV001"
     }
   ]
 }
