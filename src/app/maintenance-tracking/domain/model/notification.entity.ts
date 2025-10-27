@@ -9,18 +9,20 @@ export class Notification implements BaseEntity {
   _read: boolean;
   _id_vehicle: string;
   _sent: Date;
+  _id_diagnostic: string;
 
   /**
    * Constructor
    * @param notification - Notification data
    * {id_notification: string, message: string, read: boolean, id_vehicle: string, sent: Date}
    */
-  constructor(notification: { id_notification: string; message: string; read: boolean; id_vehicle: string; sent: Date }) {
+  constructor(notification: { id_notification: string; message: string; read: boolean; id_vehicle: string; sent: Date; id_diagnostic: string; }) {
     this._id_notification = notification.id_notification;
     this._message = notification.message;
     this._read = notification.read;
     this._id_vehicle = notification.id_vehicle;
     this._sent = notification.sent;
+    this._id_diagnostic = notification.id_diagnostic;
   }
 
   /**
@@ -36,4 +38,6 @@ export class Notification implements BaseEntity {
   set id_vehicle(value: string) { this._id_vehicle = value; }
   get sent(): Date { return this._sent; }
   set sent(value: Date) { this._sent = value; }
+  get id_diagnostic(): string { return this._id_diagnostic; }
+  set id_diagnostic(value: string) { this._id_diagnostic = value; }
 }

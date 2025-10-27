@@ -39,7 +39,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: true
+        read: true,
+        id_diagnostic: notification.id_diagnostic,
       })
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -55,7 +56,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: false
+        read: false,
+        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -71,7 +73,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: true
+        read: true,
+        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     });
