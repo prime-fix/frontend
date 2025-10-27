@@ -41,7 +41,7 @@ export class SideBarWorkshop {
       label: 'side-bar-workshop.manageTechnicians'
     },
     {
-      route: '/layout-workshop/maintenance-tracking/status-vehicle',
+      route: '/layout-workshop/vehicle-diagnosis/diagnosis-view',
       icon: 'diamonds',
       label: 'side-bar-workshop.statusVehicles'
     },

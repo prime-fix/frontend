@@ -1,6 +1,9 @@
-import {Diagnosis} from './diagnosis/diagnosis';
 import {Routes} from '@angular/router';
 
-export const DiagnosticRoutes: Routes = [
-  { path: 'vehicle-status/vehicle-diagnosis/:id', component: Diagnosis }, // sección de diagnóstico
+const diagnosisView = () => import('./diagnosis-view/diagnosis-view').then(m => m.DiagnosisView);
+const modifyDiagnosis = () => import('./modify-diagnosis/modify-diagnosis').then(m => m.ModifyDiagnosis);
+
+export const VehicleDiagnosisRoutes: Routes = [
+  { path: 'diagnosis-view', loadComponent: diagnosisView },
+  { path: 'modify-diagnosis/:id', loadComponent: modifyDiagnosis, data:{renderMode:'client'} }
 ];

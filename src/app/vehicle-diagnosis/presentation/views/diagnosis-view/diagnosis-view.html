@@ -1,0 +1,66 @@
+<div class="diagnosis-container">
+  <div class="diagnosis-content">
+    <h1 class="diagnosis-title">Estado de coches</h1>
+    <h2 class="diagnosis-subtitle">Modificación del estado de los coches</h2>
+
+    @if (loading()) {
+      <div class="loading-message">Cargando vehículos...</div>
+    }
+
+    @if (error()) {
+      <div class="error-message">{{ error() }}</div>
+    }
+
+    @if (!loading() && vehiclesInMaintenance().length === 0) {
+      <div class="no-vehicles">
+        <p>No hay vehículos en proceso de mantenimiento</p>
+      </div>
+    }
+
+    <div class="vehicles-list">
+      @for (vehicleData of vehiclesInMaintenance(); track vehicleData.vehicleId) {
+        <div class="vehicle-card">
+          <div class="vehicle-info">
+            <div class="info-row">
+              <span class="info-label">Coche:</span>
+              <span class="info-value">{{ vehicleData.vehicleBrand }} {{ vehicleData.vehicleModel }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Dueño:</span>
+              <span class="info-value">{{ vehicleData.ownerName }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ID visita:</span>
+              <span class="info-value">{{ vehicleData.visitId }}</span>
+            </div>
+            <div class="info-row state-row">
+              <span class="info-label">Estado:</span>
+              <form [formGroup]="getFormForVehicle(vehicleData.vehicleId)" class="state-form">
+                <select
+                  formControlName="state"
+                  class="state-select">
+                  @for (state of maintenanceStates; track state.value) {
+                    <option [value]="state.value">{{ state.label }}</option>
+                  }
+                </select>
+              </form>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="update-button"
+            (click)="updateVehicleState(vehicleData.vehicleId)"
+            [disabled]="loading()">
+            @if (loading()) {
+              Actualizando...
+            } @else {
+              Actualizar
+            }
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+

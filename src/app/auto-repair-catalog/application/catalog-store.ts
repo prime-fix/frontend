@@ -12,7 +12,7 @@ import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 })
 export class CatalogStore {
   /**
-   * Diagnosis store instance for managing expected visits.
+   * DiagnosisView store instance for managing expected visits.
    * @private
    */
   private readonly diagnosisStore = inject(DiagnosisStore);

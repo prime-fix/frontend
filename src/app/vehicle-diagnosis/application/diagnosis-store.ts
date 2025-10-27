@@ -1,14 +1,17 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 import {DiagnosisApi} from '@diagnosis/infrastructure/diagnosis-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Diagnostic} from '@diagnosis/domain/model/diagnostic.entity';
+import {TrackingStore} from '@tracking/application/tracking-store';
+import {Vehicle} from '@tracking/domain/model/vehicle.entity';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DiagnosisStore {
+  private readonly trackingStore = inject(TrackingStore);
   /**
    * Signal to track expected visits.
    * @private
@@ -34,6 +37,12 @@ export class DiagnosisStore {
    * @readonly
    */
   readonly diagnostics = this.diagnosticsSignal.asReadonly();
+
+  /**
+   * Readonly signal for vehicles from TrackingStore.
+   * @readonly
+   */
+  readonly vehicles = this.trackingStore.vehicles;
 
   /**
    * Signal to track loading state.
@@ -70,6 +79,12 @@ export class DiagnosisStore {
    * @readonly
    */
   readonly diagnosticCount = computed(() => this.diagnostics().length);
+
+  /**
+   * Computed signal for the count of vehicles.
+   * @readonly
+   */
+  readonly vehicleCount = computed(() => this.trackingStore.vehicleCount());
 
   /**
    * Constructor for DiagnosisStore.
@@ -220,6 +235,25 @@ export class DiagnosisStore {
         this.loadingSignal.set(false);
       }
     });
+  }
+
+  getVehicleById(id: string | null | undefined): Signal<Vehicle | undefined> {
+    return this.trackingStore.getVehicleById(id);
+  }
+
+  addVehicle(vehicle: Vehicle): void {
+    // Delegate to TrackingStore
+    this.trackingStore.addVehicle(vehicle);
+  }
+
+  updateVehicle(updatedVehicle: Vehicle): void {
+    // Delegate to TrackingStore
+    this.trackingStore.updateVehicle(updatedVehicle);
+  }
+
+  deleteVehicle(id: string): void {
+    // Delegate to TrackingStore
+    this.trackingStore.deleteVehicle(id);
   }
 
   /**

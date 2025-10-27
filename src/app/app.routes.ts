@@ -4,6 +4,7 @@ import {Login} from '@iam/presentation/views/login/login';
 import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
 import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-catalog-routes';
 import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
+import {VehicleDiagnosisRoutes} from '@diagnosis/presentation/views/vehicle-diagnosis.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -104,6 +105,11 @@ export const routes: Routes = [
         path: 'manage-technicians',
         loadChildren : () => autoRepairRegisterRoutes,
         title: `${baseTitle} -  Manage Technicians`,
+      },
+      {
+        path: 'vehicle-diagnosis',
+        loadChildren: () => VehicleDiagnosisRoutes,
+        title: `${baseTitle} -  Vehicle Diagnosis`,
       },
       {
         path: '404',
