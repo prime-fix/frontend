@@ -1,1 +1,48 @@
-<p>manage-requests works!</p>
+<div class="requests-container">
+  <h1 class="requests-title">{{ 'manage-requests.title' | translate }}</h1>
+
+  <!-- Requests List -->
+  <div class="requests-list">
+    @for (request of pendingRequests(); track request.visit.id) {
+      <div class="request-card">
+        <div class="request-info">
+          <h3 class="customer-name">{{ request.customerName }}</h3>
+          <div class="request-details">
+            <p class="detail-item">
+              <span class="detail-label">{{ 'manage-requests.date' | translate }}:</span>
+              {{ request.date }}
+            </p>
+            <p class="detail-item">
+              <span class="detail-label">{{ 'manage-requests.time' | translate }}:</span>
+              {{ request.time }}
+            </p>
+          </div>
+        </div>
+
+        <div class="request-actions">
+          <button
+            class="btn-accept"
+            (click)="onAcceptRequest(request)"
+            [disabled]="isLoading()"
+          >
+            {{ 'manage-requests.accept' | translate }}
+          </button>
+          <button
+            class="btn-reject"
+            (click)="onRejectRequest(request)"
+            [disabled]="isLoading()"
+          >
+            {{ 'manage-requests.reject' | translate }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (pendingRequests().length === 0) {
+      <div class="no-requests">
+        <p>{{ 'manage-requests.noRequests' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>
+
