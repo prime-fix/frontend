@@ -399,6 +399,23 @@
       "selectButton": "Seleccionar taller"
     }
   },
+  "settings-view": {
+    "title": "Configuración",
+    "changePassword": "Cambiar contraseña",
+    "newPassword": "Nueva contraseña",
+    "repeatPassword": "Repetir contraseña",
+    "savePassword": "Guardar",
+    "paymentMethods": "Métodos de pago",
+    "bank": "Banco",
+    "cardNumber": "Número",
+    "expirationDate": "Fecha de caducidad",
+    "deletePaymentMethod": "Eliminar",
+    "addPaymentMethod": "Añadir método de pago",
+    "subscription": "Suscripción",
+    "plan": "Plan de {{months}} meses",
+    "cost": "Costo: {{price}}",
+    "renewSubscription": "Renovar suscripción"
+  },
   "profile-view": {
     "title": "Perfil",
     "editProfile": "Editar perfil",

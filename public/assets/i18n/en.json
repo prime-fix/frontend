@@ -399,6 +399,23 @@
       "selectButton": "Select workshop"
     }
   },
+  "settings-view": {
+    "title": "Settings",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "repeatPassword": "Repeat password",
+    "savePassword": "Save",
+    "paymentMethods": "Payment methods",
+    "bank": "Bank",
+    "cardNumber": "Number",
+    "expirationDate": "Expiration date",
+    "deletePaymentMethod": "Delete",
+    "addPaymentMethod": "Add payment method",
+    "subscription": "Subscription",
+    "plan": "{{months}} months plan",
+    "cost": "Cost: {{price}}",
+    "renewSubscription": "Renew subscription"
+  },
   "profile-view": {
     "title": "Profile",
     "editProfile": "Edit profile",
