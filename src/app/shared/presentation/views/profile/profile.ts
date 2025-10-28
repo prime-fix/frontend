@@ -1,7 +1,9 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import {Component, signal, ChangeDetectionStrategy, inject, computed} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {IamStore} from '@iam/application/iam-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-profile',
@@ -11,36 +13,73 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Profile {
-  // Profile data signals
-  profileImage = signal<string>('/assets/images/car_owner.png');
-  username = signal<string>('Luis_123');
-  address = signal<string>('Av. Universitaria 630');
-  password = signal<string>('************');
+  /**
+   * Stores
+   * @private
+   */
+  private iamStore = inject(IamStore);
+  private catalogStore = inject(CatalogStore);
 
-  // UI state
+  /**
+   * Computed properties for session data
+   */
+  sessionUserAccount = computed(() => this.iamStore.sessionUserAccount());
+  sessionUser = computed(() => this.iamStore.sessionUser());
+  sessionLocation = computed(() =>
+    this.catalogStore.getLocationById(this.sessionUser()?.id_location)());
+
+  /**
+   * Profile fields
+   */
+  profileImage = signal<string | undefined>('');
+  username = signal<string | undefined>('');
+  address = signal<string | undefined>('');
+  password = signal<string | undefined>('');
+
+  /**
+   * UI State
+   */
   isEditMode = signal<boolean>(false);
   showPassword = signal<boolean>(false);
 
   /**
-   * Determines if the current user is an owner or workshop
-   * TODO: Implement the logic to detect user type
-   * You can inject your auth service here and check the user role
-   * @returns {boolean} true if user is owner, false if workshop
+   * Constructor
    */
-  isOwner(): boolean {
-    // TODO: Add your logic here
-    // Example: return this.authService.getUserRole() === 'OWNER';
-    return true; // Default to owner for now
+  constructor() {
+    this.username.set(this.sessionUserAccount()?.username);
+    this.address.set(this.sessionLocation()?.address);
+    this.password.set(this.sessionUserAccount()?.password);
+
+    // Temporal profile image based on role
+    // TODO: Replace with actual user profile image
+    this.isOwner() ? this.profileImage.set('assets/images/car_owner.png')
+      : this.profileImage.set('assets/images/manager_workshop.png');
   }
 
+  /**
+   * Check if the user is an owner
+   */
+  isOwner(): boolean {
+    return this.sessionUserAccount()?.id_role === 'R001';
+  }
+
+  /**
+   * UI Actions
+   */
   toggleEditMode(): void {
     this.isEditMode.set(!this.isEditMode());
   }
 
+  /**
+   * Toggle password visibility
+   */
   togglePasswordVisibility(): void {
     this.showPassword.set(!this.showPassword());
   }
 
+  /**
+   * Save profile changes
+   */
   saveChanges(): void {
     // TODO: Implement save logic
     console.log('Saving profile changes...', {
@@ -51,6 +90,10 @@ export class Profile {
     this.isEditMode.set(false);
   }
 
+  /**
+   * Handle image change
+   * @param event
+   */
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
