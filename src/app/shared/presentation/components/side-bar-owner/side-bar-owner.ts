@@ -39,7 +39,7 @@ export class SideBarOwner implements OnInit {
       label: 'side-bar-owner.dashboard'
     },
     {
-      route: '/layout-owner/vehicles',
+      route: '/layout-owner/maintenance-tracking/manage-vehicles',
       icon: 'car-suv',
       label: 'side-bar-owner.vehicles'
     },

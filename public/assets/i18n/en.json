@@ -399,6 +399,33 @@
       "selectButton": "Select workshop"
     }
   },
+  "manage-vehicles": {
+    "title": "Vehicles",
+    "addVehicle": "Add vehicle",
+    "noVehicles": "No vehicles registered",
+    "vehicleModel": "Vehicle model",
+    "color": "Color",
+    "brand": "Brand",
+    "plate": "Plate",
+    "type": "Type",
+    "edit": "Edit",
+    "delete": "Delete",
+    "modalAddTitle": "Add vehicle",
+    "modalEditTitle": "Edit vehicle",
+    "modelLabel": "Vehicle model",
+    "modelPlaceholder": "ZEN 10 MT",
+    "brandLabel": "Brand",
+    "brandPlaceholder": "Nissan",
+    "typeLabel": "Type",
+    "typePlaceholder": "Sedan",
+    "plateLabel": "Plate",
+    "platePlaceholder": "EIE-123",
+    "colorLabel": "Color",
+    "colorPlaceholder": "Blue",
+    "cancel": "Cancel",
+    "add": "Add",
+    "save": "Save"
+  },
   "settings-view": {
     "title": "Settings",
     "changePassword": "Change password",

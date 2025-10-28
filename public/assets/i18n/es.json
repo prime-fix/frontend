@@ -399,6 +399,33 @@
       "selectButton": "Seleccionar taller"
     }
   },
+  "manage-vehicles": {
+    "title": "Coches",
+    "addVehicle": "Agregar coche",
+    "noVehicles": "No hay coches registrados",
+    "vehicleModel": "Modelo de coche",
+    "color": "Color",
+    "brand": "Marca",
+    "plate": "Placa",
+    "type": "Tipo",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "modalAddTitle": "Agregar coche",
+    "modalEditTitle": "Editar coche",
+    "modelLabel": "Modelo de coche",
+    "modelPlaceholder": "ZEN 10 MT",
+    "brandLabel": "Marca",
+    "brandPlaceholder": "Nissan",
+    "typeLabel": "Tipo",
+    "typePlaceholder": "Sedán",
+    "plateLabel": "Placa",
+    "platePlaceholder": "EIE-123",
+    "colorLabel": "Color",
+    "colorPlaceholder": "Azul",
+    "cancel": "Cancelar",
+    "add": "Agregar",
+    "save": "Guardar"
+  },
   "settings-view": {
     "title": "Configuración",
     "changePassword": "Cambiar contraseña",
