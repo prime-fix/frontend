@@ -136,7 +136,7 @@ export const routes: Routes = [
         title: `${baseTitle} -  Settings Workshop`,
       },
       {
-        path: 'manage-technicians',
+        path: 'auto-repair-register',
         loadChildren : () => autoRepairRegisterRoutes,
         title: `${baseTitle} -  Manage Technicians`,
       },

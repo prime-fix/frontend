@@ -36,17 +36,17 @@ export class SideBarWorkshop implements OnInit {
       label: 'side-bar-workshop.dashboard'
     },
     {
-      route: '/layout-workshop/workshop',
+      route: '/layout-workshop/auto-repair-register/manage-auto-repair',
       icon: 'tool',
       label: 'side-bar-workshop.workshop'
     },
     {
-      route: '/layout-workshop/requests',
+      route: '/layout-workshop/auto-repair-register/manage-requests',
       icon: 'clipboard',
       label: 'side-bar-workshop.requests'
     },
     {
-      route: '/layout-workshop/manage-technicians/technicians',
+      route: '/layout-workshop/auto-repair-register/technicians',
       icon: 'users',
       label: 'side-bar-workshop.manageTechnicians'
     },
