@@ -4,16 +4,41 @@ import {BaseEntity} from '@shared/infrastructure/http/base-entity';
  * Represents a user in the system.
  */
 export class User implements BaseEntity{
+  /**
+   * Unique identifier for the user
+   */
   _id_user: string;
+  /**
+   * User's first name
+   */
   _name: string;
+  /**
+   * User's last name
+   */
   _last_name: string;
+  /**
+   * User's DNI (National Identity Card)
+   */
   _dni: string;
+  /**
+   * User's phone number
+   */
   _phone_number: string;
+  /**
+   * Identifier for the user's location
+   */
   _id_location: string;
+
 
   /**
    * Creates a new User instance.
-   * @param user - An object containing user details.
+   * @param {Object} user - An object containing user details.
+   * @param {string} user.id_user - Unique identifier for the user.
+   * @param {string} user.name - User's first name.
+   * @param {string} user.last_name - User's last name.
+   * @param {string} user.dni - User's DNI (National Identity Card).
+   * @param {string} user.phone_number - User's phone number.
+   * @param {string} user.id_location - Identifier for the user's location.
    */
   constructor(user: { id_user: string; name: string; last_name: string; dni: string; phone_number: string; id_location: string; }) {
     this._id_user = user.id_user;

@@ -7,7 +7,8 @@
       "id_user": "U002",
       "id_role": "R001",
       "id_membership": "M002",
-      "password": "hashed_password_2"
+      "password": "hashed_password_2",
+      "is_new": true
     },
     {
       "id_user_account": "UA001",
@@ -16,7 +17,8 @@
       "id_user": "U001",
       "id_role": "R001",
       "id_membership": "M001",
-      "password": "hashed_password_1"
+      "password": "hashed_password_1",
+      "is_new": true
     },
     {
       "id_user_account": "UA003",
@@ -25,7 +27,8 @@
       "id_user": "U003",
       "id_role": "R001",
       "id_membership": "M003",
-      "password": "hashed_password_3"
+      "password": "hashed_password_3",
+      "is_new": false
     },
     {
       "id_user_account": "UA004",
@@ -34,7 +37,8 @@
       "id_user": "U004",
       "id_role": "R001",
       "id_membership": "M002",
-      "password": "hashed_password_4"
+      "password": "hashed_password_4",
+      "is_new": false
     },
     {
       "id_user_account": "UA005",
@@ -43,7 +47,8 @@
       "id_user": "U005",
       "id_role": "R002",
       "id_membership": "M004",
-      "password": "hashed_password_5"
+      "password": "hashed_password_5",
+      "is_new": false
     },
     {
       "id_user_account": "UA006",
@@ -52,7 +57,8 @@
       "id_user": "U006",
       "id_role": "R002",
       "id_membership": "M001",
-      "password": "hashed_password_6"
+      "password": "hashed_password_6",
+      "is_new": false
     },
     {
       "id_user_account": "UA007",
@@ -61,7 +67,8 @@
       "id_user": "U007",
       "id_role": "R002",
       "id_membership": "M002",
-      "password": "hashed_password_7"
+      "password": "hashed_password_7",
+      "is_new": false
     },
     {
       "id_user_account": "UA008",
@@ -70,7 +77,8 @@
       "id_user": "U008",
       "id_role": "R002",
       "id_membership": "M001",
-      "password": "hashed_password_8"
+      "password": "hashed_password_8",
+      "is_new": false
     },
     {
       "id_user_account": "UA009",
@@ -79,7 +87,8 @@
       "id_user": "U009",
       "id_role": "R002",
       "id_membership": "M003",
-      "password": "hashed_password_9"
+      "password": "hashed_password_9",
+      "is_new": false
     }
   ],
   "users": [

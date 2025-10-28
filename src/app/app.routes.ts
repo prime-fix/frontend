@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 import {Login} from '@iam/presentation/views/login/login';
 import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
 import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-catalog-routes';
 import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
 import {VehicleDiagnosisRoutes} from '@diagnosis/presentation/views/vehicle-diagnosis.routes';
+import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -16,6 +16,8 @@ const layoutOwner = () => import('@shared/presentation/components/layout-owner/l
 const layoutWorkshop = () => import('@shared/presentation/components/layout-workshop/layout-workshop').then(m => m.LayoutWorkshop);
 const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner').then(m => m.HomeOwner);
 const homeWorkshop = () => import('@shared/presentation/views/home-workshop/home-workshop').then(m => m.HomeWorkshop);
+const dashboardOwner = () => import('@shared/presentation/views/dashboard-owner/dashboard-owner').then(m => m.DashboardOwner);
+const dashboardWorkshop = () => import('@shared/presentation/views/dashboard-workshop/dashboard-workshop').then(m => m.DashboardWorkshop);
 const pageNotFound = () => import('@shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
 const baseTitle = 'Prime Fix';
 
@@ -66,6 +68,11 @@ export const routes: Routes = [
         title: `${baseTitle} -  Home Owner`,
       },
       {
+        path: 'dashboard-owner',
+        loadComponent: dashboardOwner,
+        title: `${baseTitle} -  Dashboard Owner`,
+      },
+      {
         path: 'auto-repair-catalog',
         loadChildren : () => autoRepairCatalogRoutes,
         title: `${baseTitle} -  Auto Repair Catalog`,
@@ -87,7 +94,7 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'home-owner'
+        redirectTo: 'dashboard-owner'
       }
     ]
   },
@@ -100,6 +107,11 @@ export const routes: Routes = [
         path: 'home-workshop',
         loadComponent: homeWorkshop,
         title: `${baseTitle} -  Home Workshop`,
+      },
+      {
+        path: 'dashboard-workshop',
+        loadComponent: dashboardWorkshop,
+        title: `${baseTitle} -  Dashboard Workshop`,
       },
       {
         path: 'manage-technicians',
@@ -118,7 +130,7 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: ''
+        redirectTo: 'dashboard-workshop'
       }
     ]
   },
