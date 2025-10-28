@@ -42,7 +42,7 @@
     "loading": "Loading..."
   },
   "register-owner": {
-    "title": "Create your account, manage visits",
+    "title": "Create your account, manage your vehicles",
     "haveAccount": "Already have an account?",
     "signIn": "Sign In",
     "fullName": "Full Name",
@@ -237,14 +237,28 @@
     "technician": "Technicians:"
   },
   "home-owner": {
-    "searchWorkshop": "Search Workshop",
-    "selectDepartment": "Select Department",
-    "selectDistrict": "Select District",
-    "departmentRequired": "Department is required",
-    "districtRequired": "District is required"
+    "title": "Start Menu",
+    "welcome": "Welcome to Prime-fix",
+    "subtitle": "Your platform for managing vehicle repairs and maintenance easily and securely.",
+    "you-can": "Here you can:",
+    "request-service": "Request vehicle repair and maintenance services.",
+    "see-availability": "Check the availability of workshops and technicians in your area.",
+    "schedule-visits": "Schedule visits and track the status of your vehicle in real-time.",
+    "get-notifications": "Receive notifications about the progress of your vehicle's repair.",
+    "end-subtitle": "Get started now and experience the best service for your vehicle!",
+    "start-button": "Get Started"
   },
   "home-workshop": {
-    "welcome": "Welcome to your workshop dashboard"
+    "title": "Start Menu",
+    "welcome": "Welcome to Prime-fix",
+    "subtitle": "Your platform to manage your auto repair workshop efficiently and professionally.",
+    "you-can": "Here you can:",
+    "register-workshop": "Register your workshop and manage service requests.",
+    "manage-requests": "Manage service requests and schedule appointments with customers.",
+    "update-status": "Update the status of vehicle repairs in real-time.",
+    "notify-clients": "Notify clients about the progress of their vehicle repairs.",
+    "end-subtitle": "Get started now and take your workshop to the next level!",
+    "start-button": "Get Started"
   },
   "manage-technicians": {
     "title": "Manage Technicians",

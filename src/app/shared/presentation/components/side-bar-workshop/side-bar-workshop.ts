@@ -21,7 +21,7 @@ export class SideBarWorkshop {
       label: 'side-bar-workshop.profile'
     },
     {
-      route: '/layout-workshop/home-workshop',
+      route: '/layout-workshop/dashboard-workshop',
       icon: 'category',
       label: 'side-bar-workshop.dashboard'
     },

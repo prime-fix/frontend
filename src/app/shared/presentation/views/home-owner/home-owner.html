@@ -1,1 +1,30 @@
-<h1>Home Owner</h1>
+<div class="home-owner-container">
+  <div class="welcome-section">
+    <h1 class="main-title">{{ 'home-owner.title' | translate }}</h1>
+
+    <div class="welcome-card">
+      <h2 class="welcome-title">{{ 'home-owner.welcome' | translate }}</h2>
+
+      <p class="welcome-subtitle">
+        {{ 'home-owner.subtitle' | translate }}
+      </p>
+
+      <p class="features-intro">{{ 'home-owner.you-can' | translate }}</p>
+
+      <ul class="features-list">
+        <li>{{ 'home-owner.request-service' | translate }}</li>
+        <li>{{ 'home-owner.see-availability' | translate }}</li>
+        <li>{{ 'home-owner.schedule-visits' | translate }}</li>
+        <li>{{ 'home-owner.get-notifications' | translate }}</li>
+      </ul>
+
+      <p class="end-subtitle">
+        {{ 'home-owner.end-subtitle' | translate }}
+      </p>
+
+      <button class="start-button" (click)="onStartClick()">
+        {{ 'home-owner.start-button' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -25,7 +25,7 @@ export class SideBarOwner {
       label: 'side-bar-owner.profile'
     },
     {
-      route: '/layout-owner/home-owner',
+      route: '/layout-owner/dashboard-owner',
       icon: 'category',
       label: 'side-bar-owner.dashboard'
     },
