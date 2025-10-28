@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { ButtonLogout } from '../button-logout/button-logout';
-import {LanguageSwitcher} from '@shared/presentation/components/language-switcher/language-switcher';
+import {Component, inject, signal, OnInit, effect} from '@angular/core';
+import {ButtonLogout} from '../button-logout/button-logout';
 import {TranslateModule} from '@ngx-translate/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import {NavigationEnd, Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-side-bar-owner',
@@ -14,10 +13,20 @@ import { filter } from 'rxjs/operators';
   templateUrl: './side-bar-owner.html',
   styleUrl: './side-bar-owner.css'
 })
-export class SideBarOwner {
+export class SideBarOwner implements OnInit {
+  /**
+   * Router instance
+   * @private
+   */
   private router = inject(Router);
-  currentRoute = '';
+  /**
+   * Current route signal
+   */
+  currentRoute = signal('');
 
+  /**
+   * Menu items for the owner sidebar
+   */
   menuItems = [
     {
       route: '/layout-owner/profile',
@@ -61,32 +70,57 @@ export class SideBarOwner {
     }
   ];
 
+  /**
+   * Constructor
+   */
   constructor() {
-    // Get initial route
-    this.currentRoute = this.router.url;
-
     // Listen to route changes
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.currentRoute = event.url;
+        this.currentRoute.set(event.url);
       });
   }
 
+  /**
+   * Initialize the component
+   * @returns void
+   */
+  ngOnInit(): void {
+    // Set initial route after component initialization
+    const initialRoute = this.router.url;
+    this.currentRoute.set(initialRoute);
+
+    // Force change detection
+    setTimeout(() => {
+      this.currentRoute.set(this.router.url);
+    }, 0);
+  }
+
+  /**
+   * Get the current route
+   * @param route - The route to check
+   * @returns boolean - True if the route is active, false otherwise
+   */
   isActiveRoute(route: string): boolean {
+    const current = this.currentRoute();
     // For exact matches
-    if (this.currentRoute === route) {
+    if (current === route) {
       return true;
     }
 
     // Check if current route starts with the menu item route
     // This handles child routes properly
-    return this.currentRoute.startsWith(route + '/') || this.currentRoute.startsWith(route + '?');
+    return current.startsWith(route + '/') || current.startsWith(route + '?');
   }
 
+  /**
+   * Navigate to the specified route
+   * @param route - The route to navigate to
+   * @returns void
+   */
   navigateTo(route: string): void {
-    // Navigate to the relative route within layout-owner
-    const relativePath = route.replace('/layout-owner/', '');
-    this.router.navigate([relativePath], { relativeTo: this.router.routerState.root.firstChild }).then();
+    // Navigate to the absolute route
+    this.router.navigate([route]).then();
   }
 }
