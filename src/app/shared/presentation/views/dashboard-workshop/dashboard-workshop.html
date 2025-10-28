@@ -1,0 +1,120 @@
+<div class="dashboard-container">
+  <h1 class="dashboard-title">{{ 'dashboard-workshop.title' | translate }}</h1>
+
+  <!-- Scheduled Visits Section -->
+  <section class="dashboard-section">
+    <h2 class="section-title">{{ 'dashboard-workshop.scheduledVisits' | translate }}</h2>
+
+    <div class="visits-list">
+      @for (visitInfo of scheduledVisits(); track visitInfo.visit.id) {
+        <div class="visit-card">
+          <div class="visit-info">
+            <h3 class="customer-name">{{ visitInfo.customerName }}</h3>
+            <div class="visit-details">
+              <p class="detail-item">
+                <span class="detail-label">{{ 'dashboard-workshop.date' | translate }}:</span>
+                {{ visitInfo.date }}
+              </p>
+              <p class="detail-item">
+                <span class="detail-label">{{ 'dashboard-workshop.time' | translate }}:</span>
+                {{ visitInfo.time }}
+              </p>
+            </div>
+          </div>
+
+          <button class="btn-details" (click)="onShowDetails(visitInfo)">
+            {{ 'dashboard-workshop.details' | translate }}
+          </button>
+        </div>
+      }
+
+      @if (scheduledVisits().length === 0) {
+        <div class="no-items">
+          <p>{{ 'dashboard-workshop.noScheduledVisits' | translate }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Ratings Section -->
+  <section class="dashboard-section">
+    <h2 class="section-title">{{ 'dashboard-workshop.receivedRatings' | translate }}</h2>
+
+    <div class="ratings-list">
+      @for (ratingInfo of receivedRatings(); track ratingInfo.rating.id) {
+        <div class="rating-card">
+          <div class="rating-header">
+            <h3 class="customer-name">{{ 'dashboard-workshop.client' | translate }}: {{ ratingInfo.customerName }}</h3>
+            <p class="rating-date">{{ 'dashboard-workshop.ratingDate' | translate }}: {{ ratingInfo.date }}</p>
+          </div>
+
+          <div class="rating-content">
+            <div class="rating-score">
+              <span class="rating-label">{{ 'dashboard-workshop.rating' | translate }}:</span>
+              <span class="stars">{{ getStars(ratingInfo.rating.star_rating) }}</span>
+              <span class="rating-number">{{ ratingInfo.rating.star_rating }}/5</span>
+            </div>
+
+            @if (ratingInfo.rating.comment) {
+              <div class="rating-comment">
+                <p class="comment-label">{{ 'dashboard-workshop.comment' | translate }}:</p>
+                <p class="comment-text">{{ ratingInfo.rating.comment }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (receivedRatings().length === 0) {
+        <div class="no-items">
+          <p>{{ 'dashboard-workshop.noRatings' | translate }}</p>
+        </div>
+      }
+    </div>
+  </section>
+</div>
+
+<!-- Visit Details Modal -->
+@if (showDetailsModal() && selectedVisit()) {
+  <div class="modal-overlay" (click)="onCloseModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ 'dashboard-workshop.visitDetails' | translate }}</h2>
+
+      <div class="modal-details">
+        <div class="detail-group">
+          <label class="detail-label">{{ 'dashboard-workshop.customerName' | translate }}</label>
+          <p class="detail-value">{{ selectedVisit()!.customerName }}</p>
+        </div>
+
+        <div class="detail-group">
+          <label class="detail-label">{{ 'dashboard-workshop.vehicleModel' | translate }}</label>
+          <p class="detail-value">{{ selectedVisit()!.vehicleModel }}</p>
+        </div>
+
+        <div class="detail-group">
+          <label class="detail-label">{{ 'dashboard-workshop.failures' | translate }}</label>
+          <p class="detail-value failure-text">{{ selectedVisit()!.visit.failure }}</p>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-group">
+            <label class="detail-label">{{ 'dashboard-workshop.date' | translate }}</label>
+            <p class="detail-value">{{ selectedVisit()!.date }}</p>
+          </div>
+
+          <div class="detail-group">
+            <label class="detail-label">{{ 'dashboard-workshop.time' | translate }}</label>
+            <p class="detail-value">{{ selectedVisit()!.time }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-close" (click)="onCloseModal()">
+          {{ 'dashboard-workshop.close' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+

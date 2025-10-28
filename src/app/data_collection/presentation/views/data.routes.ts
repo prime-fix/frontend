@@ -1,5 +1,4 @@
 import {Routes} from '@angular/router';
-import {Home} from '@shared/presentation/views/home/home';
 
 const visitForm = () => import('./visit-form/visit-form').then(m => m.VisitForm);
 const visitList = () => import('./visit-list/visit-list').then(m => m.VisitList);

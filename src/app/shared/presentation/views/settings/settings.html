@@ -1,0 +1,180 @@
+<div class="settings-container">
+  <h1 class="settings-title">{{ 'settings-view.title' | translate }}</h1>
+
+  <!-- Change Password Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.changePassword' | translate }}</h2>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="onSavePassword()" class="password-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="newPassword" class="form-label">{{ 'settings-view.newPassword' | translate }}</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              class="form-input"
+              placeholder="************"
+            />
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="togglePasswordVisibility('newPassword')"
+            >
+              <svg class="icon-eye" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="repeatPassword" class="form-label">{{ 'settings-view.repeatPassword' | translate }}</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="repeatPassword"
+              formControlName="repeatPassword"
+              class="form-input"
+              placeholder="************"
+            />
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="togglePasswordVisibility('repeatPassword')"
+            >
+              <svg class="icon-eye" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-save">
+        {{ 'settings-view.savePassword' | translate }}
+      </button>
+    </form>
+  </section>
+
+  <!-- Payment Methods Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.paymentMethods' | translate }}</h2>
+
+    <div class="payment-methods-list">
+      @for (payment of paymentByUserAccountId(); track payment.id) {
+        <div class="payment-card">
+          <div class="payment-info">
+            <p class="payment-bank">{{ 'settings-view.bank' | translate }}: {{ getCardBrand(payment.card_number) }}</p>
+            <p class="payment-number">{{ 'settings-view.cardNumber' | translate }}: {{ formatCardNumber(payment.card_number) }}</p>
+            <p class="payment-expiry">{{ 'settings-view.expirationDate' | translate }}: {{ payment.month }}/{{ payment.year }}</p>
+          </div>
+          <button class="btn-delete" (click)="onDeletePayment(payment.id)">
+            {{ 'settings-view.deletePaymentMethod' | translate }}
+          </button>
+        </div>
+      }
+
+      @if (paymentByUserAccountId().length === 0) {
+        <p class="no-payments">No hay métodos de pago registrados</p>
+      }
+    </div>
+
+    <button class="btn-add-payment" (click)="onAddPaymentMethod()">
+      {{ 'settings-view.addPaymentMethod' | translate }}
+    </button>
+  </section>
+
+  <!-- Subscription Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.subscription' | translate }}</h2>
+
+    @if (subscriptionInfo(); as sub) {
+      <div class="subscription-card">
+        <p class="subscription-plan">{{ 'settings-view.plan' | translate: {months: sub.months} }}</p>
+        <p class="subscription-cost">{{ 'settings-view.cost' | translate: {price: sub.price} }}</p>
+      </div>
+
+      <button class="btn-renew" (click)="onRenewSubscription()">
+        {{ 'settings-view.renewSubscription' | translate }}
+      </button>
+    }
+  </section>
+</div>
+
+<!-- Payment Modal -->
+@if (showAddPaymentModal()) {
+  <div class="modal-overlay" (click)="onClosePaymentModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ 'settings-view.addPaymentMethod' | translate }}</h2>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmitPayment()" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cardNumber" class="form-label">{{ 'payment.cardNumber' | translate }}</label>
+            <input
+              type="number"
+              id="cardNumber"
+              formControlName="card_number"
+              class="form-input"
+              placeholder="1149849846611161"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="cardType" class="form-label">{{ 'payment.cardType' | translate }}</label>
+            <input
+              type="text"
+              id="cardType"
+              formControlName="card_type"
+              class="form-input"
+              placeholder="Visa/Mastercard"
+            />
+          </div>
+        </div>
+
+        <div class="form-row three-columns">
+          <div class="form-group">
+            <label for="month" class="form-label">{{ 'payment.month' | translate }}</label>
+            <select id="month" formControlName="month" class="form-select">
+              @for (monthItem of months; track monthItem.value) {
+                <option [value]="monthItem.value">{{ monthItem.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="year" class="form-label">{{ 'payment.year' | translate }}</label>
+            <select id="year" formControlName="year" class="form-select">
+              @for (year of years; track year) {
+                <option [value]="year">{{ year }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cvv" class="form-label">{{ 'payment.cvv' | translate }}</label>
+            <input
+              type="number"
+              id="cvv"
+              formControlName="cvv"
+              class="form-input"
+              placeholder="333"
+            />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="onClosePaymentModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-submit">
+            {{ 'settings-view.addPaymentMethod' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

@@ -1,0 +1,169 @@
+<div class="auto-repair-container">
+  <h1 class="auto-repair-title">{{ 'manage-auto-repair.title' | translate }}</h1>
+
+  <form [formGroup]="autoRepairForm" (ngSubmit)="onSaveChanges()" class="auto-repair-form">
+    <div class="form-card">
+      <!-- Workshop Name -->
+      <div class="form-group">
+        <label for="workshopName" class="form-label">{{ 'manage-auto-repair.workshopName' | translate }}</label>
+        <input
+          type="text"
+          id="workshopName"
+          formControlName="workshopName"
+          class="form-input"
+          [placeholder]="'manage-auto-repair.workshopNamePlaceholder' | translate"
+        />
+        @if (autoRepairForm.get('workshopName')?.touched && autoRepairForm.get('workshopName')?.errors) {
+          <span class="error-message">
+            @if (autoRepairForm.get('workshopName')?.errors?.['required']) {
+              El nombre del taller es obligatorio
+            }
+            @if (autoRepairForm.get('workshopName')?.errors?.['minlength']) {
+              El nombre debe tener al menos 3 caracteres
+            }
+          </span>
+        }
+      </div>
+
+      <!-- RUC -->
+      <div class="form-group">
+        <label for="ruc" class="form-label">{{ 'manage-auto-repair.ruc' | translate }}</label>
+        <input
+          type="text"
+          id="ruc"
+          formControlName="ruc"
+          class="form-input"
+          [placeholder]="'manage-auto-repair.rucPlaceholder' | translate"
+          maxlength="11"
+        />
+        @if (autoRepairForm.get('ruc')?.touched && autoRepairForm.get('ruc')?.errors) {
+          <span class="error-message">
+            @if (autoRepairForm.get('ruc')?.errors?.['required']) {
+              El RUC es obligatorio
+            }
+            @if (autoRepairForm.get('ruc')?.errors?.['pattern']) {
+              El RUC debe tener 11 dígitos
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phoneNumber" class="form-label">{{ 'manage-auto-repair.phoneNumber' | translate }}</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          class="form-input"
+          [placeholder]="'manage-auto-repair.phoneNumberPlaceholder' | translate"
+          maxlength="9"
+        />
+        @if (autoRepairForm.get('phoneNumber')?.touched && autoRepairForm.get('phoneNumber')?.errors) {
+          <span class="error-message">
+            @if (autoRepairForm.get('phoneNumber')?.errors?.['required']) {
+              El teléfono es obligatorio
+            }
+            @if (autoRepairForm.get('phoneNumber')?.errors?.['pattern']) {
+              El teléfono debe tener 9 dígitos
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Department and District (two columns) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="department" class="form-label">{{ 'manage-auto-repair.department' | translate }}</label>
+          <input
+            type="text"
+            id="department"
+            formControlName="department"
+            class="form-input"
+            [placeholder]="'manage-auto-repair.departmentPlaceholder' | translate"
+          />
+          @if (autoRepairForm.get('department')?.touched && autoRepairForm.get('department')?.errors?.['required']) {
+            <span class="error-message">
+              El departamento es obligatorio
+            </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="district" class="form-label">{{ 'manage-auto-repair.district' | translate }}</label>
+          <input
+            type="text"
+            id="district"
+            formControlName="district"
+            class="form-input"
+            [placeholder]="'manage-auto-repair.districtPlaceholder' | translate"
+          />
+          @if (autoRepairForm.get('district')?.touched && autoRepairForm.get('district')?.errors?.['required']) {
+            <span class="error-message">
+              El distrito es obligatorio
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label for="address" class="form-label">{{ 'manage-auto-repair.address' | translate }}</label>
+        <input
+          type="text"
+          id="address"
+          formControlName="address"
+          class="form-input"
+          [placeholder]="'manage-auto-repair.addressPlaceholder' | translate"
+        />
+        @if (autoRepairForm.get('address')?.touched && autoRepairForm.get('address')?.errors) {
+          <span class="error-message">
+            @if (autoRepairForm.get('address')?.errors?.['required']) {
+              La dirección es obligatoria
+            }
+            @if (autoRepairForm.get('address')?.errors?.['minlength']) {
+              La dirección debe tener al menos 5 caracteres
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">{{ 'manage-auto-repair.email' | translate }}</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-input"
+          [placeholder]="'manage-auto-repair.emailPlaceholder' | translate"
+        />
+        @if (autoRepairForm.get('email')?.touched && autoRepairForm.get('email')?.errors) {
+          <span class="error-message">
+            @if (autoRepairForm.get('email')?.errors?.['required']) {
+              El correo electrónico es obligatorio
+            }
+            @if (autoRepairForm.get('email')?.errors?.['email']) {
+              El correo electrónico no es válido
+            }
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn-back" (click)="onBack()">
+        {{ 'manage-auto-repair.back' | translate }}
+      </button>
+      <button type="submit" class="btn-save" [disabled]="isLoading()">
+        @if (isLoading()) {
+          Guardando...
+        } @else {
+          {{ 'manage-auto-repair.saveChanges' | translate }}
+        }
+      </button>
+    </div>
+  </form>
+</div>
+

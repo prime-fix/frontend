@@ -92,7 +92,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Visit.
    * @returns An Observable of the Visit.
    */
-  getVisitById(id: number): Observable<Visit> {
+  getVisitById(id: string | number): Observable<Visit> {
     return this.visitEndpoint.getById(id);
   }
 

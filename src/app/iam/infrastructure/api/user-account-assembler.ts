@@ -28,7 +28,8 @@ export class UserAccountAssembler implements BaseAssembler<UserAccount, UserAcco
       id_user: resource.id_user,
       id_role: resource.id_role,
       id_membership: resource.id_membership,
-      password: resource.password
+      password: resource.password,
+      is_new: resource.is_new,
     })
   }
 
@@ -45,7 +46,8 @@ export class UserAccountAssembler implements BaseAssembler<UserAccount, UserAcco
       id_user: entity.id_user,
       id_role: entity.id_role,
       id_membership: entity.id_membership,
-      password: entity.password
+      password: entity.password,
+      is_new: entity.is_new,
     } as UserAccountResource;
   }
 

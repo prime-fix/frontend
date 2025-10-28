@@ -1,0 +1,112 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1 class="profile-title">{{ 'profile-view.title' | translate }}</h1>
+  </div>
+
+  <div class="profile-content">
+    <!-- Profile Image Section -->
+    <div class="profile-image-section">
+      <div class="profile-image-wrapper">
+        <img
+          [src]="profileImage()"
+          alt="Profile"
+          class="profile-image"
+        />
+        @if (isEditMode()) {
+          <label for="imageUpload" class="image-edit-icon">
+            <svg class="icon">
+              <use href="/assets/icons/sprite.symbol.svg#edit"></use>
+            </svg>
+          </label>
+          <input
+            type="file"
+            id="imageUpload"
+            accept="image/*"
+            (change)="onImageChange($event)"
+            style="display: none;"
+          />
+        }
+      </div>
+
+      <button
+        class="btn-edit-profile"
+        (click)="toggleEditMode()"
+        type="button">
+        {{ (isEditMode() ? ('profile-view.cancelEdit' | translate) : ('profile-view.editProfile' | translate)) }}
+      </button>
+    </div>
+
+    <!-- Form Section -->
+    <form class="profile-form" (ngSubmit)="saveChanges()">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="form-label">
+          {{ 'profile-view.username' | translate }}
+        </label>
+        <input
+          type="text"
+          id="username"
+          class="form-input"
+          [value]="username()"
+          (input)="username.set($any($event.target).value)"
+          [disabled]="!isEditMode()"
+          required
+        />
+      </div>
+
+      <!-- Address Field -->
+      <div class="form-group">
+        <label for="address" class="form-label">
+          {{ 'profile-view.address' | translate }}
+        </label>
+        <input
+          type="text"
+          id="address"
+          class="form-input"
+          [value]="address()"
+          (input)="address.set($any($event.target).value)"
+          [disabled]="!isEditMode()"
+          required
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">
+          {{ 'profile-view.password' | translate }}
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            id="password"
+            class="form-input"
+            [value]="password()"
+            (input)="password.set($any($event.target).value)"
+            [disabled]="!isEditMode()"
+            required
+          />
+          @if (isEditMode()) {
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="togglePasswordVisibility()">
+              <svg class="icon-eye">
+                <use [attr.href]="'/assets/icons/sprite.symbol.svg#' + (showPassword() ? 'eye-off' : 'eye')"></use>
+              </svg>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      @if (isEditMode()) {
+        <div class="form-actions">
+          <button type="submit" class="btn-save">
+            {{ 'profile-view.saveChanges' | translate }}
+          </button>
+        </div>
+      }
+    </form>
+  </div>
+</div>
+

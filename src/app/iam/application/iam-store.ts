@@ -232,7 +232,8 @@ export class IamStore {
             id_user: rawUserAccount._id_user,
             id_role: rawUserAccount._id_role,
             id_membership: rawUserAccount._id_membership,
-            password: rawUserAccount._password
+            password: rawUserAccount._password,
+            is_new: rawUserAccount._is_new
           });
 
           const user = new User({
@@ -659,7 +660,8 @@ export class IamStore {
       id_user: newUser.id,
       id_role: 'R001',
       id_membership: '', // No membership at registration
-      password: form.password
+      password: form.password,
+      is_new: true // Mark as new user
     });
 
     this.registerLocationSignal.set(newLocation);
@@ -697,7 +699,8 @@ export class IamStore {
       id_user: newUser.id,
       id_role: 'R002',
       id_membership: '', // No membership at registration
-      password: form.password
+      password: form.password,
+      is_new: true // Mark as new user
     });
 
     this.registerLocationSignal.set(newLocation);
