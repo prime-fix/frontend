@@ -18,6 +18,8 @@ const homeOwner = () => import('@shared/presentation/views/home-owner/home-owner
 const homeWorkshop = () => import('@shared/presentation/views/home-workshop/home-workshop').then(m => m.HomeWorkshop);
 const dashboardOwner = () => import('@shared/presentation/views/dashboard-owner/dashboard-owner').then(m => m.DashboardOwner);
 const dashboardWorkshop = () => import('@shared/presentation/views/dashboard-workshop/dashboard-workshop').then(m => m.DashboardWorkshop);
+const profile = () => import('@shared/presentation/views/profile/profile').then(m => m.Profile);
+const settings = () => import('@shared/presentation/views/settings/settings').then(m => m.Settings);
 const pageNotFound = () => import('@shared/presentation/views/page-not-found/page-not-found').then(m => m.PageNotFound);
 const baseTitle = 'Prime Fix';
 
@@ -73,6 +75,16 @@ export const routes: Routes = [
         title: `${baseTitle} -  Dashboard Owner`,
       },
       {
+        path: 'profile-owner',
+        loadComponent: profile,
+        title: `${baseTitle} -  Profile Owner`,
+      },
+      {
+        path: 'settings-owner',
+        loadComponent: settings,
+        title: `${baseTitle} -  Settings Owner`,
+      },
+      {
         path: 'auto-repair-catalog',
         loadChildren : () => autoRepairCatalogRoutes,
         title: `${baseTitle} -  Auto Repair Catalog`,
@@ -112,6 +124,16 @@ export const routes: Routes = [
         path: 'dashboard-workshop',
         loadComponent: dashboardWorkshop,
         title: `${baseTitle} -  Dashboard Workshop`,
+      },
+      {
+        path: 'profile-workshop',
+        loadComponent: profile,
+        title: `${baseTitle} -  Profile Workshop`,
+      },
+      {
+        path: 'settings-workshop',
+        loadComponent: settings,
+        title: `${baseTitle} -  Settings Workshop`,
       },
       {
         path: 'manage-technicians',

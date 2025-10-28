@@ -26,7 +26,7 @@ export class SideBarWorkshop implements OnInit {
    */
   menuItems = [
     {
-      route: '/layout-workshop/profile',
+      route: '/layout-workshop/profile-workshop',
       icon: 'user',
       label: 'side-bar-workshop.profile'
     },
@@ -56,7 +56,7 @@ export class SideBarWorkshop implements OnInit {
       label: 'side-bar-workshop.statusVehicles'
     },
     {
-      route: '/layout-workshop/settings',
+      route: '/layout-workshop/settings-workshop',
       icon: 'settings-bolt',
       label: 'side-bar-workshop.settings'
     },

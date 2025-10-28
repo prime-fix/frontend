@@ -29,7 +29,7 @@ export class SideBarOwner implements OnInit {
    */
   menuItems = [
     {
-      route: '/layout-owner/profile',
+      route: '/layout-owner/profile-owner',
       icon: 'user',
       label: 'side-bar-owner.profile'
     },
@@ -59,7 +59,7 @@ export class SideBarOwner implements OnInit {
       label: 'side-bar-owner.track'
     },
     {
-      route: '/layout-owner/settings',
+      route: '/layout-owner/settings-owner',
       icon: 'settings-bolt',
       label: 'side-bar-owner.settings'
     },
@@ -67,7 +67,7 @@ export class SideBarOwner implements OnInit {
       "route": '/layout-owner/maintenance-tracking/notification-view',
       "icon": 'bell',
       "label": 'side-bar-owner.notifications'
-    }
+    },
   ];
 
   /**

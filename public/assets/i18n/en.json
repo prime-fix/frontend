@@ -399,6 +399,15 @@
       "selectButton": "Select workshop"
     }
   },
+  "profile-view": {
+    "title": "Profile",
+    "editProfile": "Edit profile",
+    "cancelEdit": "Cancel",
+    "saveChanges": "Save changes",
+    "username": "Username",
+    "address": "Address",
+    "password": "Password"
+  },
   "page-not-found": {
     "title": "Page not found",
     "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
