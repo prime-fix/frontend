@@ -1,61 +1,63 @@
 <div class="diagnosis-container">
   <div class="diagnosis-content">
-    <h1 class="diagnosis-title">Estado de coches</h1>
-    <h2 class="diagnosis-subtitle">Modificación del estado de los coches</h2>
+    <h1 class="diagnosis-title">{{ 'vehicle-diagnosis.title' | translate }}</h1>
+    <h2 class="diagnosis-subtitle">{{ 'vehicle-diagnosis.subtitle' | translate }}</h2>
 
     @if (loading()) {
-      <div class="loading-message">Cargando vehículos...</div>
+      <div class="loading-message">{{ 'vehicle-diagnosis.loading-message' | translate }}</div>
     }
 
     @if (error()) {
       <div class="error-message">{{ error() }}</div>
     }
 
-    @if (!loading() && vehiclesInMaintenance().length === 0) {
+    @if (!loading() && vehiclesByVisits().length === 0) {
       <div class="no-vehicles">
-        <p>No hay vehículos en proceso de mantenimiento</p>
+        <p>{{ 'vehicle-diagnosis.no-vehicles' | translate }}</p>
       </div>
     }
 
     <div class="vehicles-list">
-      @for (vehicleData of vehiclesInMaintenance(); track vehicleData.vehicleId) {
+      @for (vehicle of vehiclesByVisits(); track vehicle.id) {
         <div class="vehicle-card">
           <div class="vehicle-info">
             <div class="info-row">
-              <span class="info-label">Coche:</span>
-              <span class="info-value">{{ vehicleData.vehicleBrand }} {{ vehicleData.vehicleModel }}</span>
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.car' | translate }}</span>
+              <span class="info-value">{{ vehicle.vehicle_brand }} {{ vehicle.model }}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">Dueño:</span>
-              <span class="info-value">{{ vehicleData.ownerName }}</span>
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.plate' | translate }}</span>
+              <span class="info-value">{{ vehicle.vehicle_plate }}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">ID visita:</span>
-              <span class="info-value">{{ vehicleData.visitId }}</span>
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.owner' | translate }}</span>
+              <span class="info-value">
+                @if (getUserByVehicleId(vehicle.id)(); as owner) {
+                  {{ owner.name }} {{ owner.last_name }}
+                } @else {
+                  {{ 'vehicle-diagnosis.vehicle-card.unknown-owner' | translate }}
+                }
+              </span>
             </div>
-            <div class="info-row state-row">
-              <span class="info-label">Estado:</span>
-              <form [formGroup]="getFormForVehicle(vehicleData.vehicleId)" class="state-form">
-                <select
-                  formControlName="state"
-                  class="state-select">
-                  @for (state of maintenanceStates; track state.value) {
-                    <option [value]="state.value">{{ state.label }}</option>
-                  }
-                </select>
-              </form>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.id-visit' | translate }}</span>
+              <span class="info-value">{{ getVisitByVehicleId(vehicle.id)()?.id || 'N/A' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.status' | translate }}</span>
+              <span class="info-value state-value">{{ steps[vehicle.state_maintenance - 1]?.translationKey | translate }}</span>
             </div>
           </div>
 
           <button
             type="button"
             class="update-button"
-            (click)="updateVehicleState(vehicleData.vehicleId)"
+            (click)="updateVehicleState(vehicle.id)"
             [disabled]="loading()">
             @if (loading()) {
-              Actualizando...
+              {{ 'vehicle-diagnosis.vehicle-card.loading-button' | translate }}
             } @else {
-              Actualizar
+              {{ 'vehicle-diagnosis.vehicle-card.update-button' | translate }}
             }
           </button>
         </div>

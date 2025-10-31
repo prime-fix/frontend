@@ -499,6 +499,34 @@
     "cost": "Cost: {{price}}",
     "renewSubscription": "Renew subscription"
   },
+  "vehicle-diagnosis": {
+    "title": "Status of Vehicles",
+    "subtitle": "Check the current status of vehicles under maintenance",
+    "subtitle-update": "Modify the status and diagnostic of the vehicles",
+    "loading-message": "Loading vehicles...",
+    "no-vehicles": "No vehicles under maintenance",
+    "vehicle-card": {
+      "car": "Vehicle:",
+      "plate": "Plate:",
+      "owner": "Owner:",
+      "unknown-owner": "Unknown",
+      "id-visit": "Visit ID:",
+      "status": "Status:",
+      "update-button": "Update",
+      "loading-button": "Updating..."
+    },
+    "vehicle-form": {
+      "select-status": "Select status",
+      "diagnostic": "Diagnostic",
+      "diagnostic-error": "Enter a valid diagnostic",
+      "price": "Price",
+      "price-error": "Enter a valid price"
+    },
+    "button-cancel": "Cancel",
+    "button-update": "Update",
+    "button-updating": "Updating...",
+    "no-data": "No data available"
+  },
   "profile-view": {
     "title": "Profile",
     "editProfile": "Edit profile",

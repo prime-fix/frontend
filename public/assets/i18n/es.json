@@ -499,6 +499,34 @@
     "cost": "Costo: {{price}}",
     "renewSubscription": "Renovar suscripción"
   },
+  "vehicle-diagnosis": {
+    "title": "Estado de coches",
+    "subtitle": "Modificación del estado de los coches",
+    "subtitle-update": "Modificación del estado de los coches",
+    "loading-message": "Cargando vehículos...",
+    "no-vehicles": "No hay vehículos en proceso de mantenimiento",
+    "vehicle-card": {
+      "car": "Coche:",
+      "plate": "Placa:",
+      "owner": "Dueño:",
+      "unknown-owner": "Desconocido",
+      "id-visit": "ID de visita:",
+      "status": "Estado:",
+      "update-button": "Actualizar",
+      "loading-button": "Actualizando..."
+    },
+    "vehicle-form": {
+      "select-status": "Seleccione un estado",
+      "diagnostic": "Diagnóstico",
+      "diagnostic-error": "Ingrese el diagnóstico",
+      "price": "Precio",
+      "price-error": "Ingrese un precio válido"
+    },
+    "button-cancel": "Cancelar",
+    "button-update": "Actualizar",
+    "button-updating": "Guardando...",
+    "no-data": "No se encontró información del vehículo"
+  },
   "profile-view": {
     "title": "Perfil",
     "editProfile": "Editar perfil",

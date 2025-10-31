@@ -1,12 +1,8 @@
 import { Component, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
 
-interface ProgressStep {
-  id: number;
-  label: string;
-  translationKey: string;
-}
 
 @Component({
   selector: 'app-progress-bar',

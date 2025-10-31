@@ -1,119 +1,98 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-
-interface VehicleWithVisit {
-  vehicleId: string;
-  vehicleBrand: string;
-  vehicleModel: string;
-  visitId: string;
-  ownerName: string;
-  currentState: number;
-}
+import {TranslatePipe} from '@ngx-translate/core';
+import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
+import {IamStore} from '@iam/application/iam-store';
+import {RegisterStore} from '@register/application/register-store';
+import {DataCollectionStore} from '@collections/application/data-collection-store';
 
 @Component({
   selector: 'app-diagnosis',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './diagnosis-view.html',
   styleUrl: './diagnosis-view.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DiagnosisView {
-  private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly iamStore = inject(IamStore);
+  private readonly dataCollectionStore = inject(DataCollectionStore);
+  private readonly registerStore = inject(RegisterStore);
 
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
-  // Estado de mantenimiento disponibles
-  readonly maintenanceStates = [
-    { value: 1, label: 'En espera' },
-    { value: 2, label: 'En diagnóstico' },
-    { value: 3, label: 'En reparación' },
-    { value: 4, label: 'En prueba' },
-    { value: 5, label: 'Listo para recoger' },
-    { value: 6, label: 'Recogido' }
+  /**
+   * Progress steps for vehicle maintenance
+   */
+  steps: ProgressStep[] = [
+    { id: 1, label: 'En espera', translationKey: 'progress-bar.waiting' },
+    { id: 2, label: 'En diagnóstico', translationKey: 'progress-bar.diagnosis' },
+    { id: 3, label: 'En reparación', translationKey: 'progress-bar.repair' },
+    { id: 4, label: 'En prueba', translationKey: 'progress-bar.testing' },
+    { id: 5, label: 'Listo para recoger', translationKey: 'progress-bar.readyPickup' },
+    { id: 6, label: 'Recogido', translationKey: 'progress-bar.collected' }
   ];
 
-  // TODO: Replace with real data from stores (DiagnosisStore, IamStore, TrackingStore)
-  // TODO: Implement proper relationship: Vehicle → Diagnostic → ExpectedVisit → User
-  readonly vehiclesInMaintenance = signal<VehicleWithVisit[]>([
-    {
-      vehicleId: 'V001',
-      vehicleBrand: 'Toyota',
-      vehicleModel: 'Corolla',
-      visitId: 'EV001',
-      ownerName: 'Luis Navarro',
-      currentState: 2
-    },
-    {
-      vehicleId: 'V002',
-      vehicleBrand: 'Honda',
-      vehicleModel: 'Civic',
-      visitId: 'EV002',
-      ownerName: 'Antonio Valenzuela',
-      currentState: 6
-    },
-    {
-      vehicleId: 'V003',
-      vehicleBrand: 'Toyota',
-      vehicleModel: 'Rav4',
-      visitId: 'EV003',
-      ownerName: 'John Smith',
-      currentState: 3
-    }
-  ]);
+  /**
+   * Get the current auto repair (workshop) based on the session user account
+   */
+  currentAutoRepair = computed(() => {
+    const userAccountId = this.iamStore.sessionUserAccount()?.id;
+    if (!userAccountId) return undefined;
+    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+  });
 
-  // Formularios para cada vehículo
-  readonly vehicleForms = signal<Map<string, FormGroup>>(new Map());
+  /**
+   * Get visits filtered by the current auto repair
+   */
+  visitsByAutoRepair = computed(() => {
+    const autoRepairId = this.currentAutoRepair()?.id;
+    if (!autoRepairId) return [];
+    return this.dataCollectionStore.visits().filter(visit => visit.id_auto_repair === autoRepairId);
+  });
 
-  constructor() {
-    // Inicializar todos los formularios al inicio con los valores correctos
-    this.initializeForms();
+  /**
+   * Get vehicles that have visits in the current auto repair
+   */
+  vehiclesByVisits = computed(() => {
+    const visits = this.visitsByAutoRepair();
+    if (visits.length === 0) return [];
+
+    const vehicles = this.dataCollectionStore.vehicles();
+    const vehicleIds = new Set(visits.map(visit => visit.id_vehicle));
+
+    return vehicles.filter(vehicle => vehicleIds.has(vehicle.id));
+  });
+
+  /**
+   * Get user (owner) information by vehicle ID
+   */
+  getUserByVehicleId(vehicleId: string) {
+    return computed(() => {
+      const vehicle = this.dataCollectionStore.vehicles().find(v => v.id === vehicleId);
+      if (!vehicle) return null;
+
+      const user = this.iamStore.users().find(u => u.id === vehicle.id_user);
+      return user || null;
+    });
   }
 
-  private initializeForms(): void {
-    const newMap = new Map<string, FormGroup>();
-
-    for (const vehicle of this.vehiclesInMaintenance()) {
-      const form = this.fb.group({
-        state: [vehicle.currentState, Validators.required]
-      });
-      newMap.set(vehicle.vehicleId, form);
-    }
-
-    this.vehicleForms.set(newMap);
+  /**
+   * Get visit by vehicle ID
+   */
+  getVisitByVehicleId(vehicleId: string) {
+    return computed(() => {
+      return this.visitsByAutoRepair().find(v => v.id_vehicle === vehicleId) || null;
+    });
   }
 
-  getFormForVehicle(vehicleId: string): FormGroup {
-    const form = this.vehicleForms().get(vehicleId);
-
-    if (!form) {
-      console.error(`Form not found for vehicle ${vehicleId}`);
-      // Crear formulario de emergencia si no existe
-      const vehicle = this.vehiclesInMaintenance().find(v => v.vehicleId === vehicleId);
-      return this.fb.group({
-        state: [vehicle?.currentState || 1, Validators.required]
-      });
-    }
-
-    return form;
-  }
-
+  /**
+   * Navigate to modify diagnosis page for the vehicle
+   */
   updateVehicleState(vehicleId: string): void {
-    const form = this.getFormForVehicle(vehicleId);
-
-    if (form.invalid) {
-      form.markAllAsTouched();
-      return;
-    }
-
     // Navigate to modify-diagnosis view with vehicle ID
     void this.router.navigate(['layout-workshop/vehicle-diagnosis/modify-diagnosis/edit', vehicleId]);
-  }
-
-  getStateName(stateValue: number): string {
-    return this.maintenanceStates.find(s => s.value === stateValue)?.label || 'Desconocido';
   }
 }
