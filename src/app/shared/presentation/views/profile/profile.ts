@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IamStore} from '@iam/application/iam-store';
 import {CatalogStore} from '@catalog/application/catalog-store';
+import {Location} from '@catalog/domain/model/location.entity';
+import {UserAccount} from '@iam/domain/model/user-account.entity';
 
 @Component({
   selector: 'app-profile',
@@ -32,9 +34,9 @@ export class Profile {
    * Profile fields
    */
   profileImage = signal<string | undefined>('');
-  username = signal<string | undefined>('');
-  address = signal<string | undefined>('');
-  password = signal<string | undefined>('');
+  usernameToEdit = signal<string | undefined>('');
+  addressToEdit = signal<string | undefined>('');
+  passwordToEdit = signal<string | undefined>('');
 
   /**
    * UI State
@@ -46,9 +48,9 @@ export class Profile {
    * Constructor
    */
   constructor() {
-    this.username.set(this.sessionUserAccount()?.username);
-    this.address.set(this.sessionLocation()?.address);
-    this.password.set(this.sessionUserAccount()?.password);
+    this.usernameToEdit.set(this.sessionUserAccount()?.username);
+    this.addressToEdit.set(this.sessionLocation()?.address);
+    this.passwordToEdit.set(this.sessionUserAccount()?.password);
 
     // Temporal profile image based on role
     // TODO: Replace with actual user profile image
@@ -78,15 +80,28 @@ export class Profile {
   }
 
   /**
-   * Save profile changes
+   * Save changes made to the profile
    */
   saveChanges(): void {
-    // TODO: Implement save logic
-    console.log('Saving profile changes...', {
-      username: this.username(),
-      address: this.address(),
-      password: this.password()
+    const locationEdit = new Location({
+      id_location: this.sessionLocation()?.id!,
+      address: this.addressToEdit()!,
+      district: this.sessionLocation()?.district!,
+      department: this.sessionLocation()?.department!
     });
+    const updatedUserAccount = new UserAccount({
+      id_user_account: this.sessionUserAccount()?.id!,
+      username: this.usernameToEdit()!,
+      email: this.sessionUserAccount()?.email!,
+      id_user: this.sessionUserAccount()?.id_user!,
+      id_role: this.sessionUserAccount()?.id_role!,
+      id_membership: this.sessionUserAccount()?.id_membership!,
+      password: this.passwordToEdit()!,
+      is_new: this.sessionUserAccount()?.is_new!,
+    });
+
+    this.iamStore.updateLocation(locationEdit);
+    this.iamStore.updateUserAccount(updatedUserAccount);
     this.isEditMode.set(false);
   }
 
