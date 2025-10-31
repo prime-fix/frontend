@@ -5,6 +5,7 @@ import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-c
 import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
 import {VehicleDiagnosisRoutes} from '@diagnosis/presentation/views/vehicle-diagnosis.routes';
 import {roleGuard} from '@shared/infrastructure/guards/role.guard';
+import {dataCollectionRoutes} from '@collections/presentation/views/data-collection.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -95,9 +96,9 @@ export const routes: Routes = [
         title: `${baseTitle} -  Track Vehicle`,
       },
       {
-        path:'visits',
-        loadChildren:()=>import('./data_collection/presentation/views/data.routes').then(m=>m.dataRoutes),
-        title:`${baseTitle} - Visit Workshop `
+        path:'data-collection',
+        loadChildren:()=> dataCollectionRoutes,
+        title:`${baseTitle} - Visit Management`
       },
       {
         path: '404',
@@ -137,7 +138,7 @@ export const routes: Routes = [
       },
       {
         path: 'auto-repair-register',
-        loadChildren : () => autoRepairRegisterRoutes,
+        loadChildren: () => autoRepairRegisterRoutes,
         title: `${baseTitle} -  Manage Technicians`,
       },
       {
