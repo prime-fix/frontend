@@ -28,7 +28,7 @@ export class VisitForm {
 
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    id_vehicle: new FormControl<number|string|null>(null),
+    id_vehicle: new FormControl<string|null>(null),
     time_visit: new FormControl<string|null>('', { nonNullable: true, validators: [Validators.required] }),
     id_auto_repair: new FormControl<number|string|null>(null),
     id_service: new FormControl<number|string|null>(null),

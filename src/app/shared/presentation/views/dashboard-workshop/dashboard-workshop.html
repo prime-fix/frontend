@@ -6,29 +6,29 @@
     <h2 class="section-title">{{ 'dashboard-workshop.scheduledVisits' | translate }}</h2>
 
     <div class="visits-list">
-      @for (visitInfo of scheduledVisits(); track visitInfo.visit.id) {
+      @for (expectedVisit of expectedVisits(); track expectedVisit.id) {
         <div class="visit-card">
           <div class="visit-info">
-            <h3 class="customer-name">{{ visitInfo.customerName }}</h3>
+            <h3 class="customer-name">{{ getUserFullNameByVisitId(expectedVisit.id_visit)() }}</h3>
             <div class="visit-details">
               <p class="detail-item">
                 <span class="detail-label">{{ 'dashboard-workshop.date' | translate }}:</span>
-                {{ visitInfo.date }}
+                {{ getVisitByExpectedVisitId(expectedVisit.id)()?.time_visit?.slice(0,10) }}
               </p>
               <p class="detail-item">
                 <span class="detail-label">{{ 'dashboard-workshop.time' | translate }}:</span>
-                {{ visitInfo.time }}
+                {{ getVisitByExpectedVisitId(expectedVisit.id)()?.time_visit?.slice(11,16) }}
               </p>
             </div>
           </div>
 
-          <button class="btn-details" (click)="onShowDetails(visitInfo)">
+          <button class="btn-details" (click)="onShowDetails(expectedVisit, getVisitByExpectedVisitId(expectedVisit.id)()!)">
             {{ 'dashboard-workshop.details' | translate }}
           </button>
         </div>
       }
 
-      @if (scheduledVisits().length === 0) {
+      @if (expectedVisits().length === 0) {
         <div class="no-items">
           <p>{{ 'dashboard-workshop.noScheduledVisits' | translate }}</p>
         </div>
@@ -41,24 +41,24 @@
     <h2 class="section-title">{{ 'dashboard-workshop.receivedRatings' | translate }}</h2>
 
     <div class="ratings-list">
-      @for (ratingInfo of receivedRatings(); track ratingInfo.rating.id) {
+      @for (rating of receivedRatings(); track rating.id) {
         <div class="rating-card">
           <div class="rating-header">
-            <h3 class="customer-name">{{ 'dashboard-workshop.client' | translate }}: {{ ratingInfo.customerName }}</h3>
-            <p class="rating-date">{{ 'dashboard-workshop.ratingDate' | translate }}: {{ ratingInfo.date }}</p>
+            <h3 class="customer-name">{{ 'dashboard-workshop.client' | translate }}: {{ getUserNameByUserAccountId(rating.id_user_account)() }}</h3>
+            <p class="rating-date">{{ 'dashboard-workshop.ratingDate' | translate }}: {{ rating.time_rating }}</p>
           </div>
 
           <div class="rating-content">
             <div class="rating-score">
               <span class="rating-label">{{ 'dashboard-workshop.rating' | translate }}:</span>
-              <span class="stars">{{ getStars(ratingInfo.rating.star_rating) }}</span>
-              <span class="rating-number">{{ ratingInfo.rating.star_rating }}/5</span>
+              <span class="stars">{{ getStars(rating.star_rating) }}</span>
+              <span class="rating-number">{{ rating.star_rating }}/5</span>
             </div>
 
-            @if (ratingInfo.rating.comment) {
+            @if (rating.comment) {
               <div class="rating-comment">
                 <p class="comment-label">{{ 'dashboard-workshop.comment' | translate }}:</p>
-                <p class="comment-text">{{ ratingInfo.rating.comment }}</p>
+                <p class="comment-text">{{ rating.comment }}</p>
               </div>
             }
           </div>
@@ -75,7 +75,7 @@
 </div>
 
 <!-- Visit Details Modal -->
-@if (showDetailsModal() && selectedVisit()) {
+@if (showDetailsModal() && selectedExpectedVisitAndVisit()) {
   <div class="modal-overlay" (click)="onCloseModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h2 class="modal-title">{{ 'dashboard-workshop.visitDetails' | translate }}</h2>
@@ -83,28 +83,28 @@
       <div class="modal-details">
         <div class="detail-group">
           <label class="detail-label">{{ 'dashboard-workshop.customerName' | translate }}</label>
-          <p class="detail-value">{{ selectedVisit()!.customerName }}</p>
+          <p class="detail-value">{{ getUserFullNameByVisitId(selectedExpectedVisitAndVisit()?.expectedVisit?.id_visit!)() }}</p>
         </div>
 
         <div class="detail-group">
           <label class="detail-label">{{ 'dashboard-workshop.vehicleModel' | translate }}</label>
-          <p class="detail-value">{{ selectedVisit()!.vehicleModel }}</p>
+          <p class="detail-value">{{ getVehicleByVehicleId(selectedExpectedVisitAndVisit()?.visit?.id_vehicle!)()?.model }}</p>
         </div>
 
         <div class="detail-group">
           <label class="detail-label">{{ 'dashboard-workshop.failures' | translate }}</label>
-          <p class="detail-value failure-text">{{ selectedVisit()!.visit.failure }}</p>
+          <p class="detail-value failure-text">{{ selectedExpectedVisitAndVisit()?.visit?.failure }}</p>
         </div>
 
         <div class="detail-row">
           <div class="detail-group">
             <label class="detail-label">{{ 'dashboard-workshop.date' | translate }}</label>
-            <p class="detail-value">{{ selectedVisit()!.date }}</p>
+            <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.visit?.time_visit?.slice(0,10) }}</p>
           </div>
 
           <div class="detail-group">
             <label class="detail-label">{{ 'dashboard-workshop.time' | translate }}</label>
-            <p class="detail-value">{{ selectedVisit()!.time }}</p>
+            <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.visit?.time_visit?.slice(11,16) }}</p>
           </div>
         </div>
       </div>

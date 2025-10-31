@@ -25,7 +25,7 @@ export interface VisitResource extends BaseResource{
   /**
    * The unique identifier for the vehicle associated with the visit.
    */
-  id_vehicle:number|string;
+  id_vehicle:string;
   /**
    * The date and time of the visit in string format.
    */
