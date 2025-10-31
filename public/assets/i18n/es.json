@@ -503,6 +503,8 @@
     "title": "Estado de coches",
     "subtitle": "Modificación del estado de los coches",
     "subtitle-update": "Modificación del estado de los coches",
+    "modal-title": "Actualizar estado del vehículo",
+    "modal-subtitle": "Cuando se actualice el estado, se notificará al dueño del vehículo.",
     "loading-message": "Cargando vehículos...",
     "no-vehicles": "No hay vehículos en proceso de mantenimiento",
     "vehicle-card": {
@@ -512,20 +514,34 @@
       "unknown-owner": "Desconocido",
       "id-visit": "ID de visita:",
       "status": "Estado:",
+      "change-state-button": "Actualizar estado",
+      "check-button": "Ver diagnósticos",
       "update-button": "Actualizar",
       "loading-button": "Actualizando..."
     },
     "vehicle-form": {
       "select-status": "Seleccione un estado",
+      "state": "Estado de mantenimiento del vehículo",
+      "failure": "Falla",
       "diagnostic": "Diagnóstico",
       "diagnostic-error": "Ingrese el diagnóstico",
       "price": "Precio",
       "price-error": "Ingrese un precio válido"
     },
     "button-cancel": "Cancelar",
-    "button-update": "Actualizar",
+    "button-add": "Agregar diagnóstico",
     "button-updating": "Guardando...",
-    "no-data": "No se encontró información del vehículo"
+    "no-data": "No se encontró información del vehículo",
+    "modal-update-button": "Actualizar estado"
+  },
+  "vehicleDiagnosis": {
+    "checkTitle": "Diagnósticos del vehículo",
+    "checkSubtitle": "Revisa todos los diagnósticos realizados",
+    "loading": "Cargando diagnósticos...",
+    "noDiagnostics": "No hay diagnósticos registrados para este vehículo",
+    "price": "Precio",
+    "date": "Fecha",
+    "status": "Estado"
   },
   "profile-view": {
     "title": "Perfil",

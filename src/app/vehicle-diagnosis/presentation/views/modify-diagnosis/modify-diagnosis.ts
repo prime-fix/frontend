@@ -8,8 +8,6 @@ import {IamStore} from '@iam/application/iam-store';
 import {RegisterStore} from '@register/application/register-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
-import {Vehicle} from '@tracking/domain/model/vehicle.entity';
-import {Visit} from '@collections/domain/model/visit.entity';
 import {Diagnostic} from '@diagnosis/domain/model/diagnostic.entity';
 
 @Component({
@@ -29,9 +27,22 @@ export class ModifyDiagnosis implements OnInit {
   private readonly registerStore = inject(RegisterStore);
   private readonly diagnosisStore = inject(DiagnosisStore);
 
+  /**
+   * Signal for vehicle ID from route params
+   */
   readonly vehicleId = signal<string | null>(null);
+  /**
+   * Loading state signal
+   */
   readonly loading = signal(false);
+  /**
+   * Signal for new diagnostic being created
+   */
+  readonly newDiagnostic = signal<Diagnostic | null>(null);
 
+  /**
+   * Progress steps for vehicle repair status
+   */
   steps: ProgressStep[] = [
     { id: 1, label: 'En espera', translationKey: 'progress-bar.waiting' },
     { id: 2, label: 'En diagnóstico', translationKey: 'progress-bar.diagnosis' },
@@ -95,21 +106,17 @@ export class ModifyDiagnosis implements OnInit {
   });
 
   /**
-   * Get current diagnostic for the vehicle
+   * Form group for modifying diagnosis
    */
-  currentDiagnostic = computed(() => {
-    const vehicle = this.currentVehicle();
-    if (!vehicle) return null;
-
-    return this.diagnosisStore.diagnostics().find(d => d.id_vehicle === vehicle.id) || null;
-  });
-
   readonly modifyForm = this.fb.group({
-    state: [1, Validators.required],
     diagnosis: ['', Validators.required],
+    failure: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0)]]
   });
 
+  /**
+   * Component initialization
+   */
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -120,12 +127,12 @@ export class ModifyDiagnosis implements OnInit {
         setTimeout(() => {
           const vehicle = this.currentVehicle();
           const visit = this.currentVisit();
-          const diagnostic = this.currentDiagnostic();
+          const diagnostic = this.newDiagnostic();
 
           if (vehicle && visit) {
             this.modifyForm.patchValue({
-              state: vehicle.state_maintenance || 1,
-              diagnosis: diagnostic?.diagnosis || visit.failure || '',
+              failure: visit.failure || '',
+              diagnosis: '',
               price: diagnostic?.price || 0
             });
           }
@@ -134,6 +141,9 @@ export class ModifyDiagnosis implements OnInit {
     });
   }
 
+  /**
+   * Handle form submission to modify diagnosis
+   */
   onSubmit(): void {
     if (this.modifyForm.invalid) {
       this.modifyForm.markAllAsTouched();
@@ -143,7 +153,6 @@ export class ModifyDiagnosis implements OnInit {
     const vehicle = this.currentVehicle();
     const visit = this.currentVisit();
     const expectedVisit = this.currentExpectedVisit();
-    const existingDiagnostic = this.currentDiagnostic();
 
     if (!vehicle || !visit) {
       alert(this.translate.instant('vehicle-diagnosis.no-data'));
@@ -160,54 +169,17 @@ export class ModifyDiagnosis implements OnInit {
     const formData = this.modifyForm.getRawValue();
 
     try {
-      // Update vehicle state
-      const updatedVehicle = new Vehicle({
-        id_vehicle: vehicle.id,
-        color: vehicle.color,
-        model: vehicle.model,
-        id_user: vehicle.id_user,
-        vehicle_brand: vehicle.vehicle_brand,
-        vehicle_plate: vehicle.vehicle_plate,
-        vehicle_type: vehicle.vehicle_type,
-        state_maintenance: formData.state!
-      });
-      this.dataCollectionStore.updateVehicle(updatedVehicle);
-
-      // Update visit failure (diagnosis)
-      const updatedVisit = new Visit({
-        id_visit: visit.id,
-        failure: formData.diagnosis!,
-        id_vehicle: visit.id_vehicle,
-        time_visit: visit.time_visit,
-        id_auto_repair: visit.id_auto_repair,
-        id_service: visit.id_service
-      });
-      this.dataCollectionStore.updateVisit(updatedVisit);
-
-      // Create or Update Diagnostic
-      if (existingDiagnostic) {
-        // Update existing diagnostic
-        const updatedDiagnostic = new Diagnostic({
-          id_diagnostic: existingDiagnostic.id,
-          price: formData.price!,
-          id_vehicle: vehicle.id,
-          state_diagnostic: this.getStateDiagnosticByStateId(formData.state!),
-          diagnosis: formData.diagnosis!,
-          id_expected: expectedVisit.id
-        });
-        this.diagnosisStore.updateDiagnostic(updatedDiagnostic);
-      } else {
-        // Create new diagnostic
-        const newDiagnostic = new Diagnostic({
+      // Create new diagnostic
+      const newDiagnostic = new Diagnostic({
           id_diagnostic: this.generateDiagnosticId(),
           price: formData.price!,
           id_vehicle: vehicle.id,
-          state_diagnostic: this.getStateDiagnosticByStateId(formData.state!),
           diagnosis: formData.diagnosis!,
           id_expected: expectedVisit.id
-        });
-        this.diagnosisStore.addDiagnostic(newDiagnostic);
-      }
+      });
+
+      this.diagnosisStore.addDiagnostic(newDiagnostic);
+
 
       setTimeout(() => {
         this.loading.set(false);
@@ -222,21 +194,6 @@ export class ModifyDiagnosis implements OnInit {
   }
 
   /**
-   * Get state diagnostic string based on state maintenance ID
-   */
-  private getStateDiagnosticByStateId(stateId: number): string {
-    const stateMap: { [key: number]: string } = {
-      1: 'En espera',
-      2: 'En diagnóstico',
-      3: 'En reparación',
-      4: 'En prueba',
-      5: 'Listo para recoger',
-      6: 'Recogido'
-    };
-    return stateMap[stateId] || 'En espera';
-  }
-
-  /**
    * Generate a unique diagnostic ID
    */
   private generateDiagnosticId(): string {
@@ -245,6 +202,9 @@ export class ModifyDiagnosis implements OnInit {
     return `DIAG-${timestamp}-${random}`;
   }
 
+  /**
+   * Handle cancellation and navigate back to diagnosis view
+   */
   onCancel(): void {
     void this.router.navigate(['/layout-workshop/vehicle-diagnosis/diagnosis-view']);
   }
