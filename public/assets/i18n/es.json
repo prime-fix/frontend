@@ -434,10 +434,16 @@
     "time": "Hora",
     "accept": "Aceptar",
     "reject": "Rechazar",
+    "details": "Detalles",
     "confirmAccept": "¿Está seguro de aceptar esta solicitud?",
     "confirmReject": "¿Está seguro de rechazar esta solicitud?",
     "acceptSuccess": "Solicitud aceptada exitosamente",
-    "rejectSuccess": "Solicitud rechazada exitosamente"
+    "rejectSuccess": "Solicitud rechazada exitosamente",
+    "visitDetails": "Detalle de visita",
+    "vehicleModel": "Modelo de coche",
+    "failures": "Fallas",
+    "status": "Estado",
+    "close": "Cerrar"
   },
   "dashboard-workshop": {
     "title": "Menú inicial",

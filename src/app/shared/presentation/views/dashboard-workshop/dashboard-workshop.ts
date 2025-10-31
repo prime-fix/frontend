@@ -7,7 +7,6 @@ import {PaymentServiceStore} from '@payment/application/payment-service-store';
 import {IamStore} from '@iam/application/iam-store';
 import {RegisterStore} from '@register/application/register-store';
 import {Visit} from '@collections/domain/model/visit.entity';
-import {Rating} from '@payment/domain/model/rating.entity';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 
 
@@ -51,11 +50,11 @@ export class DashboardWorkshop {
   /**
    * Get expected visits for the current workshop
    */
-  expectedVisits = computed(() => {
+  expectedVisitsScheduled = computed(() => {
     const visitsByAutoRepair = this.dataCollectionStore.visits().filter(v => v.id_auto_repair === this.currentAutoRepair()?.id);
     const expectedVisitByVisit = this.diagnosisStore.expectedVisits();
 
-    return expectedVisitByVisit.filter(ev => visitsByAutoRepair.some(v => v.id === ev.id_visit));
+    return expectedVisitByVisit.filter(ev => visitsByAutoRepair.some(v => v.id === ev.id_visit && ev.is_scheduled));
   });
 
   /**

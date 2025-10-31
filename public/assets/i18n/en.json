@@ -434,10 +434,16 @@
     "time": "Time",
     "accept": "Accept",
     "reject": "Reject",
+    "details": "Details",
     "confirmAccept": "Are you sure you want to accept this request?",
     "confirmReject": "Are you sure you want to reject this request?",
     "acceptSuccess": "Request accepted successfully",
-    "rejectSuccess": "Request rejected successfully"
+    "rejectSuccess": "Request rejected successfully",
+    "visitDetails": "Visit details",
+    "vehicleModel": "Vehicle model",
+    "failures": "Failures",
+    "status": "Status",
+    "close": "Close"
   },
   "dashboard-workshop": {
     "title": "Dashboard",

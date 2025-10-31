@@ -6,7 +6,7 @@
     <h2 class="section-title">{{ 'dashboard-workshop.scheduledVisits' | translate }}</h2>
 
     <div class="visits-list">
-      @for (expectedVisit of expectedVisits(); track expectedVisit.id) {
+      @for (expectedVisit of expectedVisitsScheduled(); track expectedVisit.id) {
         <div class="visit-card">
           <div class="visit-info">
             <h3 class="customer-name">{{ getUserFullNameByVisitId(expectedVisit.id_visit)() }}</h3>
@@ -28,7 +28,7 @@
         </div>
       }
 
-      @if (expectedVisits().length === 0) {
+      @if (expectedVisitsScheduled().length === 0) {
         <div class="no-items">
           <p>{{ 'dashboard-workshop.noScheduledVisits' | translate }}</p>
         </div>

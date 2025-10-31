@@ -759,7 +759,7 @@
     {
       "id_visit": "V001",
       "failure": "El motor hace un ruido extraño",
-      "time_visit": "2025-10-16",
+      "time_visit": "2025-10-16T15:00:00",
       "id_auto_repair": "AR001",
       "id_service": "S002",
       "id_vehicle": "RV002"
@@ -767,9 +767,49 @@
     {
       "id_visit": "V002",
       "failure": "Frenos desgastados",
-      "time_visit": "2025-10-24",
+      "time_visit": "2025-10-24T09:00:00",
       "id_auto_repair": "AR002",
       "id_service": "S003",
+      "id_vehicle": "RV001"
+    },
+    {
+      "id_visit": "V003",
+      "failure": "Cambio de aceite necesario",
+      "time_visit": "2025-11-01T11:30:00",
+      "id_auto_repair": "AR003",
+      "id_service": "S002",
+      "id_vehicle": "RV003"
+    },
+    {
+      "id_visit": "V004",
+      "failure": "Problemas con la suspensión",
+      "time_visit": "2025-11-05T14:00:00",
+      "id_auto_repair": "AR004",
+      "id_service": "S004",
+      "id_vehicle": "RV004"
+    },
+    {
+      "id_visit": "V005",
+      "failure": "Revisión del sistema eléctrico",
+      "time_visit": "2025-11-10T10:00:00",
+      "id_auto_repair": "AR005",
+      "id_service": "S005",
+      "id_vehicle": "RV005"
+    },
+    {
+      "id_visit": "V006",
+      "failure": "Alineación de llantas",
+      "time_visit": "2025-11-15T13:00:00",
+      "id_auto_repair": "AR001",
+      "id_service": "S006",
+      "id_vehicle": "RV006"
+    },
+    {
+      "id_visit": "V007",
+      "failure": "Revisión general del vehículo",
+      "time_visit": "2025-11-20T16:00:00",
+      "id_auto_repair": "AR002",
+      "id_service": "S001",
       "id_vehicle": "RV001"
     }
   ],
@@ -860,6 +900,36 @@
       "id_expected": "EV002",
       "state_visit": "Visit cannot be scheduled",
       "id_visit": "V002",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV003",
+      "state_visit": "Pending Visit",
+      "id_visit": "V003",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV004",
+      "state_visit": "Pending Visit",
+      "id_visit": "V004",
+      "is_scheduled": true
+    },
+    {
+      "id_expected": "EV005",
+      "state_visit": "Pending Visit",
+      "id_visit": "V005",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV006",
+      "state_visit": "Pending Visit",
+      "id_visit": "V006",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV007",
+      "state_visit": "Pending Visit",
+      "id_visit": "V007",
       "is_scheduled": false
     }
   ],
