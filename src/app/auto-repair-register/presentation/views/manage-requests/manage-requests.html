@@ -85,11 +85,6 @@
             <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.visit?.time_visit?.slice(11,16) }}</p>
           </div>
         </div>
-
-        <div class="detail-group">
-          <label class="detail-label">{{ 'manage-requests.status' | translate }}</label>
-          <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.expectedVisit?.state_visit }}</p>
-        </div>
       </div>
 
       <button class="btn-close" (click)="onCloseModal()">
