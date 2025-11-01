@@ -27,5 +27,14 @@
       </div>
     }
   </div>
+
+  @if (currentStep() === 6) {
+    <div class="payment-section">
+      <p class="payment-message">{{ 'progress-bar.message-collect' | translate }}</p>
+      <button type="button" class="payment-button" (click)="goPayment()">
+        {{ 'progress-bar.button-go-payment' | translate }}
+      </button>
+    </div>
+  }
 </div>
 

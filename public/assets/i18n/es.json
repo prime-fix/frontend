@@ -331,7 +331,9 @@
     "repair": "En reparación",
     "testing": "En prueba",
     "readyPickup": "Listo para recoger",
-    "collected": "Recogido"
+    "collected": "Recogido",
+    "message-collect": "Tu coche ya fue recogido",
+    "button-go-payment": "Ir a pagar"
   },
   "track-vehicle": {
     "title": "Seguir estado",
@@ -360,6 +362,7 @@
     "visitDate": "Fecha de la visita",
     "cash": "Efectivo",
     "virtualPayment": "Pago virtual",
+    "selectMethod": "Selecciona un método de pago",
     "btnAccept": "Aceptar"
   },
   "payment-done": {
@@ -373,17 +376,27 @@
     "cardNumber": "Número de la tarjeta",
     "invalidCardNumber": "Número inválido (se requieren 16 dígitos)",
     "cardType": "Tipo de tarjeta",
+    "selectCardType": "Seleccione tipo de tarjeta",
+    "cardTypeRequired": "El tipo de tarjeta es obligatorio",
     "month": "Mes",
+    "selectMonth": "Seleccione el mes",
+    "monthRequired": "El mes es obligatorio",
     "year": "Año",
+    "selectYear": "Seleccione el año",
+    "yearRequired": "El año es obligatorio",
     "cvv": "CVV",
+    "cvvRequired": "El CVV es obligatorio (3 dígitos)",
     "docType": "Tipo de documento",
+    "selectDocType": "Seleccione tipo de documento",
     "docNumber": "Número de documento",
     "addButton": "Añadir"
   },
   "payment-selection": {
     "title": "Pago a realizar",
     "chooseMethod": "Elegir método",
-    "method": "Método",
+    "method": "Método de pago",
+    "selectMethod": "Selecciona un método de pago",
+    "noPaymentMethods": "No hay métodos de pago registrados. Añade uno para continuar.",
     "backButton": "Volver",
     "addMethodButton": "Añadir método",
     "payButton": "Pagar"
@@ -391,7 +404,7 @@
   "rating": {
     "title": "Calificar servicio",
     "serviceRating": "Calificación del servicio",
-    "message": "Se ha completado el servicio. <br/> ¿Desea calificarlo?",
+    "message": "Se ha completado el servicio. ¿Desea calificarlo?",
     "laterButton": "Ahora no",
     "rateNowButton": "Calificar"
   },
@@ -404,11 +417,12 @@
   "rating-form": {
     "title": "Calificar servicio",
     "serviceRating": "Calificación del servicio",
-    "question": "¿Cómo se siente con el servicio brindado?<br /> (5 significa completamente satisfecho y 1 completamente insatisfecho)",
+    "question": "¿Cómo se siente con el servicio brindado? (5 significa completamente satisfecho y 1 completamente insatisfecho)",
     "commentLabel": "Dejar un comentario (opcional)",
     "commentPlaceholder": "Escriba su comentario aquí",
     "commentField": "Comentario",
-    "rateButton": "Calificar"
+    "rateButton": "Calificar",
+    "ratingRequired": "Por favor, seleccione una calificación"
   },
   "search-auto-repair": {
     "title": "Buscar taller",

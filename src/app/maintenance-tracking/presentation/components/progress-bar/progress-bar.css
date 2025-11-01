@@ -154,3 +154,93 @@
     gap: 0.5rem;
   }
 }
+
+/* Payment Section */
+.payment-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: var(--color-second-complementary);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.payment-message {
+  font-family: var(--font-semibold);
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.payment-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.25rem 2rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-first-complementary);
+  color: var(--color-dark);
+  font-family: var(--font-bold);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-height: 60px;
+}
+
+.payment-button:hover {
+  background: #ffb700;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+.payment-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design for Payment Section */
+@media (max-width: 768px) {
+  .payment-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .payment-message {
+    font-size: 1.1rem;
+  }
+
+  .payment-button {
+    font-size: 1.1rem;
+    padding: 1.1rem 1.75rem;
+    min-height: 55px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-section {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .payment-message {
+    font-size: 1rem;
+  }
+
+  .payment-button {
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+    min-height: 50px;
+  }
+}
+

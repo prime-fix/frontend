@@ -1,7 +1,4 @@
 import {Component, inject} from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
@@ -10,10 +7,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rating-form',
-  imports: [MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './rating-form.html',
   styleUrl: './rating-form.css'
 })
@@ -41,8 +35,10 @@ export class RatingForm {
   }
 
   submit() {
+    // Mark star_rating as touched to show validation errors
+    this.form.controls.star_rating.markAsTouched();
+
     if (this.form.invalid) {
-      alert('Por favor, seleccione una calificación antes de continuar.');
       return;
     }
 
@@ -56,8 +52,7 @@ export class RatingForm {
     });
 
     this.store.addRating(newRating);
-    alert('Calificación registrada correctamente.');
-    this.router.navigate(['payment-service/rating/done']).then();
+    this.router.navigate(['layout-owner/payment-service/rating/done']).then();
   }
 
 }

@@ -1,12 +1,30 @@
-<div class="rating-container">
-  <h2 class="title">{{'rating-done.title'|translate}}</h2>
+<div class="rating-done-container">
+  <div class="rating-done-header">
+    <h1 class="rating-done-title">{{ 'rating-done.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="rating-card">
-    <h1 class="rating-title">{{'rating-done.doneTitle'|translate}}</h1>
-    <p class="rating-text">{{'rating-done.message'|translate}}</p>
+  <div class="rating-done-content">
+    <div class="rating-done-card">
+      <!-- Success Icon -->
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9 12l2 2 4-4"></path>
+        </svg>
+      </div>
 
-    <div class="button-container">
-      <button mat-flat-button class="btn-accept" (click)="goBack()">{{'rating-done.acceptButton'|translate}}</button>
+      <h2 class="card-title">{{ 'rating-done.doneTitle' | translate }}</h2>
+      <p class="card-message">{{ 'rating-done.message' | translate }}</p>
+
+      <div class="button-container">
+        <button
+          type="button"
+          class="btn-accept"
+          (click)="goBack()"
+        >
+          {{ 'rating-done.acceptButton' | translate }}
+        </button>
+      </div>
     </div>
-  </mat-card>
+  </div>
 </div>
