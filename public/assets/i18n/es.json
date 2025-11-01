@@ -237,7 +237,17 @@
     "visitId": "ID de la Visita:",
     "workshop": "Taller:",
     "address": "Dirección:",
-    "cancelVisit": "Cancelar Visita"
+    "cancelVisit": "Cancelar Visita",
+    "visitCancelled": "Visita Cancelada",
+    "loading": "Cargando...",
+    "cancelModal": {
+      "title": "Cancelar Visita",
+      "subtitle": "¿Estás seguro de que deseas cancelar esta visita?",
+      "warning": "Esta acción no se puede deshacer. Una vez cancelada, deberás agendar una nueva visita si cambias de opinión.",
+      "goBack": "Volver",
+      "confirm": "Confirmar Cancelación",
+      "cancelling": "Cancelando..."
+    }
   },
   "auto_repair":{
     "title": "Buscar Taller",

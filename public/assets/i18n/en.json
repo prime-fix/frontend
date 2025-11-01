@@ -237,7 +237,17 @@
     "visitId": "Visit ID:",
     "workshop": "Workshop:",
     "address": "Address:",
-    "cancelVisit": "Cancel Visit"
+    "cancelVisit": "Cancel Visit",
+    "visitCancelled": "Visit Cancelled",
+    "loading": "Loading...",
+    "cancelModal": {
+      "title": "Cancel Visit",
+      "subtitle": "Are you sure you want to cancel this visit?",
+      "warning": "This action cannot be undone. Once cancelled, you will need to schedule a new visit if you change your mind.",
+      "goBack": "Go Back",
+      "confirm": "Confirm Cancellation",
+      "cancelling": "Cancelling..."
+    }
   },
   "auto_repair":{
     "title": "Search for Auto Repair Workshops",
