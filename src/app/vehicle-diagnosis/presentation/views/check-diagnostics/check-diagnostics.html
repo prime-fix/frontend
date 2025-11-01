@@ -1,0 +1,34 @@
+<div class="check-diagnostics-container">
+  <div class="check-diagnostics-content">
+    <h1 class="check-diagnostics-title">{{ 'vehicleDiagnosis.checkTitle' | translate }}</h1>
+    <h2 class="check-diagnostics-subtitle">{{ 'vehicleDiagnosis.checkSubtitle' | translate }}</h2>
+
+    @if (loading()) {
+      <div class="loading-message">{{ 'vehicleDiagnosis.loading' | translate }}</div>
+    }
+
+    @if (!loading() && currentDiagnosticsByCurrentExpectedVisitId().length === 0) {
+      <div class="empty-state">
+        <p class="empty-text">{{ 'vehicleDiagnosis.noDiagnostics' | translate }}</p>
+      </div>
+    }
+
+    <div class="diagnostics-list">
+      @for (diagnostic of currentDiagnosticsByCurrentExpectedVisitId(); track diagnostic.id) {
+        <div class="diagnostic-card">
+          <div class="card-header">
+            <h3 class="diagnostic-title">{{ diagnostic.diagnosis || 'No title' }}</h3>
+          </div>
+
+          <div class="card-body">
+            <div class="diagnostic-info-row">
+              <span class="info-label">{{ 'vehicleDiagnosis.price' | translate }}:</span>
+              <span class="info-value">S/. {{ diagnostic.price || '0.00' }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+

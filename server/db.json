@@ -536,6 +536,7 @@
       "id_rating": "RT001",
       "star_rating": 5,
       "comment": "Excellent service and friendly staff!",
+      "time_rating": "2025-10-01",
       "id_auto_repair": "AR001",
       "id_user_account": "UA001"
     },
@@ -543,6 +544,7 @@
       "id_rating": "RT002",
       "star_rating": 4,
       "comment": "Good experience, but room for improvement.",
+      "time_rating": "2025-10-05",
       "id_auto_repair": "AR001",
       "id_user_account": "UA002"
     },
@@ -550,6 +552,7 @@
       "id_rating": "RT003",
       "star_rating": 3,
       "comment": "Average service, nothing special.",
+      "time_rating": "2025-10-10",
       "id_auto_repair": "AR001",
       "id_user_account": "UA003"
     },
@@ -557,15 +560,137 @@
       "id_rating": "RT004",
       "star_rating": 5,
       "comment": "Highly recommend! Very professional.",
+      "time_rating": "2025-10-12",
       "id_auto_repair": "AR001",
       "id_user_account": "UA004"
     },
     {
       "id_rating": "RT005",
-      "star_rating": 2,
-      "comment": "Not satisfied with the service provided.",
-      "id_auto_repair": "AR001",
-      "id_user_account": "UA005"
+      "star_rating": 4,
+      "comment": "Good value for money.",
+      "time_rating": "2025-10-15",
+      "id_auto_repair": "AR002",
+      "id_user_account": "UA001"
+    },
+    {
+      "id_rating": "RT006",
+      "star_rating": 5,
+      "comment": "Exceptional service and quick turnaround.",
+      "time_rating": "2025-10-18",
+      "id_auto_repair": "AR002",
+      "id_user_account": "UA002"
+    },
+    {
+      "id_rating": "RT007",
+      "star_rating": 3,
+      "comment": "Service was okay, but could be better.",
+      "time_rating": "2025-10-20",
+      "id_auto_repair": "AR002",
+      "id_user_account": "UA003"
+    },
+    {
+      "id_rating": "RT008",
+      "star_rating": 4,
+      "comment": "Friendly staff and efficient service.",
+      "time_rating": "2025-10-22",
+      "id_auto_repair": "AR002",
+      "id_user_account": "UA004"
+    },
+    {
+      "id_rating": "RT009",
+      "star_rating": 5,
+      "comment": "Top-notch service! Will return again.",
+      "time_rating": "2025-10-25",
+      "id_auto_repair": "AR003",
+      "id_user_account": "UA001"
+    },
+    {
+      "id_rating": "RT010",
+      "star_rating": 4,
+      "comment": "Good overall experience.",
+      "time_rating": "2025-10-27",
+      "id_auto_repair": "AR003",
+      "id_user_account": "UA002"
+    },
+    {
+      "id_rating": "RT011",
+      "star_rating": 3,
+      "comment": "Mediocre service, nothing outstanding.",
+      "time_rating": "2025-10-29",
+      "id_auto_repair": "AR003",
+      "id_user_account": "UA003"
+    },
+    {
+      "id_rating": "RT012",
+      "star_rating": 5,
+      "comment": "Fantastic job! Highly skilled technicians.",
+      "time_rating": "2025-10-30",
+      "id_auto_repair": "AR003",
+      "id_user_account": "UA004"
+    },
+    {
+      "id_rating": "RT013",
+      "star_rating": 4,
+      "comment": "Efficient and reliable service.",
+      "time_rating": "2025-11-01",
+      "id_auto_repair": "AR004",
+      "id_user_account": "UA001"
+    },
+    {
+      "id_rating": "RT014",
+      "star_rating": 5,
+      "comment": "Outstanding experience from start to finish.",
+      "time_rating": "2025-11-03",
+      "id_auto_repair": "AR004",
+      "id_user_account": "UA002"
+    },
+    {
+      "id_rating": "RT015",
+      "star_rating": 3,
+      "comment": "It was okay, but I've seen better.",
+      "time_rating": "2025-11-05",
+      "id_auto_repair": "AR004",
+      "id_user_account": "UA003"
+    },
+    {
+      "id_rating": "RT016",
+      "star_rating": 4,
+      "comment": "Professional staff and good service.",
+      "time_rating": "2025-11-07",
+      "id_auto_repair": "AR004",
+      "id_user_account": "UA004"
+    },
+    {
+      "id_rating": "RT017",
+      "star_rating": 5,
+      "comment": "Excellent workmanship and friendly service.",
+      "time_rating": "2025-11-10",
+      "id_auto_repair": "AR005",
+      "id_user_account": "UA001"
+    },
+    {
+      "id_rating": "RT018",
+      "star_rating": 4,
+      "comment": "Very satisfied with the overall experience.",
+      "time_rating": "2025-11-12",
+      "id_auto_repair": "AR005",
+      "id_user_account": "UA002"
+    },
+    {
+      "id_rating": "RT019",
+      "star_rating": 3,
+      "comment": "Average service, nothing exceptional.",
+      "time_rating": "2025-11-14",
+      "id_auto_repair": "AR005",
+      "id_user_account": "UA003"
+    },
+    {
+      "id_rating": "RT020",
+      "star_rating": 5,
+      "comment": "Highly skilled technicians and great service.",
+      "time_rating": "2025-11-16",
+      "id_auto_repair": "AR005",
+      "id_user_account": "UA004"
     }
   ],
   "vehicles": [
@@ -634,7 +759,7 @@
     {
       "id_visit": "V001",
       "failure": "El motor hace un ruido extraño",
-      "time_visit": "2025-10-16",
+      "time_visit": "2025-10-16T15:00:00",
       "id_auto_repair": "AR001",
       "id_service": "S002",
       "id_vehicle": "RV002"
@@ -642,9 +767,49 @@
     {
       "id_visit": "V002",
       "failure": "Frenos desgastados",
-      "time_visit": "2025-10-24",
+      "time_visit": "2025-10-24T09:00:00",
       "id_auto_repair": "AR002",
       "id_service": "S003",
+      "id_vehicle": "RV001"
+    },
+    {
+      "id_visit": "V003",
+      "failure": "Cambio de aceite necesario",
+      "time_visit": "2025-11-01T11:30:00",
+      "id_auto_repair": "AR003",
+      "id_service": "S002",
+      "id_vehicle": "RV003"
+    },
+    {
+      "id_visit": "V004",
+      "failure": "Problemas con la suspensión",
+      "time_visit": "2025-11-05T14:00:00",
+      "id_auto_repair": "AR004",
+      "id_service": "S004",
+      "id_vehicle": "RV004"
+    },
+    {
+      "id_visit": "V005",
+      "failure": "Revisión del sistema eléctrico",
+      "time_visit": "2025-11-10T10:00:00",
+      "id_auto_repair": "AR005",
+      "id_service": "S005",
+      "id_vehicle": "RV005"
+    },
+    {
+      "id_visit": "V006",
+      "failure": "Alineación de llantas",
+      "time_visit": "2025-11-15T13:00:00",
+      "id_auto_repair": "AR001",
+      "id_service": "S006",
+      "id_vehicle": "RV006"
+    },
+    {
+      "id_visit": "V007",
+      "failure": "Revisión general del vehículo",
+      "time_visit": "2025-11-20T16:00:00",
+      "id_auto_repair": "AR002",
+      "id_service": "S001",
       "id_vehicle": "RV001"
     }
   ],
@@ -735,6 +900,36 @@
       "id_expected": "EV002",
       "state_visit": "Visit cannot be scheduled",
       "id_visit": "V002",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV003",
+      "state_visit": "Pending Visit",
+      "id_visit": "V003",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV004",
+      "state_visit": "Pending Visit",
+      "id_visit": "V004",
+      "is_scheduled": true
+    },
+    {
+      "id_expected": "EV005",
+      "state_visit": "Pending Visit",
+      "id_visit": "V005",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV006",
+      "state_visit": "Pending Visit",
+      "id_visit": "V006",
+      "is_scheduled": false
+    },
+    {
+      "id_expected": "EV007",
+      "state_visit": "Pending Visit",
+      "id_visit": "V007",
       "is_scheduled": false
     }
   ],

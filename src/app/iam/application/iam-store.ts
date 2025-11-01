@@ -389,6 +389,10 @@ export class IamStore {
       next: userAccount => {
         this.userAccountsSignal.update(userAccounts =>
         userAccounts.map(ua => ua.id === userAccount.id ? userAccount : ua))
+        if (this.sessionUserAccount()?.id === userAccount.id) {
+          this.sessionUserAccountSignal.set(userAccount);
+          this.saveSessionToStorage(); // Update session in localStorage if current user account is updated
+        }
         this.loadingSignal.set(false);
       },
       error: err => {
@@ -447,6 +451,10 @@ export class IamStore {
       next: user => {
         this.usersSignal.update(users =>
           users.map(u => u.id === user.id ? user : u))
+        if (this.sessionUser()?.id === user.id) {
+          this.sessionUserSignal.set(user);
+          this.saveSessionToStorage(); // Update session in localStorage if current user is updated
+        }
         this.loadingSignal.set(false);
       },
       error: err => {

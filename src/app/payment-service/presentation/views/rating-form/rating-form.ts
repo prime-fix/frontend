@@ -50,6 +50,7 @@ export class RatingForm {
       id_rating: 'RAT' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
       star_rating: this.form.value.star_rating!,
       comment: this.form.value.comment ?? '',
+      time_rating: new Date().toISOString().slice(0, 10), // Format: YYYY-MM-DD
       id_auto_repair: this.autoRepairId,
       id_user_account: this.userAccountId
     });

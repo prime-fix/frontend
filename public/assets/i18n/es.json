@@ -229,7 +229,15 @@
     "contact": "Contacto del Taller:",
     "edit": "Editar",
     "delete": "Eliminar",
-    "noVisits": "No hay visitas programadas"
+    "noVisits": "No hay visitas programadas",
+    "scheduledVisits": "Visitas agendadas",
+    "visitHistory": "Historial de visitas",
+    "noScheduledVisits": "No hay visitas agendadas",
+    "noHistory": "No hay historial de visitas",
+    "visitId": "ID de la Visita:",
+    "workshop": "Taller:",
+    "address": "Dirección:",
+    "cancelVisit": "Cancelar Visita"
   },
   "auto_repair":{
     "title": "Buscar Taller",
@@ -434,10 +442,15 @@
     "time": "Hora",
     "accept": "Aceptar",
     "reject": "Rechazar",
+    "details": "Detalles",
     "confirmAccept": "¿Está seguro de aceptar esta solicitud?",
     "confirmReject": "¿Está seguro de rechazar esta solicitud?",
     "acceptSuccess": "Solicitud aceptada exitosamente",
-    "rejectSuccess": "Solicitud rechazada exitosamente"
+    "rejectSuccess": "Solicitud rechazada exitosamente",
+    "visitDetails": "Detalle de visita",
+    "vehicleModel": "Modelo de coche",
+    "failures": "Fallas",
+    "close": "Cerrar"
   },
   "dashboard-workshop": {
     "title": "Menú inicial",
@@ -482,6 +495,11 @@
     "changePassword": "Cambiar contraseña",
     "newPassword": "Nueva contraseña",
     "repeatPassword": "Repetir contraseña",
+    "requiredPassword": "La contraseña es obligatoria",
+    "minLengthPassword": "La contraseña debe tener al menos 6 caracteres",
+    "validPassword": "Las contraseña es válida",
+    "passwordsNotMatch": "Las contraseñas no coinciden",
+    "passwordsMatch": "Las contraseñas coinciden",
     "savePassword": "Guardar",
     "paymentMethods": "Métodos de pago",
     "bank": "Banco",
@@ -492,7 +510,53 @@
     "subscription": "Suscripción",
     "plan": "Plan de {{months}} meses",
     "cost": "Costo: {{price}}",
-    "renewSubscription": "Renovar suscripción"
+    "renewSubscription": "Renovar suscripción",
+    "noPaymentMethods": "No hay métodos de pago registrados",
+    "cancelPayment": "Cancelar"
+  },
+  "vehicle-diagnosis": {
+    "title": "Estado de coches",
+    "subtitle": "Modificación del estado de los coches",
+    "subtitle-update": "Modificación del estado de los coches",
+    "modal-title": "Actualizar estado del vehículo",
+    "modal-subtitle": "Cuando se actualice el estado, se notificará al dueño del vehículo.",
+    "loading-message": "Cargando vehículos...",
+    "no-vehicles": "No hay vehículos en proceso de mantenimiento",
+    "vehicle-card": {
+      "car": "Coche:",
+      "plate": "Placa:",
+      "owner": "Dueño:",
+      "unknown-owner": "Desconocido",
+      "id-visit": "ID de visita:",
+      "status": "Estado:",
+      "change-state-button": "Actualizar estado",
+      "check-button": "Ver diagnósticos",
+      "update-button": "Actualizar",
+      "loading-button": "Actualizando..."
+    },
+    "vehicle-form": {
+      "select-status": "Seleccione un estado",
+      "state": "Estado de mantenimiento del vehículo",
+      "failure": "Falla",
+      "diagnostic": "Diagnóstico",
+      "diagnostic-error": "Ingrese el diagnóstico",
+      "price": "Precio",
+      "price-error": "Ingrese un precio válido"
+    },
+    "button-cancel": "Cancelar",
+    "button-add": "Agregar diagnóstico",
+    "button-updating": "Guardando...",
+    "no-data": "No se encontró información del vehículo",
+    "modal-update-button": "Actualizar estado"
+  },
+  "vehicleDiagnosis": {
+    "checkTitle": "Diagnósticos del vehículo",
+    "checkSubtitle": "Revisa todos los diagnósticos realizados",
+    "loading": "Cargando diagnósticos...",
+    "noDiagnostics": "No hay diagnósticos registrados para este vehículo",
+    "price": "Precio",
+    "date": "Fecha",
+    "status": "Estado"
   },
   "profile-view": {
     "title": "Perfil",
@@ -502,6 +566,17 @@
     "username": "Nombre de usuario",
     "address": "Dirección",
     "password": "Contraseña"
+  },
+  "notification-view": {
+    "title": "Notificaciones",
+    "button-mark-all-read": "Marcar todas como leídas",
+    "loading": "Cargando notificaciones...",
+    "please-refresh": "Por favor, actualiza la página para ver nuevas notificaciones.",
+    "vehicle": "Vehículo:",
+    "read": "Leídas",
+    "unread": "No leídas",
+    "no-notifications": "No hay notificaciones",
+    "no-notifications-subtitle": "Parece que no tienes notificaciones nuevas."
   },
   "page-not-found": {
     "title": "Página no encontrada",

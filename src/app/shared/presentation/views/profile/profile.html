@@ -47,8 +47,8 @@
           type="text"
           id="username"
           class="form-input"
-          [value]="username()"
-          (input)="username.set($any($event.target).value)"
+          [value]="usernameToEdit()"
+          (input)="usernameToEdit.set($any($event.target).value)"
           [disabled]="!isEditMode()"
           required
         />
@@ -63,8 +63,8 @@
           type="text"
           id="address"
           class="form-input"
-          [value]="address()"
-          (input)="address.set($any($event.target).value)"
+          [value]="addressToEdit()"
+          (input)="addressToEdit.set($any($event.target).value)"
           [disabled]="!isEditMode()"
           required
         />
@@ -80,8 +80,8 @@
             [type]="showPassword() ? 'text' : 'password'"
             id="password"
             class="form-input"
-            [value]="password()"
-            (input)="password.set($any($event.target).value)"
+            [value]="passwordToEdit()"
+            (input)="passwordToEdit.set($any($event.target).value)"
             [disabled]="!isEditMode()"
             required
           />

@@ -6,11 +6,15 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'layout-owner/visits/edit/**',
+    path: 'layout-owner/data-collection/edit-visit/**',
     renderMode: RenderMode.Server
   },
   {
     path: 'layout-workshop/vehicle-diagnosis/modify-diagnosis/edit/**',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'layout-workshop/vehicle-diagnosis/check-diagnostics/**',
     renderMode: RenderMode.Server
   },
   {

@@ -229,7 +229,15 @@
     "contact": "Workshop Contact:",
     "edit": "Edit",
     "delete": "Delete",
-    "noVisits": "No scheduled visits available"
+    "noVisits": "No scheduled visits available",
+    "scheduledVisits": "Scheduled Visits",
+    "visitHistory": "Visit History",
+    "noScheduledVisits": "No scheduled visits available",
+    "noHistory": "No visit history available",
+    "visitId": "Visit ID:",
+    "workshop": "Workshop:",
+    "address": "Address:",
+    "cancelVisit": "Cancel Visit"
   },
   "auto_repair":{
     "title": "Search for Auto Repair Workshops",
@@ -434,10 +442,15 @@
     "time": "Time",
     "accept": "Accept",
     "reject": "Reject",
+    "details": "Details",
     "confirmAccept": "Are you sure you want to accept this request?",
     "confirmReject": "Are you sure you want to reject this request?",
     "acceptSuccess": "Request accepted successfully",
-    "rejectSuccess": "Request rejected successfully"
+    "rejectSuccess": "Request rejected successfully",
+    "visitDetails": "Visit details",
+    "vehicleModel": "Vehicle model",
+    "failures": "Failures",
+    "close": "Close"
   },
   "dashboard-workshop": {
     "title": "Dashboard",
@@ -482,6 +495,11 @@
     "changePassword": "Change password",
     "newPassword": "New password",
     "repeatPassword": "Repeat password",
+    "requiredPassword": "Password is required",
+    "minLengthPassword": "Password must be at least 6 characters",
+    "validPassword": "Valid password",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordsMatch": "Passwords match",
     "savePassword": "Save",
     "paymentMethods": "Payment methods",
     "bank": "Bank",
@@ -492,7 +510,53 @@
     "subscription": "Subscription",
     "plan": "{{months}} months plan",
     "cost": "Cost: {{price}}",
-    "renewSubscription": "Renew subscription"
+    "renewSubscription": "Renew subscription",
+    "noPaymentMethods": "No payment methods added",
+    "cancelPayment": "Cancel"
+  },
+  "vehicle-diagnosis": {
+    "title": "Status of Vehicles",
+    "subtitle": "Check the current status of vehicles under maintenance",
+    "subtitle-update": "Modify the status and diagnostic of the vehicles",
+    "modal-title": "Update Vehicle Status",
+    "modal-subtitle": "When you update an status, it will notify the vehicle owner automatically.",
+    "loading-message": "Loading vehicles...",
+    "no-vehicles": "No vehicles under maintenance",
+    "vehicle-card": {
+      "car": "Vehicle:",
+      "plate": "Plate:",
+      "owner": "Owner:",
+      "unknown-owner": "Unknown",
+      "id-visit": "Visit ID:",
+      "status": "Status:",
+      "change-state-button": "Update status",
+      "check-button": "View diagnostics",
+      "update-button": "Update",
+      "loading-button": "Updating..."
+    },
+    "vehicle-form": {
+      "select-status": "Select status",
+      "state": "Vehicle maintenance status",
+      "failure": "Failure",
+      "diagnostic": "Diagnostic",
+      "diagnostic-error": "Enter a valid diagnostic",
+      "price": "Price",
+      "price-error": "Enter a valid price"
+    },
+    "button-cancel": "Cancel",
+    "button-add": "Add new diagnostic",
+    "button-updating": "Updating...",
+    "no-data": "No data available",
+    "modal-update-button": "Update"
+  },
+  "vehicleDiagnosis": {
+    "checkTitle": "Vehicle diagnostics",
+    "checkSubtitle": "Review all diagnostics performed",
+    "loading": "Loading diagnostics...",
+    "noDiagnostics": "No diagnostics recorded for this vehicle",
+    "price": "Price",
+    "date": "Date",
+    "status": "Status"
   },
   "profile-view": {
     "title": "Profile",
@@ -502,6 +566,17 @@
     "username": "Username",
     "address": "Address",
     "password": "Password"
+  },
+  "notification-view": {
+    "title": "Notifications",
+    "button-mark-all-read": "Mark all as read",
+    "loading": "Loading notifications...",
+    "please-refresh": "Please refresh the page to see new notifications",
+    "vehicle": "Vehicle:",
+    "read": "Read",
+    "unread": "Unread",
+    "no-notifications": "No notifications available",
+    "no-notifications-subtitle": "When you schedule a visit the status updates will appear here."
   },
   "page-not-found": {
     "title": "Page not found",

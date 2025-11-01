@@ -3,6 +3,8 @@ import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angula
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 import {IamStore} from '@iam/application/iam-store';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {UserAccount} from '@iam/domain/model/user-account.entity';
 
 @Component({
   selector: 'app-settings',
@@ -15,14 +17,27 @@ export class Settings {
   private iamStore = inject(IamStore);
 
   /**
+   * Password visibility signal
+   */
+  isPasswordVisible = signal(false);
+
+  /**
+   * Repeat Password visibility signal
+   */
+  isRepeatPasswordVisible = signal(false);
+
+  /**
    * Session user account observable
    */
   sessionUserAccount = this.iamStore.sessionUserAccount;
 
   /**
-   * UI Signals
+   * Password Fields visibility signal
    */
   showPasswordFields = signal(false);
+  /**
+   * Add Payment Modal visibility signal
+   */
   showAddPaymentModal = signal(false);
 
   /**
@@ -69,6 +84,49 @@ export class Settings {
   });
 
   /**
+   * Convert form value changes to signals for reactivity
+   */
+  newPasswordValue = toSignal(this.passwordForm.controls.newPassword.valueChanges, { initialValue: '' });
+  repeatPasswordValue = toSignal(this.passwordForm.controls.repeatPassword.valueChanges, { initialValue: '' });
+  newPasswordStatus = toSignal(this.passwordForm.controls.newPassword.statusChanges, { initialValue: 'INVALID' });
+  repeatPasswordStatus = toSignal(this.passwordForm.controls.repeatPassword.statusChanges, { initialValue: 'INVALID' });
+
+  /**
+   * Form validity signal
+   */
+  passwordFormValid = computed(() => {
+    // Trigger reactivity by reading both status signals
+    this.newPasswordStatus();
+    this.repeatPasswordStatus();
+    return this.passwordForm.valid;
+  });
+
+  /**
+   * New Password Form Control - for template access
+   */
+  newPasswordControl = computed(() => this.passwordForm.controls.newPassword);
+  /**
+   * Repeat Password Form Control - for template access
+   */
+  repeatPasswordControl = computed(() => this.passwordForm.controls.repeatPassword);
+
+  /**
+   * Check if passwords match
+   */
+  passwordsMatch = computed(() => {
+    const newPassword = this.newPasswordValue();
+    const repeatPassword = this.repeatPasswordValue();
+    return newPassword === repeatPassword && newPassword.length >= 6 && repeatPassword.length >= 6;
+  });
+
+  /**
+   * Password match message
+   */
+  passwordErrorMatchMessage = computed(() => {
+    return this.passwordsMatch() ? 'settings-view.passwordsMatch' : 'settings-view.passwordsNotMatch';
+  });
+
+  /**
    * Payment Form
    */
   paymentForm = this.fb.group({
@@ -107,6 +165,15 @@ export class Settings {
     if (input) {
       input.type = input.type === 'password' ? 'text' : 'password';
     }
+    this.isPasswordVisible.update(visible => !visible);
+  }
+
+  toggleRepeatPasswordVisibility(inputId: string): void {
+    const input = document.getElementById(inputId) as HTMLInputElement;
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+    this.isRepeatPasswordVisible.update(visible => !visible);
   }
 
   /**
@@ -124,8 +191,18 @@ export class Settings {
       return;
     }
 
-    // TODO: Implementar lógica para cambiar contraseña
-    console.log('Cambiar contraseña:', newPassword);
+    const updatedUserAccount = new UserAccount({
+     id_user_account: this.sessionUserAccount()?.id!,
+      username: this.sessionUserAccount()?.username!,
+      email: this.sessionUserAccount()?.email!,
+      id_user: this.sessionUserAccount()?.id_user!,
+      id_role: this.sessionUserAccount()?.id_role!,
+      id_membership: this.sessionUserAccount()?.id_membership!,
+      password: newPassword,
+      is_new: this.sessionUserAccount()?.is_new!
+    });
+
+    this.iamStore.updateUserAccount(updatedUserAccount);
     this.passwordForm.reset();
     this.showPasswordFields.set(false);
   }
