@@ -78,6 +78,72 @@
   box-shadow: 0 0 0 3px rgba(242, 170, 31, 0.1);
 }
 
+.form-input.input-error {
+  border-color: #dc3545;
+}
+
+.form-input.input-error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.form-input.input-valid {
+  border-color: #28a745;
+}
+
+.form-input.input-valid:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.error-message {
+  font-family: var(--font-regular);
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.success-message {
+  font-family: var(--font-regular);
+  font-size: 0.875rem;
+  color: #28a745;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.password-match-indicator {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-success,
+.match-error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+}
+
+.match-success {
+  color: #28a745;
+}
+
+.match-error {
+  color: #dc3545;
+}
+
+.match-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
 .password-input-wrapper {
   position: relative;
   display: flex;
@@ -130,6 +196,20 @@
   background-color: #e09a0f;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(242, 170, 31, 0.4);
+}
+
+.btn-save:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-save:disabled:hover {
+  background-color: #ccc;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Payment Methods */

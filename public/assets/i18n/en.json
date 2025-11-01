@@ -487,6 +487,11 @@
     "changePassword": "Change password",
     "newPassword": "New password",
     "repeatPassword": "Repeat password",
+    "requiredPassword": "Password is required",
+    "minLengthPassword": "Password must be at least 6 characters",
+    "validPassword": "Valid password",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordsMatch": "Passwords match",
     "savePassword": "Save",
     "paymentMethods": "Payment methods",
     "bank": "Bank",
@@ -497,7 +502,9 @@
     "subscription": "Subscription",
     "plan": "{{months}} months plan",
     "cost": "Cost: {{price}}",
-    "renewSubscription": "Renew subscription"
+    "renewSubscription": "Renew subscription",
+    "noPaymentMethods": "No payment methods added",
+    "cancelPayment": "Cancel"
   },
   "vehicle-diagnosis": {
     "title": "Status of Vehicles",
