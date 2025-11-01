@@ -1,21 +1,30 @@
 <div class="payment-done-container">
-  <h2 class="title">{{'payment-done.title' |translate}}</h2>
+  <div class="payment-done-header">
+    <h1 class="payment-done-title">{{ 'payment-done.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="payment-done-card">
-    <h1 class="payment-done-title">{{'payment-done.paid' |translate}}</h1>
-    <p class="payment-done-text">{{'payment-done.done' |translate}}</p>
+  <div class="payment-done-content">
+    <div class="payment-done-card">
+      <!-- Success Icon -->
+      <div class="success-icon">
+        <svg>
+          <use href="/assets/icons/sprite.symbol.svg#bell"></use>
+        </svg>
+      </div>
 
-    <div>
-      <button
-        mat-flat-button
-        color="primary"
-        class="btn-accept"
-        (click)="next()"
-      >
-        {{'payment-done.btnAccept' |translate}}
-      </button>
+      <h2 class="card-title">{{ 'payment-done.paid' | translate }}</h2>
+      <p class="card-message">{{ 'payment-done.done' | translate }}</p>
+
+      <div class="button-container">
+        <button
+          type="button"
+          class="btn-accept"
+          (click)="next()"
+        >
+          {{ 'payment-done.btnAccept' | translate }}
+        </button>
+      </div>
     </div>
-
-  </mat-card>
+  </div>
 </div>
 

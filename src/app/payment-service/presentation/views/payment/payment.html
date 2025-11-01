@@ -1,36 +1,61 @@
 <div class="payment-container">
-  <h2 class="title">{{'payment.title' | translate}}</h2>
+  <div class="payment-header">
+    <h1 class="payment-title">{{ 'payment.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="payment-card">
-    <h1 class="payment-title">{{ 'payment-service.detail' | translate }}</h1>
-    <div class="payment-info">
-      <p><strong>{{'payment-service.idVisit'|translate}}:</strong> {{ visitData()?.id }}</p>
-      <p><strong>{{'payment-service.visitDate'|translate}}:</strong> {{ visitData()?.time_visit }}</p>
-    </div>
+  <div class="payment-content">
+    <div class="payment-card">
+      <h2 class="card-title">{{ 'payment-service.detail' | translate }}</h2>
 
-    <div class="payment-methods">
-      <mat-radio-group (change)="onPaymentChange($event.value)">
-        <div class="method">
-          <mat-radio-button
-            name="payment"
-            value="cash"
-          >{{'payment-service.cash'|translate}}</mat-radio-button>
+      <div class="payment-info">
+        <p class="info-item">
+          <strong>{{ 'payment-service.idVisit' | translate }}:</strong>
+          <span>{{ visitData()?.id }}</span>
+        </p>
+        <p class="info-item">
+          <strong>{{ 'payment-service.visitDate' | translate }}:</strong>
+          <span>{{ visitData()?.time_visit }}</span>
+        </p>
+      </div>
+
+      <div class="payment-methods">
+        <h3 class="methods-title">{{ 'payment-service.selectMethod' | translate }}</h3>
+
+        <div class="method-options">
+          <label class="method-option">
+            <input
+              type="radio"
+              name="payment"
+              value="cash"
+              [(ngModel)]="selectedMethod"
+              (change)="onPaymentChange('cash')"
+            />
+            <span class="radio-label">{{ 'payment-service.cash' | translate }}</span>
+          </label>
+
+          <label class="method-option">
+            <input
+              type="radio"
+              name="payment"
+              value="card"
+              [(ngModel)]="selectedMethod"
+              (change)="onPaymentChange('card')"
+            />
+            <span class="radio-label">{{ 'payment-service.virtualPayment' | translate }}</span>
+          </label>
         </div>
+      </div>
 
-        <div class="method">
-          <mat-radio-button
-            name="payment"
-            value="card"
-          >{{'payment-service.virtualPayment'|translate}}</mat-radio-button>
-        </div>
-      </mat-radio-group>
-
+      <div class="button-container">
+        <button
+          type="button"
+          class="btn-accept"
+          (click)="onAccept()"
+          [disabled]="!selectedMethod"
+        >
+          {{ 'payment-service.btnAccept' | translate }}
+        </button>
+      </div>
     </div>
-
-    <div class="button-card">
-      <button mat-flat-button color="primary" class="btn-accept" (click)="onAccept()">{{'payment-service.btnAccept'|translate}}</button>
-    </div>
-
-  </mat-card>
-
+  </div>
 </div>

@@ -6,6 +6,7 @@ import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenanc
 import {VehicleDiagnosisRoutes} from '@diagnosis/presentation/views/vehicle-diagnosis.routes';
 import {roleGuard} from '@shared/infrastructure/guards/role.guard';
 import {dataCollectionRoutes} from '@collections/presentation/views/data-collection.routes';
+import {paymentServiceRoutes} from '@payment/presentation/views/payment-service.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -99,6 +100,11 @@ export const routes: Routes = [
         path:'data-collection',
         loadChildren:()=> dataCollectionRoutes,
         title:`${baseTitle} - Visit Management`
+      },
+      {
+        path: 'payment-service',
+        loadChildren: () => paymentServiceRoutes,
+        title: `${baseTitle} -  Payment Service`,
       },
       {
         path: '404',

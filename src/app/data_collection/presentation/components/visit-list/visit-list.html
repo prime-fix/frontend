@@ -32,6 +32,9 @@
                 <div class="visit-id">
                   <span class="label">{{ 'visit_list.visitId' | translate }}</span>
                   <span class="value">{{ visit.id }}</span>
+                  @if (isNewVisits() && isVisitCancelled(visit.id)) {
+                    <span class="label-cancelled">{{ 'visit_list.label-cancelled'|  translate }}</span>
+                  }
                 </div>
               </div>
 
@@ -56,15 +59,25 @@
                     <span class="info-value">{{ getAddressByAutoRepair(visit.id_auto_repair)() || 'N/A' }}</span>
                   </div>
                 </div>
+
+                @if (!isNewVisits()) {
+                  <div class="visit-info-row">
+                    <div class="info-item">
+                      <span class="info-label">{{ 'visit_list.price' | translate }}</span>
+                      <span class="info-value">{{ countPriceDiagnosticByExpectedVisitId(visit.id)() || 0 }}</span>
+                    </div>
+                  </div>
+                }
               </div>
 
               @if (isNewVisits()) {
                 <div class="visit-actions">
                   <button
                     class="btn-cancel"
-                    (click)="cancelVisit(visit.id)"
+                    (click)="openCancelModal(visit.id)"
+                    [disabled]="isVisitCancelled(visit.id)"
                     type="button">
-                    {{ 'visit_list.cancelVisit' | translate }}
+                    {{ isVisitCancelled(visit.id) ? ('visit_list.visitCancelled' | translate) : ('visit_list.cancelVisit' | translate) }}
                   </button>
                 </div>
               }
@@ -75,3 +88,36 @@
     </div>
   }
 </div>
+
+@if (isCancelModalOpen()) {
+  <div class="modal-backdrop" (click)="closeCancelModal()" aria-hidden="true"></div>
+
+  <div class="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle">
+    <header class="cancel-modal-header">
+      <h2 id="cancelModalTitle" class="modal-title">{{ 'visit_list.cancelModal.title' | translate }}</h2>
+      <p class="modal-subtitle">{{ 'visit_list.cancelModal.subtitle' | translate }}</p>
+    </header>
+
+    <section class="cancel-modal-body">
+      <p class="warning-message">{{ 'visit_list.cancelModal.warning' | translate }}</p>
+      <div class="visit-details">
+        <span class="detail-label">{{ 'visit_list.visitId' | translate }}</span>
+        <span class="detail-value">{{ selectedVisitId() }}</span>
+      </div>
+    </section>
+
+    <footer class="cancel-modal-actions">
+      <button type="button" class="btn-back" (click)="closeCancelModal()" [disabled]="modalLoading()">
+        {{ 'visit_list.cancelModal.goBack' | translate }}
+      </button>
+
+      <button type="button" class="btn-confirm-cancel" (click)="confirmCancelVisit()" [disabled]="modalLoading()">
+        @if (modalLoading()) {
+          {{ 'visit_list.cancelModal.cancelling' | translate }}
+        } @else {
+          {{ 'visit_list.cancelModal.confirm' | translate }}
+        }
+      </button>
+    </footer>
+  </div>
+}

@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -11,6 +12,7 @@ import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface'
   styleUrl: './progress-bar.css'
 })
 export class ProgressBar {
+  private router = inject(Router);
   // Input to receive the current step from parent component
   currentStep = input<number>(1);
 
@@ -43,5 +45,9 @@ export class ProgressBar {
    */
   isStepPending(stepId: number): boolean {
     return stepId > this.currentStep();
+  }
+
+  goPayment(): void {
+    this.router.navigate(['layout-owner/payment-service/payment']).then();
   }
 }

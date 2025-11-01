@@ -206,7 +206,16 @@
     "failure_details":"Describe the vehicle failures",
     "back": "Back",
     "failure_message": "Please describe the vehicle failures",
-    "date_message": "Please select a preferred date"
+    "date_message": "Please select a preferred date",
+    "vehicle_required": "You must select a vehicle",
+    "service_required": "You must select a service",
+    "field_complete": "Field complete"
+  },
+  "visit-alert": {
+    "title": "Search Workshop",
+    "message-title": "Waiting",
+    "message-description": "We are waiting for the workshop's response",
+    "go-to-dashboard": "Go to dashboard"
   },
   "completed-screen": {
     "title": "Visit Scheduled Successfully",
@@ -224,6 +233,7 @@
     "vehicle_brand": "Vehicle Brand:",
     "service": "Type of Service:",
     "date": "Scheduled Date:",
+    "price": "Price:",
     "failure": "Failure Description:",
     "status": "Visit Status:",
     "contact": "Workshop Contact:",
@@ -237,7 +247,18 @@
     "visitId": "Visit ID:",
     "workshop": "Workshop:",
     "address": "Address:",
-    "cancelVisit": "Cancel Visit"
+    "label-cancelled": "Cancelled",
+    "cancelVisit": "Cancel Visit",
+    "visitCancelled": "Visit Cancelled",
+    "loading": "Loading...",
+    "cancelModal": {
+      "title": "Cancel Visit",
+      "subtitle": "Are you sure you want to cancel this visit?",
+      "warning": "This action cannot be undone. Once cancelled, you will need to schedule a new visit if you change your mind.",
+      "goBack": "Go Back",
+      "confirm": "Confirm Cancellation",
+      "cancelling": "Cancelling..."
+    }
   },
   "auto_repair":{
     "title": "Search for Auto Repair Workshops",
@@ -310,7 +331,9 @@
     "repair": "In repair",
     "testing": "Testing",
     "readyPickup": "Ready for pickup",
-    "collected": "Collected"
+    "collected": "Collected",
+    "message-collect": "Your vehicle was collected",
+    "button-go-payment": "Go to payment"
   },
   "track-vehicle": {
     "title": "Track Vehicle",
@@ -339,6 +362,7 @@
     "visitDate": "Date of the visit",
     "cash": "Cash",
     "virtualPayment": "Virtual Payment",
+    "selectMethod": "Select a payment method",
     "btnAccept": "Accept"
   },
   "payment-done": {
@@ -352,17 +376,27 @@
     "cardNumber": "Card number",
     "invalidCardNumber": "Invalid number (16 digits required)",
     "cardType": "Card type",
+    "selectCardType": "Select card type",
+    "cardTypeRequired": "Card type is required",
     "month": "Month",
+    "selectMonth": "Select month",
+    "monthRequired": "Month is required",
     "year": "Year",
+    "selectYear": "Select year",
+    "yearRequired": "Year is required",
     "cvv": "CVV",
+    "cvvRequired": "CVV is required (3 digits)",
     "docType": "Document type",
+    "selectDocType": "Select document type",
     "docNumber": "Document number",
     "addButton": "Add"
   },
   "payment-selection": {
     "title": "Payment to make",
     "chooseMethod": "Choose method",
-    "method": "Method",
+    "method": "Payment method",
+    "selectMethod": "Select a payment method",
+    "noPaymentMethods": "No payment methods registered. Add one to continue.",
     "backButton": "Back",
     "addMethodButton": "Add method",
     "payButton": "Pay"
@@ -370,7 +404,7 @@
   "rating": {
     "title": "Rate service",
     "serviceRating": "Service rating",
-    "message": "The service has been completed. <br/> Would you like to rate it?",
+    "message": "The service has been completed. Would you like to rate it?",
     "laterButton": "Not now",
     "rateNowButton": "Rate"
   },
@@ -383,11 +417,12 @@
   "rating-form": {
     "title": "Rate service",
     "serviceRating": "Service rating",
-    "question": "How do you feel about the service provided?<br /> (5 means completely satisfied and 1 means completely dissatisfied)",
+    "question": "How do you feel about the service provided? (5 means completely satisfied and 1 means completely dissatisfied)",
     "commentLabel": "Leave a comment (optional)",
     "commentPlaceholder": "Write your comment here",
     "commentField": "Comment",
-    "rateButton": "Rate"
+    "rateButton": "Rate",
+    "ratingRequired": "Please select a rating"
   },
   "search-auto-repair": {
     "title": "Search workshop",

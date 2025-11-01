@@ -1,23 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { PaymentServiceStore } from '../../../application/payment-service-store';
 import { Payment } from '../../../domain/model/payment.entity';
-import {MatCardModule} from '@angular/material/card';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payment-form',
-  imports: [ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCardModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.css'
 })
@@ -77,6 +67,5 @@ export class PaymentForm {
     };
     return map[month] ?? 1;
   }
-
 
 }

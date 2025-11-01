@@ -31,6 +31,6 @@ export class SelectAutoRepair {
   onSelect(): void {
     const autoRepairId = this.autoRepair().id;
     // Navigate to schedule visit page
-    this.router.navigate(['layout-owner/auto-repair-catalog/schedule-visit', autoRepairId]).then();
+    this.router.navigate(['layout-owner/data-collection/new-visit', autoRepairId]).then();
   }
 }
