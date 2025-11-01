@@ -28,13 +28,13 @@ export class VisitForm {
 
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    id_vehicle: new FormControl<string|null>(null),
-    time_visit: new FormControl<string|null>('', { nonNullable: true, validators: [Validators.required] }),
-    id_auto_repair: new FormControl<number|string|null>(null),
-    id_service: new FormControl<number|string|null>(null),
+    id_vehicle: new FormControl<string>(''),
+    time_visit: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    id_auto_repair: new FormControl<string>(''),
+    id_service: new FormControl<string>(''),
   });
   visits = this.store.visits;
-  visitId: number |string | null = null;
+  visitId: string | null = null;
   isEdit = false;
   vehicles = this.store.vehicles;
   services = this.store.services;
@@ -51,9 +51,9 @@ export class VisitForm {
           this.form.patchValue({
             failure: visit.failure,
             id_vehicle: visit.id_vehicle,
-            time_visit: visit.time_visit,
-            id_auto_repair: visit.id_auto_repair,
-            id_service: visit.id_service,
+            time_visit: visit.time_visit!,
+            id_auto_repair: visit.id_auto_repair!,
+            id_service: visit.id_service!,
           });
         }
       }
@@ -75,10 +75,8 @@ export class VisitForm {
       id_visit: this.visitId ?? `V${Date.now()}`,
       failure: formValue.failure ?? '',
       id_vehicle: formValue.id_vehicle ?? '',
-      time_visit: formValue.time_visit
-        ? new Date(formValue.time_visit).toISOString().split('T')[0]
-        : null,
-      id_auto_repair: formValue.id_auto_repair ? formValue.id_auto_repair : null,
+      time_visit: formValue.time_visit!,
+      id_auto_repair: formValue.id_auto_repair!,
       id_service: formValue.id_service ?? '',
     });
     console.log('Visit to send:', visit);

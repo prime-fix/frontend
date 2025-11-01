@@ -1,23 +1,24 @@
 <div class="track-vehicle-container">
-  <div class="track-content">
-    <div class="header-with-notification">
-      <h1 class="track-title">{{ 'track-vehicle.title' | translate }}</h1>
+  <div class="track-header">
+    <h1 class="track-title">{{ 'track-vehicle.title' | translate }}</h1>
 
-      <!-- Notification Bell Icon -->
-      <button
-        class="notification-button"
-        (click)="openNotificationModal()"
-        [class.has-notification]="hasNotification()"
-        type="button"
-        aria-label="Notifications">
-        <svg class="bell-icon">
-          <use href="assets/icons/sprite.symbol.svg#bell"></use>
-        </svg>
-        @if (hasNotification()) {
-          <span class="notification-badge"></span>
-        }
-      </button>
-    </div>
+    <!-- Notification Bell Icon -->
+    <button
+      class="notification-button"
+      (click)="openNotificationModal()"
+      [class.has-notification]="hasNotification()"
+      type="button"
+      aria-label="Notifications">
+      <svg class="bell-icon">
+        <use href="assets/icons/sprite.symbol.svg#bell"></use>
+      </svg>
+      @if (hasNotification()) {
+        <span class="notification-badge"></span>
+      }
+    </button>
+  </div>
+
+  <div class="track-content">
 
     <form [formGroup]="trackForm" (ngSubmit)="onSelect()" class="track-form">
       <div class="form-group">

@@ -1,9 +1,11 @@
 <!-- First part: Search form -->
 @if (!showResults()) {
   <div class="search-workshop-container">
-    <div class="search-content">
+    <div class="search-header">
       <h1 class="search-title">{{ 'search-auto-repair.title' | translate }}</h1>
+    </div>
 
+    <div class="search-content">
       <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
         <div class="form-group">
           <label for="department" class="form-label">{{ 'search-auto-repair.selectDepartment' | translate  }}</label>
@@ -61,8 +63,11 @@
 <!-- Second part: Search results -->
 @if (showResults()) {
   <div class="results-workshop-container">
+    <div class="results-header">
+      <h1 class="results-title">{{ 'search-auto-repair.selectAutoRepair' | translate }}</h1>
+    </div>
+
     <div class="results-content">
-      <h1 class="search-title">{{ 'search-auto-repair.selectAutoRepair' | translate }}</h1>
 
       @if (loading()) {
         <div class="loading-message">{{ 'search-auto-repair.loadingAutoRepairs' | translate }}</div>

@@ -229,7 +229,15 @@
     "contact": "Workshop Contact:",
     "edit": "Edit",
     "delete": "Delete",
-    "noVisits": "No scheduled visits available"
+    "noVisits": "No scheduled visits available",
+    "scheduledVisits": "Scheduled Visits",
+    "visitHistory": "Visit History",
+    "noScheduledVisits": "No scheduled visits available",
+    "noHistory": "No visit history available",
+    "visitId": "Visit ID:",
+    "workshop": "Workshop:",
+    "address": "Address:",
+    "cancelVisit": "Cancel Visit"
   },
   "auto_repair":{
     "title": "Search for Auto Repair Workshops",
@@ -558,6 +566,17 @@
     "username": "Username",
     "address": "Address",
     "password": "Password"
+  },
+  "notification-view": {
+    "title": "Notifications",
+    "button-mark-all-read": "Mark all as read",
+    "loading": "Loading notifications...",
+    "please-refresh": "Please refresh the page to see new notifications",
+    "vehicle": "Vehicle:",
+    "read": "Read",
+    "unread": "Unread",
+    "no-notifications": "No notifications available",
+    "no-notifications-subtitle": "When you schedule a visit the status updates will appear here."
   },
   "page-not-found": {
     "title": "Page not found",

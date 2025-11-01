@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { TrackingStore } from '@tracking/application/tracking-store';
 import { Notification } from '@tracking/domain/model/notification.entity';
 import {IamStore} from '@iam/application/iam-store';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notification-view',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './notification-view.html',
   styleUrl: './notification-view.css',
   changeDetection: ChangeDetectionStrategy.OnPush

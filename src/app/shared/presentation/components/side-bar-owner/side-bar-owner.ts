@@ -44,12 +44,12 @@ export class SideBarOwner implements OnInit {
       label: 'side-bar-owner.vehicles'
     },
     {
-      route: '/layout-owner/auto-repair-catalog/search-auto-repair',/**'layout-owner/visits/visit-list'*/
+      route: '/layout-owner/auto-repair-catalog/search-auto-repair',
       icon: 'tool',
       label: 'side-bar-owner.searchWorkshop'
     },
     {
-      route: '/layout-owner/history',
+      route: '/layout-owner/data-collection/visits-history',
       icon: 'history',
       label: 'side-bar-owner.history'
     },

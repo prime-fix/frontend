@@ -229,7 +229,15 @@
     "contact": "Contacto del Taller:",
     "edit": "Editar",
     "delete": "Eliminar",
-    "noVisits": "No hay visitas programadas"
+    "noVisits": "No hay visitas programadas",
+    "scheduledVisits": "Visitas agendadas",
+    "visitHistory": "Historial de visitas",
+    "noScheduledVisits": "No hay visitas agendadas",
+    "noHistory": "No hay historial de visitas",
+    "visitId": "ID de la Visita:",
+    "workshop": "Taller:",
+    "address": "Dirección:",
+    "cancelVisit": "Cancelar Visita"
   },
   "auto_repair":{
     "title": "Buscar Taller",
@@ -558,6 +566,17 @@
     "username": "Nombre de usuario",
     "address": "Dirección",
     "password": "Contraseña"
+  },
+  "notification-view": {
+    "title": "Notificaciones",
+    "button-mark-all-read": "Marcar todas como leídas",
+    "loading": "Cargando notificaciones...",
+    "please-refresh": "Por favor, actualiza la página para ver nuevas notificaciones.",
+    "vehicle": "Vehículo:",
+    "read": "Leídas",
+    "unread": "No leídas",
+    "no-notifications": "No hay notificaciones",
+    "no-notifications-subtitle": "Parece que no tienes notificaciones nuevas."
   },
   "page-not-found": {
     "title": "Página no encontrada",

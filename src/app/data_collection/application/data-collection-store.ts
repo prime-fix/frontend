@@ -174,7 +174,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Visit to delete.
    * @returns void
    */
-  deleteVisit(id: number| string): void {
+  deleteVisit(id: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.dataCollectionApi.deleteVisit(id).pipe(retry(2)).subscribe({
