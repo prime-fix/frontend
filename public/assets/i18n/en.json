@@ -206,7 +206,16 @@
     "failure_details":"Describe the vehicle failures",
     "back": "Back",
     "failure_message": "Please describe the vehicle failures",
-    "date_message": "Please select a preferred date"
+    "date_message": "Please select a preferred date",
+    "vehicle_required": "You must select a vehicle",
+    "service_required": "You must select a service",
+    "field_complete": "Field complete"
+  },
+  "visit-alert": {
+    "title": "Search Workshop",
+    "message-title": "Waiting",
+    "message-description": "We are waiting for the workshop's response",
+    "go-to-dashboard": "Go to dashboard"
   },
   "completed-screen": {
     "title": "Visit Scheduled Successfully",

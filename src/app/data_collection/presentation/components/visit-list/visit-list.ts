@@ -43,13 +43,6 @@ export class VisitList {
     const allVisits = this.dataStore.visits();
     const allVehicles = this.dataStore.vehicles();
     const isScheduled = this.isNewVisits();
-
-    console.log('Computing filteredVisits:', {
-      currentUserId: currentUser.id,
-      totalVisits: allVisits.length,
-      totalVehicles: allVehicles.length,
-      isScheduled
-    });
     // Create a map of vehicles by id for faster lookup
     const vehicleMap = new Map(allVehicles.map(v => [v.id, v]));
 

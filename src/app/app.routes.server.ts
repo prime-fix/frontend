@@ -6,7 +6,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'layout-owner/data-collection/edit-visit/**',
+    path: 'layout-owner/data-collection/new-visit/**',
     renderMode: RenderMode.Server
   },
   {

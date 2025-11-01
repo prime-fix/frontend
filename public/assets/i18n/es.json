@@ -206,7 +206,16 @@
     "failure_details":"Describe las fallas del vehiculo",
     "back": "Volver",
     "failure_message": "La descripcion de los fallos son necesarios",
-    "date_message": "La fecha es necesaria"
+    "date_message": "La fecha es necesaria",
+    "vehicle_required": "Debes seleccionar un vehículo",
+    "service_required": "Debes seleccionar un servicio",
+    "field_complete": "Campo completo"
+  },
+  "visit-alert": {
+    "title": "Buscar taller",
+    "message-title": "En espera",
+    "message-description": "Se esta esperando la respuesta del taller",
+    "go-to-dashboard": "Ir al menú inicial"
   },
   "completed-screen": {
     "title": "Visita Programada",
