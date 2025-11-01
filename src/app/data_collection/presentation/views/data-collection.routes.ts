@@ -5,6 +5,6 @@ const visitsHistory = () => import('./visits-history/visits-history').then(m => 
 
 export const dataCollectionRoutes: Routes = [
   { path:'new-visit', loadComponent: visitForm},
-  { path:'edit/:id', loadComponent: visitForm,data:{renderMode:'client'}},
+  { path:'edit-visit/:id', loadComponent: visitForm,data:{renderMode:'client'}},
   { path: 'visits-history', loadComponent: visitsHistory },
 ];
