@@ -33,7 +33,7 @@
                   <span class="label">{{ 'visit_list.visitId' | translate }}</span>
                   <span class="value">{{ visit.id }}</span>
                   @if (isNewVisits() && isVisitCancelled(visit.id)) {
-                    <span class="label-cancelled">Cancelled</span>
+                    <span class="label-cancelled">{{ 'visit_list.label-cancelled'|  translate }}</span>
                   }
                 </div>
               </div>
@@ -59,6 +59,15 @@
                     <span class="info-value">{{ getAddressByAutoRepair(visit.id_auto_repair)() || 'N/A' }}</span>
                   </div>
                 </div>
+
+                @if (!isNewVisits()) {
+                  <div class="visit-info-row">
+                    <div class="info-item">
+                      <span class="info-label">{{ 'visit_list.price' | translate }}</span>
+                      <span class="info-value">{{ countPriceDiagnosticByExpectedVisitId(visit.id)() || 0 }}</span>
+                    </div>
+                  </div>
+                }
               </div>
 
               @if (isNewVisits()) {

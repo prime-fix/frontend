@@ -968,6 +968,13 @@
       "id_vehicle": "RV005",
       "diagnosis": "Electrical system functioning normally.",
       "id_expected": "EV001"
+    },
+    {
+      "id_diagnostic": "D006",
+      "price": 280.00,
+      "id_vehicle": "RV003",
+      "diagnosis": "Tire alignment and balancing required.",
+      "id_expected": "EV003"
     }
   ]
 }

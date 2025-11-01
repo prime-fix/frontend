@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject, input, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input, Signal, signal} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
@@ -77,10 +77,15 @@ export class VisitList {
     });
   });
 
-  /**
-    * TODO: Implement details of history visit
-   */
-  detailsHistoryVisit = computed(() => {})
+  countPriceDiagnosticByExpectedVisitId(visitId: string) {
+    return computed(() => {
+      const expectedVisit = this.diagnosisStore.expectedVisits().find(ev => ev.id_visit === visitId);
+      return this.diagnosisStore.diagnostics()
+        .filter(diagnostic => diagnostic.id_expected === expectedVisit?.id)
+        .map(diagnostic => diagnostic.price)
+        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    });
+  }
 
   /**
    * Open cancel confirmation modal
