@@ -10,11 +10,11 @@
       <div class="payment-info">
         <p class="info-item">
           <strong>{{ 'payment-service.idVisit' | translate }}:</strong>
-          <span>{{ visitData()?.id }}</span>
+          <span>{{ visitsByVehicleId()[0].id }}</span>
         </p>
         <p class="info-item">
           <strong>{{ 'payment-service.visitDate' | translate }}:</strong>
-          <span>{{ visitData()?.time_visit }}</span>
+          <span>{{ visitsByVehicleId()[0].time_visit }}</span>
         </p>
       </div>
 
@@ -27,7 +27,7 @@
               type="radio"
               name="payment"
               value="cash"
-              [(ngModel)]="selectedMethod"
+              [ngModel]="selectedMethod()"
               (change)="onPaymentChange('cash')"
             />
             <span class="radio-label">{{ 'payment-service.cash' | translate }}</span>
@@ -38,7 +38,7 @@
               type="radio"
               name="payment"
               value="card"
-              [(ngModel)]="selectedMethod"
+              [ngModel]="selectedMethod()"
               (change)="onPaymentChange('card')"
             />
             <span class="radio-label">{{ 'payment-service.virtualPayment' | translate }}</span>
@@ -51,7 +51,7 @@
           type="button"
           class="btn-accept"
           (click)="onAccept()"
-          [disabled]="!selectedMethod"
+          [disabled]="!selectedMethod()"
         >
           {{ 'payment-service.btnAccept' | translate }}
         </button>

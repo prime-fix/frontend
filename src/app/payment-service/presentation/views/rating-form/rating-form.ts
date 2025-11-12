@@ -1,9 +1,11 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Rating} from '../../../domain/model/rating.entity';
 import {TranslatePipe} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
+import {DataCollectionStore} from '@collections/application/data-collection-store';
 
 @Component({
   selector: 'app-rating-form',
@@ -13,27 +15,52 @@ import {TranslatePipe} from '@ngx-translate/core';
 })
 export class RatingForm {
   private fb = inject(FormBuilder);
-  private store = inject(PaymentServiceStore);
-
+  private paymentServiceStore = inject(PaymentServiceStore);
+  private dataCollectionStore = inject(DataCollectionStore);
+  private iamStore = inject(IamStore);
   private router = inject(Router);
 
-  /*
-  * Usuario de prueba
-  * */
-  public userId = 'U001';
-  public userAccountId = 'UA001';
-  public visit = 'V001';
-  public autoRepairId = 'AR001';
+  /**
+   * ID of the user account from the IAM store
+   */
+  public userAccountId = this.iamStore.sessionUserAccountId;
+  /**
+   * Visits filtered by the selected vehicle ID
+   */
+  public visitsByVehicleId = computed(() => {
+    return this.paymentServiceStore.visits().filter(v => v.id_vehicle === this.paymentServiceStore.vehicleIdFilter());
+  })
+  /**
+   * Auto repair associated with the visits of the selected vehicle
+   */
+  public autoRepairByVehicle = computed(() => {
+    const visits = this.visitsByVehicleId();
+    if (visits.length === 0) {
+      return null;
+    }
+    const autoRepairs = this.dataCollectionStore.autoRepairs();
+    return autoRepairs.find(ar => ar.id === visits[0].id_auto_repair) || null;
+  })
 
+  /**
+   * Rating form group
+   */
   form = this.fb.group({
     star_rating: new FormControl<number | null>(null, { validators: [Validators.required] }),
     comment: new FormControl<string>(''),
   });
 
+  /**
+   * Select a star rating
+   * @param value - The star rating value to select
+   */
   selectRating(value: number) {
     this.form.controls.star_rating.setValue(value);
   }
 
+  /**
+   * Submit the rating form
+   */
   submit() {
     // Mark star_rating as touched to show validation errors
     this.form.controls.star_rating.markAsTouched();
@@ -43,16 +70,15 @@ export class RatingForm {
     }
 
     const newRating = new Rating({
-      id_rating: 'RAT' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+      id_rating: 'RT' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
       star_rating: this.form.value.star_rating!,
       comment: this.form.value.comment ?? '',
       time_rating: new Date().toISOString().slice(0, 10), // Format: YYYY-MM-DD
-      id_auto_repair: this.autoRepairId,
-      id_user_account: this.userAccountId
+      id_auto_repair: this.autoRepairByVehicle()?.id!,
+      id_user_account: this.userAccountId()!
     });
 
-    this.store.addRating(newRating);
+    this.paymentServiceStore.addRating(newRating);
     this.router.navigate(['layout-owner/payment-service/rating/done']).then();
   }
-
 }

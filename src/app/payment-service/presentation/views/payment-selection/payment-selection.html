@@ -12,17 +12,18 @@
         <label for="payment-method" class="form-label">{{ 'payment-selection.method' | translate }}</label>
         <select
           id="payment-method"
-          [(ngModel)]="selectedPayment"
           class="form-select"
+          [ngModel]="selectedPayment()"
+          (ngModelChange)="selectPaymentMethod($event)"
         >
           <option value="">{{ 'payment-selection.selectMethod' | translate }}</option>
-          @for (p of payments(); track p.id) {
+          @for (p of paymentFilterByUserId(); track p.id) {
             <option [value]="p.card_number">
               {{ p.card_type }} - **** **** **** {{ p.card_number.toString().slice(-4) }}
             </option>
           }
         </select>
-        @if (payments().length === 0) {
+        @if (paymentFilterByUserId().length === 0) {
           <p class="info-message">{{ 'payment-selection.noPaymentMethods' | translate }}</p>
         }
       </div>
@@ -47,7 +48,7 @@
           type="button"
           class="btn-pay"
           (click)="pay()"
-          [disabled]="!selectedPayment"
+          [disabled]="!selectedPayment()"
         >
           {{ 'payment-selection.payButton' | translate }}
         </button>

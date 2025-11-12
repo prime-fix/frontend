@@ -83,30 +83,14 @@ export class PaymentServiceStore {
    * Computed property to get the count of ratings.
    */
   readonly ratingCount = computed(() => this.ratings().length);
-
+  /**
+   * Signal for filtering payments by visit ID
+   */
+  readonly vehicleIdFilter = signal<string | undefined>(undefined);
 
   constructor(private paymentServiceClosureApi: PaymentServiceApi) {
     this.loadPayments();
     this.loadRatings();
-  }
-
-  loadPaymentsByUserAccountId(userAccountId: string | number): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.paymentServiceClosureApi.getPayments().pipe(takeUntilDestroyed()).subscribe({
-      next: payments => {
-        console.log(payments);
-        const filteredPayments = payments.filter(
-          payment => payment.id_user_account === userAccountId
-        );
-        this.paymentsSignal.set(filteredPayments);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load payments'));
-        this.loadingSignal.set(false);
-      }
-    });
   }
 
   /**

@@ -3,6 +3,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
 import {Router} from '@angular/router';
+import {Vehicle} from '@tracking/domain/model/vehicle.entity';
+import {PaymentServiceStore} from '@payment/application/payment-service-store';
 
 
 @Component({
@@ -13,8 +15,10 @@ import {Router} from '@angular/router';
 })
 export class ProgressBar {
   private router = inject(Router);
+  private paymentServiceStore = inject(PaymentServiceStore);
   // Input to receive the current step from parent component
   currentStep = input<number>(1);
+  currentVehicle = input.required<Vehicle | undefined>();
 
   // Definition of progress steps
   steps: ProgressStep[] = [
@@ -48,6 +52,7 @@ export class ProgressBar {
   }
 
   goPayment(): void {
+    this.paymentServiceStore.vehicleIdFilter.set(this.currentVehicle()?.id);
     this.router.navigate(['layout-owner/payment-service/payment']).then();
   }
 }

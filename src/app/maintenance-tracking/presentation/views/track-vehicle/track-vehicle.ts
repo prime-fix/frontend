@@ -7,6 +7,7 @@ import {StateError} from '@tracking/presentation/components/state-error/state-er
 import {StateNotification} from '@tracking/presentation/views/state-notification/state-notification';
 import {TrackingStore} from '@tracking/application/tracking-store';
 import {IamStore} from '@iam/application/iam-store';
+import {Vehicle} from '@tracking/domain/model/vehicle.entity';
 
 @Component({
   selector: 'app-track-vehicle',
@@ -20,13 +21,11 @@ export class TrackVehicle {
   private trackingStore = inject(TrackingStore);
   private iamStore = inject(IamStore);
 
-  currentVehicle = signal<string | undefined>("");
-  selectedVehicleData = signal<any>(null);
+  selectedVehicle = signal<Vehicle | undefined>(undefined);
   showProgressBar = signal<boolean>(false);
   showError = signal<boolean>(false);
   showNotificationModal = signal<boolean>(false);
   hasNotification = signal<boolean>(true);
-
 
   // Vehicles filtered by userId
   vehiclesByUserId = computed(() => {
@@ -43,16 +42,12 @@ export class TrackVehicle {
       this.trackForm.markAllAsTouched();
       return;
     }
-
     const selectedVehicleId = this.trackForm.get('selectedVehicle')?.value;
-    const selectedVehicle = this.vehiclesByUserId().find(v => v.id === selectedVehicleId);
+    this.selectedVehicle.set(this.vehiclesByUserId().find(v => v.id === selectedVehicleId));
 
-    if (selectedVehicle) {
-      this.currentVehicle.set(`${selectedVehicle.vehicle_brand} [${selectedVehicle.vehicle_plate}]`);
-      this.selectedVehicleData.set(selectedVehicle.state_maintenance);
-
+    if (this.selectedVehicle()) {
       // Show error if maintenance status is 0 (not being repaired)
-      if (selectedVehicle.state_maintenance === 0) {
+      if (this.selectedVehicle()?.state_maintenance === 0) {
         this.showError.set(true);
         this.showProgressBar.set(false);
       } else {
