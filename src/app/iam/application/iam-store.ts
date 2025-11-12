@@ -130,6 +130,16 @@ export class IamStore {
     const user = this.sessionUser();
     return user ? `${user.name} ${user.last_name}` : '';
   });
+  /**
+   * Computed property to get the current session user ID.
+   * This is the id_user from the User entity.
+   */
+  readonly sessionUserId = computed(() => this.sessionUser()?.id ?? null);
+  /**
+   * Computed property to get the current session user account ID.
+   * This is the id_user_account from the UserAccount entity.
+   */
+  readonly sessionUserAccountId = computed(() => this.sessionUserAccount()?.id ?? null);
 
   // Register Transition Flow
   /**
@@ -198,6 +208,33 @@ export class IamStore {
 
     // Restore session from localStorage on app initialization
     this.restoreSessionFromStorage();
+  }
+
+  /**
+   * Checks if a given user ID matches the current session user ID.
+   * Useful for filtering data in other bounded contexts.
+   * @param userId - The user ID to check
+   * @returns true if the user ID matches the current session user ID
+   */
+  isCurrentUser(userId: string | null | undefined): boolean {
+    const currentUserId = this.sessionUserId();
+    if (!currentUserId || !userId) {
+      return false;
+    }
+    return String(userId) === String(currentUserId);
+  }
+
+  /**
+   * Checks if a given user account ID matches the current session user account ID.
+   * @param userAccountId - The user account ID to check
+   * @returns true if the user account ID matches the current session user account ID
+   */
+  isCurrentUserAccount(userAccountId: string | null | undefined): boolean {
+    const currentUserAccountId = this.sessionUserAccountId();
+    if (!currentUserAccountId || !userAccountId) {
+      return false;
+    }
+    return String(userAccountId) === String(currentUserAccountId);
   }
 
   /**

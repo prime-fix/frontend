@@ -30,8 +30,8 @@ export class TrackVehicle {
 
   // Vehicles filtered by userId
   vehiclesByUserId = computed(() => {
-    const userId = this.iamStore.sessionUser()?.id;
-    return userId ? this.trackingStore.vehicles().filter(vehicle => vehicle.id_user === userId) : [];
+    const userId = this.iamStore.sessionUserId();
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
   });
 
   trackForm = this.fb.group({
