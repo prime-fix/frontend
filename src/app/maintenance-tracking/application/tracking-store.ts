@@ -184,6 +184,10 @@ export class TrackingStore {
           vehicles.map(c => c.id === updatedVehicle.id ? updatedVehicle : c)
         );
         this.loadingSignal.set(false)
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update vehicle'));
+        this.loadingSignal.set(false);
       }
     })
   }
@@ -199,6 +203,10 @@ export class TrackingStore {
     this.trackingApi.deleteVehicle(id).pipe(retry(2)).subscribe({
       next: () => {
         this.vehicleSignal.update(vehicles => vehicles.filter(c => c.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete vehicle'));
         this.loadingSignal.set(false);
       }
     })

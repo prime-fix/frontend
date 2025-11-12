@@ -9,6 +9,8 @@ import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
 import {CatalogStore} from '@catalog/application/catalog-store';
 import {PaymentServiceStore} from '@payment/application/payment-service-store';
 import {Payment} from '@payment/domain/model/payment.entity';
+import {Membership} from '@iam/domain/model/membership.entity';
+import {Role} from '@iam/domain/model/role.entity';
 
 /**
  * State management service for Identity and Access Management (IAM).
@@ -41,6 +43,18 @@ export class IamStore {
   private readonly usersSignal = signal<User[]>([]);
 
   /**
+   * Signals to hold the state of roles.
+   * @private
+   */
+  private readonly rolesSignal = signal<Role[]>([]);
+
+  /**
+   * Signals to hold the state of memberships.
+   * @private
+   */
+  private readonly membershipsSignal = signal<Membership[]>([]);
+
+  /**
    * Readonly versions of the state signals for external access.
    */
   readonly userAccounts = this.userAccountsSignal.asReadonly();
@@ -49,6 +63,14 @@ export class IamStore {
    */
   readonly users = this.usersSignal.asReadonly();
   /**
+   * Readonly version of roles signal.
+   */
+  readonly roles = this.rolesSignal.asReadonly();
+  /**
+   * Readonly version of memberships signal.
+   */
+  readonly memberships = this.membershipsSignal.asReadonly();
+  /**
    * Readonly version of payments signal.
    */
   readonly payments = this.paymentServiceStore.payments;
@@ -56,7 +78,6 @@ export class IamStore {
    * Readonly version of locations signal.
    */
   readonly locations = this.catalogStore.locations;
-
   /**
    * Signal to track loading state.
    * @private
@@ -66,7 +87,6 @@ export class IamStore {
    * Readonly version of loading signal.
    */
   readonly loading = this.loadingSignal.asReadonly();
-
   /**
    * Signal to track error messages.
    * @private
@@ -85,6 +105,14 @@ export class IamStore {
    * Computed property to get the count of users.
    */
   readonly userCount = computed(() => this.users().length);
+  /**
+   * Computed property to get the count of roles.
+   */
+  readonly roleCount = computed(() => this.roles().length);
+  /**
+   * Computed property to get the count of memberships.
+   */
+  readonly membershipCount = computed(() => this.memberships().length);
   /**
    * Computed property to get the count of payments.
    */
@@ -205,6 +233,8 @@ export class IamStore {
   constructor(private iamApi: IamApi) {
     this.loadUserAccounts();
     this.loadUsers();
+    this.loadRoles();
+    this.loadMemberships();
 
     // Restore session from localStorage on app initialization
     this.restoreSessionFromStorage();
@@ -396,6 +426,14 @@ export class IamStore {
     return computed(() => id ? this.userAccounts().find(ua => ua.id === id) : undefined);
   }
 
+  getRoleById(id: string | null | undefined): Signal<Role | undefined> {
+    return computed(() => id ? this.roles().find(r => r.id === id) : undefined);
+  }
+
+  getMembershipById(id: string | null | undefined): Signal<Membership | undefined> {
+    return computed(() => id ? this.memberships().find(m => m.id === id) : undefined);
+  }
+
   /**
    * Adds a new user account.
    * @param userAccount - The user account to add.
@@ -520,6 +558,99 @@ export class IamStore {
     });
   }
 
+  addRole(role: Role): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.createRole(role).pipe(retry(2)).subscribe({
+      next: newRole => {
+        this.rolesSignal.set([...this.roles(), newRole]);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create role'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  updateRole(role: Role): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.updateRole(role).pipe(retry(2)).subscribe({
+      next: updatedRole => {
+        this.rolesSignal.update(roles =>
+          roles.map(r => r.id === updatedRole.id ? updatedRole : r));
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update role'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  deleteRole(id: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.deleteRole(id).pipe(retry(2)).subscribe({
+      next: () => {
+        this.rolesSignal.update(roles => roles.filter(r => r.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete role'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  addMembership(membership: Membership): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.createMembership(membership).pipe(retry(2)).subscribe({
+      next: newMembership => {
+        this.membershipsSignal.set([...this.memberships(), newMembership]);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to create membership'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  updateMembership(membership: Membership): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.updateMembership(membership).pipe(retry(2)).subscribe({
+      next: updatedMembership => {
+        this.membershipsSignal.update(memberships =>
+          memberships.map(m => m.id === updatedMembership.id ? updatedMembership : m)
+        );
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to update membership'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  deleteMembership(id: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.deleteMembership(id).pipe(retry(2)).subscribe({
+      next: () => {
+        this.membershipsSignal.update(memberships => memberships.filter(m => m.id !== id));
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete membership'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
   /**
    * Gets a payment by its ID.
    * @param payment - The ID of the payment to retrieve.
@@ -582,6 +713,46 @@ export class IamStore {
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to load users'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  /**
+   * Loads roles from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
+  private loadRoles(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.getRoles().pipe(takeUntilDestroyed()).subscribe({
+      next: roles => {
+        console.log(roles);
+        this.rolesSignal.set(roles);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load roles'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  /**
+   * Loads memberships from the API and updates the state signal.
+   * @private - This method is intended for internal use only.
+   */
+  private loadMemberships(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.iamApi.getMemberships().pipe(takeUntilDestroyed()).subscribe({
+      next: memberships => {
+        console.log(memberships);
+        this.membershipsSignal.set(memberships);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load memberships'));
         this.loadingSignal.set(false);
       }
     })

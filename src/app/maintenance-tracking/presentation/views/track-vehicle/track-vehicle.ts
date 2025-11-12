@@ -60,8 +60,6 @@ export class TrackVehicle {
         this.showProgressBar.set(true);
       }
     }
-
-    console.log('Vehicle selected for tracking:', selectedVehicle);
   }
 
   openNotificationModal() {

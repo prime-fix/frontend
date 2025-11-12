@@ -6,6 +6,10 @@ import {Observable} from 'rxjs';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {UserApiEndpoint} from '@iam/infrastructure/api/user-api-endpoint';
 import {User} from '@iam/domain/model/user.entity';
+import {RolesApiEndpoint} from '@iam/infrastructure/api/roles-api-endpoint';
+import {Role} from '@iam/domain/model/role.entity';
+import {MembershipsApiEndpoint} from '@iam/infrastructure/api/memberships-api-endpoint';
+import {Membership} from '@iam/domain/model/membership.entity';
 
 /**
  * IAM API service that provides methods to interact with the IAM backend.
@@ -25,6 +29,16 @@ export class IamApi extends BaseApi {
    * @private
    */
   private readonly usersEndpoint:            UserApiEndpoint;
+  /**
+   * API endpoint for role-related operations.
+   * @private
+   */
+  private readonly rolesEndpoint:            RolesApiEndpoint;
+  /**
+   * API endpoint for membership-related operations.
+   * @private
+   */
+  private readonly membershipsEndpoint:      MembershipsApiEndpoint;
 
   /**
    * Constructor to initialize the IAM API service with the necessary endpoints.
@@ -34,6 +48,8 @@ export class IamApi extends BaseApi {
     super();
     this.userAccountsEndpoint = new UserAccountsApiEndpoint(http);
     this.usersEndpoint = new UserApiEndpoint(http);
+    this.rolesEndpoint = new RolesApiEndpoint(http);
+    this.membershipsEndpoint = new MembershipsApiEndpoint(http);
   }
 
   /**
@@ -118,5 +134,90 @@ export class IamApi extends BaseApi {
    */
   deleteUser(id: string): Observable<void> {
     return this.usersEndpoint.delete(id);
+  }
+
+  /**
+   * Fetches all roles from the backend.
+   * @returns An Observable emitting an array of Role entities.
+   */
+  getRoles(): Observable<Role[]> {
+    return this.rolesEndpoint.getAll();
+  }
+
+  /**
+   * Fetches a specific role by its ID.
+   * @param id - The ID of the role to be fetched.
+   * @return An Observable emitting the Role entity.
+   */
+  getRole(id: string): Observable<Role> {
+    return this.rolesEndpoint.getById(id);
+  }
+
+  /**
+   * Creates a new role.
+   * @param role - The Role entity to be created.
+   */
+  createRole(role: Role): Observable<Role> {
+    return this.rolesEndpoint.create(role);
+  }
+
+  /**
+   * Updates an existing role.
+   * @param role - The Role entity with updated information.
+   */
+  updateRole(role: Role): Observable<Role> {
+    return this.rolesEndpoint.update(role, role.id);
+  }
+
+  /**
+   * Deletes a role by its ID.
+   * @param id - The ID of the role to be deleted.
+   */
+  deleteRole(id: string): Observable<void> {
+    return this.rolesEndpoint.delete(id);
+  }
+
+  /**
+   * Fetches all memberships from the backend.
+   * @returns An Observable emitting an array of Membership entities.
+   */
+  getMemberships(): Observable<Membership[]> {
+    return this.membershipsEndpoint.getAll();
+  }
+
+  /**
+   * Fetches a specific membership by its ID.
+   * @param id - The ID of the membership to be fetched.
+   * @return An Observable emitting the Membership entity.
+   */
+  getMembership(id: string): Observable<Membership> {
+    return this.membershipsEndpoint.getById(id);
+  }
+
+  /**
+   * Creates a new membership.
+   * @param membership - The Membership entity to be created.
+   * @return An Observable emitting the created Membership entity.
+   */
+  createMembership(membership: Membership): Observable<Membership> {
+    return this.membershipsEndpoint.create(membership);
+  }
+
+  /**
+   * Updates an existing membership.
+   * @param membership - The Membership entity with updated information.
+   * @return An Observable emitting the updated Membership entity.
+   */
+  updateMembership(membership: Membership): Observable<Membership> {
+    return this.membershipsEndpoint.update(membership, membership.id);
+  }
+
+  /**
+   * Deletes a membership by its ID.
+   * @param id - The ID of the membership to be deleted.
+   * @return An Observable emitting void upon successful deletion.
+   */
+  deleteMembership(id: string): Observable<void> {
+    return this.membershipsEndpoint.delete(id);
   }
 }
