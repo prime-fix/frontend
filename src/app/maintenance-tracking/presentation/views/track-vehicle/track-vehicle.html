@@ -52,18 +52,18 @@
     }
 
     <!-- Vehicle Information and Progress Bar Section -->
-    @if (showProgressBar() && selectedVehicleData()) {
+    @if (showProgressBar() && selectedVehicle()) {
       <div class="vehicle-info-section">
         <div class="vehicle-details">
           <p class="vehicle-info">
-            <strong>{{ 'track-vehicle.vehicle' | translate }}:</strong> {{ currentVehicle() }}
+            <strong>{{ 'track-vehicle.vehicle' | translate }}:</strong> {{ `${selectedVehicle()?.vehicle_brand} [${selectedVehicle()?.vehicle_plate}]` }}
           </p>
           <p class="status-info">
             <strong>{{ 'track-vehicle.status' | translate }}:</strong>
           </p>
         </div>
         <div class="progress-section">
-          <app-progress-bar [currentStep]="selectedVehicleData() || 1"></app-progress-bar>
+          <app-progress-bar [currentStep]="selectedVehicle()?.state_maintenance || 1" [currentVehicle]="selectedVehicle()"></app-progress-bar>
         </div>
       </div>
     }

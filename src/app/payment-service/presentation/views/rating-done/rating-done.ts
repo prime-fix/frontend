@@ -11,6 +11,9 @@ import {TranslatePipe} from '@ngx-translate/core';
 export class RatingDone {
   protected router = inject(Router)
 
+  /**
+   * Navigate back to the owner's dashboard
+   */
   goBack(){
     this.router.navigate(['layout-owner/dashboard-owner']).then()
   }

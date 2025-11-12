@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject, input, Signal, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input, signal} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
@@ -34,28 +34,27 @@ export class VisitList {
    * Filtered visits based on current user and maintenance state
    */
   filteredVisits = computed(() => {
-    const currentUser = this.iamStore.sessionUser();
-    if (!currentUser) {
-      console.log('No current user found');
+    const currentUserId = this.iamStore.sessionUserId();
+    if (!currentUserId) {
+      console.log('No current user ID found');
       return [];
     }
 
     const allVisits = this.dataStore.visits();
     const allVehicles = this.dataStore.vehicles();
     const isScheduled = this.isNewVisits();
+
     // Create a map of vehicles by id for faster lookup
     const vehicleMap = new Map(allVehicles.map(v => [v.id, v]));
-
     return allVisits.filter(visit => {
       const vehicle = vehicleMap.get(visit.id_vehicle);
 
       if (!vehicle) {
-        console.log(`Vehicle not found for visit ${visit.id}, id_vehicle: ${visit.id_vehicle}`);
         return false;
       }
 
-      // Filter by user ownership
-      if (vehicle.id_user !== currentUser.id) {
+      // Filter by user ownership using IamStore helper method
+      if (!this.iamStore.isCurrentUser(vehicle.id_user)) {
         return false;
       }
 

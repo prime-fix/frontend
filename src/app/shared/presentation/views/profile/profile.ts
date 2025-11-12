@@ -16,22 +16,32 @@ import {UserAccount} from '@iam/domain/model/user-account.entity';
 })
 export class Profile {
   /**
-   * Stores
+   * Store of IAM
    * @private
    */
   private iamStore = inject(IamStore);
+  /**
+   * Store of Catalog
+   * @private
+   */
   private catalogStore = inject(CatalogStore);
 
   /**
-   * Computed properties for session data
+   * Session of User Account
    */
   sessionUserAccount = computed(() => this.iamStore.sessionUserAccount());
+  /**
+   * Session of User
+   */
   sessionUser = computed(() => this.iamStore.sessionUser());
+  /**
+   * Session of Location
+   */
   sessionLocation = computed(() =>
     this.catalogStore.getLocationById(this.sessionUser()?.id_location)());
 
   /**
-   * Profile fields
+   * Editable Fields
    */
   profileImage = signal<string | undefined>('');
   usernameToEdit = signal<string | undefined>('');

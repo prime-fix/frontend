@@ -33,10 +33,6 @@ export class VisitForm {
     id_service: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
 
-  /**
-   * Current session user
-   */
-  sessionUser = this.iamStore.sessionUser;
 
   /**
    * List of visits
@@ -53,7 +49,9 @@ export class VisitForm {
    */
   vehiclesFilteredByCurrentUser = computed(() => {
     const vehicles = this.dataCollectionStore.vehicles;
-    return vehicles().filter(vehicle => vehicle.id_user === this.sessionUser()?.id);
+    const currentUserId = this.iamStore.sessionUserId();
+    if (!currentUserId) return [];
+    return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user));
   })
 
   /**

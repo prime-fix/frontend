@@ -17,15 +17,13 @@ export class ManageVehicles {
   private trackingStore = inject(TrackingStore);
   private iamStore = inject(IamStore);
 
-  sessionUser = this.iamStore.sessionUser;
-
   // Signals
   showModal = signal(false);
   isEditMode = signal(false);
   selectedVehicleId = signal<string | null>(null);
   vehiclesByUserId = computed(() => {
-    const userId = this.sessionUser()?.id;
-    return this.trackingStore.vehicles().filter(vehicle => vehicle.id_user === userId);
+    const userId = this.iamStore.sessionUserId();
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
   })
 
   // Form
@@ -75,7 +73,7 @@ export class ManageVehicles {
     }
 
     const formData = this.vehicleForm.getRawValue();
-    const userId = this.sessionUser()?.id || '';
+    const userId = this.iamStore.sessionUserId() || '';
 
     if (this.isEditMode()) {
       // Update existing vehicle
