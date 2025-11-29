@@ -27,10 +27,6 @@ export interface DiagnosticResource extends BaseResource {
    */
   id_vehicle: string;
   /**
-   * The state of the diagnostic.
-   */
-  state_diagnostic: string;
-  /**
    * The diagnosis details.
    */
   diagnosis: string;

@@ -1,64 +1,69 @@
-import {Component, Signal, computed} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {inject} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatRadioModule} from '@angular/material/radio';
-import {PaymentServiceStore} from '../../../application/payment-service-store';
 import {Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
-import {Visit} from '@collections/domain/model/visit.entity';
-
-
+import {FormsModule} from '@angular/forms';
+import {PaymentServiceStore} from '@payment/application/payment-service-store';
 
 @Component({
   selector: 'app-payment',
-  imports: [MatButtonModule, MatCardModule, MatRadioModule, TranslatePipe],
+  imports: [TranslatePipe, FormsModule],
   templateUrl: './payment.html',
   styleUrl: './payment.css'
 })
 
 export class Payment {
-  readonly store = inject(PaymentServiceStore);
+  readonly paymentStore = inject(PaymentServiceStore);
   protected router = inject(Router);
 
-  public card = false;
-  public cash = false;
+  /**
+   * Selected payment method
+   */
+  readonly selectedMethod = signal<string>('');
 
-  selectedMethod = '';
+  /**
+   * Visits filtered by vehicle ID
+   */
+  public visitsByVehicleId = computed(() => {
+    return this.paymentStore.visits().filter(v => v.id_vehicle === this.paymentStore.vehicleIdFilter());
+  })
 
-  /*
-  * Usuario de prueba
-  * */
-  public userId = "U001";
-  public userAccountId = "UA001";
-  public visit = "V001";
-
+  /**
+   * Handles payment method change
+   * @param value - selected payment method
+   */
   onPaymentChange(value: string) {
-    this.selectedMethod = value;
+    this.selectedMethod.set(value);
   }
 
-  readonly visitData: Signal<Visit | undefined> = computed(() =>
-  this.store.getVisitById(this.visit))()
-
+  /**
+   * Handles card payment method
+   * @param card - boolean indicating card payment selection
+   */
   cardMethod(card:Boolean){
     if(card){
-      this.router.navigate(['payment-service/payment/selection']).then();
+      this.router.navigate(['layout-owner/payment-service/payment/selection']).then();
     }
   }
 
+  /**
+   * Handles cash payment method
+   * @param cash - boolean indicating cash payment selection
+   */
   cashMethod(cash:Boolean) {
     if(cash){
-      this.router.navigate(['payment-service/payment/done']).then();
+      this.router.navigate(['layout-owner/payment-service/payment/done']).then();
     }
   }
 
-
+  /**
+   * Handles acceptance of the selected payment method
+   */
   onAccept() {
-    if (this.selectedMethod === 'cash') {
+    if (this.selectedMethod() === 'cash') {
       this.cashMethod(true);
-    } else if (this.selectedMethod === 'card') {
+    } else if (this.selectedMethod() === 'card') {
       this.cardMethod(true);
     }
   }
-
 }

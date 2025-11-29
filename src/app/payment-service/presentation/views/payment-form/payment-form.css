@@ -1,53 +1,209 @@
-* {
-  font-family: var(--font-sans);
+/* Payment Form Container */
+.payment-form-container {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  background-color: var(--color-light);
+  overflow-y: auto;
 }
 
-.payment-form-container {
+/* Payment Form Header */
+.payment-form-header {
+  border-bottom: 3px solid var(--color-primary);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.payment-form-title {
+  font-family: var(--font-bold);
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* Payment Form Content */
+.payment-form-content {
+  background: white;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Form */
+.payment-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  font-family: 'Poppins', sans-serif;
+  gap: 2rem;
 }
 
-.title {
-  font-size: 2rem;
-  color: #073b4c;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  align-self: flex-start;
-  margin-left: 5rem;
-}
-
-.payment-form-card {
-  background-color: var(--color-second-complementary);
-  border-radius: 15px;
-  width: 700px;
-  padding: 2rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
+/* Form Grid */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 2rem;
 }
 
-mat-form-field {
-  width: 100%;
+/* Form Group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+
+.form-input,
+.form-select {
+  font-family: var(--font-regular);
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-tertiary-complementary);
+  border-radius: 8px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23114358' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Error Message */
+.error-message {
+  font-family: var(--font-regular);
+  font-size: 0.875rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error-message::before {
+  content: '⚠';
+  font-size: 1rem;
+}
+
+/* Button Container */
 .button-container {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 }
 
-.btn-add {
-  background-color: var(--color-first-complementary) !important;
-  color: white !important;
-  font-weight: 600;
-  border-radius: 20px;
-  width: 150px;
-  height: 40px;
+.btn-submit {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.25rem 2rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-first-complementary);
+  color: var(--color-dark);
+  font-family: var(--font-bold);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-height: 60px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #ffb700;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-form-container {
+    padding: 1rem;
+  }
+
+  .payment-form-title {
+    font-size: 2rem;
+  }
+
+  .payment-form-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .btn-submit {
+    font-size: 1.1rem;
+    padding: 1.1rem 1.75rem;
+    min-height: 55px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-form-title {
+    font-size: 1.75rem;
+  }
+
+  .payment-form-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-grid {
+    gap: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  .form-input,
+  .form-select {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.875rem;
+  }
+
+  .btn-submit {
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+    min-height: 50px;
+  }
 }

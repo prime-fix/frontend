@@ -1,66 +1,115 @@
 <div class="payment-form-container">
-  <h1 class="title">{{'payment-form.title'| translate}}</h1>
+  <div class="payment-form-header">
+    <h1 class="payment-form-title">{{ 'payment-form.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="payment-form-card">
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.cardNumber'| translate}}</mat-label>
-        <input matInput formControlName="card_number" />
-        @if (form.controls.card_number.touched && form.controls.card_number.invalid) {
-          <mat-error>{{'payment-form.invalidCardNumber'| translate}}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.cardType'| translate}}</mat-label>
-        <mat-select formControlName="card_type">
-          @for (type of cardTypes; track type) {
-            <mat-option [value]="type">{{ type }}</mat-option>
+  <div class="payment-form-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="payment-form">
+      <div class="form-grid">
+        <!-- Card Number -->
+        <div class="form-group">
+          <label for="card_number" class="form-label">{{ 'payment-form.cardNumber' | translate }}</label>
+          <input
+            id="card_number"
+            type="text"
+            formControlName="card_number"
+            class="form-input"
+            maxlength="16"
+            placeholder="1234 5678 9012 3456"
+          />
+          @if (form.controls.card_number.touched && form.controls.card_number.invalid) {
+            <span class="error-message">{{ 'payment-form.invalidCardNumber' | translate }}</span>
           }
-        </mat-select>
-      </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.month'| translate}}</mat-label>
-        <mat-select formControlName="month">
-          @for (m of months; track m) {
-            <mat-option [value]="m">{{ m }}</mat-option>
+        <!-- Card Type -->
+        <div class="form-group">
+          <label for="card_type" class="form-label">{{ 'payment-form.cardType' | translate }}</label>
+          <select id="card_type" formControlName="card_type" class="form-select">
+            <option value="">{{ 'payment-form.selectCardType' | translate }}</option>
+            @for (type of cardTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+          @if (form.controls.card_type.touched && form.controls.card_type.invalid) {
+            <span class="error-message">{{ 'payment-form.cardTypeRequired' | translate }}</span>
           }
-        </mat-select>
-      </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.year'| translate}}</mat-label>
-        <mat-select formControlName="year">
-          @for (y of years; track y) {
-            <mat-option [value]="y">{{ y }}</mat-option>
+        <!-- Month -->
+        <div class="form-group">
+          <label for="month" class="form-label">{{ 'payment-form.month' | translate }}</label>
+          <select id="month" formControlName="month" class="form-select">
+            <option value="">{{ 'payment-form.selectMonth' | translate }}</option>
+            @for (m of months; track m) {
+              <option [value]="m">{{ m }}</option>
+            }
+          </select>
+          @if (form.controls.month.touched && form.controls.month.invalid) {
+            <span class="error-message">{{ 'payment-form.monthRequired' | translate }}</span>
           }
-        </mat-select>
-      </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.cvv'| translate}}</mat-label>
-        <input matInput formControlName="cvv" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.docType'| translate}}</mat-label>
-        <mat-select formControlName="doc_type">
-          @for (d of docTypes; track d) {
-            <mat-option [value]="d">{{ d }}</mat-option>
+        <!-- Year -->
+        <div class="form-group">
+          <label for="year" class="form-label">{{ 'payment-form.year' | translate }}</label>
+          <select id="year" formControlName="year" class="form-select">
+            <option value="">{{ 'payment-form.selectYear' | translate }}</option>
+            @for (y of years; track y) {
+              <option [value]="y">{{ y }}</option>
+            }
+          </select>
+          @if (form.controls.year.touched && form.controls.year.invalid) {
+            <span class="error-message">{{ 'payment-form.yearRequired' | translate }}</span>
           }
-        </mat-select>
-      </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{'payment-form.docNumber'| translate}}</mat-label>
-        <input matInput formControlName="doc_number" />
-      </mat-form-field>
+        <!-- CVV -->
+        <div class="form-group">
+          <label for="cvv" class="form-label">{{ 'payment-form.cvv' | translate }}</label>
+          <input
+            id="cvv"
+            type="text"
+            formControlName="cvv"
+            class="form-input"
+            maxlength="3"
+            placeholder="123"
+          />
+          @if (form.controls.cvv.touched && form.controls.cvv.invalid) {
+            <span class="error-message">{{ 'payment-form.cvvRequired' | translate }}</span>
+          }
+        </div>
 
+        <!-- Document Type -->
+        <div class="form-group">
+          <label for="doc_type" class="form-label">{{ 'payment-form.docType' | translate }}</label>
+          <select id="doc_type" formControlName="doc_type" class="form-select">
+            <option value="">{{ 'payment-form.selectDocType' | translate }}</option>
+            @for (d of docTypes; track d) {
+              <option [value]="d">{{ d }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Document Number -->
+        <div class="form-group form-group-full">
+          <label for="doc_number" class="form-label">{{ 'payment-form.docNumber' | translate }}</label>
+          <input
+            id="doc_number"
+            type="text"
+            formControlName="doc_number"
+            class="form-input"
+            placeholder="12345678"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
       <div class="button-container">
-        <button mat-flat-button color="primary" class="btn-add" type="submit">{{'payment-form.addButton'| translate}}</button>
+        <button type="submit" class="btn-submit">
+          {{ 'payment-form.addButton' | translate }}
+        </button>
       </div>
     </form>
-  </mat-card>
-
+  </div>
 </div>

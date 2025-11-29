@@ -1,39 +1,53 @@
-<div class="rating-container">
-  <h2 class="title">{{'rating-form.title' | translate}}</h2>
+<div class="rating-form-container">
+  <div class="rating-form-header">
+    <h1 class="rating-form-title">{{ 'rating-form.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="rating-card">
-    <form [formGroup]="form">
-      <h1 class="rating-title">{{'rating-form.serviceRating' | translate}}</h1>
-      <p class="rating-text">
-        {{'rating-form.question' | translate}}
-      </p>
+  <div class="rating-form-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="rating-form">
+      <div class="form-header">
+        <h2 class="form-title">{{ 'rating-form.serviceRating' | translate }}</h2>
+        <p class="form-description">{{ 'rating-form.question' | translate }}</p>
+      </div>
 
-      <div class="stars">
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <button
-            type="button"
-            class="star-button"
-            [class.selected]="form.value.star_rating && form.value.star_rating >= i"
-            (click)="selectRating(i)"
-          >
-            {{ i }}
-          </button>
+      <!-- Star Rating Section -->
+      <div class="rating-section">
+        <div class="stars">
+          @for (i of [1, 2, 3, 4, 5]; track i) {
+            <button
+              type="button"
+              class="star-button"
+              [class.selected]="form.value.star_rating && form.value.star_rating >= i"
+              (click)="selectRating(i)"
+              [attr.aria-label]="i + ' stars'"
+            >
+              ★
+            </button>
+          }
+        </div>
+        @if (form.controls.star_rating.touched && form.controls.star_rating.invalid) {
+          <span class="error-message">{{ 'rating-form.ratingRequired' | translate }}</span>
         }
       </div>
 
-      <p class="comment-label">{{'rating-form.commentLabel' | translate}}</p>
-      <mat-form-field appearance="outline" class="comment-field">
-        <mat-label>{{'rating-form.commentPlaceholder' | translate}}</mat-label>
-        <input
-          matInput
+      <!-- Comment Section -->
+      <div class="form-group">
+        <label for="comment" class="form-label">{{ 'rating-form.commentLabel' | translate }}</label>
+        <textarea
+          id="comment"
           formControlName="comment"
-          placeholder= "{{'rating-form.commentField' | translate}}"
-        />
-      </mat-form-field>
+          [placeholder]="'rating-form.commentPlaceholder' | translate"
+          class="form-textarea"
+          rows="4"
+        ></textarea>
+      </div>
 
+      <!-- Submit Button -->
       <div class="button-container">
-        <button mat-flat-button class="btn-accept" (click)="submit()">{{'rating-form.rateButton' | translate}}</button>
+        <button type="submit" class="btn-submit">
+          {{ 'rating-form.rateButton' | translate }}
+        </button>
       </div>
     </form>
-  </mat-card>
+  </div>
 </div>

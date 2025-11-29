@@ -1,0 +1,96 @@
+<div class="requests-container">
+  <h1 class="requests-title">{{ 'manage-requests.title' | translate }}</h1>
+
+  <!-- Requests List -->
+  <div class="requests-list">
+    @for (expectedVisit of pendingExpectedVisits(); track expectedVisit.id) {
+      <div class="request-card">
+        <div class="request-info">
+          <h3 class="customer-name">{{ getUserFullNameByVisitId(expectedVisit.id_visit)() }}</h3>
+          <div class="request-details">
+            <p class="detail-item">
+              <span class="detail-label">{{ 'manage-requests.date' | translate }}:</span>
+              {{ getVisitByExpectedVisitId(expectedVisit.id)()?.time_visit?.slice(0,10) }}
+            </p>
+            <p class="detail-item">
+              <span class="detail-label">{{ 'manage-requests.time' | translate }}:</span>
+              {{ getVisitByExpectedVisitId(expectedVisit.id)()?.time_visit?.slice(11,16) }}
+            </p>
+          </div>
+        </div>
+
+        <div class="request-actions">
+          <button
+            class="btn-details"
+            (click)="onShowDetails(expectedVisit, getVisitByExpectedVisitId(expectedVisit.id)()!)"
+          >
+            {{ 'manage-requests.details' | translate }}
+          </button>
+          <button
+            class="btn-accept"
+            (click)="onAcceptExpectedVisit(expectedVisit)"
+            [disabled]="isLoading()"
+          >
+            {{ 'manage-requests.accept' | translate }}
+          </button>
+          <button
+            class="btn-reject"
+            (click)="onRejectExpectedVisit(expectedVisit)"
+            [disabled]="isLoading()"
+          >
+            {{ 'manage-requests.reject' | translate }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (pendingExpectedVisits().length === 0) {
+      <div class="no-requests">
+        <p>{{ 'manage-requests.noRequests' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Visit Details Modal -->
+@if (showDetailsModal() && selectedExpectedVisitAndVisit()) {
+  <div class="modal-overlay" (click)="onCloseModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ 'manage-requests.visitDetails' | translate }}</h2>
+
+      <div class="modal-details">
+        <div class="detail-group">
+          <label class="detail-label">{{ 'manage-requests.customerName' | translate }}</label>
+          <p class="detail-value">{{ getUserFullNameByVisitId(selectedExpectedVisitAndVisit()?.expectedVisit?.id_visit!)() }}</p>
+        </div>
+
+        <div class="detail-group">
+          <label class="detail-label">{{ 'manage-requests.vehicleModel' | translate }}</label>
+          <p class="detail-value">{{ getVehicleByVehicleId(selectedExpectedVisitAndVisit()?.visit?.id_vehicle!)()?.model }}</p>
+        </div>
+
+        <div class="detail-group">
+          <label class="detail-label">{{ 'manage-requests.failures' | translate }}</label>
+          <p class="detail-value failure-text">{{ selectedExpectedVisitAndVisit()?.visit?.failure }}</p>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-group">
+            <label class="detail-label">{{ 'manage-requests.date' | translate }}</label>
+            <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.visit?.time_visit?.slice(0,10) }}</p>
+          </div>
+
+          <div class="detail-group">
+            <label class="detail-label">{{ 'manage-requests.time' | translate }}</label>
+            <p class="detail-value">{{ selectedExpectedVisitAndVisit()?.visit?.time_visit?.slice(11,16) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-close" (click)="onCloseModal()">
+        {{ 'manage-requests.close' | translate }}
+      </button>
+    </div>
+  </div>
+}
+

@@ -1,23 +1,26 @@
 <div class="notification-view-container">
+  <!-- Header Section -->
+  <div class="notification-header-section">
+    <h1 class="notification-title">{{ 'notification-view.title' | translate }}</h1>
+  </div>
+
+  <!-- Content Section -->
   <div class="notification-content">
-    <!-- Header -->
-    <div class="notification-header">
-      <h1 class="notification-title">Notificaciones</h1>
-      @if (unreadCount() > 0) {
-        <button
-          class="mark-all-read-btn"
-          (click)="markAllAsRead()"
-          type="button">
-          Marcar todas como leídas
-        </button>
-      }
-    </div>
+
+    @if (unreadCount() > 0) {
+      <button
+        class="mark-all-read-btn"
+        (click)="markAllAsRead()"
+        type="button">
+        {{ 'notification-view.button-mark-all-read' | translate }}
+      </button>
+    }
 
     <!-- Loading State -->
     @if (loading()) {
       <div class="loading-state">
         <div class="spinner"></div>
-        <p>Cargando notificaciones...</p>
+        <p>{{ 'notification-view.loading' | translate }}</p>
       </div>
     }
 
@@ -28,7 +31,7 @@
           <use href="assets/icons/sprite.symbol.svg#bell"></use>
         </svg>
         <p class="error-message">{{ error() }}</p>
-        <p class="error-hint">Por favor, intenta recargar la página</p>
+        <p class="error-hint">{{ 'notification-view.please-refresh' | translate }}</p>
       </div>
     }
 
@@ -38,7 +41,7 @@
       @if (unreadNotifications().length > 0) {
         <div class="notifications-section">
           <h2 class="section-title">
-            Sin leer
+            {{ 'notification-view.unread' | translate }}
             <span class="badge">{{ unreadCount() }}</span>
           </h2>
           <div class="notifications-list">
@@ -55,7 +58,7 @@
                     <p class="notification-message">{{ notification.message }}</p>
                     <div class="notification-meta">
                       <span class="notification-time">{{ formatDate(notification.sent) }}</span>
-                      <span class="notification-vehicle">Vehículo: {{ notification.id_vehicle }}</span>
+                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.id_vehicle }}</span>
                     </div>
                   </div>
                 </div>
@@ -68,7 +71,7 @@
       <!-- Read Notifications Section -->
       @if (readNotifications().length > 0) {
         <div class="notifications-section">
-          <h2 class="section-title">Leídas</h2>
+          <h2 class="section-title">{{ 'notification-view.read' | translate }}</h2>
           <div class="notifications-list">
             @for (notification of readNotifications(); track notification.id) {
               <div class="notification-card read" (click)="markAsUnread(notification)">
@@ -82,7 +85,7 @@
                     <p class="notification-message">{{ notification.message }}</p>
                     <div class="notification-meta">
                       <span class="notification-time">{{ formatDate(notification.sent) }}</span>
-                      <span class="notification-vehicle">Vehículo: {{ notification.id_vehicle }}</span>
+                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.id_vehicle }}</span>
                     </div>
                   </div>
                 </div>
@@ -93,13 +96,13 @@
       }
 
       <!-- Empty State -->
-      @if (notifications().length === 0) {
+      @if (notificationsByVehiclesId().length === 0) {
         <div class="empty-state">
           <svg class="empty-icon">
             <use href="assets/icons/sprite.symbol.svg#bell"></use>
           </svg>
-          <h3>No tienes notificaciones</h3>
-          <p>Cuando recibas actualizaciones sobre tus vehículos, aparecerán aquí</p>
+          <h3>{{ 'notification-view.no-notifications' | translate }}</h3>
+          <p>{{ 'notification-view.no-notifications-subtitle' | translate }}</p>
         </div>
       }
     }

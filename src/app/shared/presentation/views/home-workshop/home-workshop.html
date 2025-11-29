@@ -1,1 +1,30 @@
-<p>home-workshop works!</p>
+<div class="home-workshop-container">
+  <div class="welcome-section">
+    <h1 class="main-title">{{ 'home-workshop.title' | translate }}</h1>
+
+    <div class="welcome-card">
+      <h2 class="welcome-title">{{ 'home-workshop.welcome' | translate }}</h2>
+
+      <p class="welcome-subtitle">
+        {{ 'home-workshop.subtitle' | translate }}
+      </p>
+
+      <p class="features-intro">{{ 'home-workshop.you-can' | translate }}</p>
+
+      <ul class="features-list">
+        <li>{{ 'home-workshop.register-workshop' | translate }}</li>
+        <li>{{ 'home-workshop.manage-requests' | translate }}</li>
+        <li>{{ 'home-workshop.update-status' | translate }}</li>
+        <li>{{ 'home-workshop.notify-clients' | translate }}</li>
+      </ul>
+
+      <p class="end-subtitle">
+        {{ 'home-workshop.end-subtitle' | translate }}
+      </p>
+
+      <button class="start-button" (click)="onStartClick()">
+        {{ 'home-workshop.start-button' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

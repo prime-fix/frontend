@@ -14,11 +14,36 @@ export interface VehiclesResponse extends BaseResponse{
  * Represent the API resource for a Vehicle_Registered
  */
 export interface VehicleResource extends BaseResource {
-  id_vehicle:number;
+  /**
+   * Unique identifier for the vehicle.
+   */
+  id_vehicle: string;
+  /**
+   * Color of the vehicle.
+   */
   color:string;
+  /**
+   * Model of the vehicle.
+   */
   model:string;
-  id_user:number;
+  /**
+   * Identifier of the user associated with the vehicle.
+   */
+  id_user:string;
+  /**
+   * Brand of the vehicle.
+   */
   vehicle_brand:string;
+  /**
+   * Plate number of the vehicle.
+   */
   vehicle_plate:string;
-  vehicle_type:string;
+  /**
+   * Type of the vehicle.
+   */
+  vehicle_type: string;
+  /**
+   * State of the vehicle maintenance.
+   */
+  state_maintenance: number;
 }

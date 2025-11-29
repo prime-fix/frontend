@@ -1,47 +1,30 @@
-<div class="search-workshop-container">
-  <div class="search-content">
-    <h1 class="search-title">{{ 'home-owner.searchWorkshop' | translate }}</h1>
+<div class="home-owner-container">
+  <div class="welcome-section">
+    <h1 class="main-title">{{ 'home-owner.title' | translate }}</h1>
 
-    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
-      <div class="form-group">
-        <label for="department" class="form-label">{{ 'home-owner.selectDepartment' | translate }}</label>
-        <select
-          id="department"
-          formControlName="department"
-          class="form-select">
-          <option value="" disabled selected>{{ 'home-owner.selectDepartment' | translate }}</option>
-          @for (department of departments; track department) {
-            <option [value]="department">{{ department }}</option>
-          }
-        </select>
-        @if (searchForm.get('department')?.invalid && searchForm.get('department')?.touched) {
-          <span class="error-message">
-            {{ 'home-owner.departmentRequired' | translate }}
-          </span>
-        }
-      </div>
+    <div class="welcome-card">
+      <h2 class="welcome-title">{{ 'home-owner.welcome' | translate }}</h2>
 
-      <div class="form-group">
-        <label for="district" class="form-label">{{ 'home-owner.selectDistrict' | translate }}</label>
-        <select
-          id="district"
-          formControlName="district"
-          class="form-select">
-          <option value="" disabled selected>{{ 'home-owner.selectDistrict' | translate }}</option>
-          @for (district of districts; track district) {
-            <option [value]="district">{{ district }}</option>
-          }
-        </select>
-        @if (searchForm.get('district')?.invalid && searchForm.get('district')?.touched) {
-          <span class="error-message">
-            {{ 'home-owner.districtRequired' | translate }}
-          </span>
-        }
-      </div>
+      <p class="welcome-subtitle">
+        {{ 'home-owner.subtitle' | translate }}
+      </p>
 
-      <button type="submit" class="search-button" [disabled]="searchForm.invalid">
-        {{ 'home-owner.searchWorkshop' | translate }}
+      <p class="features-intro">{{ 'home-owner.you-can' | translate }}</p>
+
+      <ul class="features-list">
+        <li>{{ 'home-owner.request-service' | translate }}</li>
+        <li>{{ 'home-owner.see-availability' | translate }}</li>
+        <li>{{ 'home-owner.schedule-visits' | translate }}</li>
+        <li>{{ 'home-owner.get-notifications' | translate }}</li>
+      </ul>
+
+      <p class="end-subtitle">
+        {{ 'home-owner.end-subtitle' | translate }}
+      </p>
+
+      <button class="start-button" (click)="onStartClick()">
+        {{ 'home-owner.start-button' | translate }}
       </button>
-    </form>
+    </div>
   </div>
 </div>

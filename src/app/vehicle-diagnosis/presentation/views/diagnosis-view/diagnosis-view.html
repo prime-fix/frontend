@@ -1,0 +1,123 @@
+<div class="diagnosis-container">
+  <div class="diagnosis-content">
+    <h1 class="diagnosis-title">{{ 'vehicle-diagnosis.title' | translate }}</h1>
+    <h2 class="diagnosis-subtitle">{{ 'vehicle-diagnosis.subtitle' | translate }}</h2>
+
+    @if (loading()) {
+      <div class="loading-message">{{ 'vehicle-diagnosis.loading-message' | translate }}</div>
+    }
+
+    @if (error()) {
+      <div class="error-message">{{ error() }}</div>
+    }
+
+    @if (!loading() && vehiclesByVisits().length === 0) {
+      <div class="no-vehicles">
+        <p>{{ 'vehicle-diagnosis.no-vehicles' | translate }}</p>
+      </div>
+    }
+
+    <div class="vehicles-list">
+      @for (vehicle of vehiclesByVisits(); track vehicle.id) {
+        <div class="vehicle-card">
+          <div class="vehicle-info">
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.car' | translate }}</span>
+              <span class="info-value">{{ vehicle.vehicle_brand }} {{ vehicle.model }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.plate' | translate }}</span>
+              <span class="info-value">{{ vehicle.vehicle_plate }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.owner' | translate }}</span>
+              <span class="info-value">
+                @if (getUserByVehicleId(vehicle.id)(); as owner) {
+                  {{ owner.name }} {{ owner.last_name }}
+                } @else {
+                  {{ 'vehicle-diagnosis.vehicle-card.unknown-owner' | translate }}
+                }
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.id-visit' | translate }}</span>
+              <span class="info-value">{{ getVisitByVehicleId(vehicle.id)()?.id || 'N/A' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">{{ 'vehicle-diagnosis.vehicle-card.status' | translate }}</span>
+              <span class="info-value state-value">{{ steps[vehicle.state_maintenance - 1]?.translationKey | translate }}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button
+               type="button"
+               class="state-button"
+               (click)="openStateModal(vehicle.id, vehicle.state_maintenance)"
+               [disabled]="loading()">
+              {{ 'vehicle-diagnosis.vehicle-card.change-state-button' | translate }}
+            </button>
+            <button
+              type="button"
+              class="check-button"
+              (click)="checkDiagnostics(vehicle.id)"
+              [disabled]="loading()">
+              {{ 'vehicle-diagnosis.vehicle-card.check-button' | translate }}
+            </button>
+            <button
+              type="button"
+              class="update-button"
+              (click)="addDiagnostic(vehicle.id)"
+              [disabled]="loading()">
+              @if (loading()) {
+                {{ 'vehicle-diagnosis.vehicle-card.loading-button' | translate }}
+              } @else {
+                {{ 'vehicle-diagnosis.button-add' | translate }}
+              }
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
+
+@if (isStateModalOpen()) {
+  <div class="modal-backdrop" (click)="closeStateModal()" aria-hidden="true"></div>
+
+  <div class="state-modal" role="dialog" aria-modal="true" aria-labelledby="stateModalTitle">
+    <header class="state-modal-header">
+      <h2 id="stateModalTitle" class="diagnosis-title modal-title">{{ 'vehicle-diagnosis.modal-title' | translate }}</h2>
+      <p class="modal-subtitle">{{ 'vehicle-diagnosis.modal-subtitle' | translate }}</p>
+    </header>
+
+    <section class="state-modal-body">
+      <label for="state-select" class="form-label">{{ 'vehicle-diagnosis.vehicle-form.state' | translate }}</label>
+
+      <select
+        id="state-select"
+        class="modal-select"
+        [value]="selectedState()"
+        (change)="selectedState.set($any($event.target).valueAsNumber ?? $any($event.target).value)">
+        @for (opt of stateOptions(); track opt.id) {
+          <option [value]="opt.id" [selected]="opt.id === selectedState()">{{ opt.label }}</option>
+        }
+      </select>
+    </section>
+
+    <footer class="state-modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeStateModal()" [disabled]="modalLoading()">
+        {{ 'vehicle-diagnosis.button-cancel' | translate }}
+      </button>
+
+      <button type="button" class="update-button" (click)="updateVehicleState()" [disabled]="modalLoading()">
+        @if (modalLoading()) {
+          {{ 'vehicle-diagnosis.vehicle-card.loading-button' | translate }}
+        } @else {
+          {{ 'vehicle-diagnosis.modal-update-button' | translate }}
+        }
+      </button>
+    </footer>
+  </div>
+}

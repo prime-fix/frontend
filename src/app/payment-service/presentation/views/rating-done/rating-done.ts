@@ -1,19 +1,20 @@
 import { Component, inject } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
 import {Router} from '@angular/router'
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rating-done',
-  imports: [MatCardModule, MatButtonModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './rating-done.html',
   styleUrl: './rating-done.css'
 })
 export class RatingDone {
   protected router = inject(Router)
 
+  /**
+   * Navigate back to the owner's dashboard
+   */
   goBack(){
-    this.router.navigate(['payment-service/']).then()
+    this.router.navigate(['layout-owner/dashboard-owner']).then()
   }
 }

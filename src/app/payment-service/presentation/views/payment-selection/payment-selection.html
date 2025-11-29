@@ -1,27 +1,58 @@
 <div class="payment-selection-container">
-  <h2 class="title">{{ 'payment-selection.title' | translate }}</h2>
+  <div class="payment-selection-header">
+    <h1 class="payment-selection-title">{{ 'payment-selection.title' | translate }}</h1>
+  </div>
 
-  <mat-card class="payment-selection-card">
-    <h1 class="card-title">{{ 'payment-selection.chooseMethod' | translate }}</h1>
+  <div class="payment-selection-content">
+    <div class="payment-selection-card">
+      <h2 class="card-title">{{ 'payment-selection.chooseMethod' | translate }}</h2>
 
-    <mat-form-field appearance="outline" class="payment-select">
-      <mat-label>{{ 'payment-selection.method' | translate }}</mat-label>
-      <mat-select [(value)]="selectedPayment">
-
-        @for (p of payments(); track p.id) {
-          <mat-option [value]="p.card_number">
-            {{ p.card_type }} - {{ p.card_number }}
-          </mat-option>
+      <!-- Payment Method Selection -->
+      <div class="form-group">
+        <label for="payment-method" class="form-label">{{ 'payment-selection.method' | translate }}</label>
+        <select
+          id="payment-method"
+          class="form-select"
+          [ngModel]="selectedPayment()"
+          (ngModelChange)="selectPaymentMethod($event)"
+        >
+          <option value="">{{ 'payment-selection.selectMethod' | translate }}</option>
+          @for (p of paymentFilterByUserId(); track p.id) {
+            <option [value]="p.card_number">
+              {{ p.card_type }} - **** **** **** {{ p.card_number.toString().slice(-4) }}
+            </option>
+          }
+        </select>
+        @if (paymentFilterByUserId().length === 0) {
+          <p class="info-message">{{ 'payment-selection.noPaymentMethods' | translate }}</p>
         }
-      </mat-select>
-    </mat-form-field>
+      </div>
 
-    <div class="buttons">
-      <button mat-stroked-button class="btn-secondary" (click)="goBack()">{{ 'payment-selection.backButton' | translate }}</button>
-      <button mat-flat-button class="btn-primary" (click)="addMethod()">{{ 'payment-selection.addMethodButton' | translate }}</button>
-      <button mat-flat-button  class="btn-primary" (click)="pay()">{{ 'payment-selection.payButton' | translate }}</button>
+      <!-- Action Buttons -->
+      <div class="button-container">
+        <button
+          type="button"
+          class="btn-back"
+          (click)="goBack()"
+        >
+          {{ 'payment-selection.backButton' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn-add-method"
+          (click)="addMethod()"
+        >
+          {{ 'payment-selection.addMethodButton' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn-pay"
+          (click)="pay()"
+          [disabled]="!selectedPayment()"
+        >
+          {{ 'payment-selection.payButton' | translate }}
+        </button>
+      </div>
     </div>
-
-
-  </mat-card>
+  </div>
 </div>

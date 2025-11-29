@@ -42,7 +42,7 @@
     "loading": "Loading..."
   },
   "register-owner": {
-    "title": "Create your account, manage visits",
+    "title": "Create your account, manage your vehicles",
     "haveAccount": "Already have an account?",
     "signIn": "Sign In",
     "fullName": "Full Name",
@@ -206,7 +206,16 @@
     "failure_details":"Describe the vehicle failures",
     "back": "Back",
     "failure_message": "Please describe the vehicle failures",
-    "date_message": "Please select a preferred date"
+    "date_message": "Please select a preferred date",
+    "vehicle_required": "You must select a vehicle",
+    "service_required": "You must select a service",
+    "field_complete": "Field complete"
+  },
+  "visit-alert": {
+    "title": "Search Workshop",
+    "message-title": "Waiting",
+    "message-description": "We are waiting for the workshop's response",
+    "go-to-dashboard": "Go to dashboard"
   },
   "completed-screen": {
     "title": "Visit Scheduled Successfully",
@@ -224,12 +233,32 @@
     "vehicle_brand": "Vehicle Brand:",
     "service": "Type of Service:",
     "date": "Scheduled Date:",
+    "price": "Price:",
     "failure": "Failure Description:",
     "status": "Visit Status:",
     "contact": "Workshop Contact:",
     "edit": "Edit",
     "delete": "Delete",
-    "noVisits": "No scheduled visits available"
+    "noVisits": "No scheduled visits available",
+    "scheduledVisits": "Scheduled Visits",
+    "visitHistory": "Visit History",
+    "noScheduledVisits": "No scheduled visits available",
+    "noHistory": "No visit history available",
+    "visitId": "Visit ID:",
+    "workshop": "Workshop:",
+    "address": "Address:",
+    "label-cancelled": "Cancelled",
+    "cancelVisit": "Cancel Visit",
+    "visitCancelled": "Visit Cancelled",
+    "loading": "Loading...",
+    "cancelModal": {
+      "title": "Cancel Visit",
+      "subtitle": "Are you sure you want to cancel this visit?",
+      "warning": "This action cannot be undone. Once cancelled, you will need to schedule a new visit if you change your mind.",
+      "goBack": "Go Back",
+      "confirm": "Confirm Cancellation",
+      "cancelling": "Cancelling..."
+    }
   },
   "auto_repair":{
     "title": "Search for Auto Repair Workshops",
@@ -237,14 +266,28 @@
     "technician": "Technicians:"
   },
   "home-owner": {
-    "searchWorkshop": "Search Workshop",
-    "selectDepartment": "Select Department",
-    "selectDistrict": "Select District",
-    "departmentRequired": "Department is required",
-    "districtRequired": "District is required"
+    "title": "Start Menu",
+    "welcome": "Welcome to Prime-fix",
+    "subtitle": "Your platform for managing vehicle repairs and maintenance easily and securely.",
+    "you-can": "Here you can:",
+    "request-service": "Request vehicle repair and maintenance services.",
+    "see-availability": "Check the availability of workshops and technicians in your area.",
+    "schedule-visits": "Schedule visits and track the status of your vehicle in real-time.",
+    "get-notifications": "Receive notifications about the progress of your vehicle's repair.",
+    "end-subtitle": "Get started now and experience the best service for your vehicle!",
+    "start-button": "Get Started"
   },
   "home-workshop": {
-    "welcome": "Welcome to your workshop dashboard"
+    "title": "Start Menu",
+    "welcome": "Welcome to Prime-fix",
+    "subtitle": "Your platform to manage your auto repair workshop efficiently and professionally.",
+    "you-can": "Here you can:",
+    "register-workshop": "Register your workshop and manage service requests.",
+    "manage-requests": "Manage service requests and schedule appointments with customers.",
+    "update-status": "Update the status of vehicle repairs in real-time.",
+    "notify-clients": "Notify clients about the progress of their vehicle repairs.",
+    "end-subtitle": "Get started now and take your workshop to the next level!",
+    "start-button": "Get Started"
   },
   "manage-technicians": {
     "title": "Manage Technicians",
@@ -288,7 +331,9 @@
     "repair": "In repair",
     "testing": "Testing",
     "readyPickup": "Ready for pickup",
-    "collected": "Collected"
+    "collected": "Collected",
+    "message-collect": "Your vehicle was collected",
+    "button-go-payment": "Go to payment"
   },
   "track-vehicle": {
     "title": "Track Vehicle",
@@ -317,6 +362,7 @@
     "visitDate": "Date of the visit",
     "cash": "Cash",
     "virtualPayment": "Virtual Payment",
+    "selectMethod": "Select a payment method",
     "btnAccept": "Accept"
   },
   "payment-done": {
@@ -330,17 +376,27 @@
     "cardNumber": "Card number",
     "invalidCardNumber": "Invalid number (16 digits required)",
     "cardType": "Card type",
+    "selectCardType": "Select card type",
+    "cardTypeRequired": "Card type is required",
     "month": "Month",
+    "selectMonth": "Select month",
+    "monthRequired": "Month is required",
     "year": "Year",
+    "selectYear": "Select year",
+    "yearRequired": "Year is required",
     "cvv": "CVV",
+    "cvvRequired": "CVV is required (3 digits)",
     "docType": "Document type",
+    "selectDocType": "Select document type",
     "docNumber": "Document number",
     "addButton": "Add"
   },
   "payment-selection": {
     "title": "Payment to make",
     "chooseMethod": "Choose method",
-    "method": "Method",
+    "method": "Payment method",
+    "selectMethod": "Select a payment method",
+    "noPaymentMethods": "No payment methods registered. Add one to continue.",
     "backButton": "Back",
     "addMethodButton": "Add method",
     "payButton": "Pay"
@@ -348,7 +404,7 @@
   "rating": {
     "title": "Rate service",
     "serviceRating": "Service rating",
-    "message": "The service has been completed. <br/> Would you like to rate it?",
+    "message": "The service has been completed. Would you like to rate it?",
     "laterButton": "Not now",
     "rateNowButton": "Rate"
   },
@@ -361,17 +417,202 @@
   "rating-form": {
     "title": "Rate service",
     "serviceRating": "Service rating",
-    "question": "How do you feel about the service provided?<br /> (5 means completely satisfied and 1 means completely dissatisfied)",
+    "question": "How do you feel about the service provided? (5 means completely satisfied and 1 means completely dissatisfied)",
     "commentLabel": "Leave a comment (optional)",
     "commentPlaceholder": "Write your comment here",
     "commentField": "Comment",
-    "rateButton": "Rate"
+    "rateButton": "Rate",
+    "ratingRequired": "Please select a rating"
   },
-
-
-
-
-
+  "search-auto-repair": {
+    "title": "Search workshop",
+    "selectDepartment": "Select department",
+    "selectDepartmentError": "Please select a department",
+    "selectDistrict": "Select district",
+    "selectDistrictError": "Please select a district",
+    "searchButton": "Search workshop",
+    "searchingLoading": "Searching...",
+    "selectAutoRepair": "Select an workshop",
+    "loadingAutoRepairs": "Loading workshops...",
+    "notFoundAutoRepairsLocation": "No workshops found in this location",
+    "searchAgainButton": "Search again",
+    "auto-repair-card": {
+      "numberTechnicians": "Number of technicians:",
+      "availableTechnicians": "Available technicians:",
+      "selectButton": "Select workshop"
+    }
+  },
+  "manage-vehicles": {
+    "title": "Vehicles",
+    "addVehicle": "Add vehicle",
+    "noVehicles": "No vehicles registered",
+    "vehicleModel": "Vehicle model",
+    "color": "Color",
+    "brand": "Brand",
+    "plate": "Plate",
+    "type": "Type",
+    "edit": "Edit",
+    "delete": "Delete",
+    "modalAddTitle": "Add vehicle",
+    "modalEditTitle": "Edit vehicle",
+    "modelLabel": "Vehicle model",
+    "modelPlaceholder": "ZEN 10 MT",
+    "brandLabel": "Brand",
+    "brandPlaceholder": "Nissan",
+    "typeLabel": "Type",
+    "typePlaceholder": "Sedan",
+    "plateLabel": "Plate",
+    "platePlaceholder": "EIE-123",
+    "colorLabel": "Color",
+    "colorPlaceholder": "Blue",
+    "cancel": "Cancel",
+    "add": "Add",
+    "save": "Save"
+  },
+  "manage-requests": {
+    "title": "Requests",
+    "noRequests": "No pending requests",
+    "customerName": "Customer name",
+    "date": "Date",
+    "time": "Time",
+    "accept": "Accept",
+    "reject": "Reject",
+    "details": "Details",
+    "confirmAccept": "Are you sure you want to accept this request?",
+    "confirmReject": "Are you sure you want to reject this request?",
+    "acceptSuccess": "Request accepted successfully",
+    "rejectSuccess": "Request rejected successfully",
+    "visitDetails": "Visit details",
+    "vehicleModel": "Vehicle model",
+    "failures": "Failures",
+    "close": "Close"
+  },
+  "dashboard-workshop": {
+    "title": "Dashboard",
+    "scheduledVisits": "Scheduled visits",
+    "receivedRatings": "Received ratings",
+    "noScheduledVisits": "No scheduled visits",
+    "noRatings": "No ratings received",
+    "customerName": "Customer name",
+    "date": "Date",
+    "time": "Time",
+    "details": "Details",
+    "client": "Client",
+    "ratingDate": "Rating date",
+    "rating": "Score",
+    "comment": "Comment",
+    "visitDetails": "Visit details",
+    "vehicleModel": "Vehicle model",
+    "failures": "Failures",
+    "close": "Close"
+  },
+  "manage-auto-repair": {
+    "title": "Workshop",
+    "workshopName": "Workshop name",
+    "workshopNamePlaceholder": "AutoRepairs",
+    "ruc": "R.U.C.",
+    "rucPlaceholder": "564165161",
+    "phoneNumber": "Workshop phone number",
+    "phoneNumberPlaceholder": "99888959",
+    "department": "Department",
+    "departmentPlaceholder": "Lima",
+    "district": "District",
+    "districtPlaceholder": "San Miguel",
+    "address": "Address",
+    "addressPlaceholder": "Castilla 696 C",
+    "email": "Email",
+    "emailPlaceholder": "autorepairs@gmail.com",
+    "back": "Back",
+    "saveChanges": "Save changes"
+  },
+  "settings-view": {
+    "title": "Settings",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "repeatPassword": "Repeat password",
+    "requiredPassword": "Password is required",
+    "minLengthPassword": "Password must be at least 6 characters",
+    "validPassword": "Valid password",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordsMatch": "Passwords match",
+    "savePassword": "Save",
+    "paymentMethods": "Payment methods",
+    "bank": "Bank",
+    "cardNumber": "Number",
+    "expirationDate": "Expiration date",
+    "deletePaymentMethod": "Delete",
+    "addPaymentMethod": "Add payment method",
+    "subscription": "Subscription",
+    "plan": "{{months}} months plan",
+    "cost": "Cost: {{price}}",
+    "renewSubscription": "Renew subscription",
+    "noPaymentMethods": "No payment methods added",
+    "cancelPayment": "Cancel"
+  },
+  "vehicle-diagnosis": {
+    "title": "Status of Vehicles",
+    "subtitle": "Check the current status of vehicles under maintenance",
+    "subtitle-update": "Modify the status and diagnostic of the vehicles",
+    "modal-title": "Update Vehicle Status",
+    "modal-subtitle": "When you update an status, it will notify the vehicle owner automatically.",
+    "loading-message": "Loading vehicles...",
+    "no-vehicles": "No vehicles under maintenance",
+    "vehicle-card": {
+      "car": "Vehicle:",
+      "plate": "Plate:",
+      "owner": "Owner:",
+      "unknown-owner": "Unknown",
+      "id-visit": "Visit ID:",
+      "status": "Status:",
+      "change-state-button": "Update status",
+      "check-button": "View diagnostics",
+      "update-button": "Update",
+      "loading-button": "Updating..."
+    },
+    "vehicle-form": {
+      "select-status": "Select status",
+      "state": "Vehicle maintenance status",
+      "failure": "Failure",
+      "diagnostic": "Diagnostic",
+      "diagnostic-error": "Enter a valid diagnostic",
+      "price": "Price",
+      "price-error": "Enter a valid price"
+    },
+    "button-cancel": "Cancel",
+    "button-add": "Add new diagnostic",
+    "button-updating": "Updating...",
+    "no-data": "No data available",
+    "modal-update-button": "Update"
+  },
+  "vehicleDiagnosis": {
+    "checkTitle": "Vehicle diagnostics",
+    "checkSubtitle": "Review all diagnostics performed",
+    "loading": "Loading diagnostics...",
+    "noDiagnostics": "No diagnostics recorded for this vehicle",
+    "price": "Price",
+    "date": "Date",
+    "status": "Status"
+  },
+  "profile-view": {
+    "title": "Profile",
+    "editProfile": "Edit profile",
+    "cancelEdit": "Cancel",
+    "saveChanges": "Save changes",
+    "username": "Username",
+    "address": "Address",
+    "password": "Password"
+  },
+  "notification-view": {
+    "title": "Notifications",
+    "button-mark-all-read": "Mark all as read",
+    "loading": "Loading notifications...",
+    "please-refresh": "Please refresh the page to see new notifications",
+    "vehicle": "Vehicle:",
+    "read": "Read",
+    "unread": "Unread",
+    "no-notifications": "No notifications available",
+    "no-notifications-subtitle": "When you schedule a visit the status updates will appear here."
+  },
   "page-not-found": {
     "title": "Page not found",
     "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",

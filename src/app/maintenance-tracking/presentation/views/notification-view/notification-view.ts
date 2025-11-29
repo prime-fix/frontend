@@ -2,29 +2,41 @@ import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { TrackingStore } from '@tracking/application/tracking-store';
 import { Notification } from '@tracking/domain/model/notification.entity';
+import {IamStore} from '@iam/application/iam-store';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notification-view',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './notification-view.html',
   styleUrl: './notification-view.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationView {
   private trackingStore = inject(TrackingStore);
+  private iamStore = inject(IamStore);
 
-  // Signals from the store
-  notifications = this.trackingStore.notifications;
+  // Vehicles filtered by userId
+  vehiclesByUserId = computed(() => {
+    const userId = this.iamStore.sessionUserId();
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
+  });
+
+  notificationsByVehiclesId = computed(() => {
+    const vehicleIds = this.vehiclesByUserId().map(v => v.id);
+    return this.trackingStore.notifications().filter(notification => vehicleIds.includes(notification.id_vehicle));
+  })
+
   loading = this.trackingStore.loading;
   error = this.trackingStore.error;
 
   // Computed signals for filtered notifications
   unreadNotifications = computed(() =>
-    this.notifications().filter(n => !n.read)
+    this.notificationsByVehiclesId().filter(n => !n.read)
   );
 
   readNotifications = computed(() =>
-    this.notifications().filter(n => n.read)
+    this.notificationsByVehiclesId().filter(n => n.read)
   );
 
   unreadCount = computed(() => this.unreadNotifications().length);
@@ -39,7 +51,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: true
+        read: true,
+        id_diagnostic: notification.id_diagnostic,
       })
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -55,7 +68,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: false
+        read: false,
+        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -71,7 +85,8 @@ export class NotificationView {
         message: notification.message,
         sent: notification.sent,
         id_vehicle: notification.id_vehicle,
-        read: true
+        read: true,
+        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     });

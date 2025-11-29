@@ -29,20 +29,46 @@ export class TechnicianForm implements OnInit {
   private iamStore = inject(IamStore);
   private translate = inject(TranslateService);
 
+  /**
+   * Indicates if we are in edit mode
+   * @protected
+   */
   protected isEdit = signal(false);
+  /**
+   * The technician ID being edited
+   * @protected
+   */
   protected technicianId = signal<string | null>(null);
+  /**
+   * The current technician being edited
+   * @protected
+   */
   protected currentTechnician = signal<Technician | undefined>(undefined);
 
+  /**
+   * Current language signal
+   * @protected
+   */
   protected currentLang = signal<string>('en');
 
+  /**
+   * Days translation map
+   */
   private daysMap: Record<string, string> = this.buildDaysMap();
 
+  /**
+   * The technician form group
+   */
   form = this.fb.group({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     last_name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     schedules: this.fb.array<FormGroup<ScheduleForm>>([])
   });
 
+  /**
+   * Available days of the week
+   * @protected
+   */
   protected availableDays = [
     'Monday',
     'Tuesday',
@@ -85,6 +111,9 @@ export class TechnicianForm implements OnInit {
     return this.form.get('schedules') as FormArray<FormGroup<ScheduleForm>>;
   }
 
+  /**
+   * Component initialization
+   */
   ngOnInit() {
     // initialize language and days map
     this.currentLang.set(this.translate.getCurrentLang());
@@ -111,7 +140,7 @@ export class TechnicianForm implements OnInit {
   }
 
   /**
-   * Builds a translation map for days of week using TranslateService.instant
+   * Builds a translation map for days of week using TranslateService
    */
   private buildDaysMap(): Record<string, string> {
     return {
@@ -145,7 +174,7 @@ export class TechnicianForm implements OnInit {
 
     if (!technician) {
       console.error('Technician not found');
-      this.router.navigate(['/layout-workshop/manage-technicians/technicians']);
+      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
       return;
     }
 
@@ -280,7 +309,7 @@ export class TechnicianForm implements OnInit {
 
     // Navigate back to manage technicians
     setTimeout(() => {
-      this.router.navigate(['/layout-workshop/manage-technicians/technicians']);
+      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
     }, 500);
   }
 
@@ -359,7 +388,7 @@ export class TechnicianForm implements OnInit {
 
     // Navigate back to manage technicians
     setTimeout(() => {
-      this.router.navigate(['/layout-workshop/manage-technicians/technicians']);
+      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
     }, 500);
   }
 
@@ -367,6 +396,6 @@ export class TechnicianForm implements OnInit {
    * Cancels the form and navigates back
    */
   onCancel() {
-    this.router.navigate(['/layout-workshop/manage-technicians/technicians']);
+    this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
   }
 }

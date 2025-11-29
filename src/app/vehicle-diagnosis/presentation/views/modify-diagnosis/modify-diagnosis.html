@@ -1,0 +1,101 @@
+<div class="modify-diagnosis-container">
+  <div class="modify-content">
+    <h1 class="modify-title">{{ 'vehicle-diagnosis.title' | translate }}</h1>
+    <h2 class="modify-subtitle">{{ 'vehicle-diagnosis.subtitle-update' | translate }}</h2>
+
+    @if (currentVehicle() && currentVisit()) {
+      <div class="modify-card">
+        <div class="vehicle-summary">
+          <div class="summary-row">
+            <span class="summary-label">{{ 'vehicle-diagnosis.vehicle-card.car' | translate }}</span>
+            <span class="summary-value">{{ currentVehicle()!.vehicle_brand }} {{ currentVehicle()!.model }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">{{ 'vehicle-diagnosis.vehicle-card.plate' | translate }}</span>
+            <span class="summary-value">{{ currentVehicle()!.vehicle_plate }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">{{ 'vehicle-diagnosis.vehicle-card.owner' | translate }}</span>
+            <span class="summary-value">
+              @if (currentOwner(); as owner) {
+                {{ owner.name }} {{ owner.last_name }}
+              } @else {
+                {{ 'vehicle-diagnosis.vehicle-card.unknown-owner' | translate }}
+              }
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">{{ 'vehicle-diagnosis.vehicle-card.id-visit' | translate }}</span>
+            <span class="summary-value">{{ currentVisit()!.id }}</span>
+          </div>
+        </div>
+
+        <form [formGroup]="modifyForm" (ngSubmit)="onSubmit()" class="modify-form">
+          <!-- Failure -->
+          <div class="form-group">
+            <label for="state" class="form-label"> {{ 'vehicle-diagnosis.vehicle-form.failure' | translate }}:</label>
+            <span class="form-input"> {{ currentVisit()?.failure || '' }} </span>
+          </div>
+
+          <!-- Diagnostic -->
+          <div class="form-group">
+            <label for="diagnosis" class="form-label">{{ 'vehicle-diagnosis.vehicle-form.diagnostic' | translate }}</label>
+            <textarea
+              id="diagnosis"
+              formControlName="diagnosis"
+              class="form-textarea"
+              rows="4"
+              placeholder="Describa el diagnóstico..."></textarea>
+            @if (modifyForm.get('diagnosis')?.invalid && modifyForm.get('diagnosis')?.touched) {
+              <span class="error-text">{{'vehicle-diagnosis.vehicle-form.diagnostic-error' | translate }}</span>
+            }
+          </div>
+
+          <!-- Price -->
+          <div class="form-group">
+            <label for="price" class="form-label">{{ 'vehicle-diagnosis.vehicle-form.price' | translate }}</label>
+            <input
+              type="number"
+              id="price"
+              formControlName="price"
+              class="form-input"
+              placeholder="0.00"
+              step="0.01"
+              min="0">
+            @if (modifyForm.get('price')?.invalid && modifyForm.get('price')?.touched) {
+              <span class="error-text">{{ 'vehicle-diagnosis.vehicle-form.price-error' | translate }}</span>
+            }
+          </div>
+
+          <!-- Buttons -->
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn-cancel"
+              (click)="onCancel()"
+              [disabled]="loading()">
+              {{ 'vehicle-diagnosis.button-cancel' | translate }}
+            </button>
+            <button
+              type="submit"
+              class="btn-submit"
+              [disabled]="modifyForm.invalid || loading()">
+              @if (loading()) {
+                {{ 'vehicle-diagnosis.button-updating' | translate }}
+              } @else {
+                {{ 'vehicle-diagnosis.button-add' | translate }}
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    } @else {
+      <div class="no-data">
+        <p>{{ 'vehicle-diagnosis.no-data' | translate }}</p>
+        <button type="button" class="btn-back" (click)="onCancel()">{{ 'vehicle-diagnosis.button-cancel' | translate }}</button>
+      </div>
+    }
+  </div>
+</div>
+
+

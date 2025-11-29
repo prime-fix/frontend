@@ -1,0 +1,228 @@
+<div class="settings-container">
+  <h1 class="settings-title">{{ 'settings-view.title' | translate }}</h1>
+
+  <!-- Change Password Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.changePassword' | translate }}</h2>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="onSavePassword()" class="password-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="newPassword" class="form-label">{{ 'settings-view.newPassword' | translate }}</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              class="form-input"
+              [class.input-error]="newPasswordControl().invalid && newPasswordControl().touched"
+              [class.input-valid]="newPasswordControl().valid && newPasswordControl().touched"
+              placeholder="************"
+            />
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="togglePasswordVisibility('newPassword')"
+            >
+              @if(isPasswordVisible()) {
+                <svg class="icon-eye">
+                  <use href="assets/icons/sprite.symbol.svg#eye"></use>
+                </svg>
+              } @else {
+                <svg class="icon-eye">
+                  <use href="assets/icons/sprite.symbol.svg#eye-off"></use>
+                </svg>
+              }
+            </button>
+          </div>
+          @if (newPasswordControl().touched) {
+            @if (newPasswordControl().hasError('required')) {
+              <span class="error-message">{{ 'settings-view.requiredPassword' | translate }}</span>
+            } @else if (newPasswordControl().hasError('minlength')) {
+              <span class="error-message">{{ 'settings-view.minLengthPassword' | translate }}</span>
+            } @else if (newPasswordControl().valid) {
+              <span class="success-message">{{ 'settings-view.validPassword' | translate }}</span>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="repeatPassword" class="form-label">{{ 'settings-view.repeatPassword' | translate }}</label>
+          <div class="password-input-wrapper">
+            <input
+              type="password"
+              id="repeatPassword"
+              formControlName="repeatPassword"
+              class="form-input"
+              [class.input-error]="repeatPasswordControl().invalid && repeatPasswordControl().touched"
+              [class.input-valid]="repeatPasswordControl().valid && repeatPasswordControl().touched"
+              placeholder="************"
+            />
+            <button
+              type="button"
+              class="toggle-password-btn"
+              (click)="toggleRepeatPasswordVisibility('repeatPassword')"
+            >
+              @if(isRepeatPasswordVisible()) {
+                <svg class="icon-eye">
+                  <use href="assets/icons/sprite.symbol.svg#eye"></use>
+                </svg>
+              } @else {
+                <svg class="icon-eye">
+                  <use href="assets/icons/sprite.symbol.svg#eye-off"></use>
+                </svg>
+              }
+            </button>
+          </div>
+          @if (repeatPasswordControl().touched) {
+            @if (repeatPasswordControl().hasError('required')) {
+              <span class="error-message">{{ 'settings-view.requiredPassword' | translate }}</span>
+            } @else if (repeatPasswordControl().hasError('minlength')) {
+              <span class="error-message">{{ 'settings-view.minLengthPassword' | translate }}</span>
+            } @else if (repeatPasswordControl().valid) {
+              <span class="success-message">{{ 'settings-view.validPassword' | translate }}</span>
+            }
+          }
+        </div>
+      </div>
+
+      @if (newPasswordControl().touched && repeatPasswordControl().touched && newPasswordControl().value && repeatPasswordControl().value) {
+        <div class="password-match-indicator">
+          @if (passwordsMatch()) {
+            <div class="match-success">
+              <span>{{ passwordErrorMatchMessage() | translate }}</span>
+            </div>
+          } @else {
+            <div class="match-error">
+              <span>{{ passwordErrorMatchMessage() | translate }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <button type="submit" class="btn-save" [disabled]="!passwordFormValid() || !passwordsMatch()">
+        {{ 'settings-view.savePassword' | translate }}
+      </button>
+    </form>
+  </section>
+
+  <!-- Payment Methods Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.paymentMethods' | translate }}</h2>
+
+    <div class="payment-methods-list">
+      @for (payment of paymentByUserAccountId(); track payment.id) {
+        <div class="payment-card">
+          <div class="payment-info">
+            <p class="payment-bank">{{ 'settings-view.bank' | translate }}: {{ getCardBrand(payment.card_number) }}</p>
+            <p class="payment-number">{{ 'settings-view.cardNumber' | translate }}: {{ formatCardNumber(payment.card_number) }}</p>
+            <p class="payment-expiry">{{ 'settings-view.expirationDate' | translate }}: {{ payment.month }}/{{ payment.year }}</p>
+          </div>
+          <button class="btn-delete" (click)="onDeletePayment(payment.id)">
+            {{ 'settings-view.deletePaymentMethod' | translate }}
+          </button>
+        </div>
+      }
+
+      @if (paymentByUserAccountId().length === 0) {
+        <p class="no-payments">{{ 'settings-view.noPaymentMethods' | translate }}</p>
+      }
+    </div>
+
+    <button class="btn-add-payment" (click)="onAddPaymentMethod()">
+      {{ 'settings-view.addPaymentMethod' | translate }}
+    </button>
+  </section>
+
+  <!-- Subscription Section -->
+  <section class="settings-section">
+    <h2 class="section-title">{{ 'settings-view.subscription' | translate }}</h2>
+
+    @if (subscriptionInfo(); as sub) {
+      <div class="subscription-card">
+        <p class="subscription-plan">{{ 'settings-view.plan' | translate: {months: sub.months} }}</p>
+        <p class="subscription-cost">{{ 'settings-view.cost' | translate: {price: sub.price} }}</p>
+      </div>
+
+      <button class="btn-renew" (click)="onRenewSubscription()">
+        {{ 'settings-view.renewSubscription' | translate }}
+      </button>
+    }
+  </section>
+</div>
+
+<!-- Payment Modal -->
+@if (showAddPaymentModal()) {
+  <div class="modal-overlay" (click)="onClosePaymentModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">{{ 'settings-view.addPaymentMethod' | translate }}</h2>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmitPayment()" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cardNumber" class="form-label">{{ 'payment.cardNumber' | translate }}</label>
+            <input
+              type="number"
+              id="cardNumber"
+              formControlName="card_number"
+              class="form-input"
+              placeholder="1149849846611161"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="cardType" class="form-label">{{ 'payment.cardType' | translate }}</label>
+            <input
+              type="text"
+              id="cardType"
+              formControlName="card_type"
+              class="form-input"
+              placeholder="Visa/Mastercard"
+            />
+          </div>
+        </div>
+
+        <div class="form-row three-columns">
+          <div class="form-group">
+            <label for="month" class="form-label">{{ 'payment.month' | translate }}</label>
+            <select id="month" formControlName="month" class="form-select">
+              @for (monthItem of months; track monthItem.value) {
+                <option [value]="monthItem.value">{{ monthItem.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="year" class="form-label">{{ 'payment.year' | translate }}</label>
+            <select id="year" formControlName="year" class="form-select">
+              @for (year of years; track year) {
+                <option [value]="year">{{ year }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cvv" class="form-label">{{ 'payment.cvv' | translate }}</label>
+            <input
+              type="number"
+              id="cvv"
+              formControlName="cvv"
+              class="form-input"
+              placeholder="333"
+            />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="onClosePaymentModal()">
+            {{ 'settings-view.cancelPayment' | translate }}
+          </button>
+          <button type="submit" class="btn-submit">
+            {{ 'settings-view.addPaymentMethod' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

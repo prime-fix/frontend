@@ -1,22 +1,26 @@
 <div class="manage-technicians-container">
-  <div class="header-section">
-    <h1 class="page-title">{{ 'manage-technicians.title' | translate }}</h1>
-    <button class="add-technician-button" type="button" (click)="router.navigate(['layout-workshop/manage-technicians/technicians/new'])">{{ 'manage-technicians.addTechnician' | translate  }}</button>
+  <h1 class="page-title">{{ 'manage-technicians.title' | translate }}</h1>
+
+  <div class="technicians-section">
+    <div class="header-section">
+      <button class="add-technician-button" type="button" (click)="router.navigate(['layout-workshop/auto-repair-register/technicians/new'])">{{ 'manage-technicians.addTechnician' | translate  }}</button>
+    </div>
+
+    <div class="technicians-list">
+      @if (technicians().length === 0 ) {
+        <div class="empty-state">
+          <p>{{ 'manage-technicians.noTechnicians' | translate  }}</p>
+        </div>
+      } @else {
+        @for (technician of technicians(); track technician.id) {
+          <app-technician-card
+            [technician]="technician"
+            [technicianSchedules]="getTechnicianSchedules(technician.id)()">
+          </app-technician-card>
+        }
+      }
+    </div>
   </div>
 
-  <div class="technicians-list">
-    @if (technicians().length === 0 ) {
-      <div class="empty-state">
-        <p>{{ 'manage-technicians.noTechnicians' | translate  }}</p>
-      </div>
-    } @else {
-      @for (technician of technicians(); track technician.id) {
-        <app-technician-card
-          [technician]="technician"
-          [technicianSchedules]="getTechnicianSchedules(technician.id)()">
-        </app-technician-card>
-      }
-    }
-  </div>
 </div>
 

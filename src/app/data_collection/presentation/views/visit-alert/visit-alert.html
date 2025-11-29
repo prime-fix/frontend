@@ -1,0 +1,28 @@
+<div class="visit-alert-container">
+  <div class="visit-alert-content">
+    <h1 class="visit-alert-title">{{ 'visit-alert.title' | translate }}</h1>
+
+    <div class="alert-card">
+      <!-- Success Icon/Checkmark -->
+      <div class="success-icon">
+        <svg>
+          <use href="/assets/icons/sprite.symbol.svg#bell" ></use>
+        </svg>
+      </div>
+
+      <!-- Alert Content -->
+      <div class="alert-message">
+        <h2 class="alert-title">{{ 'visit-alert.message-title' | translate }}</h2>
+        <p class="alert-description">
+          {{ 'visit-alert.message-description' | translate }}
+        </p>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" class="btn-dashboard" (click)="goToDashboard()">
+        {{ 'visit-alert.go-to-dashboard' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+

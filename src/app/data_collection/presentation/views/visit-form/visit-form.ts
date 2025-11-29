@@ -1,21 +1,17 @@
-import { Component } from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 import {inject} from '@angular/core';
 import {FormBuilder,FormControl,ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataCollectionStore} from '../../../application/data-collection-store';
 import {Visit} from '../../../domain/model/visit.entity';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInput} from '@angular/material/input';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { Location } from '@angular/common';
-import {TranslateModule, TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
+import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
+import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 
 @Component({
   selector: 'app-visit-form',
-  imports: [ReactiveFormsModule, MatNativeDateModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatInput, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './visit-form.html',
   styleUrl: './visit-form.css'
 })
@@ -23,80 +19,87 @@ export class VisitForm {
   private fb=inject(FormBuilder);
   private router=inject(Router)
   private route=inject(ActivatedRoute);
-  private store=inject(DataCollectionStore);
-  private location = inject(Location);
+  private dataCollectionStore=inject(DataCollectionStore);
+  private diagnosisStore = inject(DiagnosisStore);
+  private iamStore = inject(IamStore);
 
+  /**
+   * Form group for visit submission
+   */
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    id_vehicle: new FormControl<number|string|null>(null),
-    time_visit: new FormControl<string|null>('', { nonNullable: true, validators: [Validators.required] }),
-    id_auto_repair: new FormControl<number|string|null>(null),
-    id_service: new FormControl<number|string|null>(null),
-    status: new FormControl<string>('Pendiente', { nonNullable: true, validators: [Validators.required] }),
+    id_vehicle: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    time_visit: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    id_service: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
-  visits = this.store.visits;
-  visitId: number |string | null = null;
-  isEdit = false;
-  vehicles = this.store.vehicles;
-  services = this.store.services;
 
 
+  /**
+   * List of visits
+   */
+  visits = this.dataCollectionStore.visits;
+
+  /**
+   * Auto repair ID from route parameters
+   */
+  autoRepairId = signal<string>('');
+
+  /**
+   * Vehicles filtered by the current user
+   */
+  vehiclesFilteredByCurrentUser = computed(() => {
+    const vehicles = this.dataCollectionStore.vehicles;
+    const currentUserId = this.iamStore.sessionUserId();
+    if (!currentUserId) return [];
+    return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user));
+  })
+
+  /**
+   * List of services
+   */
+  services = this.dataCollectionStore.services;
+
+  /**
+   * Initializes the component and subscribes to route parameters
+   */
   constructor() {
     this.route.params.subscribe(params => {
-      this.visitId = params['id'] ?? null;
-      this.isEdit = !!this.visitId;
-
-      if (this.isEdit) {
-        const visit = this.store.visits().find(v => v.id === this.visitId);
-        if (visit) {
-          this.form.patchValue({
-            failure: visit.failure,
-            id_vehicle: visit.id_vehicle,
-            time_visit: visit.time_visit,
-            id_auto_repair: visit.id_auto_repair,
-            id_service: visit.id_service,
-            status: visit.status
-          });
-        }
-      }
+      this.autoRepairId.set(params['id']);
     });
-
-    this.route.queryParams.subscribe(params => {
-      const repairId = params['id_auto_repair'];
-      if (repairId && !this.isEdit) {
-        this.form.patchValue({ id_auto_repair: repairId });
-      }
-    });
-
   }
 
+  /**
+   * Submits the visit form and adds a new visit and expected visit to the store
+   */
   submit() {
     const formValue = this.form.value;
     if (this.form.invalid) return;
+
     const visit = new Visit({
-      id_visit: this.visitId ?? `V${Date.now()}`,
+      id_visit: `V${Date.now()}`,
       failure: formValue.failure ?? '',
       id_vehicle: formValue.id_vehicle ?? '',
-      time_visit: formValue.time_visit
-        ? new Date(formValue.time_visit).toISOString().split('T')[0]
-        : null,
-      id_auto_repair: formValue.id_auto_repair ? formValue.id_auto_repair : null,
+      time_visit: formValue.time_visit!,
+      id_auto_repair: this.autoRepairId(),
       id_service: formValue.id_service ?? '',
-      status: formValue.status ?? ''
     });
-    console.log('Visit to send:', visit);
 
-    if (this.isEdit) {
-      this.store.updateVisit(visit);
+    const expectedVisit = new ExpectedVisit({
+      id_expected: `EV${Date.now()}`,
+      state_visit: 'Pending Visit',
+      id_visit: visit.id,
+      is_scheduled: false,
+    })
 
-    } else {
-      this.store.addVisit(visit);
-    }
-
-    this.router.navigate(['visits/alert'], { state: { visit } }).then();
+    this.dataCollectionStore.addVisit(visit);
+    this.diagnosisStore.addExpectedVisit(expectedVisit);
+    this.router.navigate(['layout-owner/data-collection/visit-alert']).then();
   }
 
+  /**
+   * Navigates back to the previous location
+   */
   goBack() {
-    this.location.back();
+    this.router.navigate(['layout-owner/auto-repair-catalog/search-auto-repair']).then();
   }
 }

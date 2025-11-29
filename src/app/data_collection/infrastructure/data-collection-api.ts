@@ -92,7 +92,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Visit.
    * @returns An Observable of the Visit.
    */
-  getVisitById(id: number): Observable<Visit> {
+  getVisitById(id: string): Observable<Visit> {
     return this.visitEndpoint.getById(id);
   }
 
@@ -119,7 +119,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Visit to delete.
    * @returns An Observable of void.
    */
-  deleteVisit(id: number | string): Observable<void> {
+  deleteVisit(id: string): Observable<void> {
     return this.visitEndpoint.delete(id);
   }
 }

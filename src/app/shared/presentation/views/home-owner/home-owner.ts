@@ -1,39 +1,45 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+import {Component, ChangeDetectionStrategy, inject, computed} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
+import {UserAccount} from '@iam/domain/model/user-account.entity';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-owner',
-  imports: [ReactiveFormsModule, TranslateModule, CommonModule],
+  imports: [
+    TranslatePipe
+  ],
   templateUrl: './home-owner.html',
-  styleUrl: './home-owner.css'
+  styleUrl: './home-owner.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeOwner {
-  private fb = inject(FormBuilder);
+  private iamStore = inject(IamStore);
+  private router = inject(Router);
 
-  // Arrays de departamentos y distritos para los selects
-  departments = [
-    'Lima', 'Arequipa', 'Cusco', 'Trujillo', 'Piura', 'Chiclayo', 'Huancayo', 'Tacna'
-  ];
+  /**
+   * Gets the current session user account.
+   */
+  readonly sessionUserAccount = computed(() => this.iamStore.sessionUserAccount());
 
-  districts = [
-    'San Miguel', 'Miraflores', 'San Isidro', 'Barranco', 'Surco', 'La Molina', 'Pueblo Libre', 'Jesús María'
-  ];
-
-  searchForm = this.fb.group({
-    department: ['', [Validators.required]],
-    district: ['', [Validators.required]]
-  });
-
-  onSearch() {
-    if (this.searchForm.invalid) {
-      this.searchForm.markAllAsTouched();
+  /**
+   * Handles the click event for the start button.
+   */
+  onStartClick(): void {
+    if (!this.sessionUserAccount()) {
       return;
     }
-
-    const formData = this.searchForm.getRawValue();
-    console.log('Búsqueda de taller:', formData);
-    // Aquí iría la lógica de búsqueda
+    const updatedUserAccount = new UserAccount({
+      id_user_account: this.sessionUserAccount()?._id_user_account!,
+      username: this.sessionUserAccount()?._username!,
+      email: this.sessionUserAccount()?._email!,
+      id_user: this.sessionUserAccount()?._id_user!,
+      id_role: this.sessionUserAccount()?._id_role!,
+      id_membership: this.sessionUserAccount()?._id_membership!,
+      password: this.sessionUserAccount()?._password!,
+      is_new: false,
+    })
+    this.iamStore.updateUserAccount(updatedUserAccount);
+    this.router.navigate(['/layout-owner/dashboard-owner']).then();
   }
 }

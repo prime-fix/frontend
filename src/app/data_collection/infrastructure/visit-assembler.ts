@@ -29,7 +29,6 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
       time_visit: resource.time_visit,
       id_auto_repair: resource.id_auto_repair,
       id_service: resource.id_service,
-      status: resource.status
     });
   }
 
@@ -46,7 +45,6 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
       time_visit:  entity.time_visit ? formatDate(entity.time_visit, 'yyyy-MM-dd', 'en-US') : null,
       id_auto_repair: entity.id_auto_repair,
       id_service: entity.id_service,
-      status: entity.status
     } as VisitResource;
   }
 

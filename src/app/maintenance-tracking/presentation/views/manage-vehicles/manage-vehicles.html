@@ -1,0 +1,193 @@
+<div class="vehicles-container">
+  <h1 class="vehicles-title">{{ 'manage-vehicles.title' | translate }}</h1>
+
+  <!-- Add Vehicle Button -->
+  <div class="header-actions">
+    <button class="btn-add-vehicle" (click)="onAddVehicle()">
+      {{ 'manage-vehicles.addVehicle' | translate }}
+    </button>
+  </div>
+
+  <!-- Vehicles List -->
+  <div class="vehicles-list">
+    @for (vehicle of vehiclesByUserId(); track vehicle.id) {
+      <div class="vehicle-card">
+        <div class="vehicle-info">
+          <h3 class="vehicle-model">{{ 'manage-vehicles.vehicleModel' | translate }}: {{ vehicle.model }}</h3>
+          <p class="vehicle-detail">
+            <span class="detail-label">{{ 'manage-vehicles.brand' | translate }}:</span>
+            {{ vehicle.vehicle_brand }}
+          </p>
+          <p class="vehicle-detail">
+            <span class="detail-label">{{ 'manage-vehicles.color' | translate }}:</span>
+            {{ vehicle.color }}
+          </p>
+          <p class="vehicle-detail">
+            <span class="detail-label">{{ 'manage-vehicles.plate' | translate }}:</span>
+            {{ vehicle.vehicle_plate }}
+          </p>
+          <p class="vehicle-detail">
+            <span class="detail-label">{{ 'manage-vehicles.type' | translate }}:</span>
+            {{ vehicle.vehicle_type }}
+          </p>
+        </div>
+        <div class="vehicle-actions">
+          <button class="btn-edit" (click)="onEditVehicle(vehicle)">
+            {{ 'manage-vehicles.edit' | translate }}
+          </button>
+          <button class="btn-delete" (click)="onDeleteVehicle(vehicle.id)">
+            {{ 'manage-vehicles.delete' | translate }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (vehiclesByUserId().length === 0) {
+      <p class="no-vehicles">{{ 'manage-vehicles.noVehicles' | translate }}</p>
+    }
+  </div>
+</div>
+
+<!-- Modal for Add/Edit Vehicle -->
+@if (showModal()) {
+  <div class="modal-overlay" (click)="onCloseModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2 class="modal-title">
+        @if (isEditMode()) {
+          {{ 'manage-vehicles.modalEditTitle' | translate }}
+        } @else {
+          {{ 'manage-vehicles.modalAddTitle' | translate }}
+        }
+      </h2>
+
+      <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="vehicle-form">
+        <!-- Model Field -->
+        <div class="form-group">
+          <label for="model" class="form-label">{{ 'manage-vehicles.modelLabel' | translate }}</label>
+          <input
+            type="text"
+            id="model"
+            formControlName="model"
+            class="form-input"
+            [placeholder]="'manage-vehicles.modelPlaceholder' | translate"
+          />
+          @if (vehicleForm.get('model')?.touched && vehicleForm.get('model')?.errors) {
+            <span class="error-message">
+              @if (vehicleForm.get('model')?.errors?.['required']) {
+                El modelo es obligatorio
+              }
+              @if (vehicleForm.get('model')?.errors?.['minlength']) {
+                El modelo debe tener al menos 2 caracteres
+              }
+            </span>
+          }
+        </div>
+
+        <!-- Brand and Type Fields (two columns) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="brand" class="form-label">{{ 'manage-vehicles.brandLabel' | translate }}</label>
+            <input
+              type="text"
+              id="brand"
+              formControlName="brand"
+              class="form-input"
+              [placeholder]="'manage-vehicles.brandPlaceholder' | translate"
+            />
+            @if (vehicleForm.get('brand')?.touched && vehicleForm.get('brand')?.errors) {
+              <span class="error-message">
+                @if (vehicleForm.get('brand')?.errors?.['required']) {
+                  La marca es obligatoria
+                }
+                @if (vehicleForm.get('brand')?.errors?.['minlength']) {
+                  La marca debe tener al menos 2 caracteres
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="type" class="form-label">{{ 'manage-vehicles.typeLabel' | translate }}</label>
+            <input
+              type="text"
+              id="type"
+              formControlName="type"
+              class="form-input"
+              [placeholder]="'manage-vehicles.typePlaceholder' | translate"
+            />
+            @if (vehicleForm.get('type')?.touched && vehicleForm.get('type')?.errors) {
+              <span class="error-message">
+                @if (vehicleForm.get('type')?.errors?.['required']) {
+                  El tipo es obligatorio
+                }
+                @if (vehicleForm.get('type')?.errors?.['minlength']) {
+                  El tipo debe tener al menos 2 caracteres
+                }
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Plate and Color Fields (two columns) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="plate" class="form-label">{{ 'manage-vehicles.plateLabel' | translate }}</label>
+            <input
+              type="text"
+              id="plate"
+              formControlName="plate"
+              class="form-input"
+              [placeholder]="'manage-vehicles.platePlaceholder' | translate"
+            />
+            @if (vehicleForm.get('plate')?.touched && vehicleForm.get('plate')?.errors) {
+              <span class="error-message">
+                @if (vehicleForm.get('plate')?.errors?.['required']) {
+                  La placa es obligatoria
+                }
+                @if (vehicleForm.get('plate')?.errors?.['minlength']) {
+                  La placa debe tener al menos 3 caracteres
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="color" class="form-label">{{ 'manage-vehicles.colorLabel' | translate }}</label>
+            <input
+              type="text"
+              id="color"
+              formControlName="color"
+              class="form-input"
+              [placeholder]="'manage-vehicles.colorPlaceholder' | translate"
+            />
+            @if (vehicleForm.get('color')?.touched && vehicleForm.get('color')?.errors) {
+              <span class="error-message">
+                @if (vehicleForm.get('color')?.errors?.['required']) {
+                  El color es obligatorio
+                }
+                @if (vehicleForm.get('color')?.errors?.['minlength']) {
+                  El color debe tener al menos 2 caracteres
+                }
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="onCloseModal()">
+            {{ 'manage-vehicles.cancel' | translate }}
+          </button>
+          <button type="submit" class="btn-submit">
+            @if (isEditMode()) {
+              {{ 'manage-vehicles.save' | translate }}
+            } @else {
+              {{ 'manage-vehicles.add' | translate }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

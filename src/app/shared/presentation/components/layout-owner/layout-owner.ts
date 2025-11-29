@@ -9,8 +9,5 @@ import {RouterOutlet} from '@angular/router';
   styleUrl: './layout-owner.css'
 })
 export class LayoutOwner {
-  options = [
-    {link: '/home-owner', label: 'option.home'},
-    {link: '/maintenance-tracking/track-vehicle', label: 'option.categories'},
-  ];
+
 }

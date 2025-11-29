@@ -27,7 +27,8 @@ export class NotificationAssembler implements BaseAssembler<Notification, Notifi
       message: resource.message,
       read: resource.read,
       id_vehicle: resource.id_vehicle,
-      sent: resource.sent
+      sent: resource.sent,
+      id_diagnostic: resource.id_diagnostic,
     })
   }
 
@@ -42,7 +43,8 @@ export class NotificationAssembler implements BaseAssembler<Notification, Notifi
       message: entity.message,
       read: entity.read,
       id_vehicle: entity.id_vehicle,
-      sent: entity.sent
+      sent: entity.sent,
+      id_diagnostic: entity.id_diagnostic,
     } as NotificationResource;
   }
 }

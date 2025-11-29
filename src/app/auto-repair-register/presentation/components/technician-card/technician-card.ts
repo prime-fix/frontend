@@ -134,7 +134,7 @@ export class TechnicianCard implements OnInit {
    * @return void.
    */
   editTechnician(id: string) {
-    this.router.navigate(['layout-workshop/manage-technicians/technicians/edit', id]).then();
+    this.router.navigate(['layout-workshop/auto-repair-register/technicians/edit', id]).then();
   }
 
   /**

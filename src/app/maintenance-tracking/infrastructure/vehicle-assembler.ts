@@ -28,7 +28,8 @@ export class VehicleAssembler implements BaseAssembler<Vehicle, VehicleResource,
       id_user: resource.id_user,
       vehicle_brand: resource.vehicle_brand,
       vehicle_plate: resource.vehicle_plate,
-      vehicle_type: resource.vehicle_type
+      vehicle_type: resource.vehicle_type,
+      state_maintenance: resource.state_maintenance
     })
   }
 
@@ -45,7 +46,8 @@ export class VehicleAssembler implements BaseAssembler<Vehicle, VehicleResource,
       id_user: entity.id_user,
       vehicle_brand: entity.vehicle_brand,
       vehicle_plate: entity.vehicle_plate,
-      vehicle_type: entity.vehicle_type
+      vehicle_type: entity.vehicle_type,
+      state_maintenance: entity.state_maintenance
     } as VehicleResource;
   }
 }

@@ -1,47 +1,48 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
-import { PaymentServiceStore } from '../../../application/payment-service-store';
 import { Payment } from '../../../domain/model/payment.entity';
-import {MatCardModule} from '@angular/material/card';
 import {TranslatePipe} from '@ngx-translate/core';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-payment-form',
-  imports: [ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCardModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.css'
 })
 export class PaymentForm {
   private fb = inject(FormBuilder);
-  private store = inject(PaymentServiceStore);
-  private router = inject(Router);
+  private iamStore = inject(IamStore);
 
-  /*
-  * Usuario de prueba
-  * */
-  public userId = "U001";
-  public userAccountId = "UA001";
-  public visit = "V001";
+  /**
+   * Gets the user account ID from the IAM store.
+   */
+  public userAccountId = this.iamStore.sessionUserAccountId;
 
+  /**
+   * List of month names in Spanish.
+   */
   readonly months = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
+  /**
+   * List of years from 2025 to 2034.
+   */
   readonly years = Array.from({ length: 10 }, (_, i) => 2025 + i);
+  /**
+   * List of card types.
+   */
   readonly cardTypes = ['Débito', 'Crédito'];
+  /**
+   * List of document types.
+   */
   readonly docTypes = ['DNI', 'Carnet de extranjería', 'Pasaporte'];
 
+  /**
+   * Reactive form for payment details.
+   */
   form = this.fb.group({
     card_number: new FormControl<number | null>(null, { nonNullable: true, validators: [Validators.required, Validators.minLength(16), Validators.maxLength(16)] }),
     card_type: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -52,6 +53,9 @@ export class PaymentForm {
     doc_number: new FormControl<string>('', { nonNullable: true }),
   });
 
+  /**
+   * Submits the payment form.
+   */
   submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -66,10 +70,16 @@ export class PaymentForm {
       month: this.monthToNumber(this.form.value.month!),
       year: this.form.value.year!,
       cvv: this.form.value.cvv!,
-      id_user_account: this.userAccountId
+      id_user_account: this.userAccountId()!
     });
   }
 
+  /**
+   * Converts a month name in Spanish to its corresponding number.
+   * @param month - The month name in Spanish.
+   * @returns The month number (1-12).
+   * @private
+   */
   private monthToNumber(month: string): number {
     const map: Record<string, number> = {
       Enero: 1, Febrero: 2, Marzo: 3, Abril: 4, Mayo: 5, Junio: 6,
@@ -77,6 +87,5 @@ export class PaymentForm {
     };
     return map[month] ?? 1;
   }
-
 
 }

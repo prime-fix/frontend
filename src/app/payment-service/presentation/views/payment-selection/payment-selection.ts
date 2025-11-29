@@ -1,57 +1,65 @@
-import { Component, inject, Signal, computed } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {Component, inject, computed, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {PaymentServiceStore} from '../../../application/payment-service-store';
-import {Payment} from '../../../domain/model/payment.entity';
 import {TranslatePipe} from '@ngx-translate/core';
+import {FormsModule} from '@angular/forms';
+import {IamStore} from '@iam/application/iam-store';
 
 @Component({
   selector: 'app-payment-selection',
-  imports: [MatButtonModule,
-    MatCardModule,
-    MatSelectModule,
-    MatFormFieldModule, TranslatePipe],
+  imports: [TranslatePipe, FormsModule],
   templateUrl: './payment-selection.html',
   styleUrl: './payment-selection.css'
 })
 export class PaymentSelection {
-  readonly store = inject(PaymentServiceStore);
+  readonly paymentServiceStore = inject(PaymentServiceStore);
+  readonly iamStore = inject(IamStore);
   protected router = inject(Router);
 
-  /*
-  * Usuario de prueba
-  * */
-  public userId = "U001";
-  public userAccountId = "UA001";
-  public visit = "V001";
+  /**
+   * ID of the user account from the IAM store
+   */
+  public userAccountId = this.iamStore.sessionUserAccountId;
 
-  readonly payments: Signal<Payment[]> = computed(() => this.store.payments())
-  selectedPayment: string | null = null;
+  /**
+   * Filtered payments by the current user account ID
+   */
+  readonly paymentFilterByUserId = computed(() => {
+    return this.paymentServiceStore.payments().filter(p => p.id_user_account === this.userAccountId())
+  })
 
-  constructor() {
-    this.store.loadPaymentsByUserAccountId(this.userAccountId);
-  }
+  /**
+   * Selected payment method ID
+   */
+  readonly selectedPayment = signal<string | null>(null);
 
+  /**
+   * Navigate back to the payment overview page
+   */
   goBack() {
-    this.router.navigate(['payment-service/payment']).then();
+    this.router.navigate(['layout-owner/payment-service/payment']).then();
   }
 
+  /**
+   * Navigate to the add payment method form
+   */
   addMethod() {
-    this.router.navigate(['payment-service/payment/form']).then();
+    this.router.navigate(['layout-owner/payment-service/payment/form']).then();
   }
 
+  selectPaymentMethod(paymentId: string) {
+    this.selectedPayment.set(paymentId);
+  }
+
+  /**
+   * Proceed to payment confirmation if a payment method is selected
+   */
   pay() {
-    if (this.selectedPayment) {
+    if (this.selectedPayment()) {
       console.log('Pagando con:', this.selectedPayment);
-      this.router.navigate(['payment-service/payment/done']).then();
+      this.router.navigate(['layout-owner/payment-service/payment/done']).then();
     } else {
       alert('Selecciona un método de pago antes de continuar.');
     }
   }
-
-
-
 }
