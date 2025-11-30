@@ -17,7 +17,6 @@
 
   <form [formGroup]="autoRepairForm" (ngSubmit)="onSaveChanges()" class="auto-repair-form">
     <div class="form-card">
-      <!-- Workshop Name -->
       <div class="form-group">
         <label for="workshopName" class="form-label">{{ 'manage-auto-repair.workshopName' | translate }}</label>
         <input
@@ -85,7 +84,6 @@
         }
       </div>
 
-      <!-- Department and District (two columns) -->
       <div class="form-row">
         <div class="form-group">
           <label for="department" class="form-label">{{ 'manage-auto-repair.department' | translate }}</label>
@@ -181,3 +179,56 @@
   </form>
 </div>
 
+<div class="auto-repair-service-container">
+  <h2 class="auto-repair-title">{{ 'manage-auto-repair.catalogTitle' | translate }}</h2>
+
+  @if (isOffersLoading()) {
+    <div class="loading-state">
+      {{ 'general.loadingCatalog' | translate }}...
+    </div>
+  }
+
+  @if (autoRepairOffers().length > 0) {
+    <div class="offers-cards">
+      @for (offer of autoRepairOffers(); track offer.id) {
+        <div class="offer-card">
+
+          <h3 class="service-name">
+            {{ getServiceName(offer.service_id) }}
+          </h3>
+
+          <p class="price">
+            <strong>{{ 'manage-auto-repair.price' | translate }}:</strong>
+            {{ offer.price | currency:'USD':'symbol' }}
+          </p>
+
+          <p class="duration">
+            <strong>{{ 'manage-auto-repair.duration' | translate }}:</strong>
+            {{ offer.duration_hour }}
+          </p>
+
+          <div class="actions">
+            <button class="btn-edit">
+              {{ 'manage-auto-repair.edit' | translate }}
+            </button>
+            <button class="btn-delete" (click)="onDeleteOffer(offer.id)">
+              {{ 'manage-auto-repair.delete' | translate }}
+            </button>
+          </div>
+
+        </div>
+      }
+    </div>
+  } @else if (!isOffersLoading()) {
+    <div class="empty-state">
+      {{ 'manage-auto-repair.noOffers' | translate }}
+    </div>
+  }
+
+  <div class="catalog-action-footer">
+    <button class="btn-add-service" (click)="goToAddService()">
+      {{ 'manage-auto-repair.addService' | translate }}
+    </button>
+  </div>
+
+</div>

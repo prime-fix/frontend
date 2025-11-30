@@ -1,4 +1,4 @@
-import {Component, inject, signal, computed} from '@angular/core';
+import {Component, inject, signal, computed, effect, untracked} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 import {User} from '@iam/domain/model/user.entity';
 import {Location} from '@catalog/domain/model/location.entity';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-manage-auto-repair',
@@ -20,28 +21,30 @@ export class ManageAutoRepair {
   private registerStore = inject(RegisterStore);
   private iamStore = inject(IamStore);
   private router = inject(Router);
+  private catalogStore = inject(CatalogStore);
 
   /**
    * Signal for loading state
    */
   isLoading = signal(false);
+
   /**
    * Success and Error Messages
    */
   successMessage = signal<string | null>(null);
-  /**
-   * Error Message
-   */
   errorMessage = signal<string | null>(null);
 
   /**
-   * Get session user account
+   * Session data
    */
   sessionUserAccount = this.iamStore.sessionUserAccount;
-  /**
-   * Get session user
-   */
   sessionUser = this.iamStore.sessionUser;
+
+  private loaded = false;
+
+  readonly allServices = this.catalogStore.services;
+  readonly autoRepairOffers = this.catalogStore.serviceOffers;
+  readonly isOffersLoading = this.catalogStore.loading;
 
   /**
    * Get current auto repair
@@ -65,26 +68,35 @@ export class ManageAutoRepair {
    * Auto Repair Form
    */
   autoRepairForm = this.fb.group({
-    workshopName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
-    ruc: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^\d{11}$/)] }),
-    phoneNumber: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/^\d{9}$/)] }),
-    department: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    district: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    address: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(5)] }),
-    email: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.email] })
+    workshopName: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.minLength(3)]}),
+    ruc: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.pattern(/^\d{11}$/)]}),
+    phoneNumber: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.pattern(/^\d{9}$/)]}),
+    department: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
+    district: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
+    address: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.minLength(5)]}),
+    email: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.email]})
   });
 
   /**
    * Constructor for loading initial data
    */
   constructor() {
-    // Load initial data
     this.loadCurrentData();
+
+    effect(() => {
+      if (this.loaded) return;
+
+      const autoRepair = this.currentAutoRepair();
+
+      if (!autoRepair?.id) return;
+
+      this.loaded = true;
+      this.loadServiceCatalog(autoRepair.id);
+    });
   }
 
   /**
    * Load current data into the form
-   * @private
    */
   private loadCurrentData(): void {
     const user = this.sessionUser();
@@ -117,7 +129,7 @@ export class ManageAutoRepair {
   onSaveChanges(): void {
     if (this.autoRepairForm.invalid) {
       this.autoRepairForm.markAllAsTouched();
-      this.errorMessage.set('Por favor, completa todos los campos correctamente');
+      this.errorMessage.set('Please complete all fields correctly.');
       this.successMessage.set(null);
       setTimeout(() => this.errorMessage.set(null), 5000);
       return;
@@ -136,7 +148,7 @@ export class ManageAutoRepair {
     if (!user || !location || !autoRepair) {
       console.error('Missing required data');
       this.isLoading.set(false);
-      this.errorMessage.set('Error: No se encontraron los datos del taller');
+      this.errorMessage.set('Error: Workshop data could not be found.');
       setTimeout(() => this.errorMessage.set(null), 5000);
       return;
     }
@@ -162,7 +174,7 @@ export class ManageAutoRepair {
       });
       this.iamStore.updateLocation(updatedLocation);
 
-      // Update AutoRepair
+      // Update Auto Repair
       const updatedAutoRepair = new AutoRepair({
         id_auto_repair: autoRepair.id,
         ruc: formData.ruc,
@@ -172,17 +184,52 @@ export class ManageAutoRepair {
       });
       this.registerStore.updateAutoRepair(updatedAutoRepair);
 
-      // Wait a bit for the updates to complete
       setTimeout(() => {
         this.isLoading.set(false);
-        this.successMessage.set('¡Cambios guardados correctamente!');
+        this.successMessage.set('Changes saved successfully!');
         setTimeout(() => this.successMessage.set(null), 5000);
       }, 1000);
+
     } catch (error) {
       console.error('Error updating auto repair data:', error);
       this.isLoading.set(false);
-      this.errorMessage.set('Error al guardar los cambios. Por favor, intenta nuevamente.');
+      this.errorMessage.set('Error while saving changes. Please try again.');
       setTimeout(() => this.errorMessage.set(null), 5000);
     }
+  }
+
+  private loadServiceCatalog(autoRepairId: number | string): void {
+    this.catalogStore.loadServiceOffers(autoRepairId);
+  }
+
+  getServiceName(id: string) {
+    return this.catalogStore.getServiceById(id)()?.name;
+  }
+
+  goToAddService(): void {
+    this.router.navigate(['/layout-workshop/auto-repair-catalog/service-form']);
+  }
+
+  onDeleteOffer(serviceOfferId: number | string): void {
+    this.errorMessage.set(null);
+    this.successMessage.set(null);
+
+    const currentAutoRepairId = this.currentAutoRepair()?.id;
+
+    if (!currentAutoRepairId) {
+      this.errorMessage.set('Error: Unable to determine workshop ID to delete the offer.');
+      return;
+    }
+
+    this.catalogStore.deleteServiceOffer(currentAutoRepairId, serviceOfferId);
+
+    setTimeout(() => {
+      if (this.catalogStore.error()) {
+        this.errorMessage.set(`Failed to delete the offer: ${this.catalogStore.error()}`);
+      } else if (!this.catalogStore.loading()) {
+        this.successMessage.set('Service offer deleted successfully.');
+        setTimeout(() => this.successMessage.set(null), 5000);
+      }
+    }, 500);
   }
 }

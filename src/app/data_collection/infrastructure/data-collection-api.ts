@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BaseApi} from '@shared/infrastructure/http/base-api';
-import {ServiceApiEndpoint} from './service-api-endpoint';
+import {ServiceApiEndpoint} from '@catalog/infrastructure/service-api-endpoint';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Service} from '../domain/model/service.entity';
+import {Service} from '@catalog/domain/model/service.entity';
 import {VisitApiEndpoint} from './visit-api-endpoint';
 import {Visit} from '../domain/model/visit.entity';
 
@@ -33,50 +33,6 @@ export class DataCollectionApi extends BaseApi {
     super();
     this.mainServiceEndpoint = new ServiceApiEndpoint(http);
     this.visitEndpoint = new VisitApiEndpoint(http);
-  }
-
-  /**
-   * Gets all Services.
-   * @returns An Observable of an array of Services.
-   */
-  getServices(): Observable<Service[]> {
-    return this.mainServiceEndpoint.getAll();
-  }
-
-  /**
-   * Gets a Service by its ID.
-   * @param id - The ID of the Service.
-   * @returns An Observable of the Service.
-   */
-  getServiceById(id: number |string): Observable<Service> {
-    return this.mainServiceEndpoint.getById(id);
-  }
-
-  /**
-   * Creates a new Service.
-   * @param service - The Service to create.
-   * @returns An Observable of the created Service.
-   */
-  createService(service: Service): Observable<Service> {
-    return this.mainServiceEndpoint.create(service);
-  }
-
-  /**
-   * Updates an existing Service.
-   * @param service - The Service to update.
-   * @returns An Observable of the updated Service.
-   */
-  updateService(service: Service): Observable<Service> {
-    return this.mainServiceEndpoint.update(service, service.id);
-  }
-
-  /**
-   * Deletes a Service by its ID.
-   * @param id - The ID of the Service to delete.
-   * @returns An Observable of void.
-   */
-  deleteService(id: number | string): Observable<void> {
-    return this.mainServiceEndpoint.delete(id);
   }
 
   /**

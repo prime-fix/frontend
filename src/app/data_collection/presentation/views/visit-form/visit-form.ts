@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, effect, signal} from '@angular/core';
 import {inject} from '@angular/core';
 import {FormBuilder,FormControl,ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -8,6 +8,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-visit-form',
@@ -22,6 +23,7 @@ export class VisitForm {
   private dataCollectionStore=inject(DataCollectionStore);
   private diagnosisStore = inject(DiagnosisStore);
   private iamStore = inject(IamStore);
+  private catalogStore = inject(CatalogStore);
 
   /**
    * Form group for visit submission
@@ -45,6 +47,29 @@ export class VisitForm {
   autoRepairId = signal<string>('');
 
   /**
+   * List of services (global)
+   */
+  services = this.catalogStore.services;
+
+  /**
+   * List of service offers (loaded for the selected auto repair)
+   */
+  serviceOffers = this.catalogStore.serviceOffers;
+
+  /**
+   * Computed signal: Filters the full service list to show only those services
+   * that have an active offer from the selected auto repair shop.
+   */
+  servicesWithActiveOffer = computed(() => {
+    const allServices = this.services();
+    const offers = this.serviceOffers();
+
+    const offeredServiceIds = new Set(offers.map(offer => offer.service_id));
+
+    return allServices.filter(service => offeredServiceIds.has(service.id));
+  });
+
+  /**
    * Vehicles filtered by the current user
    */
   vehiclesFilteredByCurrentUser = computed(() => {
@@ -54,10 +79,6 @@ export class VisitForm {
     return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user));
   })
 
-  /**
-   * List of services
-   */
-  services = this.dataCollectionStore.services;
 
   /**
    * Initializes the component and subscribes to route parameters
@@ -65,6 +86,13 @@ export class VisitForm {
   constructor() {
     this.route.params.subscribe(params => {
       this.autoRepairId.set(params['id']);
+    });
+
+    effect(() => {
+      const id = this.autoRepairId();
+      if (id) {
+        this.catalogStore.loadServiceOffers(id);
+      }
     });
   }
 

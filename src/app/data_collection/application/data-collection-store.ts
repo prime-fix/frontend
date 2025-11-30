@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {Vehicle} from '@tracking/domain/model/vehicle.entity';
-import {Service} from '../domain/model/service.entity';
+import {Service} from '@catalog/domain/model/service.entity';
 import {Visit} from '../domain/model/visit.entity';
 import {DataCollectionApi} from '../infrastructure/data-collection-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -8,6 +8,7 @@ import {retry} from 'rxjs';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 import {CatalogStore} from '@catalog/application/catalog-store';
 import {TrackingStore} from '@tracking/application/tracking-store';
+import {CatalogApi} from '@catalog/infrastructure/catalog-api';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,6 @@ import {TrackingStore} from '@tracking/application/tracking-store';
 export class DataCollectionStore {
   private readonly catalogStore = inject(CatalogStore);
   private readonly trackingStore = inject(TrackingStore);
-
   /**
    * Signal holding the list of Services.
    * @private
@@ -89,18 +89,9 @@ export class DataCollectionStore {
    * @param dataCollectionApi - The API service for data collection operations.
    */
   constructor(private dataCollectionApi : DataCollectionApi) {
-    this.loadServices();
     this.loadVisits()
   }
 
-  /**
-   * Gets a Service by its ID.
-   * @param id - The ID of the Service.
-   * @returns A signal containing the Service or undefined if not found.
-   */
-  getServiceById(id: number |string| null | undefined): Signal<Service | undefined> {
-    return computed(() => id ? this.services().find(s => s.id === id) : undefined);
-  }
 
   /**
    * Gets an Auto Repair register by its ID.
@@ -264,25 +255,6 @@ export class DataCollectionStore {
     });
   }
 
-  /**
-   * Loads the list of Services.
-   * @private
-   * @returns void
-   */
-  private loadServices(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.dataCollectionApi.getServices().pipe(takeUntilDestroyed()).subscribe({
-      next: mainServices => {
-        this.serviceSignal.set(mainServices);
-        this.loadingSignal.set(false);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load main services'));
-        this.loadingSignal.set(false);
-      }
-    });
-  }
 
   /**
    * Formats error messages for user-friendly display.

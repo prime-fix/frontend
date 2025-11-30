@@ -1,7 +1,7 @@
 import {BaseApiEndpoint} from '@shared/infrastructure/http/base-api-endpoint';
-import {Service} from '../domain/model/service.entity';
-import {MaintenanceServiceResource, MaintenanceServiceResponse} from './service-response';
-import {ServiceAssembler} from './service-assembler';
+import {Service} from '@catalog/domain/model/service.entity';
+import {MaintenanceServiceResource, MaintenanceServiceResponse} from '@catalog/infrastructure/service-response';
+import {ServiceAssembler} from '@catalog/infrastructure/service-assembler';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@env/environment';
 

@@ -17,7 +17,7 @@ export interface MaintenanceServiceResource extends BaseResource{
   /**
    * The unique identifier for the service.
    */
-  id_service:number;
+  id_service:string;
   /**
    * The name of the service.
    */

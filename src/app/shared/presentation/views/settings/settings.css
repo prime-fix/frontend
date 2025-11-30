@@ -246,9 +246,6 @@
   margin: 0;
 }
 
-.payment-bank {
-  font-family: var(--font-semibold);
-}
 
 .btn-delete {
   background-color: transparent;

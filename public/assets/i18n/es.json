@@ -523,7 +523,15 @@
     "email": "Correo electrónico",
     "emailPlaceholder": "autoreparaciones@gmail.com",
     "back": "Volver",
-    "saveChanges": "Guardar cambios"
+    "saveChanges": "Guardar cambios",
+    "catalogTitle": "Servicios Registrados",
+    "serviceName": "Nombre",
+    "price": "Precio",
+    "duration": "Duración (horas)",
+    "edit": "Activar",
+    "delete": "Eliminar",
+    "addService": "Añadir Servicio",
+    "noOffers": "Sin Servicios"
   },
   "settings-view": {
     "title": "Configuración",
@@ -617,5 +625,42 @@
     "title": "Página no encontrada",
     "content": "La ruta <strong>{{ invalid_path }}</strong> no es válida.",
     "go-home": "Ir al inicio"
+  },
+  "manage-services": {
+    "service-title": "Administrar Servicios",
+    "create-new": "Crear Nuevos Servicios",
+    "service-name": "Nombre del Servicio",
+    "name-placeholder": "Nombre",
+    "service-description": "Descripcion",
+    "description-placeholder": "Descripcion",
+    "create-service-btn": "Añadir servicio",
+    "existing-services": "Servicios creados",
+    "pending": "Pendiente",
+    "configured": "Asignado",
+    "configure-offer-btn": "Configurar servicio",
+    "recently-created": "Servicios recien creados",
+    "no-services-yet": "Vacio",
+    "name-required": "Nombre requerido",
+    "description-required": "Descripcion Requerida",
+    "create-form-error": "Error al crear el servico",
+    "service-created-success": "Servicio creado",
+    "confirm-delete": "¿Eliminar servicio?",
+    "service-deleted-success": "Servicio eliminado"
+  },
+  "general": {
+    "view-all-services": "Todos los servicios registrados",
+    "back-to-workshop": "Taller",
+    "view-recently-created": "Servicios recien creados"
+  },
+  "service-offer": {
+    "title": "Setallar Servicios",
+    "service-not-found": "Servicio no encontrado",
+    "price": "Precio del servicio",
+    "price-placeholder": "Precio",
+    "price-required": "Precio requerido",
+    "duration": "Duracion del servicio",
+    "duration-placeholder": "Duracion",
+    "duration-required": "Duracion requerida",
+    "save-config-btn": "Guardar servicio"
   }
 }

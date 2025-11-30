@@ -21,7 +21,7 @@ export const environment = {
   primeFixExpectedVisitsEndpointPath: "/expected_visits",
   primeFixDiagnosticsEndpointPath: "/diagnostics",
   primeFixProviderRatingsEndpointPath: "/ratings",
-
+  primeFixProviderServiceOfferEndpointPath: "/service_offer",
   // API Key
   primeFixProviderApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtscnR6Y2plaGJrZmNrb2hydnZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMDc4NjQsImV4cCI6MjA3NDY4Mzg2NH0.abo91QGTMisENqS_a-8QWV0WP3VZSkkOkRUitRv8iBw',
 
@@ -41,5 +41,7 @@ export const environment = {
   visitIdQueryParamKey: "id_visit",
   expectedVisitIdQueryParamKey: "id_expected",
   diagnosticIdQueryParamKey: "id_diagnostic",
-  ratingIdQueryParamKey: "id_rating"
+  ratingIdQueryParamKey: "id_rating",
+  serviceOfferIdQueryParamKey: "service_offer_id"
+
 };

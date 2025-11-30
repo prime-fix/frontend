@@ -2,10 +2,12 @@ import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 import {Location} from '@catalog/domain/model/location.entity';
 import {CatalogApi} from '@catalog/infrastructure/catalog-api';
-import {retry} from 'rxjs';
+import {retry, take} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
+import {Service} from '@catalog/domain/model/service.entity';
+import {ServiceOffer} from '@catalog/domain/model/service-offer.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,11 @@ export class CatalogStore {
    * @private
    */
   private readonly locationsSignal = signal<Location[]>([]);
+  /**
+   * Signal holding the list of Services.
+   * @private
+   */
+  private readonly serviceSignal= signal<Service[]>([]);
 
   /**
    * Signal holding the list of Auto Repair registers.
@@ -35,11 +42,20 @@ export class CatalogStore {
    */
   private readonly autoRepairsSignal = signal<AutoRepair[]>([]);
 
+  private readonly serviceOffersSignal = signal<ServiceOffer[]>([]);
+
   /**
    * Readonly version of locations signal.
    * @readonly
    */
   readonly locations = this.locationsSignal.asReadonly();
+
+
+  readonly serviceOffers = this.serviceOffersSignal.asReadonly();
+  /**
+   * Signal exposing the list of Services.
+   */
+  readonly services = this.serviceSignal.asReadonly();
 
   /**
    * Signal exposing the list of Auto Repair registers.
@@ -74,11 +90,18 @@ export class CatalogStore {
    */
   readonly expectedVisitCount = computed(() => this.diagnosisStore.expectedVisitCount());
 
+  readonly serviceOfferCount = computed(() => this.serviceOffers().length);
+
   /**
    * Computed signal for the count of locations.
    * @readonly
    */
   readonly locationCount = computed(() => this.locations().length);
+
+  /**
+   * Signal exposing the count of Services.
+   */
+  readonly serviceCount = computed(() => this.services().length);
 
   /**
    * Signal exposing the count of Auto Repair registers.
@@ -92,6 +115,7 @@ export class CatalogStore {
   constructor(private catalogApi: CatalogApi) {
     this.loadLocations();
     this.loadAutoRepairs();
+    this.loadServices();
   }
 
   /**
@@ -101,6 +125,10 @@ export class CatalogStore {
   getExpectedVisitById(id: string | null | undefined): Signal<ExpectedVisit | undefined> {
     // Delegate to DiagnosisStore
     return this.diagnosisStore.getExpectedVisitById(id);
+  }
+
+  getServiceOfferById(id: number | string | null | undefined): Signal<ServiceOffer | undefined> {
+    return computed(() => id ? this.serviceOffers().find(so => so.id === id) : undefined);
   }
 
   /**
@@ -134,6 +162,16 @@ export class CatalogStore {
   }
 
   /**
+   * Gets a Service by its ID.
+   * @param id - The ID of the Service.
+   * @returns A signal containing the Service or undefined if not found.
+   */
+  getServiceById(id: number |string| null | undefined): Signal<Service | undefined> {
+    return computed(() => id ? this.services().find(s => s.id === id) : undefined);
+  }
+
+
+  /**
    * Gets a location by its ID.
    * @param id - The ID of the location to retrieve.
    */
@@ -155,6 +193,98 @@ export class CatalogStore {
       },
       error: err => {
         this.errorSignal.set(this.formatError(err, 'Failed to create location'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  addService(service:Service):void{
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.createService(service).pipe(retry(2)).subscribe({
+      next: createdService =>{
+        this.serviceSignal.set([...this.services(), createdService]);
+        this.loadingSignal.set(false);
+      },
+      error:err => {
+        this.errorSignal.set(this.formatError(err,'Failed to create service'));
+        this.loadingSignal.set(false);
+      }
+    })
+  }
+
+  loadServiceOffers(autoRepairId: number | string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    this.catalogApi.getServiceOffersByAutoRepairsId(autoRepairId)
+      .subscribe({
+        next: (offers) => {
+          this.serviceOffersSignal.set(offers);
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.errorSignal.set(
+            this.formatError(err, `Failed to load offers for auto repair ${autoRepairId}`)
+          );
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  addServiceOffer(autoRepairId: number | string, payload: any): void {
+    if (this.loadingSignal()) {
+      return;
+    }
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    this.catalogApi.addServiceOffer(autoRepairId, payload)
+      .pipe(
+        take(1)
+      )
+      .subscribe({
+        next: (responseFromApi: any) => {
+          this.loadingSignal.set(false);
+        },
+        error: (err) => {
+          this.loadingSignal.set(false);
+        }
+      });
+  }
+
+  deleteServiceOffer(autoRepairId: number | string, serviceOfferId: number | string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.deleteServiceOffer(autoRepairId, serviceOfferId).pipe(retry(2)).subscribe({
+      next: () => {
+        this.serviceOffersSignal.update(offers => offers.filter(o => o.id !== serviceOfferId));
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete service offer'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+
+  /**
+   * Loads the list of Services.
+   * @private
+   * @returns void
+   */
+  private loadServices(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.catalogApi.getServices().pipe(takeUntilDestroyed()).subscribe({
+      next: mainServices => {
+        this.serviceSignal.set(mainServices);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load main services'));
         this.loadingSignal.set(false);
       }
     });
@@ -208,6 +338,22 @@ export class CatalogStore {
     });
   }
 
+  deleteService(id:string):void{
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    const idNumber = Number(id);
+    this.catalogApi.deleteService(id).pipe(retry(2)).subscribe({
+      next: () => {
+        this.serviceSignal.update(service => service.filter(l => l.id !== id))
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to delete service'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
   /**
    * Adds a new Auto Repair register.
    * @param autoRepair - The Auto Repair register to add.
@@ -225,6 +371,15 @@ export class CatalogStore {
         this.errorSignal.set(this.formatError(err, 'Failed to create auto repair'));
         this.loadingSignal.set(false);
       }
+    });
+  }
+
+  getAutoRepairIdByUserId(userId: string | null | undefined): Signal<string | undefined> {
+    return computed(() => {
+      if (!userId) return undefined;
+
+      const autoRepair = this.autoRepairs().find(ar => ar.id_user_account === userId);
+      return autoRepair?.id;
     });
   }
 
@@ -318,6 +473,21 @@ export class CatalogStore {
    * @returns A formatted error message.
    */
   private formatError(error: any, fallback: string): string {
+    if (error && error.error && error.error.message) {
+      return error.error.message;
+    }
+    if (error && error.message) {
+      return error.message;
+    }
+    if (error && error.error) {
+      try {
+        const apiError = JSON.parse(error.error);
+        return apiError.message || fallback;
+      } catch (e) {
+        return error.error;
+      }
+    }
+
     if (error instanceof Error) {
       return error.message.includes('Resource not found') ? `${fallback}: Not found` : error.message;
     }

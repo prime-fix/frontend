@@ -1,0 +1,150 @@
+<div class="service-container">
+  <div class="form-header">
+    <h1 class="page-title">{{ 'manage-services.service-title' | translate }}</h1>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="notification-message error-message">
+      <span>✕ {{ errorMessage() }}</span>
+    </div>
+  }
+  @if (successMessage()) {
+    <div class="notification-message success-message">
+      <span>✓ {{ successMessage() }}</span>
+    </div>
+  }
+
+  <div class="content-layout">
+
+    <div class="creation-column">
+      <h2 class="section-title">{{ 'manage-services.create-new' | translate }}</h2>
+
+      <form [formGroup]="serviceForm" (ngSubmit)="onCreateService()" class="service-creation-form">
+        <div class="form-card">
+
+          <div class="form-group">
+            <label class="form-label" for="serviceName">{{ 'manage-services.service-name' | translate }}</label>
+            <input
+              id="serviceName"
+              type="text"
+              class="form-input"
+              formControlName="name"
+              [placeholder]="'manage-services.name-placeholder' | translate"
+            />
+            @if (serviceForm.get('name')?.invalid && serviceForm.get('name')?.touched) {
+              <span class="error-message">{{ 'manage-services.name-required' | translate }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="serviceDescription">{{ 'manage-services.service-description' | translate }}</label>
+            <textarea
+              id="serviceDescription"
+              class="form-input form-textarea"
+              formControlName="description"
+              [placeholder]="'manage-services.description-placeholder' | translate"
+              rows="4"
+            ></textarea>
+            @if (serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched) {
+              <span class="error-message">{{ 'manage-services.description-required' | translate }}</span>
+            }
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="serviceForm.invalid || isLoading()"
+        >
+          {{ 'manage-services.create-service-btn' | translate }}
+        </button>
+      </form>
+    </div>
+
+    <div class="list-column">
+
+      <h2 class="section-title">
+        @if (isFilteringByRecent()) {
+          {{ 'manage-services.recently-created' | translate }}
+        } @else {
+          {{ 'manage-services.existing-services' | translate }}
+        }
+      </h2>
+
+      @if (displayedServices().length === 0 && !isLoading()) {
+        <div class="empty-state">{{ 'manage-services.no-services-yet' | translate }}</div>
+      }
+
+      @if (isLoading()) {
+        <div class="loading-state">{{ 'general.loading' | translate }}...</div>
+      }
+
+      <div class="service-list">
+        @for (service of displayedServices(); track service.id) {
+          <div
+            class="service-item"
+            [class.selected]="selectedServiceId() === service.id"
+            (click)="selectedServiceId.set(service.id)"
+          >
+            <div class="service-header">
+              <span class="service-name">({{ service.id }}) {{ service.name }}</span>
+              @if (hasOffer(service.id)) {
+                <span class="status-badge status-configured">{{ 'manage-services.configured' | translate }}</span>
+              } @else {
+                <span class="status-badge status-pending">{{ 'manage-services.pending' | translate }}</span>
+              }
+            </div>
+
+            @if (selectedServiceId() === service.id) {
+              <div class="service-details">
+                <p>{{ service.description }}</p>
+
+                <div class="service-actions">
+                  <button
+                    type="button"
+                    class="btn-delete"
+                    [disabled]="isLoading()"
+                    (click)="$event.stopPropagation(); onDeleteService(service.id)"
+                  >
+                    {{ 'general.delete' | translate }}
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-next"
+                    [disabled]="isLoading()"
+                    (click)="$event.stopPropagation(); onConfigureOffer(service.id)"
+                  >
+                    {{ 'manage-services.configure-offer-btn' | translate }}
+                  </button>
+                </div>
+
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions bottom-actions">
+
+    <button type="button" class="cancel-btn" (click)="onBackToWorkshop()">
+      {{ 'general.back-to-workshop' | translate }}
+    </button>
+
+    <button
+      type="button"
+      class="btn-secondary"
+      (click)="onToggleServiceView()"
+      [disabled]="isLoading()"
+    >
+      @if (isFilteringByRecent()) {
+        {{ 'general.view-all-services' | translate }}
+      } @else {
+        {{ 'general.view-recently-created' | translate }}
+      }
+    </button>
+
+  </div>
+</div>

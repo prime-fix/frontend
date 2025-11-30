@@ -153,6 +153,11 @@ export const routes: Routes = [
         title: `${baseTitle} -  Vehicle Diagnosis`,
       },
       {
+        path: 'auto-repair-catalog',
+        loadChildren : () => autoRepairCatalogRoutes,
+        title: `${baseTitle} -  Auto Repair Catalog`,
+      },
+      {
         path: '404',
         loadComponent: pageNotFound,
         title: `${baseTitle} -  Not Found`,

@@ -1,6 +1,6 @@
 import {BaseAssembler} from '@shared/infrastructure/http/base-assembler';
-import {Service} from '../domain/model/service.entity';
-import {MaintenanceServiceResource, MaintenanceServiceResponse} from './service-response';
+import {Service} from '@catalog/domain/model/service.entity';
+import {MaintenanceServiceResource, MaintenanceServiceResponse} from '@catalog/infrastructure/service-response';
 
 /**
  * Assembler for converting between Service entities and resources.

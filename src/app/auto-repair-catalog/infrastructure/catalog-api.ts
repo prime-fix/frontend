@@ -6,6 +6,9 @@ import {Location} from '@catalog/domain/model/location.entity';
 import {LocationApiEndpoint} from '@catalog/infrastructure/location-api-endpoint';
 import {AutoRepairApiEndpoint} from '@catalog/infrastructure/auto-repair-api-endpoint';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
+import {ServiceApiEndpoint} from '@catalog/infrastructure/service-api-endpoint';
+import {Service} from '@catalog/domain/model/service.entity';
+import {ServiceOffer} from '@catalog/domain/model/service-offer.entity';
 
 /**
  * Catalog API service that provides methods to interact with the AutoRepair catalog backend.
@@ -23,6 +26,12 @@ export class CatalogApi extends BaseApi {
   private readonly locationsEndpoint: LocationApiEndpoint;
 
   /**
+   * The ServiceApiEndpoint instance for managing services.
+   * @private
+   */
+  private readonly mainServiceEndpoint: ServiceApiEndpoint;
+
+  /**
    * The AutoRepairApiEndpoint instance for managing auto repairs.
    * @private
    */
@@ -36,6 +45,7 @@ export class CatalogApi extends BaseApi {
     super();
     this.locationsEndpoint = new LocationApiEndpoint(http);
     this.autoRepairsEndpoint = new AutoRepairApiEndpoint(http);
+    this.mainServiceEndpoint = new ServiceApiEndpoint(http);
   }
 
   /**
@@ -44,6 +54,50 @@ export class CatalogApi extends BaseApi {
    */
   getLocations(): Observable<Location[]> {
     return this.locationsEndpoint.getAll();
+  }
+
+  /**
+   * Gets all Services.
+   * @returns An Observable of an array of Services.
+   */
+  getServices(): Observable<Service[]> {
+    return this.mainServiceEndpoint.getAll();
+  }
+
+  /**
+   * Gets a Service by its ID.
+   * @param id - The ID of the Service.
+   * @returns An Observable of the Service.
+   */
+  getServiceById(id: number |string): Observable<Service> {
+    return this.mainServiceEndpoint.getById(id);
+  }
+
+  /**
+   * Creates a new Service.
+   * @param service - The Service to create.
+   * @returns An Observable of the created Service.
+   */
+  createService(service: Service): Observable<Service> {
+    return this.mainServiceEndpoint.create(service);
+  }
+
+  /**
+   * Updates an existing Service.
+   * @param service - The Service to update.
+   * @returns An Observable of the updated Service.
+   */
+  updateService(service: Service): Observable<Service> {
+    return this.mainServiceEndpoint.update(service, service.id);
+  }
+
+  /**
+   * Deletes a Service by its ID.
+   * @param id - The ID of the Service to delete.
+   * @returns An Observable of void.
+   */
+  deleteService(id: number | string): Observable<void> {
+    return this.mainServiceEndpoint.delete(id);
   }
 
   /**
@@ -125,4 +179,18 @@ export class CatalogApi extends BaseApi {
   deleteAutoRepair(id: number | string): Observable<void> {
     return this.autoRepairsEndpoint.delete(id);
   }
+
+
+  addServiceOffer(id:number|string, payload: number): Observable<ServiceOffer>{
+    return this.autoRepairsEndpoint.addOffer(id,payload);
+  }
+
+  getServiceOffersByAutoRepairsId(autoRepairId:number|string) : Observable<ServiceOffer[]>{
+    return this.autoRepairsEndpoint.getOffers(autoRepairId);
+  }
+
+  deleteServiceOffer(autoRepairId: number | string, serviceOfferId: number | string): Observable<void> {
+    return this.autoRepairsEndpoint.deleteOffer(autoRepairId, serviceOfferId);
+  }
+
 }

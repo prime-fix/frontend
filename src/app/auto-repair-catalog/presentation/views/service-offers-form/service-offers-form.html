@@ -1,0 +1,85 @@
+<div class="offer-config-container">
+  <div class="form-header">
+    <h1 class="page-title">{{ 'service-offer.title' | translate }}</h1>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="notification-message error-message">
+      <span>✕ {{ errorMessage() }}</span>
+    </div>
+  }
+  @if (successMessage()) {
+    <div class="notification-message success-message">
+      <span>✓ {{ successMessage() }}</span>
+    </div>
+  }
+
+  @if (currentService()) {
+    <div class="service-context-card">
+      <h2 class="section-title">{{ 'service-offer.configuring-for' | translate }}</h2>
+      <p class="service-name-display">
+        <strong>({{ currentService()?.id }}) {{ currentService()?.name }}</strong>
+      </p>
+      <p class="service-description-display">
+        {{ currentService()?.description }}
+      </p>
+    </div>
+  } @else if (!isLoading()) {
+    <div class="notification-message error-message">
+      <span>✕ {{ 'service-offer.service-not-found' | translate }}</span>
+    </div>
+  }
+
+  <form [formGroup]="offerForm" (ngSubmit)="onCreateOrUpdateOffer()" class="offer-creation-form">
+    <div class="form-card">
+
+      <div class="form-group">
+        <label class="form-label" for="price">{{ 'service-offer.price' | translate }} (Soles/USD)</label>
+        <input
+          id="price"
+          type="number"
+          step="0.01"
+          class="form-input"
+          formControlName="price"
+          [placeholder]="'service-offer.price-placeholder' | translate"
+        />
+        @if (offerForm.get('price')?.invalid && offerForm.get('price')?.touched) {
+          <span class="error-message">{{ 'service-offer.price-required' | translate }}</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="duration">{{ 'service-offer.duration' | translate }} (Horas)</label>
+        <input
+          id="duration"
+          type="number"
+          step="1"
+          class="form-input"
+          formControlName="duration"
+          [placeholder]="'service-offer.duration-placeholder' | translate"
+        />
+        @if (offerForm.get('duration')?.invalid && offerForm.get('duration')?.touched) {
+          <span class="error-message">{{ 'service-offer.duration-required' | translate }}</span>
+        }
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="offerForm.invalid || isLoading()"
+      >
+        {{ 'service-offer.save-config-btn' | translate }}
+      </button>
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="onBackToServiceList()"
+      >
+        {{ 'general.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
