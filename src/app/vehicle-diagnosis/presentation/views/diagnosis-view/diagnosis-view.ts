@@ -143,7 +143,7 @@ export class DiagnosisView {
       vehicle_brand: oldVehicle()?._vehicle_brand!,
       vehicle_plate: oldVehicle()?._vehicle_plate!,
       vehicle_type: oldVehicle()?._vehicle_type!,
-      state_maintenance: this.selectedState()!
+      maintenance_status: this.selectedState()!
     });
 
     this.diagnosisStore.updateVehicle(updatedVehicle);

@@ -42,7 +42,7 @@ export class PaymentView{
   AmountSelected: string;
 
   paymentForm = this.fb.group({
-    card_number: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    card_number: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     month: new FormControl<number>(1, { nonNullable: true, validators: [Validators.required] }),
     year: new FormControl<number>(new Date().getFullYear(), { nonNullable: true, validators: [Validators.required] }),
     cvv: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),

@@ -35,14 +35,14 @@ export class Vehicle implements BaseEntity{
   /**
    * The maintenance state of the vehicle.
    */
- _state_maintenance: number;
+ _maintenance_status: number;
 
   /**
    * Creates an instance of Vehicle.
    * @param vehicle - An object containing the properties of the vehicle.
    */
   constructor( vehicle:{ id:number, color:string, model:string, user_id:number, vehicle_brand:string,
-  vehicle_plate:string, vehicle_type:string, state_maintenance:number }) {
+  vehicle_plate:string, vehicle_type:string, maintenance_status:number }) {
     this._id=vehicle.id;
     this._color=vehicle.color;
     this._model=vehicle.model;
@@ -50,7 +50,7 @@ export class Vehicle implements BaseEntity{
     this._vehicle_brand=vehicle.vehicle_brand;
     this._vehicle_plate=vehicle.vehicle_plate;
     this._vehicle_type=vehicle.vehicle_type;
-    this._state_maintenance=vehicle.state_maintenance;
+    this._maintenance_status=vehicle.maintenance_status;
   }
 
   /* --- Getters & Setters --- */
@@ -61,7 +61,7 @@ export class Vehicle implements BaseEntity{
   get vehicle_brand(): string {return this._vehicle_brand;}
   get vehicle_plate(): string {return this._vehicle_plate;}
   get vehicle_type(): string {return this._vehicle_type;}
-  get state_maintenance(): number {return this._state_maintenance;}
+  get maintenance_status(): number {return this._maintenance_status;}
   set id(value: number) {this._id = value;}
   set color(value: string) {this._color = value;}
   set model(value: string) {this._model = value;}
@@ -69,5 +69,5 @@ export class Vehicle implements BaseEntity{
   set vehicle_brand(value: string) {this._vehicle_brand = value;}
   set vehicle_plate(value: string) {this._vehicle_plate = value;}
   set vehicle_type(value: string) {this._vehicle_type = value;}
-  set state_maintenance(value: number) {this._state_maintenance = value;}
+  set maintenance_status(value: number) {this._maintenance_status = value;}
 }

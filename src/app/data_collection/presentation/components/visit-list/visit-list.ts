@@ -61,10 +61,10 @@ export class VisitList {
       // Filter by maintenance state
       if (isScheduled) {
         // Scheduled visits: state_maintenance < 6 (before collected)
-        return vehicle.state_maintenance < 6;
+        return vehicle.maintenance_status < 6;
       } else {
         // History: state_maintenance === 6 (collected)
-        return vehicle.state_maintenance === 6;
+        return vehicle.maintenance_status === 6;
       }
     });
   });
@@ -101,6 +101,7 @@ export class VisitList {
 
   /**
    * Confirm and execute visit cancellation
+   * Updates state_visit to CANCELLED_VISIT
    */
   confirmCancelVisit() {
     const visitId = this.selectedVisitId();
@@ -118,7 +119,7 @@ export class VisitList {
 
     const updatedExpectedVisit = new ExpectedVisit({
       id: expectedVisit.id,
-      state_visit: 'Visit Cancelled',
+      state_visit: 'CANCELLED_VISIT',
       visit_id: visitId,
       is_scheduled: false,
       vehicle_id: expectedVisit.vehicle_id
@@ -135,11 +136,12 @@ export class VisitList {
 
   /**
    * Check if a visit is cancelled
+   * Checks if state_visit is CANCELLED_VISIT (matches backend enum)
    * @param visitId - ID of the visit
    */
   isVisitCancelled(visitId: number) {
     const expectedVisit = this.diagnosisStore.expectedVisits().find(v => v.visit_id === visitId);
-    return expectedVisit?.state_visit === 'Visit Cancelled' && !expectedVisit.is_scheduled;
+    return expectedVisit?.state_visit === 'CANCELLED_VISIT' && !expectedVisit.is_scheduled;
   }
 
   /**

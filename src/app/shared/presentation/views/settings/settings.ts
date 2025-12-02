@@ -252,14 +252,14 @@ export class Settings {
     console.log('Renovar suscripción');
   }
 
-  getCardBrand(cardNumber: number): string {
+  getCardBrand(cardNumber: string): string {
     const firstDigit = cardNumber.toString()[0];
     if (firstDigit === '4') return 'Visa';
     if (firstDigit === '5') return 'Mastercard';
     return 'Desconocido';
   }
 
-  formatCardNumber(cardNumber: number): string {
+  formatCardNumber(cardNumber: string): string {
     const str = cardNumber.toString();
     return str.replace(/(\d{4})/g, '$1 ').trim();
   }

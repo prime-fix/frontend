@@ -84,16 +84,7 @@ export class VisitForm {
       service_id: formValue.service_id ?? 0,
     });
 
-    const expectedVisit = new ExpectedVisit({
-      id: 0, // ID will be set by backend or store
-      state_visit: 'Pending_Visit',
-      visit_id: visit.id,
-      is_scheduled: false,
-      vehicle_id: visit.vehicle_id,
-    })
-
     this.dataCollectionStore.addVisit(visit);
-    this.diagnosisStore.addExpectedVisit(expectedVisit);
     this.router.navigate(['layout-owner/data-collection/visit-alert']).then();
   }
 

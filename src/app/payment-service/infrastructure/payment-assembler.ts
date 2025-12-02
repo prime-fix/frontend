@@ -27,7 +27,7 @@ export class PaymentAssembler implements BaseAssembler<Payment, PaymentResource,
       card_type: resource.card_type,
       month: resource.month,
       year: resource.year,
-      cvv: resource.cvv,
+      ccv: resource.ccv,
       user_account_id: resource.user_account_id
     })
   }
@@ -44,7 +44,7 @@ export class PaymentAssembler implements BaseAssembler<Payment, PaymentResource,
       card_type: entity.card_type,
       month: entity.month,
       year: entity.year,
-      cvv: entity.cvv,
+      ccv: entity.ccv,
       user_account_id: entity.user_account_id
     } as PaymentResource;
   }

@@ -1,12 +1,12 @@
 {
   "user_accounts": [
     {
-      "id": 2,
+      "id": 4,
       "username": "Emily33",
       "email": "emily.johnson@hotmail.com",
-      "user_id": 2,
+      "user_id": 3,
       "role_id": 1,
-      "membership_id": 2,
+      "membership_id": 3,
       "password": "password123",
       "is_new": true
     },
@@ -14,9 +14,9 @@
       "id": 1,
       "username": "John23",
       "email": "john.smith@gmail.com",
-      "user_id": 1,
+      "user_id": 2,
       "role_id": 1,
-      "membership_id": 1,
+      "membership_id": 2,
       "password": "password123",
       "is_new": false
     },
@@ -24,9 +24,9 @@
       "id": 3,
       "username": "MikeB",
       "email": "michael.brown@hotmail.com",
-      "user_id": 3,
+      "user_id": 4,
       "role_id": 1,
-      "membership_id": 3,
+      "membership_id": 4,
       "password": "password123",
       "is_new": false
     },
@@ -34,9 +34,9 @@
       "id": 4,
       "username": "SophiaD",
       "email": "sophia.davis@example.com",
-      "user_id": 4,
+      "user_id": 5,
       "role_id": 1,
-      "membership_id": 2,
+      "membership_id": 5,
       "password": "password123",
       "is_new": false
     },
@@ -44,9 +44,9 @@
       "id": 5,
       "username": "Taller1",
       "email": "taller1@hotmail.com",
-      "user_id": 5,
+      "user_id": 6,
       "role_id": 2,
-      "membership_id": 4,
+      "membership_id": 6,
       "password": "password123",
       "is_new": false
     },
@@ -54,9 +54,9 @@
       "id": 6,
       "username": "Taller2",
       "email": "taller2@hotmail.com",
-      "user_id": 6,
+      "user_id": 7,
       "role_id": 2,
-      "membership_id": 1,
+      "membership_id": 7,
       "password": "password123",
       "is_new": false
     },
@@ -64,9 +64,9 @@
       "id": 7,
       "username": "Taller3",
       "email": "taller3@gmail.com",
-      "user_id": 7,
+      "user_id": 8,
       "role_id": 2,
-      "membership_id": 2,
+      "membership_id": 8,
       "password": "password123",
       "is_new": false
     },
@@ -74,9 +74,9 @@
       "id": 8,
       "username": "Taller4",
       "email": "taller4@hotmail.com",
-      "user_id": 8,
+      "user_id": 9,
       "role_id": 2,
-      "membership_id": 1,
+      "membership_id": 9,
       "password": "password123",
       "is_new": false
     },
@@ -84,9 +84,9 @@
       "id": 9,
       "username": "Taller5",
       "email": "taller5@hotmail.com",
-      "user_id": 9,
+      "user_id": 10,
       "role_id": 2,
-      "membership_id": 3,
+      "membership_id": 10,
       "password": "password123",
       "is_new": false
     }
@@ -96,41 +96,41 @@
       "id": 1,
       "name": "John",
       "last_name": "Smith",
-      "dni": "123456789",
+      "dni": "12345678",
       "phone_number": "952-123-232",
-      "location_id": 1
+      "id_location": 1
     },
     {
       "id": 2,
       "name": "Emily",
       "last_name": "Johnson",
-      "dni": "987654321",
+      "dni": "87654321",
       "phone_number": "942-321-123",
-      "location_id": 2
+      "id_location": 2
     },
     {
       "id": 3,
       "name": "Michael",
       "last_name": "Brown",
-      "dni": "456789012",
+      "dni": "45678901",
       "phone_number": "933213231",
-      "location_id": 3
+      "id_location": 3
     },
     {
       "id": 4,
       "name": "Sophia",
       "last_name": "Davis",
-      "dni": "654321987",
+      "dni": "65432198",
       "phone_number": "921312312",
-      "location_id": 4
+      "id_location": 4
     },
     {
       "id": 5,
       "name": "Manuel",
       "last_name": "Ibarra",
-      "dni": "20123456",
+      "dni": "02323456",
       "phone_number": "912345678",
-      "location_id": 5
+      "id_location": 5
     },
     {
       "id": 6,
@@ -138,7 +138,7 @@
       "last_name": "Lopez",
       "dni": "30123456",
       "phone_number": "923456789",
-      "location_id": 6
+      "id_location": 6
     },
     {
       "id": 7,
@@ -146,7 +146,7 @@
       "last_name": "Martinez",
       "dni": "40123456",
       "phone_number": "934567890",
-      "location_id": 7
+      "id_location": 7
     },
     {
       "id": 8,
@@ -154,7 +154,7 @@
       "last_name": "Garcia",
       "dni": "50123456",
       "phone_number": "945678901",
-      "location_id": 8
+      "id_location": 8
     },
     {
       "id": 9,
@@ -162,7 +162,7 @@
       "last_name": "Rodriguez",
       "dni": "60123456",
       "phone_number": "956789012",
-      "location_id": 9
+      "id_location": 9
     }
   ],
   "payments": [
@@ -172,80 +172,80 @@
       "card_type": "Visa",
       "month": 12,
       "year": 2025,
-      "cvv": 123,
-      "user_account_id": 1
+      "ccv": 123,
+      "user_account_id": 2
     },
     {
       "id": 2,
       "card_number": 5678567856785678,
-      "card_type": "MasterCard",
+      "card_type": "MASTERCARD",
       "month": 6,
       "year": 2024,
-      "cvv": 456,
-      "user_account_id": 2
+      "ccv": 456,
+      "user_account_id": 3
     },
     {
       "id": 3,
       "card_number": 9876987698769876,
-      "card_type": "American Express",
+      "card_type": "AMEX",
       "month": 9,
       "year": 2026,
-      "cvv": 789,
-      "user_account_id": 3
+      "ccv": 789,
+      "user_account_id": 4
     },
     {
       "id": 4,
       "card_number": 4321432143214321,
-      "card_type": "Discover",
+      "card_type": "AMEX",
       "month": 3,
       "year": 2025,
-      "cvv": 321,
-      "user_account_id": 4
+      "ccv": 321,
+      "user_account_id": 5
     },
     {
       "id": 5,
       "card_number": 8765876587658765,
-      "card_type": "Visa",
+      "card_type": "VISA",
       "month": 11,
       "year": 2024,
-      "cvv": 654,
-      "user_account_id": 5
+      "ccv": 654,
+      "user_account_id": 6
     },
     {
       "id": 6,
       "card_number": 3456345634563456,
-      "card_type": "MasterCard",
+      "card_type": "AMEX",
       "month": 8,
       "year": 2027,
-      "cvv": 987,
-      "user_account_id": 6
+      "ccv": 987,
+      "user_account_id": 7
     },
     {
       "id": 7,
       "card_number": 2103210321032103,
-      "card_type": "American Express",
+      "card_type": "AMEX",
       "month": 5,
       "year": 2027,
-      "cvv": 159,
-      "user_account_id": 7
+      "ccv": 159,
+      "user_account_id": 8
     },
     {
       "id": 8,
       "card_number": 6543654365436543,
-      "card_type": "Discover",
+      "card_type": "AMEX",
       "month": 2,
       "year": 2027,
-      "cvv": 753,
-      "user_account_id": 8
+      "ccv": 753,
+      "user_account_id": 9
     },
     {
       "id": 9,
       "card_number": 7890789078907890,
-      "card_type": "Visa",
+      "card_type": "VISA",
       "month": 10,
       "year": 2027,
-      "cvv": 852,
-      "user_account_id": 9
+      "ccv": 852,
+      "user_account_id": 10
     }
   ],
   "locations": [
@@ -307,35 +307,35 @@
   "auto_repairs": [
     {
       "id": 1,
-      "ruc": "987654321",
+      "ruc": "98765432100",
       "contact_email": "taller1.contacto@hotmail.com",
       "technicians_count": 10,
       "user_account_id": 5
     },
     {
       "id": 2,
-      "ruc": "123456789",
+      "ruc": "12345678900",
       "contact_email": "taller2.contacto@hotmail.com",
       "technicians_count": 8,
       "user_account_id": 6
     },
     {
       "id": 3,
-      "ruc": "456789123",
+      "ruc": "45678912300",
       "contact_email": "taller3.contacto@hotmail.com",
       "technicians_count": 15,
       "user_account_id": 7
     },
     {
       "id": 4,
-      "ruc": "789123456",
+      "ruc": "78912345600",
       "contact_email": "taller4.contacto@hotmail.com",
       "technicians_count": 12,
       "user_account_id": 8
     },
     {
       "id": 5,
-      "ruc": "321654987",
+      "ruc": "32165498700",
       "contact_email": "taller5.contacto@hotmail.com",
       "technicians_count": 20,
       "user_account_id": 9

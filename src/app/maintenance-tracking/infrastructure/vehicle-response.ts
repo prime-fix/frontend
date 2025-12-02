@@ -45,5 +45,5 @@ export interface VehicleResource extends BaseResource {
   /**
    * State of the vehicle maintenance.
    */
-  state_maintenance: number;
+  maintenance_status: number;
 }

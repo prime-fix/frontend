@@ -5,7 +5,6 @@ import {CommonModule} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {ProgressBar} from '@tracking/presentation/components/progress-bar/progress-bar';
 import {StateError} from '@tracking/presentation/components/state-error/state-error';
-import {StateNotification} from '@tracking/presentation/views/state-notification/state-notification';
 import {TrackingStore} from '@tracking/application/tracking-store';
 import {IamStore} from '@iam/application/iam-store';
 import {Vehicle} from '@tracking/domain/model/vehicle.entity';
@@ -13,7 +12,7 @@ import {ListDiagnostics} from '@tracking/presentation/components/list-diagnostic
 
 @Component({
   selector: 'app-track-vehicle',
-  imports: [ReactiveFormsModule, TranslateModule, CommonModule, ProgressBar, StateError, StateNotification, ListDiagnostics],
+  imports: [ReactiveFormsModule, TranslateModule, CommonModule, ProgressBar, StateError, ListDiagnostics],
   templateUrl: './track-vehicle.html',
   styleUrl: './track-vehicle.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,8 +26,6 @@ export class TrackVehicle {
   selectedVehicle = signal<Vehicle | undefined>(undefined);
   showProgressBar = signal<boolean>(false);
   showError = signal<boolean>(false);
-  showNotificationModal = signal<boolean>(false);
-  hasNotification = signal<boolean>(true);
 
   // Vehicles filtered by userId
   vehiclesByUserId = computed(() => {
@@ -67,23 +64,23 @@ export class TrackVehicle {
     this.selectedVehicle.set(this.vehiclesByUserId().find(v => v.id === selectedVehicleId));
 
     if (this.selectedVehicle()) {
-      // Show error if maintenance status is 0 (not being repaired)
-      if (this.selectedVehicle()?.state_maintenance === 0) {
+      const maintenanceStatus = this.selectedVehicle()?.maintenance_status;
+      console.log('🔍 Selected vehicle:', {
+        id: this.selectedVehicle()?.id,
+        plate: this.selectedVehicle()?.vehicle_plate,
+        maintenance_status: maintenanceStatus
+      });
+
+      // Show error if maintenance_status is 0 (not being serviced/not accepted)
+      if (maintenanceStatus === 0) {
+        console.log('⚠️ Vehicle not being serviced (maintenance_status: 0), showing error state');
         this.showError.set(true);
         this.showProgressBar.set(false);
       } else {
+        console.log('✅ Vehicle in service (maintenance_status:', maintenanceStatus + '), showing progress');
         this.showError.set(false);
         this.showProgressBar.set(true);
       }
     }
-  }
-
-  openNotificationModal() {
-    this.showNotificationModal.set(true);
-  }
-
-  closeNotificationModal() {
-    this.showNotificationModal.set(false);
-    this.hasNotification.set(false);
   }
 }

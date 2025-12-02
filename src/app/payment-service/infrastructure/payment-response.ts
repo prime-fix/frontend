@@ -12,10 +12,10 @@ export interface PaymentResponse extends BaseResponse {
  */
 export interface PaymentResource extends BaseResource {
   id: number;
-  card_number: number;
+  card_number: string;
   card_type: string;
   month: number;
   year: number;
-  cvv: number;
+  ccv: number;
   user_account_id: number;
 }

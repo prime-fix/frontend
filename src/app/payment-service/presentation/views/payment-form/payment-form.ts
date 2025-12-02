@@ -44,7 +44,7 @@ export class PaymentForm {
    * Reactive form for payment details.
    */
   form = this.fb.group({
-    card_number: new FormControl<number | null>(null, { nonNullable: true, validators: [Validators.required, Validators.minLength(16), Validators.maxLength(16)] }),
+    card_number: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(16), Validators.maxLength(16)] }),
     card_type: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     month: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     year: new FormControl<number | null>(null, { validators: [Validators.required] }),

@@ -62,6 +62,20 @@ export class TrackingStore {
   readonly notificationCount = computed(() => this.notifications.length);
 
   /**
+   * Computed signal for unread notifications only.
+   */
+  readonly unreadNotifications = computed(() =>
+    this.notifications().filter(n => !n.read)
+  );
+
+  /**
+   * Computed signal for the count of unread notifications.
+   */
+  readonly unreadNotificationCount = computed(() =>
+    this.unreadNotifications().length
+  );
+
+  /**
    * Signal exposing the count of Vehicles, Auto Repairs, Services, and Visits.
    */
   readonly vehicleCount = computed(() => this.vehicles().length);

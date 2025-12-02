@@ -1180,7 +1180,7 @@ export class IamStore {
    * Finalizes the registration process by creating and storing all related entities.
    * @param payment - The payment information provided during registration.
    */
-  finishRegister(payment: { card_number: number; month: number; year:number; cvv: number; card_type: string; }): void {
+  finishRegister(payment: { card_number: string; month: number; year:number; cvv: number; card_type: string; }): void {
     const role = this.registerRoleSignal();
     const user = this.registerUserSignal();
     const userAccount = this.registerUserAccountSignal();
@@ -1188,29 +1188,58 @@ export class IamStore {
     const membershipId = this.registerMemberShipTypeSignal();
 
     if(!role || !user || !userAccount || !location || !membershipId || !payment) {
+      console.error('❌ Incomplete registration flow:', {
+        hasRole: !!role,
+        hasUser: !!user,
+        hasUserAccount: !!userAccount,
+        hasLocation: !!location,
+        hasMembershipId: !!membershipId,
+        hasPayment: !!payment
+      });
       this.errorSignal.set('Incomplete registration flow');
       return;
     }
 
-    const newPayment = new Payment({
-      id: 0, // Assign ID in the Backend
-      card_number: payment.card_number,
-      card_type: payment.card_type,
-      month: payment.month,
-      year: payment.year,
-      cvv: payment.cvv,
-      user_account_id: userAccount.id
+    console.log('📋 Registration data collected:', {
+      role,
+      user: `${user.name} ${user.last_name}`,
+      userAccount: userAccount.username,
+      location: `${location.district}, ${location.department}`,
+      membershipId,
+      payment: payment.card_type
     });
 
-    console.log(location);
-    console.log(user);
-    console.log(userAccount);
-    console.log(newPayment);
-
-    this.addLocation(location);
-    this.addUser(user);
-    this.addUserAccount(userAccount);
-    this.addPayment(newPayment);
+    // Call the appropriate sign-up endpoint based on role
+    // If AWS is available, it will create everything in one request
+    // If AWS fails, the methods will fallback to Supabase and create entities individually
+    if (role === 'Vehicle Owner') {
+      this.registerVehicleOwner({
+        fullName: `${user.name} ${user.last_name}`,
+        username: userAccount.username,
+        dni: user.dni,
+        phone_number: user.phone_number,
+        department: location.department,
+        district: location.district,
+        address: location.address,
+        email: userAccount.email,
+        password: userAccount.password
+      });
+    } else if (role === 'Auto Repair Shop') {
+      this.registerAutoRepair({
+        name_workshop: user.name, // Workshop name is stored in user.name
+        username: userAccount.username,
+        ruc: user.dni, // RUC is stored in user.dni for workshops
+        phone_number: user.phone_number,
+        department: location.department,
+        district: location.district,
+        address: location.address,
+        email: userAccount.email,
+        password: userAccount.password
+      });
+    } else {
+      console.error('❌ Invalid role:', role);
+      this.errorSignal.set('Invalid user role');
+    }
   }
 
   /**
@@ -1319,7 +1348,8 @@ export class IamStore {
 
   /**
    * Fallback registration for vehicle owner using Supabase
-   * Creates entities in FK order: Location → User → UserAccount
+   * This is called from finishRegister() when AWS is not available
+   * Creates all entities in one batch to avoid dirty data
    * @private
    */
   private registerVehicleOwnerFallbackSupabase(formData: {
@@ -1333,6 +1363,16 @@ export class IamStore {
     email: string;
     password: string;
   }): void {
+    console.log('📤 Registering vehicle owner with Supabase (fallback)...');
+
+    // Split fullName into name and lastName
+    const nameParts = formData.fullName.trim().split(' ');
+    const name = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ');
+
+    // Get payment and membership data from registration signals
+    const membershipId = this.registerMemberShipTypeSignal();
+
     // Step 1: Create Location
     const newLocation = new Location({
       id: 0,
@@ -1344,7 +1384,7 @@ export class IamStore {
     console.log('📤 Creating Location (Supabase):', newLocation);
     this.catalogStore.addLocation(newLocation);
 
-    // Wait for location creation, then create user
+    // Wait for location creation
     setTimeout(() => {
       const createdLocation = this.catalogStore.locations().find(l =>
         l.department === formData.department &&
@@ -1353,17 +1393,19 @@ export class IamStore {
       );
 
       if (!createdLocation) {
+        console.error('❌ Failed to create location');
         this.errorSignal.set('Failed to create location');
         this.loadingSignal.set(false);
         return;
       }
 
+      console.log('✅ Location created:', createdLocation);
+
       // Step 2: Create User
-      const nameParts = formData.fullName.trim().split(' ');
       const newUser = new User({
         id: 0,
-        name: nameParts[0] || '',
-        last_name: nameParts.slice(1).join(' '),
+        name: name,
+        last_name: lastName,
         dni: formData.dni,
         phone_number: formData.phone_number,
         location_id: createdLocation.id
@@ -1372,7 +1414,7 @@ export class IamStore {
       console.log('📤 Creating User (Supabase):', newUser);
       this.addUser(newUser);
 
-      // Wait for user creation, then create user account
+      // Wait for user creation
       setTimeout(() => {
         const createdUser = this.users().find(u =>
           u.dni === formData.dni &&
@@ -1380,10 +1422,13 @@ export class IamStore {
         );
 
         if (!createdUser) {
+          console.error('❌ Failed to create user');
           this.errorSignal.set('Failed to create user');
           this.loadingSignal.set(false);
           return;
         }
+
+        console.log('✅ User created:', createdUser);
 
         // Step 3: Create UserAccount
         const newUserAccount = new UserAccount({
@@ -1392,7 +1437,7 @@ export class IamStore {
           email: formData.email.trim(),
           user_id: createdUser.id,
           role_id: 1, // Vehicle Owner
-          membership_id: 0,
+          membership_id: membershipId || 1,
           password: formData.password,
           is_new: true
         });
@@ -1407,20 +1452,24 @@ export class IamStore {
           );
 
           if (!createdUserAccount) {
+            console.error('❌ Failed to create user account');
             this.errorSignal.set('Failed to create user account');
             this.loadingSignal.set(false);
             return;
           }
 
+          console.log('✅ UserAccount created:', createdUserAccount);
           console.log('✅ Vehicle owner registration successful (Supabase fallback)');
 
           // Set session without JWT (Supabase fallback)
           this.sessionUserAccountSignal.set(createdUserAccount);
           this.sessionUserSignal.set(createdUser);
           this.saveSessionToStorage(); // No JWT for Supabase
-          this.loadingSignal.set(false);
 
-          // Auto-redirect to plan-owner will be handled by component effect
+          // Force load all stores data
+          this.forceLoadAllStoresData();
+
+          this.loadingSignal.set(false);
         }, 500);
       }, 500);
     }, 500);

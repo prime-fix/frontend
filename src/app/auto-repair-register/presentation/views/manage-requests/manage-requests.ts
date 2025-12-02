@@ -51,6 +51,7 @@ export class ManageRequests {
 
   /**
    * Get pending expected visits for the current workshop
+   * Filters by PENDING_VISIT state and not scheduled
    */
   pendingExpectedVisits = computed(() => {
     const visitsByAutoRepair = this.dataCollectionStore.visits().filter(v => v.auto_repair_id === this.currentAutoRepair()?.id);
@@ -59,7 +60,7 @@ export class ManageRequests {
     return expectedVisitByVisit.filter(ev =>
       visitsByAutoRepair.some(v => v.id === ev.visit_id) &&
       !ev.is_scheduled &&
-      ev.state_visit === 'Pending Visit'
+      ev.state_visit === 'PENDING_VISIT' // Matches backend enum default value
     );
   });
 
@@ -123,29 +124,35 @@ export class ManageRequests {
 
   /**
    * Accept an expected visit request
+   * Changes state_visit from PENDING_VISIT to SCHEDULED_VISIT
    */
   onAcceptExpectedVisit(expectedVisit: ExpectedVisit): void {
+    console.log('✅ Accepting expected visit:', expectedVisit.id);
     const newExpectedVisit = new ExpectedVisit({
       id: expectedVisit.id,
-      state_visit: 'Scheduled visit',
+      state_visit: 'SCHEDULED_VISIT', // Matches backend enum
       visit_id: expectedVisit.visit_id,
       is_scheduled: true,
       vehicle_id: expectedVisit.vehicle_id
     });
     this.diagnosisStore.updateExpectedVisit(newExpectedVisit);
+    this.onCloseModal(); // Close modal after accepting
   }
 
   /**
    * Reject an expected visit request
+   * Changes state_visit from PENDING_VISIT to CANCELLED_VISIT
    */
   onRejectExpectedVisit(expectedVisit: ExpectedVisit): void {
+    console.log('❌ Rejecting expected visit:', expectedVisit.id);
     const newExpectedVisit = new ExpectedVisit({
       id: expectedVisit.id,
-      state_visit: 'Visit cannot be scheduled',
+      state_visit: 'CANCELLED_VISIT', // Matches backend enum
       visit_id: expectedVisit.visit_id,
       is_scheduled: false,
       vehicle_id: expectedVisit.vehicle_id
     });
     this.diagnosisStore.updateExpectedVisit(newExpectedVisit);
+    this.onCloseModal(); // Close modal after rejecting
   }
 }

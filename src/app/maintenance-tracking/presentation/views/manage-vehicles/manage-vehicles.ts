@@ -87,7 +87,7 @@ export class ManageVehicles {
           user_id: userId,
           vehicle_brand: formData.brand,
           vehicle_type: formData.type,
-          state_maintenance: 0
+          maintenance_status: 0
         });
         this.trackingStore.updateVehicle(updatedVehicle);
       }
@@ -101,7 +101,7 @@ export class ManageVehicles {
         user_id: userId,
         vehicle_brand: formData.brand,
         vehicle_type: formData.type,
-        state_maintenance: 0
+        maintenance_status: 0
       });
       this.trackingStore.addVehicle(newVehicle);
     }
