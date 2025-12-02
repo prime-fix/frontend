@@ -335,6 +335,12 @@
     "message-collect": "Your vehicle was collected",
     "button-go-payment": "Go to payment"
   },
+  "list-diagnostics": {
+    "title": "Vehicle Diagnostics",
+    "noDiagnostics": "No diagnostics available for this vehicle",
+    "diagnosisLabel": "Diagnosis",
+    "totalLabel": "Total to pay"
+  },
   "track-vehicle": {
     "title": "Track Vehicle",
     "selectVehicle": "Select Vehicle",

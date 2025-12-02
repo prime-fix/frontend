@@ -335,6 +335,12 @@
     "message-collect": "Tu coche ya fue recogido",
     "button-go-payment": "Ir a pagar"
   },
+  "list-diagnostics": {
+    "title": "Diagnósticos del vehículo",
+    "noDiagnostics": "No hay diagnósticos disponibles para este vehículo",
+    "diagnosisLabel": "Diagnóstico",
+    "totalLabel": "Total a pagar"
+  },
   "track-vehicle": {
     "title": "Seguir estado",
     "selectVehicle": "Seleccionar coche",

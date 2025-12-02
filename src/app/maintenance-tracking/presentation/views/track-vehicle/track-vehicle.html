@@ -27,12 +27,12 @@
           id="vehicle"
           formControlName="selectedVehicleId"
           class="form-select">
-          <option value="" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
+          <option [ngValue]="null" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
           @for (vehicle of vehiclesByUserId(); track vehicle.id) {
-            <option [value]="vehicle.id">{{ vehicle.vehicle_brand }} [{{ vehicle.vehicle_plate }}]</option>
+            <option [ngValue]="vehicle.id">{{ vehicle.vehicle_brand }} [{{ vehicle.vehicle_plate }}]</option>
           }
         </select>
-        @if (trackForm.get('selectedVehicle')?.invalid && trackForm.get('selectedVehicle')?.touched) {
+        @if (trackForm.get('selectedVehicleId')?.invalid && trackForm.get('selectedVehicleId')?.touched) {
           <span class="error-message">
             {{ 'track-vehicle.vehicleRequired' | translate }}
           </span>
@@ -64,6 +64,9 @@
         </div>
         <div class="progress-section">
           <app-progress-bar [currentStep]="selectedVehicle()?.state_maintenance || 1" [currentVehicle]="selectedVehicle()"></app-progress-bar>
+        </div>
+        <div class="diagnostics-section">
+          <app-list-diagnostics [currentVehicle]="selectedVehicle()"></app-list-diagnostics>
         </div>
       </div>
     }

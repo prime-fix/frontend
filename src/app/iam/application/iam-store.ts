@@ -251,7 +251,7 @@ export class IamStore {
     if (!currentUserId || !userId) {
       return false;
     }
-    return String(userId) === String(currentUserId);
+    return userId === currentUserId;
   }
 
   /**
@@ -259,12 +259,12 @@ export class IamStore {
    * @param userAccountId - The user account ID to check
    * @returns true if the user account ID matches the current session user account ID
    */
-  isCurrentUserAccount(userAccountId: string | null | undefined): boolean {
+  isCurrentUserAccount(userAccountId: number | null | undefined): boolean {
     const currentUserAccountId = this.sessionUserAccountId();
     if (!currentUserAccountId || !userAccountId) {
       return false;
     }
-    return String(userAccountId) === String(currentUserAccountId);
+    return userAccountId === currentUserAccountId;
   }
 
   /**
@@ -283,13 +283,12 @@ export class IamStore {
         const parsed = JSON.parse(sessionData);
         const {userAccount: rawUserAccount, user: rawUser} = parsed;
         const hasUserAccountData = rawUserAccount
-          && typeof rawUserAccount._id_role === 'string'
-          && rawUserAccount._id_role.length > 0
-          && (rawUserAccount._id_role === 'R001' || rawUserAccount._id_role === 'R002');
+          && typeof rawUserAccount._role_id === 'number'
+          && (rawUserAccount._role_id === 1 || rawUserAccount._role_id === 2);
 
         const hasUserData = rawUser
-          && typeof rawUser._user_id === 'string'
-          && rawUser._user_id.length > 0;
+          && typeof rawUser._id === 'number'
+          && rawUser._id > 0;
 
         if (hasUserAccountData && hasUserData) {
           const userAccount = new UserAccount({
@@ -320,7 +319,7 @@ export class IamStore {
           console.error('NOT LOGGED - Corrupted session detected and cleared:', {
             hasUserAccount: !!rawUserAccount,
             hasValidRole: hasUserAccountData,
-            roleValue: rawUserAccount?._id_role,
+            roleValue: rawUserAccount?._role_id,
             hasUser: !!rawUser,
             hasValidUserId: hasUserData
           });

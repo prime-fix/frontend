@@ -30,11 +30,23 @@ export class SearchAutoRepair {
   });
 
   constructor() {
+    // Disable district field initially
+    this.searchForm.get('district')?.disable();
+
     // Watch for changes in the department field
     this.searchForm.get('department')?.valueChanges.subscribe(value => {
       this.selectedDepartmentSignal.set(value || '');
+      const districtControl = this.searchForm.get('district');
+
       // Reset district when department changes
-      this.searchForm.get('district')?.setValue('');
+      districtControl?.setValue('');
+
+      // Enable or disable district based on department selection
+      if (value) {
+        districtControl?.enable();
+      } else {
+        districtControl?.disable();
+      }
     });
   }
 

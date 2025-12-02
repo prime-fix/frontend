@@ -8,10 +8,11 @@ import {StateNotification} from '@tracking/presentation/views/state-notification
 import {TrackingStore} from '@tracking/application/tracking-store';
 import {IamStore} from '@iam/application/iam-store';
 import {Vehicle} from '@tracking/domain/model/vehicle.entity';
+import {ListDiagnostics} from '@tracking/presentation/components/list-diagnostics/list-diagnostics';
 
 @Component({
   selector: 'app-track-vehicle',
-  imports: [ReactiveFormsModule, TranslateModule, CommonModule, ProgressBar, StateError, StateNotification],
+  imports: [ReactiveFormsModule, TranslateModule, CommonModule, ProgressBar, StateError, StateNotification, ListDiagnostics],
   templateUrl: './track-vehicle.html',
   styleUrl: './track-vehicle.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -34,7 +35,7 @@ export class TrackVehicle {
   });
 
   trackForm = this.fb.group({
-    selectedVehicleId: new FormControl<number>(0, {nonNullable: true, validators: [Validators.required]})
+    selectedVehicleId: new FormControl<number | null>(null, {validators: [Validators.required]})
   });
 
   onSelect() {
@@ -43,6 +44,10 @@ export class TrackVehicle {
       return;
     }
     const selectedVehicleId = this.trackForm.get('selectedVehicleId')?.value;
+    if (!selectedVehicleId) {
+      return;
+    }
+
     this.selectedVehicle.set(this.vehiclesByUserId().find(v => v.id === selectedVehicleId));
 
     if (this.selectedVehicle()) {
