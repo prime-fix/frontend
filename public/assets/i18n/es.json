@@ -650,7 +650,10 @@
   "general": {
     "view-all-services": "Todos los servicios registrados",
     "back-to-workshop": "Taller",
-    "view-recently-created": "Servicios recien creados"
+    "view-recently-created": "Servicios recien creados",
+    "delete": "Borrar",
+    "cancel": "Cancelar",
+    "loadingCatalog": "Catalogo Cargando"
   },
   "service-offer": {
     "title": "Setallar Servicios",

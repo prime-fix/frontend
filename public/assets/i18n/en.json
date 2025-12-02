@@ -652,7 +652,8 @@
     "back-to-workshop": "Taller",
     "view-recently-created": "Recently created",
     "cancel": "Cancel",
-    "loadingCatalog": "Loading Catalog"
+    "loadingCatalog": "Loading Catalog",
+    "delete": "Delete"
   },
   "service-offer": {
     "title": "Service Details",
