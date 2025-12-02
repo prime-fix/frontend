@@ -46,7 +46,7 @@
           </h2>
           <div class="notifications-list">
             @for (notification of unreadNotifications(); track notification.id) {
-              <div class="notification-card unread" (click)="markAsRead(notification)">
+              <div class="notification-card unread" (click)="onNotificationClick(notification)">
                 <div class="notification-indicator"></div>
                 <div class="notification-body">
                   <div class="notification-icon">
@@ -74,7 +74,7 @@
           <h2 class="section-title">{{ 'notification-view.read' | translate }}</h2>
           <div class="notifications-list">
             @for (notification of readNotifications(); track notification.id) {
-              <div class="notification-card read" (click)="markAsUnread(notification)">
+              <div class="notification-card read" (click)="onNotificationClick(notification)">
                 <div class="notification-body">
                   <div class="notification-icon">
                     <svg>

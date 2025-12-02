@@ -746,13 +746,13 @@
     },
     {
       "id": 6,
+      "color": "Plata",
       "model": "Mazda3",
       "user_id": 4,
       "vehicle_brand": "Mazda",
       "vehicle_plate": "MNO-987",
       "vehicle_type": "Sedan",
-      "color": "Plata",
-      "state_maintenance": 7
+      "state_maintenance": "4"
     }
   ],
   "visits": [

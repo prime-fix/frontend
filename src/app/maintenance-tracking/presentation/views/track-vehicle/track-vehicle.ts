@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@ang
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
 import {ProgressBar} from '@tracking/presentation/components/progress-bar/progress-bar';
 import {StateError} from '@tracking/presentation/components/state-error/state-error';
 import {StateNotification} from '@tracking/presentation/views/state-notification/state-notification';
@@ -21,6 +22,7 @@ export class TrackVehicle {
   private fb = inject(FormBuilder);
   private trackingStore = inject(TrackingStore);
   private iamStore = inject(IamStore);
+  private route = inject(ActivatedRoute);
 
   selectedVehicle = signal<Vehicle | undefined>(undefined);
   showProgressBar = signal<boolean>(false);
@@ -37,6 +39,20 @@ export class TrackVehicle {
   trackForm = this.fb.group({
     selectedVehicleId: new FormControl<number | null>(null, {validators: [Validators.required]})
   });
+
+  constructor() {
+    // Handle query parameters from notification navigation
+    this.route.queryParams.subscribe(params => {
+      const vehicleId = params['vehicleId'];
+      if (vehicleId) {
+        const vehicleIdNum = Number(vehicleId);
+        // Set the form value
+        this.trackForm.patchValue({ selectedVehicleId: vehicleIdNum });
+        // Automatically trigger the selection
+        setTimeout(() => this.onSelect(), 0);
+      }
+    });
+  }
 
   onSelect() {
     if (this.trackForm.invalid) {
