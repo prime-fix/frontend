@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  usePathParams: true,
+  usePathParams: false,
   // Provider API configuration
   primeFixProviderApiBaseUrl: "https://klrtzcjehbkfckohrvvu.supabase.co/rest/v1",
 

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  usePathParams: false,
+  usePathParams: true,
   // Provider API configuration
   primeFixProviderApiBaseUrl: "http://localhost:3000/api/v1",
 
