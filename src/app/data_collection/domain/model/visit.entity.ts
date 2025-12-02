@@ -7,7 +7,7 @@ export class Visit implements BaseEntity{
   /**
    * The unique identifier for the visit.
    */
- _id_visit: string;
+ _id: number;
   /**
    * The failure description of the visit.
    */
@@ -15,7 +15,7 @@ export class Visit implements BaseEntity{
   /**
    * The unique identifier for the vehicle associated with the visit.
    */
- _id_vehicle: string;
+ _vehicle_id: number;
   /**
    * The time of the visit.
    */
@@ -23,44 +23,36 @@ export class Visit implements BaseEntity{
  /**
   * The unique identifier for the auto repair associated with the visit.
   */
- _id_auto_repair: string;
+ _auto_repair_id: number;
   /**
    * The unique identifier for the service associated with the visit.
    */
- _id_service: string;
+ _service_id: number;
 
   /**
    * Creates an instance of Visit.
-   * @param {Object} visit - An object containing the properties of the visit.
-   * @property {number|string} visit.id_visit - The unique identifier for the visit.
-   * @property {string} visit.failure - The failure description of the visit.
-   * @property {number|string} visit.id_vehicle - The unique identifier for the vehicle.
-   * @property {string|null} visit.time_visit - The time of the visit.
-   * @property {number|string|null} visit.id_auto_repair - The unique identifier for the auto repair.
-   * @property {number|string} visit.id_service - The unique identifier for the service.
+   * @param visit - An object containing the properties of the visit.
    */
-  constructor( visit:{ id_visit:string, failure:string, id_vehicle:string, time_visit:string, id_auto_repair:string
-  , id_service:string}) {
-    this._id_visit=visit.id_visit;
+  constructor( visit:{ id:number, failure:string, vehicle_id:number, time_visit:string, auto_repair_id:number
+  , service_id:number}) {
+    this._id=visit.id;
     this._failure=visit.failure;
-    this._id_vehicle=visit.id_vehicle;
+    this._vehicle_id=visit.vehicle_id;
     this._time_visit=visit.time_visit;
-    this._id_auto_repair=visit.id_auto_repair;
-    this._id_service = visit.id_service;
+    this._auto_repair_id=visit.auto_repair_id;
+    this._service_id=visit.service_id;
   }
   /* --- Getters & Setters --- */
-  get id(): string {return this._id_visit;}
+  get id(): number {return this._id;}
+  set id(value: number) {this._id = value;}
   get failure(): string {return this._failure;}
-  get id_vehicle(): string {return this._id_vehicle;}
-  get time_visit(): string {return this._time_visit;}
-  get id_auto_repair(): string {return this._id_auto_repair;}
-  get id_service(): string {return this._id_service;}
-
-  set id(value: string) {this._id_visit = value;}
   set failure(value: string) {this._failure = value;}
-  set id_vehicle(value: string) {this._id_vehicle = value;}
+  get vehicle_id(): number {return this._vehicle_id;}
+  set vehicle_id(value: number) {this._vehicle_id = value;}
+  get time_visit(): string {return this._time_visit;}
   set time_visit(value: string) {this._time_visit = value;}
-  set id_auto_repair(value: string) {this._id_auto_repair = value;}
-  set id_service(value: string) {this._id_service = value;}
-
+  get auto_repair_id(): number {return this._auto_repair_id;}
+  set auto_repair_id(value: number) {this._auto_repair_id = value;}
+  get service_id(): number {return this._service_id;}
+  set service_id(value: number) {this._service_id = value;}
 }

@@ -52,10 +52,10 @@ export class PaymentView{
 
   constructor() {
     const planId = this.planInfo();
-    if(planId === "M001") {
+    if(planId === 1) {
       this.planSelected = PlanDetails.M001;
       this.AmountSelected = AmountDetails.M001;
-    } else if(planId === "M002") {
+    } else if(planId === 2) {
       this.planSelected = PlanDetails.M002;
       this.AmountSelected = AmountDetails.M002;
     } else {

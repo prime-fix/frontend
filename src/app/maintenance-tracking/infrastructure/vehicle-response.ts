@@ -17,7 +17,7 @@ export interface VehicleResource extends BaseResource {
   /**
    * Unique identifier for the vehicle.
    */
-  id_vehicle: string;
+  id: number;
   /**
    * Color of the vehicle.
    */
@@ -29,7 +29,7 @@ export interface VehicleResource extends BaseResource {
   /**
    * Identifier of the user associated with the vehicle.
    */
-  id_user:string;
+  user_id: number;
   /**
    * Brand of the vehicle.
    */

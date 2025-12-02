@@ -19,12 +19,12 @@ export class NotificationView {
   // Vehicles filtered by userId
   vehiclesByUserId = computed(() => {
     const userId = this.iamStore.sessionUserId();
-    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.user_id)) : [];
   });
 
   notificationsByVehiclesId = computed(() => {
     const vehicleIds = this.vehiclesByUserId().map(v => v.id);
-    return this.trackingStore.notifications().filter(notification => vehicleIds.includes(notification.id_vehicle));
+    return this.trackingStore.notifications().filter(notification => vehicleIds.includes(notification.vehicle_id));
   })
 
   loading = this.trackingStore.loading;
@@ -47,12 +47,11 @@ export class NotificationView {
   markAsRead(notification: Notification): void {
     if (!notification.read) {
       const updatedNotification = new Notification({
-        id_notification: notification.id,
+        id: notification.id,
         message: notification.message,
         sent: notification.sent,
-        id_vehicle: notification.id_vehicle,
+        vehicle_id: notification.vehicle_id,
         read: true,
-        id_diagnostic: notification.id_diagnostic,
       })
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -64,12 +63,11 @@ export class NotificationView {
   markAsUnread(notification: Notification): void {
     if (notification.read) {
       const updatedNotification = new Notification({
-        id_notification: notification.id,
+        id: notification.id,
         message: notification.message,
         sent: notification.sent,
-        id_vehicle: notification.id_vehicle,
+        vehicle_id: notification.vehicle_id,
         read: false,
-        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     }
@@ -81,12 +79,11 @@ export class NotificationView {
   markAllAsRead(): void {
     this.unreadNotifications().forEach(notification => {
       const updatedNotification = new Notification({
-        id_notification: notification.id,
+        id: notification.id,
         message: notification.message,
         sent: notification.sent,
-        id_vehicle: notification.id_vehicle,
+        vehicle_id: notification.vehicle_id,
         read: true,
-        id_diagnostic: notification.id_diagnostic,
       });
       this.trackingStore.updateNotification(updatedNotification);
     });

@@ -25,7 +25,7 @@
         <label for="vehicle" class="form-label">{{ 'track-vehicle.selectVehicle' | translate }}</label>
         <select
           id="vehicle"
-          formControlName="selectedVehicle"
+          formControlName="selectedVehicleId"
           class="form-select">
           <option value="" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
           @for (vehicle of vehiclesByUserId(); track vehicle.id) {

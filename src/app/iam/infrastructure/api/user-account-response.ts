@@ -17,7 +17,7 @@ export interface UserAccountResource extends BaseResource {
   /**
    * Unique identifier for the user account
    */
-  id_user_account: string;
+  id: number;
   /**
    * Username of the account
    */
@@ -29,15 +29,15 @@ export interface UserAccountResource extends BaseResource {
   /**
    * Identifier for the user
    */
-  id_user: string;
+  user_id: number;
   /**
    * Identifier for the role
    */
-  id_role: string;
+  role_id: number;
   /**
    * Identifier for the membership
    */
-  id_membership: string;
+  membership_id: number;
   /**
    * Password for the account
    */

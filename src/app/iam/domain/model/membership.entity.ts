@@ -7,7 +7,7 @@ export class Membership implements BaseEntity {
   /**
    * Unique identifier for the membership
    */
-  _id_membership: string;
+  _id: number;
   /**
    * Description of the membership
    */
@@ -23,22 +23,18 @@ export class Membership implements BaseEntity {
 
   /**
    * Creates a new Membership instance.
-   * @param {Object} membership - An object containing membership details.
-   * @param {string} membership.id_membership - Unique identifier for the membership.
-   * @param {string} membership.description - Description of the membership.
-   * @param {string} membership.started - Start date of the membership.
-   * @param {string} membership.over - End date of the membership.
+   * @param membership - An object containing membership details.
    */
-  constructor(membership: { id_membership: string; description: string; started: string; over: string; }) {
-    this._id_membership = membership.id_membership;
+  constructor(membership: { id: number; description: string; started: string; over: string; }) {
+    this._id = membership.id;
     this._description = membership.description;
     this._started = membership.started;
     this._over = membership.over;
   }
 
   /** Getters and Setters */
-  get id (): string { return this._id_membership; }
-  set id (value: string) { this._id_membership = value; }
+  get id (): number { return this._id; }
+  set id (value: number) { this._id = value; }
   get description (): string { return this._description; }
   set description (value: string) { this._description = value; }
   get started (): string { return this._started; }

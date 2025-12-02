@@ -7,7 +7,7 @@ export class Diagnostic implements BaseEntity {
   /**
    * The unique identifier for the diagnostic.
    */
-  _id_diagnostic: string;
+  _id: number;
   /**
    * The price of the diagnostic.
    */
@@ -15,41 +15,29 @@ export class Diagnostic implements BaseEntity {
   /**
    * The vehicle ID associated with the diagnostic.
    */
-  _id_vehicle: string;
+  _vehicle_id: number;
   /**
    * The diagnosis details.
    */
   _diagnosis: string;
-  /**
-   * The expected ID associated with the diagnostic.
-   */
-  _id_expected: string;
 
   /**
    * Creates an instance of Diagnostic.
-   * @param {Object} diagnostic - An object containing the properties of the diagnostic.
-   * @property {string} diagnostic.id_diagnostic - The unique identifier for the diagnostic.
-   * @property {number} diagnostic.price - The price of the diagnostic.
-   * @property {string} diagnostic.id_vehicle - The vehicle ID associated with the diagnostic.
-   * @property {string} diagnostic.diagnosis - The diagnosis details.
-   * @property {string} diagnostic.id_expected - The expected ID associated with the diagnostic.
+   * @param diagnostic - An object containing the properties of the diagnostic.
    */
-  constructor(diagnostic: { id_diagnostic: string; price: number; id_vehicle: string; diagnosis: string; id_expected: string }) {
-    this._id_diagnostic = diagnostic.id_diagnostic;
+  constructor(diagnostic: { id: number; price: number; vehicle_id: number; diagnosis: string; }) {
+    this._id = diagnostic.id;
     this._price = diagnostic.price;
-    this._id_vehicle = diagnostic.id_vehicle;
+    this._vehicle_id = diagnostic.vehicle_id;
     this._diagnosis = diagnostic.diagnosis;
-    this._id_expected = diagnostic.id_expected;
   }
   /* --- Getters & Setters --- */
-  get id(): string { return this._id_diagnostic; }
-  set id(id: string) { this._id_diagnostic = id; }
+  get id(): number { return this._id; }
+  set id(id: number) { this._id = id; }
   get price(): number { return this._price; }
   set price(price: number) { this._price = price; }
-  get id_vehicle(): string { return this._id_vehicle; }
-  set id_vehicle(id_vehicle: string) { this._id_vehicle = id_vehicle; }
+  get vehicle_id(): number { return this._vehicle_id; }
+  set vehicle_id(vehicle_id: number) { this._vehicle_id = vehicle_id; }
   get diagnosis(): string { return this._diagnosis; }
   set diagnosis(diagnosis: string) { this._diagnosis = diagnosis; }
-  get id_expected(): string { return this._id_expected; }
-  set id_expected(id_expected: string) { this._id_expected = id_expected; }
 }

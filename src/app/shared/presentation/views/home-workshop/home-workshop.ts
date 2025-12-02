@@ -29,13 +29,13 @@ export class HomeWorkshop {
       return;
     }
     const updatedUserAccount = new UserAccount({
-      id_user_account: this.sessionUserAccount()?._id_user_account!,
-      username: this.sessionUserAccount()?._username!,
-      email: this.sessionUserAccount()?._email!,
-      id_user: this.sessionUserAccount()?._id_user!,
-      id_role: this.sessionUserAccount()?._id_role!,
-      id_membership: this.sessionUserAccount()?._id_membership!,
-      password: this.sessionUserAccount()?._password!,
+      id: this.sessionUserAccount()?.id!,
+      username: this.sessionUserAccount()?.username!,
+      email: this.sessionUserAccount()?.email!,
+      user_id: this.sessionUserAccount()?.user_id!,
+      role_id: this.sessionUserAccount()?.role_id!,
+      membership_id: this.sessionUserAccount()?.membership_id!,
+      password: this.sessionUserAccount()?.password!,
       is_new: false,
     })
     this.iamStore.updateUserAccount(updatedUserAccount);

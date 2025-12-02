@@ -49,7 +49,7 @@ export class PaymentServiceApi extends BaseApi{
    * @param id - The ID of the payment to be fetched.
    * @return An Observable emitting the Payment entity.
    */
-  getPayment(id: string): Observable<Payment> {
+  getPayment(id: number): Observable<Payment> {
     return this.paymentsEndpoint.getById(id);
   }
 
@@ -76,7 +76,7 @@ export class PaymentServiceApi extends BaseApi{
    * @param id - The ID of the payment to be deleted.
    * @return An Observable emitting void upon successful deletion.
    */
-  deletePayment(id: string): Observable<void> {
+  deletePayment(id: number): Observable<void> {
     return this.paymentsEndpoint.delete(id);
   }
 
@@ -93,7 +93,7 @@ export class PaymentServiceApi extends BaseApi{
    * @param id - The ID of the rating to be fetched.
    * @return An Observable emitting the Rating entity.
    */
-  getRating(id: string): Observable<Rating> {
+  getRating(id: number): Observable<Rating> {
     return this.ratingsEndpoint.getById(id);
   }
 
@@ -120,7 +120,7 @@ export class PaymentServiceApi extends BaseApi{
    * @param id - The ID of the rating to be deleted.
    * @return An Observable emitting void upon successful deletion.
    */
-  deleteRating(id: string): Observable<void> {
+  deleteRating(id: number): Observable<void> {
     return this.ratingsEndpoint.delete(id);
   }
 }

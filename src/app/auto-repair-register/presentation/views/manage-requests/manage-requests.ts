@@ -46,18 +46,18 @@ export class ManageRequests {
   currentAutoRepair = computed(() => {
     const userAccountId = this.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
    * Get pending expected visits for the current workshop
    */
   pendingExpectedVisits = computed(() => {
-    const visitsByAutoRepair = this.dataCollectionStore.visits().filter(v => v.id_auto_repair === this.currentAutoRepair()?.id);
+    const visitsByAutoRepair = this.dataCollectionStore.visits().filter(v => v.auto_repair_id === this.currentAutoRepair()?.id);
     const expectedVisitByVisit = this.diagnosisStore.expectedVisits();
 
     return expectedVisitByVisit.filter(ev =>
-      visitsByAutoRepair.some(v => v.id === ev.id_visit) &&
+      visitsByAutoRepair.some(v => v.id === ev.visit_id) &&
       !ev.is_scheduled &&
       ev.state_visit === 'Pending Visit'
     );
@@ -65,41 +65,41 @@ export class ManageRequests {
 
   /**
    * Get visit by expected visit ID
-   * @param id_expected_visit - The expected visit ID
+   * @param expected_visit_id - The expected visit ID
    * @return Computed signal with the visit
    */
-  getVisitByExpectedVisitId(id_expected_visit: string) {
+  getVisitByExpectedVisitId(expected_visit_id: number) {
     return computed(() => {
-      return this.dataCollectionStore.visits().find(v => v.id === this.diagnosisStore.expectedVisits().find(ev => ev.id === id_expected_visit)?.id_visit) || null;
+      return this.dataCollectionStore.visits().find(v => v.id === this.diagnosisStore.expectedVisits().find(ev => ev.id === expected_visit_id)?.visit_id) || null;
     });
   }
 
   /**
    * Get user's full name by visit ID
-   * @param id_visit - The visit ID
+   * @param visit_id - The visit ID
    * @return Computed signal with the user's full name
    */
-  getUserFullNameByVisitId(id_visit: string) {
+  getUserFullNameByVisitId(visit_id: number) {
     return computed(() => {
-      const visit = this.dataCollectionStore.visits().find(v => v.id === id_visit);
+      const visit = this.dataCollectionStore.visits().find(v => v.id === visit_id);
       if (!visit) return 'Unknown User';
 
       const vehicles = this.dataCollectionStore.vehicles();
-      const vehicle = vehicles.find(veh => veh.id === visit.id_vehicle);
+      const vehicle = vehicles.find(veh => veh.id === visit.vehicle_id);
       if (!vehicle) return 'Unknown User';
 
-      const user = this.iamStore.users().find(u => u.id === vehicle.id_user);
+      const user = this.iamStore.users().find(u => u.id === vehicle.user_id);
       return user ? `${user.name} ${user.last_name}` : 'Unknown User';
     });
   }
 
   /**
    * Get vehicle by vehicle ID
-   * @param id_vehicle - The vehicle ID
+   * @param vehicle_id - The vehicle ID
    */
-  getVehicleByVehicleId(id_vehicle: string) {
+  getVehicleByVehicleId(vehicle_id: number) {
     return computed(() => {
-      return this.dataCollectionStore.vehicles().find(v => v.id === id_vehicle) || null;
+      return this.dataCollectionStore.vehicles().find(v => v.id === vehicle_id) || null;
     });
   }
 
@@ -126,10 +126,11 @@ export class ManageRequests {
    */
   onAcceptExpectedVisit(expectedVisit: ExpectedVisit): void {
     const newExpectedVisit = new ExpectedVisit({
-      id_expected: expectedVisit.id,
+      id: expectedVisit.id,
       state_visit: 'Scheduled visit',
-      id_visit: expectedVisit.id_visit,
-      is_scheduled: true
+      visit_id: expectedVisit.visit_id,
+      is_scheduled: true,
+      vehicle_id: expectedVisit.vehicle_id
     });
     this.diagnosisStore.updateExpectedVisit(newExpectedVisit);
   }
@@ -139,10 +140,11 @@ export class ManageRequests {
    */
   onRejectExpectedVisit(expectedVisit: ExpectedVisit): void {
     const newExpectedVisit = new ExpectedVisit({
-      id_expected: expectedVisit.id,
+      id: expectedVisit.id,
       state_visit: 'Visit cannot be scheduled',
-      id_visit: expectedVisit.id_visit,
-      is_scheduled: false
+      visit_id: expectedVisit.visit_id,
+      is_scheduled: false,
+      vehicle_id: expectedVisit.vehicle_id
     });
     this.diagnosisStore.updateExpectedVisit(newExpectedVisit);
   }

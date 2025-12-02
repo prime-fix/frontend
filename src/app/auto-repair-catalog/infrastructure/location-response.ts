@@ -11,7 +11,7 @@ export interface LocationResponse extends BaseResponse{
  * Resource interface for Location entity.
  */
 export interface LocationResource extends BaseResource {
-  id_location: string;
+  id: number;
   address: string;
   district: string;
   department: string;

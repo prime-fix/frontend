@@ -60,15 +60,15 @@ export class SearchAutoRepair {
     return autoRepairs
       .map(autoRepair => {
         // Get the user_account associated with the auto_repair
-        const userAccount = userAccounts.find(ua => ua.id === autoRepair.id_user_account);
+        const userAccount = userAccounts.find(ua => ua.id === autoRepair.user_account_id);
         if (!userAccount) return null;
 
         // Get the user associated with the user_account
-        const user = users.find(u => u.id === userAccount.id_user);
+        const user = users.find(u => u.id === userAccount.user_id);
         if (!user) return null;
 
         // Get the location associated with the user
-        const location = locations.find(loc => loc.id === user.id_location);
+        const location = locations.find(loc => loc.id === user.location_id);
         if (!location) return null;
 
         // Verify if the location matches the selected department and district

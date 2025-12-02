@@ -49,7 +49,7 @@ export class ManageAutoRepair {
   currentAutoRepair = computed(() => {
     const userAccountId = this.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -58,7 +58,7 @@ export class ManageAutoRepair {
   currentLocation = computed(() => {
     const user = this.sessionUser();
     if (!user) return undefined;
-    return this.iamStore.getLocationById(user.id_location)();
+    return this.iamStore.getLocationById(user.location_id)();
   });
 
   /**
@@ -144,18 +144,18 @@ export class ManageAutoRepair {
     try {
       // Update User
       const updatedUser = new User({
-        id_user: user.id,
+        id: user.id,
         name: formData.workshopName,
         last_name: '',
         dni: formData.ruc,
         phone_number: formData.phoneNumber,
-        id_location: location.id
+        location_id: location.id
       });
       this.iamStore.updateUser(updatedUser);
 
       // Update Location
       const updatedLocation = new Location({
-        id_location: location.id,
+        id: location.id,
         department: formData.department,
         district: formData.district,
         address: formData.address
@@ -164,11 +164,11 @@ export class ManageAutoRepair {
 
       // Update AutoRepair
       const updatedAutoRepair = new AutoRepair({
-        id_auto_repair: autoRepair.id,
+        id: autoRepair.id,
         ruc: formData.ruc,
         contact_email: formData.email,
         technicians_count: autoRepair.technicians_count,
-        id_user_account: autoRepair.id_user_account
+        user_account_id: autoRepair.user_account_id
       });
       this.registerStore.updateAutoRepair(updatedAutoRepair);
 

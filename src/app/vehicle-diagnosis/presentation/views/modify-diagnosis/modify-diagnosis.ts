@@ -30,7 +30,7 @@ export class ModifyDiagnosis implements OnInit {
   /**
    * Signal for vehicle ID from route params
    */
-  readonly vehicleId = signal<string | null>(null);
+  readonly vehicleId = signal<number | null>(null);
   /**
    * Loading state signal
    */
@@ -58,7 +58,7 @@ export class ModifyDiagnosis implements OnInit {
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -81,7 +81,7 @@ export class ModifyDiagnosis implements OnInit {
     if (!autoRepairId) return null;
 
     return this.dataCollectionStore.visits().find(
-      v => v.id_vehicle === vehicle.id && v.id_auto_repair === autoRepairId
+      v => v.vehicle_id === vehicle.id && v.auto_repair_id === autoRepairId
     ) || null;
   });
 
@@ -92,7 +92,7 @@ export class ModifyDiagnosis implements OnInit {
     const vehicle = this.currentVehicle();
     if (!vehicle) return null;
 
-    return this.iamStore.users().find(u => u.id === vehicle.id_user) || null;
+    return this.iamStore.users().find(u => u.id === vehicle.user_id) || null;
   });
 
   /**
@@ -102,7 +102,7 @@ export class ModifyDiagnosis implements OnInit {
     const visit = this.currentVisit();
     if (!visit) return null;
 
-    return this.diagnosisStore.expectedVisits().find(ev => ev.id_visit === visit.id) || null;
+    return this.diagnosisStore.expectedVisits().find(ev => ev.visit_id === visit.id) || null;
   });
 
   /**
@@ -119,10 +119,11 @@ export class ModifyDiagnosis implements OnInit {
    */
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
+      const idParam = params.get('id');
+      const id = idParam ? Number(idParam) : null;
       this.vehicleId.set(id);
 
-      if (id) {
+      if (id && !isNaN(id)) {
         // Wait for computed signals to update
         setTimeout(() => {
           const vehicle = this.currentVehicle();
@@ -171,11 +172,10 @@ export class ModifyDiagnosis implements OnInit {
     try {
       // Create new diagnostic
       const newDiagnostic = new Diagnostic({
-          id_diagnostic: this.generateDiagnosticId(),
+          id: 0, // ID will be set by backend
           price: formData.price!,
-          id_vehicle: vehicle.id,
+          vehicle_id: vehicle.id,
           diagnosis: formData.diagnosis!,
-          id_expected: expectedVisit.id
       });
 
       this.diagnosisStore.addDiagnostic(newDiagnostic);
@@ -193,14 +193,6 @@ export class ModifyDiagnosis implements OnInit {
     }
   }
 
-  /**
-   * Generate a unique diagnostic ID
-   */
-  private generateDiagnosticId(): string {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000);
-    return `DIAG-${timestamp}-${random}`;
-  }
 
   /**
    * Handle cancellation and navigate back to diagnosis view

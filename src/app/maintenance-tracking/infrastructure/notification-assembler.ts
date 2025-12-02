@@ -23,12 +23,11 @@ export class NotificationAssembler implements BaseAssembler<Notification, Notifi
    */
   toEntityFromResource(resource: NotificationResource): Notification {
     return new Notification({
-      id_notification: resource.id_notification,
+      id: resource.id,
       message: resource.message,
       read: resource.read,
-      id_vehicle: resource.id_vehicle,
+      vehicle_id: resource.vehicle_id,
       sent: resource.sent,
-      id_diagnostic: resource.id_diagnostic,
     })
   }
 
@@ -39,12 +38,11 @@ export class NotificationAssembler implements BaseAssembler<Notification, Notifi
    */
   toResourceFromEntity(entity: Notification): NotificationResource {
     return {
-      id_notification: entity.id,
+      id: entity.id,
       message: entity.message,
       read: entity.read,
-      id_vehicle: entity.id_vehicle,
+      vehicle_id: entity.vehicle_id,
       sent: entity.sent,
-      id_diagnostic: entity.id_diagnostic,
     } as NotificationResource;
   }
 }

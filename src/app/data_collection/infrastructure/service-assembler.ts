@@ -22,7 +22,7 @@ export class ServiceAssembler implements BaseAssembler<Service, MaintenanceServi
    */
   toEntityFromResource(resource: MaintenanceServiceResource): Service {
     return new Service({
-      id_service: resource.id_service,
+      id: resource.id,
       name: resource.name,
       description: resource.description
     });
@@ -35,7 +35,7 @@ export class ServiceAssembler implements BaseAssembler<Service, MaintenanceServi
    */
   toResourceFromEntity(entity: Service): MaintenanceServiceResource {
     return {
-      id_service: entity.id,
+      id: entity.id,
       name: entity.name,
       description: entity.description
     }as MaintenanceServiceResource;

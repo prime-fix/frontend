@@ -1,304 +1,304 @@
 {
   "user_accounts": [
     {
-      "id_user_account": "UA002",
+      "id": 2,
       "username": "Emily33",
       "email": "emily.johnson@hotmail.com",
-      "id_user": "U002",
-      "id_role": "R001",
-      "id_membership": "M002",
+      "user_id": 2,
+      "role_id": 1,
+      "membership_id": 2,
       "password": "hashed_password_2",
       "is_new": true
     },
     {
-      "id_user_account": "UA001",
+      "id": 1,
       "username": "John23",
       "email": "john.smith@gmail.com",
-      "id_user": "U001",
-      "id_role": "R001",
-      "id_membership": "M001",
+      "user_id": 1,
+      "role_id": 1,
+      "membership_id": 1,
       "password": "hashed_password_1",
-      "is_new": true
+      "is_new": false
     },
     {
-      "id_user_account": "UA003",
+      "id": 3,
       "username": "MikeB",
       "email": "michael.brown@hotmail.com",
-      "id_user": "U003",
-      "id_role": "R001",
-      "id_membership": "M003",
+      "user_id": 3,
+      "role_id": 1,
+      "membership_id": 3,
       "password": "hashed_password_3",
       "is_new": false
     },
     {
-      "id_user_account": "UA004",
+      "id": 4,
       "username": "SophiaD",
       "email": "sophia.davis@example.com",
-      "id_user": "U004",
-      "id_role": "R001",
-      "id_membership": "M002",
+      "user_id": 4,
+      "role_id": 1,
+      "membership_id": 2,
       "password": "hashed_password_4",
       "is_new": false
     },
     {
-      "id_user_account": "UA005",
+      "id": 5,
       "username": "Taller1",
       "email": "taller1@hotmail.com",
-      "id_user": "U005",
-      "id_role": "R002",
-      "id_membership": "M004",
+      "user_id": 5,
+      "role_id": 2,
+      "membership_id": 4,
       "password": "hashed_password_5",
       "is_new": false
     },
     {
-      "id_user_account": "UA006",
+      "id": 6,
       "username": "Taller2",
       "email": "taller2@hotmail.com",
-      "id_user": "U006",
-      "id_role": "R002",
-      "id_membership": "M001",
+      "user_id": 6,
+      "role_id": 2,
+      "membership_id": 1,
       "password": "hashed_password_6",
       "is_new": false
     },
     {
-      "id_user_account": "UA007",
+      "id": 7,
       "username": "Taller3",
       "email": "taller3@gmail.com",
-      "id_user": "U007",
-      "id_role": "R002",
-      "id_membership": "M002",
+      "user_id": 7,
+      "role_id": 2,
+      "membership_id": 2,
       "password": "hashed_password_7",
       "is_new": false
     },
     {
-      "id_user_account": "UA008",
+      "id": 8,
       "username": "Taller4",
       "email": "taller4@hotmail.com",
-      "id_user": "U008",
-      "id_role": "R002",
-      "id_membership": "M001",
+      "user_id": 8,
+      "role_id": 2,
+      "membership_id": 1,
       "password": "hashed_password_8",
       "is_new": false
     },
     {
-      "id_user_account": "UA009",
+      "id": 9,
       "username": "Taller5",
       "email": "taller5@hotmail.com",
-      "id_user": "U009",
-      "id_role": "R002",
-      "id_membership": "M003",
+      "user_id": 9,
+      "role_id": 2,
+      "membership_id": 3,
       "password": "hashed_password_9",
       "is_new": false
     }
   ],
   "users": [
     {
-      "id_user": "U001",
+      "id": 1,
       "name": "John",
       "last_name": "Smith",
       "dni": "123456789",
       "phone_number": "952-123-232",
-      "id_location": "L001"
+      "location_id": 1
     },
     {
-      "id_user": "U002",
+      "id": 2,
       "name": "Emily",
       "last_name": "Johnson",
       "dni": "987654321",
       "phone_number": "942-321-123",
-      "id_location": "L002"
+      "location_id": 2
     },
     {
-      "id_user": "U003",
+      "id": 3,
       "name": "Michael",
       "last_name": "Brown",
       "dni": "456789012",
       "phone_number": "933213231",
-      "id_location": "L003"
+      "location_id": 3
     },
     {
-      "id_user": "U004",
+      "id": 4,
       "name": "Sophia",
       "last_name": "Davis",
       "dni": "654321987",
       "phone_number": "921312312",
-      "id_location": "L004"
+      "location_id": 4
     },
     {
-      "id_user": "U005",
+      "id": 5,
       "name": "Manuel",
       "last_name": "Ibarra",
       "dni": "20123456",
       "phone_number": "912345678",
-      "id_location": "L005"
+      "location_id": 5
     },
     {
-      "id_user": "U006",
+      "id": 6,
       "name": "Carlos",
       "last_name": "Lopez",
       "dni": "30123456",
       "phone_number": "923456789",
-      "id_location": "L006"
+      "location_id": 6
     },
     {
-      "id_user": "U007",
+      "id": 7,
       "name": "Ana",
       "last_name": "Martinez",
       "dni": "40123456",
       "phone_number": "934567890",
-      "id_location": "L007"
+      "location_id": 7
     },
     {
-      "id_user": "U008",
+      "id": 8,
       "name": "Luis",
       "last_name": "Garcia",
       "dni": "50123456",
       "phone_number": "945678901",
-      "id_location": "L008"
+      "location_id": 8
     },
     {
-      "id_user": "U009",
+      "id": 9,
       "name": "Marta",
       "last_name": "Rodriguez",
       "dni": "60123456",
       "phone_number": "956789012",
-      "id_location": "L009"
+      "location_id": 9
     }
   ],
   "payments": [
     {
-      "id_payment": "PY001",
+      "id": 1,
       "card_number": 12442442424,
       "card_type": "Visa",
       "month": 12,
       "year": 2025,
       "cvv": 123,
-      "id_user_account": "UA001"
+      "user_account_id": 1
     },
     {
-      "id_payment": "PY002",
+      "id": 2,
       "card_number": 5678567856785678,
       "card_type": "MasterCard",
       "month": 6,
       "year": 2024,
       "cvv": 456,
-      "id_user_account": "UA002"
+      "user_account_id": 2
     },
     {
-      "id_payment": "PY003",
+      "id": 3,
       "card_number": 9876987698769876,
       "card_type": "American Express",
       "month": 9,
       "year": 2026,
       "cvv": 789,
-      "id_user_account": "UA003"
+      "user_account_id": 3
     },
     {
-      "id_payment": "PY004",
+      "id": 4,
       "card_number": 4321432143214321,
       "card_type": "Discover",
       "month": 3,
       "year": 2025,
       "cvv": 321,
-      "id_user_account": "UA004"
+      "user_account_id": 4
     },
     {
-      "id_payment": "PY005",
+      "id": 5,
       "card_number": 8765876587658765,
       "card_type": "Visa",
       "month": 11,
       "year": 2024,
       "cvv": 654,
-      "id_user_account": "UA005"
+      "user_account_id": 5
     },
     {
-      "id_payment": "PY006",
+      "id": 6,
       "card_number": 3456345634563456,
       "card_type": "MasterCard",
       "month": 8,
       "year": 2027,
       "cvv": 987,
-      "id_user_account": "UA006"
+      "user_account_id": 6
     },
     {
-      "id_payment": "PY007",
+      "id": 7,
       "card_number": 2103210321032103,
       "card_type": "American Express",
       "month": 5,
       "year": 2027,
       "cvv": 159,
-      "id_user_account": "UA007"
+      "user_account_id": 7
     },
     {
-      "id_payment": "PY008",
+      "id": 8,
       "card_number": 6543654365436543,
       "card_type": "Discover",
       "month": 2,
       "year": 2027,
       "cvv": 753,
-      "id_user_account": "UA008"
+      "user_account_id": 8
     },
     {
-      "id_payment": "PY009",
+      "id": 9,
       "card_number": 7890789078907890,
       "card_type": "Visa",
       "month": 10,
       "year": 2027,
       "cvv": 852,
-      "id_user_account": "UA009"
+      "user_account_id": 9
     }
   ],
   "locations": [
     {
-      "id_location": "L001",
+      "id": 1,
       "address": "Av. Javier Prado 1234",
       "district": "San Isidro",
       "department": "Lima"
     },
     {
-      "id_location": "L002",
+      "id": 2,
       "address": "Av. Larco 789",
       "district": "Miraflores",
       "department": "Lima"
     },
     {
-      "id_location": "L003",
+      "id": 3,
       "address": "Av. Abancay 250",
       "district": "Cercado de Lima",
       "department": "Lima"
     },
     {
-      "id_location": "L004",
+      "id": 4,
       "address": "Av. Primavera 456",
       "district": "Santiago de Surco",
       "department": "Lima"
     },
     {
-      "id_location": "L005",
+      "id": 5,
       "address": "Av. Alfredo Mendiola 8900",
       "district": "Los Olivos",
       "department": "Lima"
     },
     {
-      "id_location": "L006",
+      "id": 6,
       "address": "Av. Universitaria 1500",
       "district": "San Miguel",
       "department": "Lima"
     },
     {
-      "id_location": "L007",
+      "id": 7,
       "address": "Av. Arequipa 3000",
       "district": "Lince",
       "department": "Lima"
     },
     {
-      "id_location": "L008",
+      "id": 8,
       "address": "Av. La Marina 4000",
       "district": "San Miguel",
       "department": "Lima"
     },
     {
-      "id_location": "L009",
+      "id": 9,
       "address": "Av. Angamos 5000",
       "district": "Surquillo",
       "department": "Lima"
@@ -306,225 +306,225 @@
   ],
   "auto_repairs": [
     {
-      "id_auto_repair": "AR001",
+      "id": 1,
       "ruc": "987654321",
       "contact_email": "taller1.contacto@hotmail.com",
       "technicians_count": 10,
-      "id_user_account": "UA005"
+      "user_account_id": 5
     },
     {
-      "id_auto_repair": "AR002",
+      "id": 2,
       "ruc": "123456789",
       "contact_email": "taller2.contacto@hotmail.com",
       "technicians_count": 8,
-      "id_user_account": "UA006"
+      "user_account_id": 6
     },
     {
-      "id_auto_repair": "AR003",
+      "id": 3,
       "ruc": "456789123",
       "contact_email": "taller3.contacto@hotmail.com",
       "technicians_count": 15,
-      "id_user_account": "UA007"
+      "user_account_id": 7
     },
     {
-      "id_auto_repair": "AR004",
+      "id": 4,
       "ruc": "789123456",
       "contact_email": "taller4.contacto@hotmail.com",
       "technicians_count": 12,
-      "id_user_account": "UA008"
+      "user_account_id": 8
     },
     {
-      "id_auto_repair": "AR005",
+      "id": 5,
       "ruc": "321654987",
       "contact_email": "taller5.contacto@hotmail.com",
       "technicians_count": 20,
-      "id_user_account": "UA009"
+      "user_account_id": 9
     }
   ],
   "technicians": [
     {
-      "id_technician": "T001",
+      "id": 1,
       "name": "Pedro",
       "last_name": "Gomez",
-      "id_auto_repair": "AR001"
+      "auto_repair_id": 1
     },
     {
-      "id_technician": "T002",
+      "id": 2,
       "name": "Luis",
       "last_name": "Fernandez",
-      "id_auto_repair": "AR001"
+      "auto_repair_id": 1
     },
     {
-      "id_technician": "T003",
+      "id": 3,
       "name": "Jorge",
       "last_name": "Ramirez",
-      "id_auto_repair": "AR002"
+      "auto_repair_id": 2
     },
     {
-      "id_technician": "T004",
+      "id": 4,
       "name": "Miguel",
       "last_name": "Torres",
-      "id_auto_repair": "AR003"
+      "auto_repair_id": 3
     },
     {
-      "id_technician": "T005",
+      "id": 5,
       "name": "Carlos",
       "last_name": "Vargas",
-      "id_auto_repair": "AR004"
+      "auto_repair_id": 4
     },
     {
-      "id_technician": "T006",
+      "id": 6,
       "name": "Andres",
       "last_name": "Silva",
-      "id_auto_repair": "AR005"
+      "auto_repair_id": 5
     },
     {
-      "id_technician": "T007",
+      "id": 7,
       "name": "Rafael",
       "last_name": "Mendoza",
-      "id_auto_repair": "AR002"
+      "auto_repair_id": 2
     },
     {
-      "id_technician": "T008",
+      "id": 8,
       "name": "Santiago",
       "last_name": "Cruz",
-      "id_auto_repair": "AR003"
+      "auto_repair_id": 3
     },
     {
-      "id_technician": "T009",
+      "id": 9,
       "name": "Diego",
       "last_name": "Flores",
-      "id_auto_repair": "AR004"
+      "auto_repair_id": 4
     },
     {
-      "id_technician": "T010",
+      "id": 10,
       "name": "Felipe",
       "last_name": "Rojas",
-      "id_auto_repair": "AR005"
+      "auto_repair_id": 5
     },
     {
-      "id_technician": "T011",
+      "id": 11,
       "name": "Alberto",
       "last_name": "Santos",
-      "id_auto_repair": "AR003"
+      "auto_repair_id": 3
     }
   ],
   "technician_schedules": [
     {
-      "id_schedule": "TS001",
-      "id_technician": "T001",
-      "day_of_week": "Lunes",
-      "start_time": "08:00",
-      "end_time": "17:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS002",
-      "id_technician": "T001",
-      "day_of_week": "Martes",
-      "start_time": "08:00",
-      "end_time": "17:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS003",
-      "id_technician": "T001",
-      "day_of_week": "Wednesday",
-      "start_time": "08:00",
-      "end_time": "17:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS004",
-      "id_technician": "T002",
-      "day_of_week": "Monday",
-      "start_time": "09:00",
-      "end_time": "18:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS005",
-      "id_technician": "T002",
-      "day_of_week": "Tuesday",
-      "start_time": "09:00",
-      "end_time": "18:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS006",
-      "id_technician": "T002",
-      "day_of_week": "Wednesday",
-      "start_time": "09:00",
-      "end_time": "18:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS007",
-      "id_technician": "T003",
-      "day_of_week": "Thursday",
-      "start_time": "08:00",
-      "end_time": "17:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS008",
-      "id_technician": "T003",
-      "day_of_week": "Friday",
-      "start_time": "08:00",
-      "end_time": "17:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS009",
-      "id_technician": "T004",
-      "day_of_week": "Thursday",
-      "start_time": "09:00",
-      "end_time": "18:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS010",
-      "id_technician": "T004",
-      "day_of_week": "Friday",
-      "start_time": "09:00",
-      "end_time": "18:00",
-      "is_active": true
-    },
-    {
-      "id_schedule": "TS011",
-      "id_technician": "T005",
+      "id": 1,
+      "technician_id": 1,
       "day_of_week": "Monday",
       "start_time": "08:00",
       "end_time": "17:00",
       "is_active": true
     },
     {
-      "id_schedule": "TS012",
-      "id_technician": "T005",
+      "id": 2,
+      "technician_id": 1,
       "day_of_week": "Tuesday",
       "start_time": "08:00",
       "end_time": "17:00",
       "is_active": true
     },
     {
-      "id_schedule": "TS013",
-      "id_technician": "T006",
+      "id": 3,
+      "technician_id": 1,
+      "day_of_week": "Wednesday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "technician_id": 2,
+      "day_of_week": "Monday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 5,
+      "technician_id": 2,
+      "day_of_week": "Tuesday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 6,
+      "technician_id": 2,
       "day_of_week": "Wednesday",
       "start_time": "09:00",
       "end_time": "18:00",
       "is_active": true
     },
     {
-      "id_schedule": "TS014",
-      "id_technician": "T006",
+      "id": 7,
+      "technician_id": 3,
+      "day_of_week": "Thursday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id": 8,
+      "technician_id": 3,
+      "day_of_week": "Friday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id": 9,
+      "technician_id": 4,
       "day_of_week": "Thursday",
       "start_time": "09:00",
       "end_time": "18:00",
       "is_active": true
     },
     {
-      "id_schedule": "TS015",
-      "id_technician": "T006",
+      "id": 10,
+      "technician_id": 4,
+      "day_of_week": "Friday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 11,
+      "technician_id": 5,
+      "day_of_week": "Monday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id": 12,
+      "technician_id": 5,
+      "day_of_week": "Tuesday",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "is_active": true
+    },
+    {
+      "id": 13,
+      "technician_id": 6,
+      "day_of_week": "Wednesday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 14,
+      "technician_id": 7,
+      "day_of_week": "Thursday",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "is_active": true
+    },
+    {
+      "id": 15,
+      "technician_id": 6,
       "day_of_week": "Friday",
       "start_time": "09:00",
       "end_time": "18:00",
@@ -533,171 +533,171 @@
   ],
   "ratings": [
     {
-      "id_rating": "RT001",
+      "id": 1,
       "star_rating": 5,
       "comment": "Excellent service and friendly staff!",
       "time_rating": "2025-10-01",
-      "id_auto_repair": "AR001",
-      "id_user_account": "UA001"
+      "auto_repair_id": 1,
+      "user_account_id": 1
     },
     {
-      "id_rating": "RT002",
+      "id": 2,
       "star_rating": 4,
       "comment": "Good experience, but room for improvement.",
       "time_rating": "2025-10-05",
-      "id_auto_repair": "AR001",
-      "id_user_account": "UA002"
+      "auto_repair_id": 1,
+      "user_account_id": 2
     },
     {
-      "id_rating": "RT003",
+      "id": 3,
       "star_rating": 3,
       "comment": "Average service, nothing special.",
       "time_rating": "2025-10-10",
-      "id_auto_repair": "AR001",
-      "id_user_account": "UA003"
+      "auto_repair_id": 1,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT004",
+      "id": 4,
       "star_rating": 5,
       "comment": "Highly recommend! Very professional.",
       "time_rating": "2025-10-12",
-      "id_auto_repair": "AR001",
-      "id_user_account": "UA004"
+      "auto_repair_id": 1,
+      "user_account_id": 4
     },
     {
-      "id_rating": "RT005",
+      "id": 5,
       "star_rating": 4,
       "comment": "Good value for money.",
       "time_rating": "2025-10-15",
-      "id_auto_repair": "AR002",
-      "id_user_account": "UA001"
+      "auto_repair_id": 2,
+      "user_account_id": 1
     },
     {
-      "id_rating": "RT006",
+      "id": 6,
       "star_rating": 5,
       "comment": "Exceptional service and quick turnaround.",
       "time_rating": "2025-10-18",
-      "id_auto_repair": "AR002",
-      "id_user_account": "UA002"
+      "auto_repair_id": 2,
+      "user_account_id": 2
     },
     {
-      "id_rating": "RT007",
+      "id": 7,
       "star_rating": 3,
       "comment": "Service was okay, but could be better.",
       "time_rating": "2025-10-20",
-      "id_auto_repair": "AR002",
-      "id_user_account": "UA003"
+      "auto_repair_id": 2,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT008",
+      "id": 8,
       "star_rating": 4,
       "comment": "Friendly staff and efficient service.",
       "time_rating": "2025-10-22",
-      "id_auto_repair": "AR002",
-      "id_user_account": "UA004"
+      "auto_repair_id": 2,
+      "user_account_id": 4
     },
     {
-      "id_rating": "RT009",
+      "id": 9,
       "star_rating": 5,
       "comment": "Top-notch service! Will return again.",
       "time_rating": "2025-10-25",
-      "id_auto_repair": "AR003",
-      "id_user_account": "UA001"
+      "auto_repair_id": 3,
+      "user_account_id": 1
     },
     {
-      "id_rating": "RT010",
+      "id": 10,
       "star_rating": 4,
       "comment": "Good overall experience.",
       "time_rating": "2025-10-27",
-      "id_auto_repair": "AR003",
-      "id_user_account": "UA002"
+      "auto_repair_id": 3,
+      "user_account_id": 2
     },
     {
-      "id_rating": "RT011",
+      "id": 11,
       "star_rating": 3,
       "comment": "Mediocre service, nothing outstanding.",
       "time_rating": "2025-10-29",
-      "id_auto_repair": "AR003",
-      "id_user_account": "UA003"
+      "auto_repair_id": 3,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT012",
+      "id": 12,
       "star_rating": 5,
       "comment": "Fantastic job! Highly skilled technicians.",
       "time_rating": "2025-10-30",
-      "id_auto_repair": "AR003",
-      "id_user_account": "UA004"
+      "auto_repair_id": 3,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT013",
+      "id": 13,
       "star_rating": 4,
       "comment": "Efficient and reliable service.",
       "time_rating": "2025-11-01",
-      "id_auto_repair": "AR004",
-      "id_user_account": "UA001"
+      "auto_repair_id": 4,
+      "user_account_id": 1
     },
     {
-      "id_rating": "RT014",
+      "id": 14,
       "star_rating": 5,
       "comment": "Outstanding experience from start to finish.",
       "time_rating": "2025-11-03",
-      "id_auto_repair": "AR004",
-      "id_user_account": "UA002"
+      "auto_repair_id": 4,
+      "user_account_id": 2
     },
     {
-      "id_rating": "RT015",
+      "id": 15,
       "star_rating": 3,
       "comment": "It was okay, but I've seen better.",
       "time_rating": "2025-11-05",
-      "id_auto_repair": "AR004",
-      "id_user_account": "UA003"
+      "auto_repair_id": 4,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT016",
+      "id": 16,
       "star_rating": 4,
       "comment": "Professional staff and good service.",
       "time_rating": "2025-11-07",
-      "id_auto_repair": "AR004",
-      "id_user_account": "UA004"
+      "auto_repair_id": 4,
+      "user_account_id": 4
     },
     {
-      "id_rating": "RT017",
+      "id": 17,
       "star_rating": 5,
       "comment": "Excellent workmanship and friendly service.",
       "time_rating": "2025-11-10",
-      "id_auto_repair": "AR005",
-      "id_user_account": "UA001"
+      "auto_repair_id": 5,
+      "user_account_id": 1
     },
     {
-      "id_rating": "RT018",
+      "id": 18,
       "star_rating": 4,
       "comment": "Very satisfied with the overall experience.",
       "time_rating": "2025-11-12",
-      "id_auto_repair": "AR005",
-      "id_user_account": "UA002"
+      "auto_repair_id": 5,
+      "user_account_id": 2
     },
     {
-      "id_rating": "RT019",
+      "id": 19,
       "star_rating": 3,
       "comment": "Average service, nothing exceptional.",
       "time_rating": "2025-11-14",
-      "id_auto_repair": "AR005",
-      "id_user_account": "UA003"
+      "auto_repair_id": 5,
+      "user_account_id": 3
     },
     {
-      "id_rating": "RT020",
+      "id": 20,
       "star_rating": 5,
       "comment": "Highly skilled technicians and great service.",
       "time_rating": "2025-11-16",
-      "id_auto_repair": "AR005",
-      "id_user_account": "UA004"
+      "auto_repair_id": 5,
+      "user_account_id": 4
     }
   ],
   "vehicles": [
     {
-      "id_vehicle": "RV001",
+      "id": 1,
       "model": "Corolla",
-      "id_user": "U001",
+      "user_id": 1,
       "vehicle_brand": "Toyota",
       "vehicle_plate": "ABC-123",
       "vehicle_type": "Sedan",
@@ -705,9 +705,9 @@
       "state_maintenance": 0
     },
     {
-      "id_vehicle": "RV002",
+      "id": 2,
       "model": "Civic",
-      "id_user": "U002",
+      "user_id": 2,
       "vehicle_brand": "Honda",
       "vehicle_plate": "XYZ-789",
       "vehicle_type": "Sedan",
@@ -715,9 +715,9 @@
       "state_maintenance": 3
     },
     {
-      "id_vehicle": "RV003",
+      "id": 3,
       "model": "Rav4",
-      "id_user": "U001",
+      "user_id": 1,
       "vehicle_brand": "Toyota",
       "vehicle_plate": "DEF-456",
       "vehicle_type": "SUV",
@@ -725,9 +725,9 @@
       "state_maintenance": 5
     },
     {
-      "id_vehicle": "RV004",
+      "id": 4,
       "model": "Hilux",
-      "id_user": "U003",
+      "user_id": 4,
       "vehicle_brand": "Toyota",
       "vehicle_plate": "GHI-321",
       "vehicle_type": "Truck",
@@ -735,9 +735,9 @@
       "state_maintenance": 2
     },
     {
-      "id_vehicle": "RV005",
+      "id": 5,
       "model": "Sportage",
-      "id_user": "U004",
+      "user_id": 4,
       "vehicle_brand": "Kia",
       "vehicle_plate": "JKL-654",
       "vehicle_type": "SUV",
@@ -745,9 +745,9 @@
       "state_maintenance": 1
     },
     {
-      "id_vehicle": "RV006",
+      "id": 6,
       "model": "Mazda3",
-      "id_user": "U004",
+      "user_id": 4,
       "vehicle_brand": "Mazda",
       "vehicle_plate": "MNO-987",
       "vehicle_type": "Sedan",
@@ -757,91 +757,91 @@
   ],
   "visits": [
     {
-      "id_visit": "V001",
+      "id": 1,
       "failure": "El motor hace un ruido extraño",
       "time_visit": "2025-10-16T15:00:00",
-      "id_auto_repair": "AR001",
-      "id_service": "S002",
-      "id_vehicle": "RV002"
+      "auto_repair_id": 1,
+      "service_id": 2,
+      "vehicle_id": 2
     },
     {
-      "id_visit": "V002",
+      "id": 2,
       "failure": "Frenos desgastados",
       "time_visit": "2025-10-24T09:00:00",
-      "id_auto_repair": "AR002",
-      "id_service": "S003",
-      "id_vehicle": "RV001"
+      "auto_repair_id": 2,
+      "service_id": 3,
+      "vehicle_id": 1
     },
     {
-      "id_visit": "V003",
+      "id": 3,
       "failure": "Cambio de aceite necesario",
       "time_visit": "2025-11-01T11:30:00",
-      "id_auto_repair": "AR003",
-      "id_service": "S002",
-      "id_vehicle": "RV003"
+      "auto_repair_id": 3,
+      "service_id": 2,
+      "vehicle_id": 3
     },
     {
-      "id_visit": "V004",
+      "id": 4,
       "failure": "Problemas con la suspensión",
       "time_visit": "2025-11-05T14:00:00",
-      "id_auto_repair": "AR004",
-      "id_service": "S004",
-      "id_vehicle": "RV004"
+      "auto_repair_id": 4,
+      "service_id": 4,
+      "vehicle_id": 4
     },
     {
-      "id_visit": "V005",
+      "id": 5,
       "failure": "Revisión del sistema eléctrico",
       "time_visit": "2025-11-10T10:00:00",
-      "id_auto_repair": "AR005",
-      "id_service": "S005",
-      "id_vehicle": "RV005"
+      "auto_repair_id": 5,
+      "service_id": 5,
+      "vehicle_id": 5
     },
     {
-      "id_visit": "V006",
+      "id": 6,
       "failure": "Alineación de llantas",
       "time_visit": "2025-11-15T13:00:00",
-      "id_auto_repair": "AR001",
-      "id_service": "S006",
-      "id_vehicle": "RV006"
+      "auto_repair_id": 1,
+      "service_id": 6,
+      "vehicle_id": 6
     },
     {
-      "id_visit": "V007",
+      "id": 7,
       "failure": "Revisión general del vehículo",
       "time_visit": "2025-11-20T16:00:00",
-      "id_auto_repair": "AR002",
-      "id_service": "S001",
-      "id_vehicle": "RV001"
+      "auto_repair_id": 2,
+      "service_id": 1,
+      "vehicle_id": 1
     }
   ],
   "services": [
     [
       {
-        "id_service": "S001",
+        "id": 1,
         "name": "Mantenimiento de frenos",
         "description": "Revisión y cambio de pastillas y discos de freno"
       },
       {
-        "id_service": "S002",
+        "id": 2,
         "name": "Cambio de aceite",
         "description": "Cambio de aceite de motor y filtro"
       },
       {
-        "id_service": "S003",
+        "id": 3,
         "name": "Diagnóstico de motor",
         "description": "Escaneo y diagnóstico completo del motor"
       },
       {
-        "id_service": "S004",
+        "id": 4,
         "name": "Reparación de suspensión",
         "description": "Cambio y reparación de amortiguadores y componentes"
       },
       {
-        "id_service": "S005",
+        "id": 5,
         "name": "Sistema eléctrico",
         "description": "Revisión de batería, alternador y sistema eléctrico"
       },
       {
-        "id_service": "S006",
+        "id": 6,
         "name": "Alineación y balanceo",
         "description": "Alineación de dirección y balanceo de llantas"
       }
@@ -849,132 +849,128 @@
   ],
   "notifications": [
     {
-      "id_notification": "N001",
+      "id": 1,
       "message": "Your is ready for pickup.",
       "read": false,
-      "id_vehicle": "RV001",
-      "sent": "2025-10-01",
-      "id_diagnostic": "D002"
+      "vehicle_id": 1,
+      "sent": "2025-10-01"
     },
     {
-      "id_notification": "N002",
+      "id": 2,
       "message": "Your service is scheduled for tomorrow.",
       "read": true,
-      "id_vehicle": "RV002",
-      "sent": "2025-09-30",
-      "id_diagnostic": "D001"
+      "vehicle_id": 2,
+      "sent": "2025-09-30"
     },
     {
-      "id_notification": "N003",
+      "id": 3,
       "message": "Your vehicle inspection is due next week.",
       "read": false,
-      "id_vehicle": "RV003",
-      "sent": "2025-10-02",
-      "id_diagnostic": "D003"
+      "vehicle_id": 3,
+      "sent": "2025-10-02"
     },
     {
-      "id_notification": "N004",
+      "id": 4,
       "message": "Your payment was successful.",
       "read": true,
-      "id_vehicle": "RV004",
-      "sent": "2025-09-29",
-      "id_diagnostic": "D004"
+      "vehicle_id": 4,
+      "sent": "2025-09-29"
     },
     {
-      "id_notification": "N005",
+      "id": 5,
       "message": "New promotions available for your vehicle.",
       "read": false,
-      "id_vehicle": "RV005",
-      "sent": "2025-10-03",
-      "id_diagnostic": "D005"
+      "vehicle_id": 5,
+      "sent": "2025-10-03"
     }
   ],
   "expected_visits": [
     {
-      "id_expected": "EV001",
+      "id": 1,
       "state_visit": "Scheduled visit",
-      "id_visit": "V001",
-      "is_scheduled": true
+      "visit_id": 1,
+      "is_scheduled": true,
+      "vehicle_id": 2
     },
     {
-      "id_expected": "EV002",
+      "id": 2,
       "state_visit": "Visit cannot be scheduled",
-      "id_visit": "V002",
-      "is_scheduled": false
+      "visit_id": 2,
+      "is_scheduled": false,
+      "vehicle_id": 1
     },
     {
-      "id_expected": "EV003",
+      "id": 3,
       "state_visit": "Pending Visit",
-      "id_visit": "V003",
-      "is_scheduled": false
+      "visit_id": 3,
+      "is_scheduled": false,
+      "vehicle_id": 3
     },
     {
-      "id_expected": "EV004",
+      "id": 4,
       "state_visit": "Pending Visit",
-      "id_visit": "V004",
-      "is_scheduled": true
+      "visit_id": 4,
+      "is_scheduled": true,
+      "vehicle_id": 4
     },
     {
-      "id_expected": "EV005",
+      "id": 5,
       "state_visit": "Pending Visit",
-      "id_visit": "V005",
-      "is_scheduled": false
+      "visit_id": 5,
+      "is_scheduled": false,
+      "vehicle_id": 5
     },
     {
-      "id_expected": "EV006",
+      "id": 6,
       "state_visit": "Pending Visit",
-      "id_visit": "V006",
-      "is_scheduled": false
+      "visit_id": 6,
+      "is_scheduled": false,
+      "vehicle_id": 6
     },
     {
-      "id_expected": "EV007",
+      "id": 7,
       "state_visit": "Pending Visit",
-      "id_visit": "V007",
-      "is_scheduled": false
+      "visit_id": 7,
+      "is_scheduled": false,
+      "vehicle_id": 1
     }
   ],
   "diagnostics": [
     {
-      "id_diagnostic": "D001",
-      "price": 150.00,
-      "id_vehicle": "RV002",
-      "diagnosis": "Engine noise detected, further inspection required.",
-      "id_expected": "EV001"
+      "id": 1,
+      "price": 150,
+      "vehicle_id": 2,
+      "diagnosis": "Engine noise detected, further inspection required."
     },
     {
-      "id_diagnostic": "D002",
-      "price": 200.00,
-      "id_vehicle": "RV001",
-      "diagnosis": "Brake pads worn out, replacement needed.",
-      "id_expected": "EV002"
+      "id": 2,
+      "price": 200,
+      "vehicle_id": 1,
+      "diagnosis": "Brake pads worn out, replacement needed."
     },
     {
-      "id_diagnostic": "D003",
-      "price": 120.00,
-      "id_vehicle": "RV003",
-      "diagnosis": "Oil change required, no other issues found.",
-      "id_expected": "EV001"
+      "id": 3,
+      "price": 120,
+      "vehicle_id": 3,
+      "diagnosis": "Oil change required, no other issues found."
     },
     {
-      "id_diagnostic": "D004",
-      "price": 180.00,
-      "id_vehicle": "RV004",
-      "diagnosis": "Suspension components need replacement.",
-      "id_expected": "EV002"
+      "id": 4,
+      "price": 180,
+      "vehicle_id": 4,
+      "diagnosis": "Suspension components need replacement."
     },
     {
-      "id_diagnostic": "D005",
-      "price": 160.00,
-      "id_vehicle": "RV005",
-      "diagnosis": "Electrical system functioning normally.",
-      "id_expected": "EV001"
+      "id": 5,
+      "price": 160,
+      "vehicle_id": 5,
+      "diagnosis": "Electrical system functioning normally."
     },
     {
-      "id_diagnostic": "D006",
-      "price": 280.00,
-      "id_vehicle": "RV003",
-      "diagnosis": "Tire alignment and balancing required.",
-      "id_expected": "EV003"
+      "id": 6,
+      "price": 280,
+      "vehicle_id": 3,
+      "diagnosis": "Tire alignment and balancing required."
     }
   ]
 }

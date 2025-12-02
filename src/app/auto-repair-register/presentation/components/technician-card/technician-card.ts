@@ -133,7 +133,7 @@ export class TechnicianCard implements OnInit {
    * @param id - The technician ID.
    * @return void.
    */
-  editTechnician(id: string) {
+  editTechnician(id: number) {
     this.router.navigate(['layout-workshop/auto-repair-register/technicians/edit', id]).then();
   }
 
@@ -142,7 +142,7 @@ export class TechnicianCard implements OnInit {
    * @param id - The technician ID.
    * @return void.
    */
-  deleteTechnician(id: string) {
+  deleteTechnician(id: number) {
     this.registerStore.deleteTechnicianWithSchedules(id);
   }
 }

@@ -49,7 +49,7 @@ export class RegisterApi extends BaseApi {
    * Gets a Technician by its ID.
    * @param id - The ID of the Technician.
    */
-  getTechnicianById(id: string | number): Observable<Technician> {
+  getTechnicianById(id: number): Observable<Technician> {
     return this.technicianRegisterEndpoint.getById(id);
   }
 
@@ -76,7 +76,7 @@ export class RegisterApi extends BaseApi {
    * @param id - The ID of the Technician to delete.
    * @returns An Observable of void.
    */
-  deleteTechnician(id: string | number): Observable<void> {
+  deleteTechnician(id: number): Observable<void> {
     return this.technicianRegisterEndpoint.delete(id);
   }
 
@@ -93,7 +93,7 @@ export class RegisterApi extends BaseApi {
    * @param id - The ID of the Technician Schedule.
    * @returns An Observable of the Technician Schedule.
    */
-  getTechnicianScheduleById(id: string | number): Observable<TechnicianSchedule> {
+  getTechnicianScheduleById(id: number): Observable<TechnicianSchedule> {
     return this.technicianSchedulesEndpoint.getById(id);
   }
 
@@ -120,7 +120,7 @@ export class RegisterApi extends BaseApi {
    * @param id - The ID of the Technician Schedule to delete.
    * @returns An Observable of void.
    */
-  deleteTechnicianSchedule(id: string | number): Observable<void> {
+  deleteTechnicianSchedule(id: number): Observable<void> {
     return this.technicianSchedulesEndpoint.delete(id);
   }
 }

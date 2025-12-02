@@ -98,7 +98,7 @@ export class CatalogStore {
    * Gets an expected visit by its ID.
    * @param id
    */
-  getExpectedVisitById(id: string | null | undefined): Signal<ExpectedVisit | undefined> {
+  getExpectedVisitById(id: number | null | undefined): Signal<ExpectedVisit | undefined> {
     // Delegate to DiagnosisStore
     return this.diagnosisStore.getExpectedVisitById(id);
   }
@@ -128,7 +128,7 @@ export class CatalogStore {
    * @param id - The ID of the expected visit to delete.
    * @returns void
    */
-  deleteExpectedVisit(id: string): void {
+  deleteExpectedVisit(id: number): void {
     // Delegate to DiagnosisStore
     this.diagnosisStore.deleteExpectedVisit(id);
   }
@@ -137,7 +137,7 @@ export class CatalogStore {
    * Gets a location by its ID.
    * @param id - The ID of the location to retrieve.
    */
-  getLocationById(id: string | null  | undefined): Signal<Location | undefined> {
+  getLocationById(id: number | null  | undefined): Signal<Location | undefined> {
     return computed(() => id ? this.locations().find(l => l.id === id) : undefined);
   }
 
@@ -185,15 +185,15 @@ export class CatalogStore {
    * @param id - The ID of the Auto Repair register.
    * @returns A signal containing the Auto Repair register or undefined if not found.
    */
-  getAutoRepairById(id: string | number | null | undefined): Signal<AutoRepair | undefined> {
-    return computed(() => id ? this.autoRepairs().find(ar => ar.id === String(id)) : undefined);
+  getAutoRepairById(id: number | null | undefined): Signal<AutoRepair | undefined> {
+    return computed(() => id ? this.autoRepairs().find(ar => ar.id === id) : undefined);
   }
 
   /**
    * Deletes a location by ID.
    * @param id - The ID of the location to delete.
    */
-  deleteLocation(id: string): void {
+  deleteLocation(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.catalogApi.deleteLocation(id).pipe(retry(2)).subscribe({
@@ -254,7 +254,7 @@ export class CatalogStore {
    * Deletes an Auto Repair register by its ID.
    * @param id - The ID of the Auto Repair register to delete.
    */
-  deleteAutoRepair(id: string): void {
+  deleteAutoRepair(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.catalogApi.deleteAutoRepair(id).pipe(retry(2)).subscribe({

@@ -107,7 +107,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Auto Repair register.
    * @returns A signal containing the Auto Repair register or undefined if not found.
    */
-  getAutoRepairById(id: string | number | null | undefined): Signal<AutoRepair | undefined> {
+  getAutoRepairById(id: number | null | undefined): Signal<AutoRepair | undefined> {
     // Delegate to CatalogStore
     return this.catalogStore.getAutoRepairById(id);
   }
@@ -174,7 +174,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Visit to delete.
    * @returns void
    */
-  deleteVisit(id: string): void {
+  deleteVisit(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.dataCollectionApi.deleteVisit(id).pipe(retry(2)).subscribe({
@@ -209,7 +209,7 @@ export class DataCollectionStore {
    * Deletes an Auto Repair register by its ID.
    * @param id - The ID of the Auto Repair register to delete.
    */
-  deleteAutoRepair(id: string): void {
+  deleteAutoRepair(id: number): void {
     // Delegate to CatalogStore
     this.catalogStore.deleteAutoRepair(id);
   }
@@ -239,7 +239,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Vehicle to delete.
    * @returns void
    */
-  deleteVehicle(id: number| string): void {
+  deleteVehicle(id: number): void {
     // Delegate to TrackingStore
     this.trackingStore.deleteVehicle(id);
   }

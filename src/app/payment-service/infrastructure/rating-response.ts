@@ -17,7 +17,7 @@ export interface RatingResource extends BaseResource {
   /**
    * Unique identifier for the rating.
    */
-  id_rating: string;
+  id: number;
   /**
    * Star rating given by the user.
    */
@@ -33,9 +33,9 @@ export interface RatingResource extends BaseResource {
   /**
    * Identifier for the associated auto repair service.
    */
-  id_auto_repair: string;
+  auto_repair_id: number;
   /**
    * Identifier for the user account that provided the rating.
    */
-  id_user_account: string;
+  user_account_id: number;
 }

@@ -22,12 +22,12 @@ export class RatingAssembler implements BaseAssembler<Rating, RatingResource, Ra
    */
   toEntityFromResource(resource: RatingResource): Rating {
     return new Rating({
-      id_rating: resource.id_rating,
+      id: resource.id,
       star_rating: resource.star_rating,
       comment: resource.comment,
       time_rating: resource.time_rating,
-      id_auto_repair: resource.id_auto_repair,
-      id_user_account: resource.id_user_account,
+      auto_repair_id: resource.auto_repair_id,
+      user_account_id: resource.user_account_id,
     })
   }
 
@@ -38,12 +38,12 @@ export class RatingAssembler implements BaseAssembler<Rating, RatingResource, Ra
    */
   toResourceFromEntity(entity: Rating): RatingResource {
     return {
-      id_rating: entity.id,
+      id: entity.id,
       star_rating: entity.star_rating,
       comment: entity.comment,
       time_rating: entity.time_rating,
-      id_auto_repair: entity.id_auto_repair,
-      id_user_account: entity.id_user_account,
+      auto_repair_id: entity.auto_repair_id,
+      user_account_id: entity.user_account_id,
     } as RatingResource;
   }
 }

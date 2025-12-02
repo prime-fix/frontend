@@ -25,7 +25,7 @@ export class Payment {
    * Visits filtered by vehicle ID
    */
   public visitsByVehicleId = computed(() => {
-    return this.paymentStore.visits().filter(v => v.id_vehicle === this.paymentStore.vehicleIdFilter());
+    return this.paymentStore.visits().filter(v => v.vehicle_id === this.paymentStore.vehicleIdFilter());
   })
 
   /**

@@ -17,7 +17,7 @@ export interface AutoRepairResource extends BaseResource {
   /**
    * The unique identifier for the auto repair.
    */
-  id_auto_repair: string;
+  id: number;
   /**
    * The RUC (Taxpayer Identification Number) of the auto repair.
    */
@@ -33,5 +33,5 @@ export interface AutoRepairResource extends BaseResource {
   /**
    * The user account ID associated with the auto repair.
    */
-  id_user_account: string;
+  user_account_id: number;
 }

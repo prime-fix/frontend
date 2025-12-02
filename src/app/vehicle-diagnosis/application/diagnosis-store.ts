@@ -100,7 +100,7 @@ export class DiagnosisStore {
    * Gets an expected visit by its ID.
    * @param id
    */
-  getExpectedVisitById(id: string | null | undefined): Signal<ExpectedVisit | undefined> {
+  getExpectedVisitById(id: number | null | undefined): Signal<ExpectedVisit | undefined> {
     return computed(() => id ? this.expectedVisits().find(v => v.id === id) : undefined);
   }
 
@@ -150,7 +150,7 @@ export class DiagnosisStore {
    * @param id - The ID of the expected visit to delete.
    * @returns void
    */
-  deleteExpectedVisit(id: string): void {
+  deleteExpectedVisit(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.diagnosisApi.deleteExpectedVisit(id).pipe(retry(2)).subscribe({
@@ -171,7 +171,7 @@ export class DiagnosisStore {
    * @param id - The ID of the diagnostic to retrieve.
    * @returns A Signal emitting the Diagnostic or undefined if not found.
    */
-  getDiagnosticById(id: string | null | undefined): Signal<Diagnostic | undefined> {
+  getDiagnosticById(id: number | null | undefined): Signal<Diagnostic | undefined> {
     return computed(() => id ? this.diagnostics().find(v => v.id === id) : undefined);
   }
 
@@ -221,7 +221,7 @@ export class DiagnosisStore {
    * @param id - The ID of the diagnostic to delete.
    * @returns void
    */
-  deleteDiagnostic(id: string): void {
+  deleteDiagnostic(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.diagnosisApi.deleteDiagnostic(id).pipe(retry(2)).subscribe({
@@ -237,7 +237,7 @@ export class DiagnosisStore {
     });
   }
 
-  getVehicleById(id: string | null | undefined): Signal<Vehicle | undefined> {
+  getVehicleById(id: number | null | undefined): Signal<Vehicle | undefined> {
     return this.trackingStore.getVehicleById(id);
   }
 
@@ -251,7 +251,7 @@ export class DiagnosisStore {
     this.trackingStore.updateVehicle(updatedVehicle);
   }
 
-  deleteVehicle(id: string): void {
+  deleteVehicle(id: number): void {
     // Delegate to TrackingStore
     this.trackingStore.deleteVehicle(id);
   }

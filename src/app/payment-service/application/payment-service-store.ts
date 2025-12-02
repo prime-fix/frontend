@@ -86,7 +86,7 @@ export class PaymentServiceStore {
   /**
    * Signal for filtering payments by visit ID
    */
-  readonly vehicleIdFilter = signal<string | undefined>(undefined);
+  readonly vehicleIdFilter = signal<number | undefined>(undefined);
 
   constructor(private paymentServiceClosureApi: PaymentServiceApi) {
     this.loadPayments();
@@ -98,7 +98,7 @@ export class PaymentServiceStore {
    * @param id - The ID of the payment to retrieve.
    * @return A signal containing the payment or undefined if not found.
    */
-  getPaymentById(id: string | null | undefined): Signal<Payment | undefined> {
+  getPaymentById(id: number | null | undefined): Signal<Payment | undefined> {
     return computed(() => id ? this.payments().find(p => p.id === id) : undefined);
   }
 
@@ -145,7 +145,7 @@ export class PaymentServiceStore {
    * Deletes a payment by ID.
    * @param id - The ID of the payment to delete.
    */
-  deletePayment(id: string): void {
+  deletePayment(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.paymentServiceClosureApi.deletePayment(id).pipe(retry(2)).subscribe({
@@ -186,7 +186,7 @@ export class PaymentServiceStore {
    * @param id - The ID of the rating to retrieve.
    * @return A signal containing the rating or undefined if not found.
    */
-  getRatingById(id: string | null | undefined): Signal<Rating | undefined> {
+  getRatingById(id: number | null | undefined): Signal<Rating | undefined> {
     return computed(() => id ? this.ratings().find(r => r.id === id) : undefined);
   }
 
@@ -233,7 +233,7 @@ export class PaymentServiceStore {
    * Deletes a rating by ID.
    * @param id - The ID of the rating to delete.
    */
-  deleteRating(id: string): void {
+  deleteRating(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.paymentServiceClosureApi.deleteRating(id).pipe(retry(2)).subscribe({

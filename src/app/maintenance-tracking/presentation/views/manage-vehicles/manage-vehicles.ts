@@ -20,10 +20,10 @@ export class ManageVehicles {
   // Signals
   showModal = signal(false);
   isEditMode = signal(false);
-  selectedVehicleId = signal<string | null>(null);
+  selectedVehicleId = signal<number | null>(null);
   vehiclesByUserId = computed(() => {
     const userId = this.iamStore.sessionUserId();
-    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.user_id)) : [];
   })
 
   // Form
@@ -56,7 +56,7 @@ export class ManageVehicles {
     this.showModal.set(true);
   }
 
-  onDeleteVehicle(vehicleId: string): void {
+  onDeleteVehicle(vehicleId: number): void {
     this.trackingStore.deleteVehicle(vehicleId);
   }
 
@@ -73,18 +73,18 @@ export class ManageVehicles {
     }
 
     const formData = this.vehicleForm.getRawValue();
-    const userId = this.iamStore.sessionUserId() || '';
+    const userId = this.iamStore.sessionUserId() || 0;
 
     if (this.isEditMode()) {
       // Update existing vehicle
       const vehicleId = this.selectedVehicleId();
       if (vehicleId) {
         const updatedVehicle = new Vehicle({
-          id_vehicle: vehicleId,
+          id: vehicleId,
           model: formData.model,
           vehicle_plate: formData.plate,
           color: formData.color,
-          id_user: userId,
+          user_id: userId,
           vehicle_brand: formData.brand,
           vehicle_type: formData.type,
           state_maintenance: 0
@@ -94,11 +94,11 @@ export class ManageVehicles {
     } else {
       // Create new vehicle
       const newVehicle = new Vehicle({
-        id_vehicle: this.generateVehicleId(), // Generate a unique ID
+        id: 0, // ID will be assigned by backend
         model: formData.model,
         vehicle_plate: formData.plate,
         color: formData.color,
-        id_user: userId,
+        user_id: userId,
         vehicle_brand: formData.brand,
         vehicle_type: formData.type,
         state_maintenance: 0

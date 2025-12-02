@@ -7,7 +7,7 @@ export class Rating implements BaseEntity{
   /**
    * Unique identifier for the rating.
    */
-  _id_rating: string;
+  _id: number;
   /**
    * Star rating given by the user.
    */
@@ -23,43 +23,43 @@ export class Rating implements BaseEntity{
   /**
    * Identifier for the associated auto repair service.
    */
-  _id_auto_repair: string;
+  _auto_repair_id: number;
   /**
    * Identifier for the user account that provided the rating.
    */
-  _id_user_account: string;
+  _user_account_id: number;
 
   /**
    * Creates a new Rating instance.
    * @param rating - An object containing rating details.
    */
   constructor(rating:{
-    id_rating: string;
+    id: number;
     star_rating: number;
     comment: string;
     time_rating: string;
-    id_auto_repair: string;
-    id_user_account: string;
+    auto_repair_id: number;
+    user_account_id: number;
   }) {
-    this._id_rating = rating.id_rating;
+    this._id = rating.id;
     this._star_rating = rating.star_rating;
     this._comment = rating.comment;
     this._time_rating = rating.time_rating;
-    this._id_auto_repair = rating.id_auto_repair;
-    this._id_user_account = rating.id_user_account;
+    this._auto_repair_id = rating.auto_repair_id;
+    this._user_account_id = rating.user_account_id;
   }
 
   /** Getters and Setters */
-  get id (): string { return this._id_rating; }
-  set id (value: string) { this._id_rating = value; }
+  get id (): number { return this._id; }
+  set id (value: number) { this._id = value; }
   get star_rating (): number{  return this._star_rating;}
   set star_rating (value: number) {  this._star_rating = value;}
   get comment (): string{  return this._comment;}
   set comment (value: string) {  this._comment = value;}
   get time_rating (): string{  return this._time_rating;}
   set time_rating (value: string) {  this._time_rating = value;}
-  get id_auto_repair (): string{  return this._id_auto_repair;}
-  set id_auto_repair (value: string) {  this._id_auto_repair = value;}
-  get id_user_account (): string{  return this._id_user_account;}
-  set id_user_account (value: string) {  this._id_user_account = value;}
+  get auto_repair_id (): number{  return this._auto_repair_id;}
+  set auto_repair_id (value: number) {  this._auto_repair_id = value;}
+  get user_account_id (): number{  return this._user_account_id;}
+  set user_account_id (value: number) {  this._user_account_id = value;}
 }

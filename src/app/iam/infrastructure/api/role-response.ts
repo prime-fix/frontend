@@ -17,13 +17,9 @@ export interface RoleResource extends BaseResource {
   /**
    * Unique identifier for the role
    */
-  id_role: string;
+  id: number;
   /**
    * Name of the role
    */
   name: string;
-  /**
-   * Description of the role
-   */
-  description: string;
 }

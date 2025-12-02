@@ -50,7 +50,7 @@ export class DiagnosisApi extends BaseApi {
    * @param id - The ID of the expected visit to fetch.
    * @returns An Observable emitting the ExpectedVisit entity.
    */
-  getExpectedVisitById(id: string): Observable<ExpectedVisit> {
+  getExpectedVisitById(id: number): Observable<ExpectedVisit> {
     return this.expectedVisitsEndpoint.getById(id);
   }
 
@@ -77,7 +77,7 @@ export class DiagnosisApi extends BaseApi {
    * @param id - The ID of the expected visit to delete.
    * @returns An Observable emitting void upon successful deletion.
    */
-  deleteExpectedVisit(id: string): Observable<void> {
+  deleteExpectedVisit(id: number): Observable<void> {
     return this.expectedVisitsEndpoint.delete(id);
   }
 
@@ -85,7 +85,7 @@ export class DiagnosisApi extends BaseApi {
     return this.diagnosticsEndpoint.getAll();
   }
 
-  getDiagnosticById(id: string): Observable<Diagnostic> {
+  getDiagnosticById(id: number): Observable<Diagnostic> {
     return this.diagnosticsEndpoint.getById(id);
   }
 
@@ -97,7 +97,7 @@ export class DiagnosisApi extends BaseApi {
     return this.diagnosticsEndpoint.update(diagnostic, diagnostic.id);
   }
 
-  deleteDiagnostic(id: string): Observable<void> {
+  deleteDiagnostic(id: number): Observable<void> {
     return this.diagnosticsEndpoint.delete(id);
   }
 }

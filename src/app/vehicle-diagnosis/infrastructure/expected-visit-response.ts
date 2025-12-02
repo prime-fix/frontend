@@ -17,7 +17,7 @@ export interface ExpectedVisitResource extends BaseResource {
   /**
    * The unique identifier of the expected visit.
    */
-  id_expected: string;
+  id: number;
   /**
    * The state of the visit.
    */
@@ -25,9 +25,13 @@ export interface ExpectedVisitResource extends BaseResource {
   /**
    * The identifier of the visit.
    */
-  id_visit: string;
+  visit_id: number;
   /**
    * Indicates whether the visit is scheduled.
    */
   is_scheduled: boolean;
+  /**
+   * The vehicle ID associated with the expected visit.
+   */
+  vehicle_id: number;
 }

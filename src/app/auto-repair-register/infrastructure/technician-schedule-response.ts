@@ -17,11 +17,11 @@ export interface TechnicianScheduleResource extends BaseResource {
   /**
    * The unique identifier for the technician schedule.
    */
-  id_schedule: string;
+  id: number;
   /**
    * The unique identifier for the technician.
    */
-  id_technician: string;
+  technician_id: number;
   /**
    * The day of the week for the schedule.
    */

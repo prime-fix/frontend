@@ -7,34 +7,24 @@ export class Role implements BaseEntity {
   /**
    * Unique identifier for the role
    */
-  _id_role: string;
+  _id: number;
   /**
    * Name of the role
    */
   _name: string;
-  /**
-   * Description of the role
-   */
-  _description: string;
 
   /**
    * Creates a new Role instance.
-   * @param {Object} role - An object containing role details.
-   * @param {string} role.id_role - Unique identifier for the role.
-   * @param {string} role.name - Name of the role.
-   * @param {string} role.description - Description of the role.
+   * @param role - An object containing role details.
    */
-  constructor(role: { id_role: string; name: string; description: string; }) {
-    this._id_role = role.id_role;
+  constructor(role: { id: number; name: string; }) {
+    this._id = role.id;
     this._name = role.name;
-    this._description = role.description;
   }
 
   /** Getters and Setters */
-  get id (): string { return this._id_role; }
-  set id (value: string) { this._id_role = value; }
+  get id (): number { return this._id; }
+  set id (value: number) { this._id = value; }
   get name (): string { return this._name; }
   set name (value: string) { this._name = value; }
-  get description (): string { return this._description; }
-  set description (value: string) { this._description = value; }
 }

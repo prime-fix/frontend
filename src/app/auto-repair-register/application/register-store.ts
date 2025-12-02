@@ -84,7 +84,7 @@ export class RegisterStore {
    * @param id - The ID of the Auto Repair.
    * @returns A signal containing the Auto Repair or undefined if not found.
    */
-  getAutoRepairById(id: string | number | undefined): Signal<AutoRepair | undefined> {
+  getAutoRepairById(id: number | undefined): Signal<AutoRepair | undefined> {
     // Delegates to the DataCollectionStore to get the Auto Repair by ID.
     return this.dataCollectionStore.getAutoRepairById(id);
   }
@@ -114,7 +114,7 @@ export class RegisterStore {
    * @param id - The ID of the Auto Repair to delete.
    * @returns void
    */
-  deleteAutoRepair(id: string): void {
+  deleteAutoRepair(id: number): void {
     // Delegates to the DataCollectionStore to delete the Auto Repair.
     this.dataCollectionStore.deleteAutoRepair(id);
   }
@@ -123,7 +123,7 @@ export class RegisterStore {
    * Gets a Technician by ID.
    * @param id
    */
-  getTechnicianById(id: string | number | undefined): Signal<Technician | undefined> {
+  getTechnicianById(id: number | undefined): Signal<Technician | undefined> {
     return computed(() => id ? this.technicians().find(t => t.id === id) : undefined);
   }
 
@@ -193,7 +193,7 @@ export class RegisterStore {
    * @param id - The ID of the technician to delete.
    * @returns void
    */
-  deleteTechnician(id: string | number): void {
+  deleteTechnician(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.deleteTechnician(id).pipe(retry(2)).subscribe({
@@ -214,12 +214,12 @@ export class RegisterStore {
    * @param id - Technician id
    * @returns void
    */
-  deleteTechnicianWithSchedules(id: string | number): void {
+  deleteTechnicianWithSchedules(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
     const techId = id;
-    const schedulesToDelete = this.techniciansSchedules().filter(s => s.id_technician === techId);
+    const schedulesToDelete = this.techniciansSchedules().filter(s => s.technician_id === techId);
 
     if (schedulesToDelete.length === 0) {
       this.deleteTechnician(techId);
@@ -233,7 +233,7 @@ export class RegisterStore {
     forkJoin(deleteScheduleCalls).subscribe({
       next: () => {
         this.techniciansSchedulesSignal.update(schedules =>
-          schedules.filter(ts => ts.id_technician !== techId)
+          schedules.filter(ts => ts.technician_id !== techId)
         );
 
         this.autoRepairApi.deleteTechnician(techId).pipe(retry(2)).subscribe({
@@ -279,7 +279,7 @@ export class RegisterStore {
    * @param id - The ID of the Technician Schedule.
    * @returns A signal containing the Technician Schedule or undefined if not found.
    */
-  getTechnicianScheduleById(id: string | number | undefined): Signal<TechnicianSchedule | undefined> {
+  getTechnicianScheduleById(id: number | undefined): Signal<TechnicianSchedule | undefined> {
     return computed(() => id ? this.techniciansSchedules().find(ts => ts.id === id) : undefined);
   }
 
@@ -330,7 +330,7 @@ export class RegisterStore {
    * @param id - The ID of the Technician Schedule to delete.
    * @returns void
    */
-  deleteTechnicianSchedule(id: string | number): void {
+  deleteTechnicianSchedule(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.autoRepairApi.deleteTechnicianSchedule(id).pipe(retry(2)).subscribe({

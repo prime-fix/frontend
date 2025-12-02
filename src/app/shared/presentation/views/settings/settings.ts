@@ -47,7 +47,7 @@ export class Settings {
     const userAccount = this.sessionUserAccount();
     if (!userAccount) return [];
 
-    return this.iamStore.payments().filter(payment => payment.id_user_account === userAccount.id);
+    return this.iamStore.payments().filter(payment => payment.user_account_id === userAccount.id);
   })
 
   /**
@@ -57,17 +57,17 @@ export class Settings {
     const userAccount = this.sessionUserAccount();
     if (!userAccount) return null;
 
-    const membershipId = userAccount.id_membership;
+    const membershipId = userAccount.membership_id;
     let months = 0;
     let price = '0.00';
 
-    if (membershipId === 'M001') {
+    if (membershipId === 1) {
       months = 1;
       price = '39.00';
-    } else if (membershipId === 'M002') {
+    } else if (membershipId === 2) {
       months = 3;
       price = '99.00';
-    } else if (membershipId === 'M003') {
+    } else if (membershipId === 3) {
       months = 12;
       price = '349.00';
     }
@@ -192,12 +192,12 @@ export class Settings {
     }
 
     const updatedUserAccount = new UserAccount({
-     id_user_account: this.sessionUserAccount()?.id!,
+     id: this.sessionUserAccount()?.id!,
       username: this.sessionUserAccount()?.username!,
       email: this.sessionUserAccount()?.email!,
-      id_user: this.sessionUserAccount()?.id_user!,
-      id_role: this.sessionUserAccount()?.id_role!,
-      id_membership: this.sessionUserAccount()?.id_membership!,
+      user_id: this.sessionUserAccount()?.user_id!,
+      role_id: this.sessionUserAccount()?.role_id!,
+      membership_id: this.sessionUserAccount()?.membership_id!,
       password: newPassword,
       is_new: this.sessionUserAccount()?.is_new!
     });
@@ -211,7 +211,7 @@ export class Settings {
    * Delete payment method
    * @param paymentId - ID of the payment method to delete
    */
-  onDeletePayment(paymentId: string): void {
+  onDeletePayment(paymentId: number): void {
     if (confirm('¿Está seguro de eliminar este método de pago?')) {
       this.iamStore.deletePayment(paymentId);
     }

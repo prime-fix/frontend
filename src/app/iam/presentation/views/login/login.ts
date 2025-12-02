@@ -31,7 +31,7 @@ export class Login {
   private _autoRedirect = effect(() => {
     if (!this.store.isAuthenticated()) return;
     const redirect = this.route.snapshot.queryParamMap.get('redirect');
-    const byRole = this.store.roleId() === 'R001' ? '/layout-owner' : '/layout-workshop';
+    const byRole = this.store.roleId() === 1 ? '/layout-owner' : '/layout-workshop';
     const target = redirect || byRole;
     if (this.router.url !== target) {
       void this.router.navigateByUrl(target);

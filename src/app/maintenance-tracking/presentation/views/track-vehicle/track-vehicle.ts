@@ -30,11 +30,11 @@ export class TrackVehicle {
   // Vehicles filtered by userId
   vehiclesByUserId = computed(() => {
     const userId = this.iamStore.sessionUserId();
-    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user)) : [];
+    return userId ? this.trackingStore.vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.user_id)) : [];
   });
 
   trackForm = this.fb.group({
-    selectedVehicle: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
+    selectedVehicleId: new FormControl<number>(0, {nonNullable: true, validators: [Validators.required]})
   });
 
   onSelect() {
@@ -42,7 +42,7 @@ export class TrackVehicle {
       this.trackForm.markAllAsTouched();
       return;
     }
-    const selectedVehicleId = this.trackForm.get('selectedVehicle')?.value;
+    const selectedVehicleId = this.trackForm.get('selectedVehicleId')?.value;
     this.selectedVehicle.set(this.vehiclesByUserId().find(v => v.id === selectedVehicleId));
 
     if (this.selectedVehicle()) {

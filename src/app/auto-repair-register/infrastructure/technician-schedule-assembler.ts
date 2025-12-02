@@ -25,8 +25,8 @@ export class TechnicianScheduleAssembler implements BaseAssembler<TechnicianSche
    */
   toEntityFromResource(resource: TechnicianScheduleResource): TechnicianSchedule {
     return new TechnicianSchedule({
-      id_schedule: resource.id_schedule,
-      id_technician: resource.id_technician,
+      id: resource.id,
+      technician_id: resource.technician_id,
       day_of_week: resource.day_of_week,
       start_time: resource.start_time,
       end_time: resource.end_time,
@@ -41,8 +41,8 @@ export class TechnicianScheduleAssembler implements BaseAssembler<TechnicianSche
    */
   toResourceFromEntity(entity: TechnicianSchedule): TechnicianScheduleResource {
     return {
-      id_schedule: entity.id,
-      id_technician: entity.id_technician,
+      id: entity.id,
+      technician_id: entity.technician_id,
       day_of_week: entity.day_of_week,
       start_time: entity.start_time,
       end_time:  entity.end_time,

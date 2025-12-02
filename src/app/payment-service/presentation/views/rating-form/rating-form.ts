@@ -28,7 +28,7 @@ export class RatingForm {
    * Visits filtered by the selected vehicle ID
    */
   public visitsByVehicleId = computed(() => {
-    return this.paymentServiceStore.visits().filter(v => v.id_vehicle === this.paymentServiceStore.vehicleIdFilter());
+    return this.paymentServiceStore.visits().filter(v => v.vehicle_id === this.paymentServiceStore.vehicleIdFilter());
   })
   /**
    * Auto repair associated with the visits of the selected vehicle
@@ -39,7 +39,7 @@ export class RatingForm {
       return null;
     }
     const autoRepairs = this.dataCollectionStore.autoRepairs();
-    return autoRepairs.find(ar => ar.id === visits[0].id_auto_repair) || null;
+    return autoRepairs.find(ar => ar.id === visits[0].auto_repair_id) || null;
   })
 
   /**
@@ -70,12 +70,12 @@ export class RatingForm {
     }
 
     const newRating = new Rating({
-      id_rating: 'RT' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+      id: 0, // ID will be set by the backend
       star_rating: this.form.value.star_rating!,
       comment: this.form.value.comment ?? '',
       time_rating: new Date().toISOString().slice(0, 10), // Format: YYYY-MM-DD
-      id_auto_repair: this.autoRepairByVehicle()?.id!,
-      id_user_account: this.userAccountId()!
+      auto_repair_id: this.autoRepairByVehicle()?.id!,
+      user_account_id: this.userAccountId()!
     });
 
     this.paymentServiceStore.addRating(newRating);

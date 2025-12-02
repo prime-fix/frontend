@@ -64,13 +64,13 @@ export class PaymentForm {
     }
 
     const payment = new Payment({
-      id_payment: 'PAY' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+      id: 0, // This will be set by the backend
       card_number: this.form.value.card_number!,
       card_type: this.form.value.card_type!,
       month: this.monthToNumber(this.form.value.month!),
       year: this.form.value.year!,
       cvv: this.form.value.cvv!,
-      id_user_account: this.userAccountId()!
+      user_account_id: this.userAccountId()!
     });
   }
 

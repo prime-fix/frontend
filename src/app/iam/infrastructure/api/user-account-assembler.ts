@@ -22,12 +22,12 @@ export class UserAccountAssembler implements BaseAssembler<UserAccount, UserAcco
    */
   toEntityFromResource(resource: UserAccountResource): UserAccount {
     return new UserAccount({
-      id_user_account: resource.id_user_account,
+      id: resource.id,
       username: resource.username,
       email: resource.email,
-      id_user: resource.id_user,
-      id_role: resource.id_role,
-      id_membership: resource.id_membership,
+      user_id: resource.user_id,
+      role_id: resource.role_id,
+      membership_id: resource.membership_id,
       password: resource.password,
       is_new: resource.is_new,
     })
@@ -40,12 +40,12 @@ export class UserAccountAssembler implements BaseAssembler<UserAccount, UserAcco
    */
   toResourceFromEntity(entity: UserAccount): UserAccountResource {
     return {
-      id_user_account: entity.id,
+      id: entity.id,
       username: entity.username,
       email: entity.email,
-      id_user: entity.id_user,
-      id_role: entity.id_role,
-      id_membership: entity.id_membership,
+      user_id: entity.user_id,
+      role_id: entity.role_id,
+      membership_id: entity.membership_id,
       password: entity.password,
       is_new: entity.is_new,
     } as UserAccountResource;

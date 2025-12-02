@@ -51,7 +51,7 @@ export class CatalogApi extends BaseApi {
    * @param id - The ID of the location to be fetched.
    * @return An Observable emitting the Location entity.
    */
-  getLocation(id: string): Observable<Location> {
+  getLocation(id: number): Observable<Location> {
     return this.locationsEndpoint.getById(id);
   }
 
@@ -78,7 +78,7 @@ export class CatalogApi extends BaseApi {
    * @param id - The ID of the location to be deleted.
    * @return An Observable emitting void upon successful deletion.
    */
-  deleteLocation(id: string): Observable<void> {
+  deleteLocation(id: number): Observable<void> {
     return this.locationsEndpoint.delete(id);
   }
 
@@ -122,7 +122,7 @@ export class CatalogApi extends BaseApi {
    * @param id - The ID of the Auto Repair to delete.
    * @returns An Observable of void.
    */
-  deleteAutoRepair(id: number | string): Observable<void> {
+  deleteAutoRepair(id: number): Observable<void> {
     return this.autoRepairsEndpoint.delete(id);
   }
 }

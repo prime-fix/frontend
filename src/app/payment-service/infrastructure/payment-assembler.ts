@@ -22,13 +22,13 @@ export class PaymentAssembler implements BaseAssembler<Payment, PaymentResource,
    */
   toEntityFromResource(resource: PaymentResource): Payment {
     return new Payment({
-      id_payment: resource.id_payment,
+      id: resource.id,
       card_number: resource.card_number,
       card_type: resource.card_type,
       month: resource.month,
       year: resource.year,
       cvv: resource.cvv,
-      id_user_account: resource.id_user_account
+      user_account_id: resource.user_account_id
     })
   }
 
@@ -39,13 +39,13 @@ export class PaymentAssembler implements BaseAssembler<Payment, PaymentResource,
    */
   toResourceFromEntity(entity: Payment): PaymentResource {
     return {
-      id_payment: entity.id,
+      id: entity.id,
       card_number: entity.card_number,
       card_type: entity.card_type,
       month: entity.month,
       year: entity.year,
       cvv: entity.cvv,
-      id_user_account: entity.id_user_account
+      user_account_id: entity.user_account_id
     } as PaymentResource;
   }
 }

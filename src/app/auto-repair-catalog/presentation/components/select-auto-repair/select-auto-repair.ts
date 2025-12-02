@@ -22,7 +22,7 @@ export class SelectAutoRepair {
   private router = inject(Router);
 
   readonly userAccount = computed(() => {
-    const idUserAccount = this.autoRepair()?.id_user_account;
+    const idUserAccount = this.autoRepair()?.user_account_id;
     return idUserAccount ? this.iamStore.getUserAccountById(idUserAccount)() : undefined;
   })
 

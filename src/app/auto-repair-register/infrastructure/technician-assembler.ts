@@ -24,10 +24,10 @@ export class TechnicianAssembler
    */
   toEntityFromResource(resource: TechnicianResource): Technician {
     return new Technician({
-      id_technician: resource.id_technician,
+      id: resource.id,
       name: resource.name,
       last_name: resource.last_name,
-      id_auto_repair: resource.id_auto_repair
+      auto_repair_id: resource.auto_repair_id
     });
   }
 
@@ -38,10 +38,10 @@ export class TechnicianAssembler
    */
   toResourceFromEntity(entity: Technician): TechnicianResource {
     return {
-      id_technician: entity.id,
+      id: entity.id,
       name: entity.name,
       last_name: entity.last_name,
-      id_auto_repair: entity.id_auto_repair
+      auto_repair_id: entity.auto_repair_id
     } as TechnicianResource;
   }
 }

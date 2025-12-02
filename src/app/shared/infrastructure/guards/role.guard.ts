@@ -7,7 +7,7 @@ import { IamStore } from '@iam/application/iam-store';
  * @param allowedRoles - Array of roles allowed to access the route
  * @returns CanActivateFn - Function to determine if route can be activated
  */
-export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
+export const roleGuard = (allowedRoles: number[]): CanActivateFn => {
   return (_r, state) => {
     const router = inject(Router);
     const iamStore = inject(IamStore);
@@ -21,10 +21,10 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
       return router.createUrlTree(['/login'], { queryParams: { redirect: state.url } });
     }
 
-    const { id_role: userRole, is_new: isNew } = sessionUserAccount;
+    const { role_id: userRole, is_new: isNew } = sessionUserAccount;
 
     // Validate role exists (this should not happen with a valid session)
-    if (!userRole || userRole === '') {
+    if (!userRole || userRole === 0) {
       console.warn('Role Guard: User role not found or invalid', {
         hasSessionUserAccount: !!sessionUserAccount,
         roleValue: userRole,
@@ -37,7 +37,7 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
     if (!allowedRoles.includes(userRole)) {
       // User doesn't have the right role for this layout
       console.warn(`Role Guard: Access denied. User role: ${userRole}, Required: ${allowedRoles.join(', ')}`);
-      const correctLayout = userRole === 'R001' ? '/layout-owner/dashboard-owner' : '/layout-workshop/dashboard-workshop';
+      const correctLayout = userRole === 1 ? '/layout-owner/dashboard-owner' : '/layout-workshop/dashboard-workshop';
       return router.createUrlTree([correctLayout]);
     }
 
@@ -45,7 +45,7 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
 
     // Handle new users - redirect to home if not already there
     if (isNew) {
-      const newUserPath = userRole === 'R001' ? '/layout-owner/home-owner' : '/layout-workshop/home-workshop';
+      const newUserPath = userRole === 1 ? '/layout-owner/home-owner' : '/layout-workshop/home-workshop';
 
       // Only redirect if not already on the new user home page
       if (state.url !== newUserPath) {

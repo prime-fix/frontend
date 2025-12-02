@@ -23,11 +23,11 @@ export class AutoRepairAssembler implements BaseAssembler<AutoRepair, AutoRepair
    */
   toEntityFromResource(resource: AutoRepairResource): AutoRepair {
     return new AutoRepair({
-      id_auto_repair: resource.id_auto_repair,
+      id: resource.id,
       ruc: resource.ruc,
       contact_email: resource.contact_email,
       technicians_count: resource.technicians_count,
-      id_user_account: resource.id_user_account
+      user_account_id: resource.user_account_id
     });
   }
 
@@ -38,11 +38,11 @@ export class AutoRepairAssembler implements BaseAssembler<AutoRepair, AutoRepair
    */
   toResourceFromEntity(entity: AutoRepair): AutoRepairResource {
     return {
-      id_auto_repair: entity.id,
+      id: entity.id,
       ruc: entity.ruc,
       contact_email: entity.contact_email,
       technicians_count: entity.technicians_count,
-      id_user_account: entity.id_user_account
+      user_account_id: entity.user_account_id
     } as AutoRepairResource;
   }
 }

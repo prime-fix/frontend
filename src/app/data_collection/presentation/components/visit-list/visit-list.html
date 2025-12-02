@@ -42,7 +42,7 @@
                 <div class="visit-info-row">
                   <div class="info-item">
                     <span class="info-label">{{ 'visit_list.workshop' | translate }}</span>
-                    <span class="info-value">{{ getUserAccountById(getAutoRepair(visit.id_auto_repair)()?.id_user_account)()?.username || 'N/A' }}</span>
+                    <span class="info-value">{{ getUserAccountById(getAutoRepair(visit.auto_repair_id)()?.user_account_id)()?.username || 'N/A' }}</span>
                   </div>
                 </div>
 
@@ -56,7 +56,7 @@
                 <div class="visit-info-row">
                   <div class="info-item">
                     <span class="info-label">{{ 'visit_list.address' | translate }}</span>
-                    <span class="info-value">{{ getAddressByAutoRepair(visit.id_auto_repair)() || 'N/A' }}</span>
+                    <span class="info-value">{{ getAddressByAutoRepair(visit.auto_repair_id)() || 'N/A' }}</span>
                   </div>
                 </div>
 

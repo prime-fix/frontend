@@ -22,10 +22,10 @@ export class VehicleAssembler implements BaseAssembler<Vehicle, VehicleResource,
    */
   toEntityFromResource(resource: VehicleResource): Vehicle {
     return new Vehicle({
-      id_vehicle: resource.id_vehicle,
+      id: resource.id,
       color: resource.color,
       model: resource.model,
-      id_user: resource.id_user,
+      user_id: resource.user_id,
       vehicle_brand: resource.vehicle_brand,
       vehicle_plate: resource.vehicle_plate,
       vehicle_type: resource.vehicle_type,
@@ -40,10 +40,10 @@ export class VehicleAssembler implements BaseAssembler<Vehicle, VehicleResource,
    */
   toResourceFromEntity(entity: Vehicle): VehicleResource {
     return {
-      id_vehicle: entity.id,
+      id: entity.id,
       color: entity.color,
       model: entity.model,
-      id_user: entity.id_user,
+      user_id: entity.user_id,
       vehicle_brand: entity.vehicle_brand,
       vehicle_plate: entity.vehicle_plate,
       vehicle_type: entity.vehicle_type,

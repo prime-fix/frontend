@@ -150,7 +150,7 @@ export class IamStore {
   /**
    * Computed property to get the role ID of the authenticated user.
    */
-  readonly roleId = computed(() => this.sessionUserAccount()?.id_role ?? '');
+  readonly roleId = computed(() => this.sessionUserAccount()?.role_id ?? '');
   /**
    * Computed property to get the full name of the authenticated user.
    */
@@ -199,7 +199,7 @@ export class IamStore {
    * Signal to hold the membership type selected during registration.
    * @private
    */
-  private readonly registerMemberShipTypeSignal = signal<string | null>(null);
+  private readonly registerMemberShipTypeSignal = signal<number | null>(null);
 
   /**
    * Readonly versions of registration signals for external access.
@@ -246,7 +246,7 @@ export class IamStore {
    * @param userId - The user ID to check
    * @returns true if the user ID matches the current session user ID
    */
-  isCurrentUser(userId: string | null | undefined): boolean {
+  isCurrentUser(userId: number | null | undefined): boolean {
     const currentUserId = this.sessionUserId();
     if (!currentUserId || !userId) {
       return false;
@@ -288,34 +288,34 @@ export class IamStore {
           && (rawUserAccount._id_role === 'R001' || rawUserAccount._id_role === 'R002');
 
         const hasUserData = rawUser
-          && typeof rawUser._id_user === 'string'
-          && rawUser._id_user.length > 0;
+          && typeof rawUser._user_id === 'string'
+          && rawUser._user_id.length > 0;
 
         if (hasUserAccountData && hasUserData) {
           const userAccount = new UserAccount({
-            id_user_account: rawUserAccount._id_user_account,
+            id: rawUserAccount._id,
             username: rawUserAccount._username,
             email: rawUserAccount._email,
-            id_user: rawUserAccount._id_user,
-            id_role: rawUserAccount._id_role,
-            id_membership: rawUserAccount._id_membership,
+            user_id: rawUserAccount._user_id,
+            role_id: rawUserAccount._role_id,
+            membership_id: rawUserAccount._membership_id,
             password: rawUserAccount._password,
             is_new: rawUserAccount._is_new
           });
 
           const user = new User({
-            id_user: rawUser._id_user,
+            id: rawUser._id,
             name: rawUser._name,
             last_name: rawUser._last_name,
             dni: rawUser._dni,
             phone_number: rawUser._phone_number,
-            id_location: rawUser._id_location
+            location_id: rawUser._location_id
           });
 
           this.sessionUserAccountSignal.set(userAccount);
           this.sessionUserSignal.set(user);
-          const roleName = userAccount.id_role === 'R001' ? 'Vehicle Owner' : 'Auto Repair Workshop';
-          console.log(`Session restored: User ${userAccount.username || userAccount.email || user.name || 'Unknown'} with role ${userAccount.id_role} (${roleName})`);
+          const roleName = userAccount.role_id === 1 ? 'Vehicle Owner' : 'Auto Repair Workshop';
+          console.log(`Session restored: User ${userAccount.username || userAccount.email || user.name || 'Unknown'} with role ${userAccount.role_id} (${roleName})`);
         } else {
           console.error('NOT LOGGED - Corrupted session detected and cleared:', {
             hasUserAccount: !!rawUserAccount,
@@ -378,7 +378,7 @@ export class IamStore {
    * Gets a location by its ID.
    * @param id
    */
-  getLocationById(id: string | null | undefined): Signal<Location | undefined> {
+  getLocationById(id: number | null | undefined): Signal<Location | undefined> {
     // delegate to CatalogStore
     return this.catalogStore.getLocationById(id);
   }
@@ -408,7 +408,7 @@ export class IamStore {
    * @param id - The ID of the location to delete.
    * @returns void
    */
-  deleteLocation(id: string): void {
+  deleteLocation(id: number): void {
     // delegate to CatalogStore
     this.catalogStore.deleteLocation(id);
   }
@@ -418,19 +418,19 @@ export class IamStore {
    * @param id - The ID of the user to retrieve.
    * @return A signal containing the user or undefined if not found.
    */
-  getUserById(id: string | null | undefined): Signal<User | undefined> {
+  getUserById(id: number | null | undefined): Signal<User | undefined> {
     return computed(() => id ? this.users().find(u => u.id === id) : undefined);
   }
 
-  getUserAccountById(id: string | null | undefined): Signal<UserAccount | undefined> {
+  getUserAccountById(id: number | null | undefined): Signal<UserAccount | undefined> {
     return computed(() => id ? this.userAccounts().find(ua => ua.id === id) : undefined);
   }
 
-  getRoleById(id: string | null | undefined): Signal<Role | undefined> {
+  getRoleById(id: number | null | undefined): Signal<Role | undefined> {
     return computed(() => id ? this.roles().find(r => r.id === id) : undefined);
   }
 
-  getMembershipById(id: string | null | undefined): Signal<Membership | undefined> {
+  getMembershipById(id: number | null | undefined): Signal<Membership | undefined> {
     return computed(() => id ? this.memberships().find(m => m.id === id) : undefined);
   }
 
@@ -481,7 +481,7 @@ export class IamStore {
    * Deletes a user account by ID.
    * @param id - The ID of the user account to delete.
    */
-  deleteUserAccount(id: string): void {
+  deleteUserAccount(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteUserAccount(id).pipe(retry(2)).subscribe({
@@ -543,7 +543,7 @@ export class IamStore {
    * Deletes a user by ID.
    * @param id - The ID of the user to delete.
    */
-  deleteUser(id: string): void {
+  deleteUser(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteUser(id).pipe(retry(2)).subscribe({
@@ -589,7 +589,7 @@ export class IamStore {
     });
   }
 
-  deleteRole(id: string): void {
+  deleteRole(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteRole(id).pipe(retry(2)).subscribe({
@@ -636,7 +636,7 @@ export class IamStore {
     })
   }
 
-  deleteMembership(id: string): void {
+  deleteMembership(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteMembership(id).pipe(retry(2)).subscribe({
@@ -673,7 +673,7 @@ export class IamStore {
    * Deletes a payment by ID.
    * @param id - The ID of the payment to delete.
    */
-  deletePayment(id: string): void {
+  deletePayment(id: number): void {
     // delegate to PaymentServiceStore
     this.paymentServiceStore.deletePayment(id);
   }
@@ -788,7 +788,7 @@ export class IamStore {
         return;
       }
 
-      const user = this.users().find(u => u.id === account.id_user);
+      const user = this.users().find(u => u.id === account.user_id);
       if (!user) {
         this.errorSignal.set('User or password incorrect');
         this.loadingSignal.set(false);
@@ -854,28 +854,28 @@ export class IamStore {
       string; department: string; district: string; address: string; email: string; password: string }): void {
 
     const newLocation = new Location({
-      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       department: form.department,
       district: form.district,
       address: form.address
     })
 
     const newUser = new User({
-      id_user: 'U0' + (this.userCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       name: form.fullName.split(' ')[0] || '',
       last_name: form.fullName.split(' ').slice(1).join(' '),
       dni: form.dni,
       phone_number: form.phone_number,
-      id_location: newLocation.id,
+      location_id: newLocation.id,
     })
 
     const newUserAccount = new UserAccount({
-      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       username: form.username.trim(),
       email: form.email.trim(),
-      id_user: newUser.id,
-      id_role: 'R001',
-      id_membership: '', // No membership at registration
+      user_id: newUser.id,
+      role_id: 1, // Vehicle Owner role
+      membership_id: 0, // No membership at registration
       password: form.password,
       is_new: true // Mark as new user
     });
@@ -893,28 +893,28 @@ export class IamStore {
       string; phone_number: string; department: string; district: string; address: string; email: string; password: string }): void {
 
     const newLocation = new Location({
-      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       department: form.department,
       district: form.district,
       address: form.address
     })
 
     const newUser = new User({
-      id_user: 'U0' + (this.userCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       name: form.name_workshop,
       last_name: '',
       dni: form.ruc,
       phone_number: form.phone_number,
-      id_location: newLocation.id,
+      location_id: newLocation.id,
     })
 
     const newUserAccount = new UserAccount({
-      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       username: form.username.trim(),
       email: form.email.trim(),
-      id_user: newUser.id,
-      id_role: 'R002',
-      id_membership: '', // No membership at registration
+      user_id: newUser.id,
+      role_id: 2,  // Auto Repair Workshop role
+      membership_id: 0, // No membership at registration
       password: form.password,
       is_new: true // Mark as new user
     });
@@ -934,7 +934,7 @@ export class IamStore {
 
     const userAccountNoMembership = this.registerUserAccountSignal();
     if (userAccountNoMembership) {
-      userAccountNoMembership.id_membership = membershipId;
+      userAccountNoMembership.membership_id = membershipId;
       this.registerUserAccountSignal.set(userAccountNoMembership);
     }
   }
@@ -956,13 +956,13 @@ export class IamStore {
     }
 
     const newPayment = new Payment({
-      id_payment: 'PY0' + (this.paymentCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       card_number: payment.card_number,
       card_type: payment.card_type,
       month: payment.month,
       year: payment.year,
       cvv: payment.cvv,
-      id_user_account: userAccount.id
+      user_account_id: userAccount.id
     });
 
     console.log(location);

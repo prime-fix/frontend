@@ -80,7 +80,7 @@ export class TrackingStore {
    * @param id - The ID of the notification to retrieve.
    * @returns A computed signal that resolves to the notification with the given ID, or undefined if not found.
    */
-  getNotificationById(id: string | null | undefined): Signal<Notification | undefined> {
+  getNotificationById(id: number | null | undefined): Signal<Notification | undefined> {
     return computed(() => this.notifications().find(n => n.id === id) || undefined);
   }
 
@@ -126,7 +126,7 @@ export class TrackingStore {
    * Delete a notification by its ID.
    * @param id - The ID of the notification to delete.
    */
-  deleteNotification(id: string): void {
+  deleteNotification(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.trackingApi.deleteNotification(id).pipe(retry(2)).subscribe({
@@ -197,7 +197,7 @@ export class TrackingStore {
    * @param id - The ID of the Vehicle to delete.
    * @returns void
    */
-  deleteVehicle(id: number| string): void {
+  deleteVehicle(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.trackingApi.deleteVehicle(id).pipe(retry(2)).subscribe({

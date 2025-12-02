@@ -17,7 +17,7 @@ export interface NotificationResource extends BaseResource {
   /**
    * Unique identifier for the notification.
    */
-  id_notification: string;
+  id: number;
   /**
    * Message content of the notification.
    */
@@ -27,15 +27,11 @@ export interface NotificationResource extends BaseResource {
    */
   read: boolean;
   /**
-   * Identifier of the associated vehicle.
-   */
-  id_vehicle: string;
-  /**
    * Timestamp when the notification was sent.
    */
   sent: Date;
   /**
-   * Identifier of the associated diagnostic.
+   * Identifier of the associated vehicle.
    */
-  id_diagnostic: string;
+  vehicle_id: number;
 }

@@ -48,7 +48,7 @@ export class TrackingApi extends BaseApi {
    * @param id - The ID of the notification to fetch.
    * @returns An observable that emits the notification with the specified ID.
    */
-  getNotification(id: string): Observable<Notification> {
+  getNotification(id: number): Observable<Notification> {
     return this.notificationsEndpoint.getById(id);
   }
 
@@ -75,7 +75,7 @@ export class TrackingApi extends BaseApi {
    * @param id - The ID of the notification to delete.
    * @returns An observable that completes when the notification is deleted.
    */
-  deleteNotification(id: string): Observable<void> {
+  deleteNotification(id: number): Observable<void> {
     return this.notificationsEndpoint.delete(id);
   }
 
@@ -119,7 +119,7 @@ export class TrackingApi extends BaseApi {
    * @param id - The ID of the Vehicle to delete.
    * @returns An Observable of void.
    */
-  deleteVehicle(id: number | string): Observable<void> {
+  deleteVehicle(id: number): Observable<void> {
     return this.vehicleEndpoint.delete(id);
   }
 }

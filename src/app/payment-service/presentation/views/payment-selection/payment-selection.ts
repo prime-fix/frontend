@@ -25,7 +25,7 @@ export class PaymentSelection {
    * Filtered payments by the current user account ID
    */
   readonly paymentFilterByUserId = computed(() => {
-    return this.paymentServiceStore.payments().filter(p => p.id_user_account === this.userAccountId())
+    return this.paymentServiceStore.payments().filter(p => p.user_account_id === this.userAccountId())
   })
 
   /**

@@ -38,7 +38,7 @@ export class Profile {
    * Session of Location
    */
   sessionLocation = computed(() =>
-    this.catalogStore.getLocationById(this.sessionUser()?.id_location)());
+    this.catalogStore.getLocationById(this.sessionUser()?.location_id)());
 
   /**
    * Editable Fields
@@ -72,7 +72,7 @@ export class Profile {
    * Check if the user is an owner
    */
   isOwner(): boolean {
-    return this.sessionUserAccount()?.id_role === 'R001';
+    return this.sessionUserAccount()?.role_id === 1;
   }
 
   /**
@@ -94,18 +94,18 @@ export class Profile {
    */
   saveChanges(): void {
     const locationEdit = new Location({
-      id_location: this.sessionLocation()?.id!,
+      id: this.sessionLocation()?.id!,
       address: this.addressToEdit()!,
       district: this.sessionLocation()?.district!,
       department: this.sessionLocation()?.department!
     });
     const updatedUserAccount = new UserAccount({
-      id_user_account: this.sessionUserAccount()?.id!,
+      id: this.sessionUserAccount()?.id!,
       username: this.usernameToEdit()!,
       email: this.sessionUserAccount()?.email!,
-      id_user: this.sessionUserAccount()?.id_user!,
-      id_role: this.sessionUserAccount()?.id_role!,
-      id_membership: this.sessionUserAccount()?.id_membership!,
+      user_id: this.sessionUserAccount()?.user_id!,
+      role_id: this.sessionUserAccount()?.role_id!,
+      membership_id: this.sessionUserAccount()?.membership_id!,
       password: this.passwordToEdit()!,
       is_new: this.sessionUserAccount()?.is_new!,
     });
