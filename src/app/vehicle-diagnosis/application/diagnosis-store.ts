@@ -87,14 +87,47 @@ export class DiagnosisStore {
   readonly vehicleCount = computed(() => this.trackingStore.vehicleCount());
 
   /**
-   * Constructor for DiagnosisStore.
+   * Constructs a new DiagnosisStore instance and loads initial data.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param diagnosisApi - The DiagnosisApi service for API interactions.
    */
   constructor(private diagnosisApi: DiagnosisApi) {
-    this.loadExpectedVisits();
-    this.loadDiagnostics();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [DiagnosisStore] Valid JWT found, loading expected visits and diagnostics...');
+      this.loadExpectedVisits();
+      this.loadDiagnostics();
+    } else {
+      console.log('⚠️ [DiagnosisStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [DiagnosisStore] Force loading data...');
+        this.loadExpectedVisits();
+        this.loadDiagnostics();
+      });
+    }
   }
 
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
+  }
 
   /**
    * Gets an expected visit by its ID.

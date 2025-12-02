@@ -68,11 +68,45 @@ export class TrackingStore {
 
   /**
    * Constructor for TrackingStore.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param trackingApi - An instance of TrackingApi to interact with the backend API.
    */
   constructor(private trackingApi: TrackingApi) {
-    this.loadNotifications();
-    this.loadVehicles();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [TrackingStore] Valid JWT found, loading notifications and vehicles...');
+      this.loadNotifications();
+      this.loadVehicles();
+    } else {
+      console.log('⚠️ [TrackingStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [TrackingStore] Force loading data...');
+        this.loadNotifications();
+        this.loadVehicles();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**

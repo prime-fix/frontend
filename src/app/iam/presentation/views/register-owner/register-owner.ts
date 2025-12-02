@@ -53,11 +53,11 @@ export class RegisterOwner {
     }
 
     const formData = this.registerForm.getRawValue();
-    console.log('Register owner data:', formData);
+    console.log('📝 Register owner form data:', formData);
 
-    this.store.startRegistrationFlow('Vehicle Owner');
-    this.store.saveRegisterOwner(formData);
-    this.navigateToPlanOwner();
+    // Register with AWS API (auto-login with JWT)
+    this.store.registerVehicleOwner(formData);
+    // Auto-redirect will be handled by _autoRedirect effect when authenticated
   }
 
   navigateToLogin() {

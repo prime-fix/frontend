@@ -52,11 +52,11 @@ export class RegisterWorkshop {
     }
 
     const formData = this.registerForm.getRawValue();
-    console.log('Register workshop data:', formData);
+    console.log('📝 Register workshop form data:', formData);
 
-    this.store.startRegistrationFlow('Auto Repair Shop');
-    this.store.saveRegisterWorkshop(formData);
-    this.navigateToPlanWorkshop();
+    // Register with AWS API (auto-login with JWT)
+    this.store.registerAutoRepair(formData);
+    // Auto-redirect will be handled by _autoRedirect effect when authenticated
   }
 
   navigateToLogin() {

@@ -29,8 +29,16 @@ export class TechnicianApiEndpoint extends BaseApiEndpoint<
    * @param http - The HttpClient used for making HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderTechniciansEndpointPath}`, new TechnicianAssembler(), {
-      usePathParams: environment.usePathParams
-    });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderTechniciansEndpointPath}`,
+      new TechnicianAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

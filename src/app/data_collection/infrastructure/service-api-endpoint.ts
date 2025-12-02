@@ -20,7 +20,16 @@ export class ServiceApiEndpoint extends BaseApiEndpoint<Service,MaintenanceServi
    * @param http - The HttpClient used for making HTTP requests.
    */
   constructor(http:HttpClient){
-    super(http,`${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderServicesEndpointPath}`,
-      new ServiceAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderServicesEndpointPath}`,
+      new ServiceAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

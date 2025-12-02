@@ -74,9 +74,47 @@ export class RegisterStore {
    */
   readonly error = this.errorSignal.asReadonly();
 
+  /**
+   * Constructs a new RegisterStore instance and loads initial data.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
+   * @param autoRepairApi - The RegisterApi service for making API calls.
+   */
   constructor(private autoRepairApi: RegisterApi) {
-    this.loadTechnicians();
-    this.loadTechniciansSchedules();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [RegisterStore] Valid JWT found, loading technicians and schedules...');
+      this.loadTechnicians();
+      this.loadTechniciansSchedules();
+    } else {
+      console.log('⚠️ [RegisterStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [RegisterStore] Force loading data...');
+        this.loadTechnicians();
+        this.loadTechniciansSchedules();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**

@@ -28,9 +28,9 @@
   },
   "login": {
     "title": "Login to Your Account",
-    "email": "Email",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Email is not valid",
+    "username": "Username",
+    "usernameRequired": "Username is required",
+    "usernameMinLength": "Username must be at least 3 characters",
     "password": "Password",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 6 characters",

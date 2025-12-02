@@ -1,10 +1,18 @@
 export const environment = {
   production: false,
   usePathParams: true,
-  // Provider API configuration
-  primeFixProviderApiBaseUrl: "http://localhost:3000/api/v1",
+  // Provider API configuration - AWS is primary, Supabase is fallback
+  primeFixProviderApiBaseUrl: "http://localhost:8092/api/v1", // AWS Primary
+  primeFixProviderApiBaseUrlAWS: "http://localhost:8092/api/v1", // AWS (explicit)
+  primeFixProviderApiBaseUrlSupabase: "http://localhost:3000/api/v1", // Supabase Fallback
+
+  // API Strategy: 'aws-primary' means AWS first, fallback to Supabase if needed
+  apiStrategy: 'aws-primary' as const,
 
   // Endpoints Paths
+  primeFixProviderSignUpVehicleOwnerEndpointPath: "/authentication/sign-up/vehicle-owner",
+  primeFixProviderSignUpAutoRepairEndpointPath: "/authentication/sign-up/auto-repair",
+  primeFixProviderSignInEndpointPath: "/authentication/sign-in",
   primeFixProviderAutoRepairsEndpointPath: "/auto_repairs",
   primeFixProviderTechniciansEndpointPath: "/technicians",
   primeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",

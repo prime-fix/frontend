@@ -86,11 +86,45 @@ export class DataCollectionStore {
 
   /**
    * Constructs a new instance of the DataCollectionStore and loads initial data.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param dataCollectionApi - The API service for data collection operations.
    */
   constructor(private dataCollectionApi : DataCollectionApi) {
-    this.loadServices();
-    this.loadVisits()
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [DataCollectionStore] Valid JWT found, loading services and visits...');
+      this.loadServices();
+      this.loadVisits();
+    } else {
+      console.log('⚠️ [DataCollectionStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [DataCollectionStore] Force loading data...');
+        this.loadServices();
+        this.loadVisits();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**

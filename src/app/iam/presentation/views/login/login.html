@@ -19,20 +19,20 @@
       <!-- Username Field -->
       <div class="form-group">
         <input
-          type="email"
-          formControlName="email"
+          type="text"
+          formControlName="username"
           autocomplete="username"
-          [placeholder]="'login.email' | translate"
+          [placeholder]="'login.username' | translate"
           class="form-input"
-          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
         >
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
           <div class="error-message">
-            @if (loginForm.get('email')?.errors?.['required']) {
-              {{ 'login.emailRequired' | translate }}
+            @if (loginForm.get('username')?.errors?.['required']) {
+              {{ 'login.usernameRequired' | translate }}
             }
-            @if (loginForm.get('email')?.errors?.['email']) {
-              {{ 'login.emailInvalid' | translate }}
+            @if (loginForm.get('username')?.errors?.['minlength']) {
+              {{ 'login.usernameMinLength' | translate }}
             }
           </div>
         }

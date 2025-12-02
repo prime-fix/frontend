@@ -6,10 +6,12 @@ import { BaseEntity } from './base-entity';
 import { BaseResource, BaseResponse } from './base-response';
 import { BaseAssembler } from './base-assembler';
 import { BaseApiConfig } from '@shared/infrastructure/http/base-api-config';
+import { environment } from '@env/environment';
 
 /**
  * Base class for API endpoint operations with generic CRUD functionality.
  * Supports configuration for path parameters or query parameters.
+ * Implements automatic fallback from AWS (primary) to Supabase (fallback) on errors.
  * @template TEntity - The entity type, which must extend BaseEntity.
  * @template TResource - The resource type, must extend BaseResource.
  * @template TResponse - The response type, must extend BaseResponse.
@@ -23,17 +25,42 @@ export abstract class BaseApiEndpoint<
   TAssembler extends BaseAssembler<TEntity, TResource, TResponse>
 > {
   protected abstract readonly idQueryParamKey: string;
+  protected readonly endpointPath: string;
 
   protected constructor(
     protected http: HttpClient,
     protected endpointUrl: string,
     protected assembler: TAssembler,
     protected config: BaseApiConfig
-  ) {}
+  ) {
+    // Extract the endpoint path from the full URL for fallback construction
+    const awsBase = environment.primeFixProviderApiBaseUrlAWS;
+    this.endpointPath = endpointUrl.replace(awsBase, '');
+  }
+
+  /**
+   * Builds the fallback URL using Supabase base URL
+   * @private
+   */
+  private getFallbackUrl(): string {
+    return `${environment.primeFixProviderApiBaseUrlSupabase}${this.endpointPath}`;
+  }
+
+  /**
+   * Checks if the error should trigger a fallback to Supabase
+   * @param error - The HTTP error
+   * @private
+   */
+  private shouldFallback(error: HttpErrorResponse): boolean {
+    if (!this.config.enableFallback) return false;
+    // Fallback on 401 (unauthorized), 5xx errors, or network errors
+    return error.status === 401 || error.status === 0 || error.status >= 500;
+  }
 
   /**
    * Retrieves all entities from the API, handling both response objects and arrays.
    * Supports configuration for path parameters or query parameters.
+   * Implements automatic fallback from AWS to Supabase on failure.
    * @returns An Observable for an array of entities.
    */
   getAll(): Observable<TEntity[]> {
@@ -52,13 +79,25 @@ export abstract class BaseApiEndpoint<
         }
         return this.assembler.toEntitiesFromResponse(response as TResponse);
       }),
-      catchError(this.handleError('Failed to fetch entities'))
+      catchError((error: HttpErrorResponse) => {
+        if (this.shouldFallback(error)) {
+          console.warn(`Primary API failed, falling back to Supabase for getAll`, error);
+          const fallbackUrl = this.getFallbackUrl();
+          const fallbackParams = new HttpParams().set('select', '*');
+          return this.http.get<TResource[]>(fallbackUrl, { params: fallbackParams }).pipe(
+            map(resources => resources.map(resource => this.assembler.toEntityFromResource(resource))),
+            catchError(this.handleError('Failed to fetch entities from fallback'))
+          );
+        }
+        return this.handleError('Failed to fetch entities')(error);
+      })
     );
   }
 
   /**
    * Retrieves a single entity by ID.
    * Supports configuration for path parameters or query parameters.
+   * Implements automatic fallback from AWS to Supabase on failure.
    * @param id - The ID of the entity.
    * @returns An Observable of the entity.
    */
@@ -78,7 +117,18 @@ export abstract class BaseApiEndpoint<
 
     return this.http.get<TResource>(url, paramsConfig).pipe(
       map(resource => this.assembler.toEntityFromResource(resource)),
-      catchError(this.handleError('Failed to fetch entity'))
+      catchError((error: HttpErrorResponse) => {
+        if (this.shouldFallback(error)) {
+          console.warn(`Primary API failed, falling back to Supabase for getById`, error);
+          const fallbackUrl = this.getFallbackUrl();
+          const fallbackParams = new HttpParams().set(this.idQueryParamKey, `eq.${idString}`);
+          return this.http.get<TResource>(fallbackUrl, { params: fallbackParams }).pipe(
+            map(resource => this.assembler.toEntityFromResource(resource)),
+            catchError(this.handleError('Failed to fetch entity from fallback'))
+          );
+        }
+        return this.handleError('Failed to fetch entity')(error);
+      })
     );
   }
 

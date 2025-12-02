@@ -86,12 +86,46 @@ export class CatalogStore {
   readonly autoRepairCount = computed(() => this.autoRepairs().length);
 
   /**
-   * Creates an instance of CatalogStore and loads expected visits.
+   * Constructs a new Catalog Store instance.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param catalogApi - The Catalog API service.
    */
   constructor(private catalogApi: CatalogApi) {
-    this.loadLocations();
-    this.loadAutoRepairs();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [CatalogStore] Valid JWT found, loading locations and auto repairs...');
+      this.loadLocations();
+      this.loadAutoRepairs();
+    } else {
+      console.log('⚠️ [CatalogStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [CatalogStore] Force loading data...');
+        this.loadLocations();
+        this.loadAutoRepairs();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**

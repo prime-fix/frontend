@@ -20,7 +20,16 @@ export class ExpectedVisitsApiEndpoint extends BaseApiEndpoint<ExpectedVisit, Ex
    * @param http - The HttpClient instance for making HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixExpectedVisitsEndpointPath}`,
-      new ExpectedVisitAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixExpectedVisitsEndpointPath}`,
+      new ExpectedVisitAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

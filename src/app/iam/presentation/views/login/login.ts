@@ -24,7 +24,7 @@ export class Login {
 
   // Reactive form
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
@@ -47,8 +47,8 @@ export class Login {
       this.loginForm.markAllAsTouched();
       return;
     }
-    const { email, password } = this.loginForm.getRawValue();
-    this.store.login(email, password);
+    const { username, password } = this.loginForm.getRawValue();
+    this.store.login(username, password);
   }
 
   navigateToRegister() {
