@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
-import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {ActivatedRoute} from '@angular/router';
+import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {RegisterStore} from '@register/application/register-store';
@@ -9,38 +8,25 @@ import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 
 @Component({
   selector: 'app-check-diagnostics',
-  imports: [
-    TranslatePipe
-  ],
+  imports: [TranslatePipe],
   templateUrl: './check-diagnostics.html',
   styleUrl: './check-diagnostics.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckDiagnostics implements OnInit{
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly translate = inject(TranslateService);
   private readonly iamStore = inject(IamStore);
   private readonly dataCollectionStore = inject(DataCollectionStore);
   private readonly registerStore = inject(RegisterStore);
   private readonly diagnosisStore = inject(DiagnosisStore);
 
-  readonly vehicleId = signal<string | null>(null);
+  readonly vehicleId = signal<number | null>(null);
   readonly loading = signal(false);
-
-  steps: ProgressStep[] = [
-    { id: 1, label: 'En espera', translationKey: 'progress-bar.waiting' },
-    { id: 2, label: 'En diagnóstico', translationKey: 'progress-bar.diagnosis' },
-    { id: 3, label: 'En reparación', translationKey: 'progress-bar.repair' },
-    { id: 4, label: 'En prueba', translationKey: 'progress-bar.testing' },
-    { id: 5, label: 'Listo para recoger', translationKey: 'progress-bar.readyPickup' },
-    { id: 6, label: 'Recogido', translationKey: 'progress-bar.collected' }
-  ];
 
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   currentVehicle = computed(() => {
@@ -60,31 +46,40 @@ export class CheckDiagnostics implements OnInit{
     if (!autoRepairId) return null;
 
     return this.dataCollectionStore.visits().find(
-      v => v.id_vehicle === vehicle.id && v.id_auto_repair === autoRepairId
+      v => v.vehicle_id === vehicle.id && v.auto_repair_id === autoRepairId
     ) || null;
   });
 
   currentExpectedVisit = computed(() => {
     const visit = this.currentVisit();
     if (!visit) return null;
-    return this.diagnosisStore.expectedVisits().find(ev => ev.id_visit === visit.id) || null;
+    return this.diagnosisStore.expectedVisits().find(ev => ev.visit_id === visit.id) || null;
   });
 
 
   currentDiagnosticsByCurrentExpectedVisitId = computed(() => {
       const expectedVisit = this.currentExpectedVisit();
       if (!expectedVisit) return [];
-      return this.diagnosisStore.diagnostics().filter(d => d.id_expected === expectedVisit.id);
+      return this.diagnosisStore.diagnostics().filter(d => d.vehicle_id === expectedVisit.vehicle_id);
   });
 
   /**
    * Get owner information for the current vehicle
    */
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      this.vehicleId.set(id);
-    })
+      const idParam = params.get('id');
+      if (idParam) {
+        const parsedId = Number(idParam);
+        if (!isNaN(parsedId)) {
+          this.vehicleId.set(parsedId);
+        } else {
+          this.vehicleId.set(null);
+        }
+      } else {
+        this.vehicleId.set(null);
+      }
+    });
   }
 
 }

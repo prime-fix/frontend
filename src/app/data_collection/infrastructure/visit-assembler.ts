@@ -23,12 +23,12 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
    */
   toEntityFromResource(resource: VisitResource): Visit {
     return new Visit({
-      id_visit: resource.id_visit,
+      id: resource.id,
       failure: resource.failure,
-      id_vehicle: resource.id_vehicle,
+      vehicle_id: resource.vehicle_id,
       time_visit: resource.time_visit,
-      id_auto_repair: resource.id_auto_repair,
-      id_service: resource.id_service,
+      auto_repair_id: resource.auto_repair_id,
+      service_id: resource.service_id,
     });
   }
 
@@ -39,12 +39,12 @@ export class VisitAssembler implements BaseAssembler<Visit, VisitResource, Visit
    */
   toResourceFromEntity(entity: Visit): VisitResource {
     return{
-      id_visit: entity.id,
+      id: entity.id,
       failure: entity.failure,
-      id_vehicle: entity.id_vehicle,
+      vehicle_id: entity.vehicle_id,
       time_visit:  entity.time_visit ? formatDate(entity.time_visit, 'yyyy-MM-dd', 'en-US') : null,
-      id_auto_repair: entity.id_auto_repair,
-      id_service: entity.id_service,
+      auto_repair_id: entity.auto_repair_id,
+      service_id: entity.service_id,
     } as VisitResource;
   }
 

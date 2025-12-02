@@ -48,7 +48,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Service.
    * @returns An Observable of the Service.
    */
-  getServiceById(id: number |string): Observable<Service> {
+  getServiceById(id: number): Observable<Service> {
     return this.mainServiceEndpoint.getById(id);
   }
 
@@ -75,7 +75,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Service to delete.
    * @returns An Observable of void.
    */
-  deleteService(id: number | string): Observable<void> {
+  deleteService(id: number): Observable<void> {
     return this.mainServiceEndpoint.delete(id);
   }
 
@@ -92,7 +92,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Visit.
    * @returns An Observable of the Visit.
    */
-  getVisitById(id: string): Observable<Visit> {
+  getVisitById(id: number): Observable<Visit> {
     return this.visitEndpoint.getById(id);
   }
 
@@ -119,7 +119,7 @@ export class DataCollectionApi extends BaseApi {
    * @param id - The ID of the Visit to delete.
    * @returns An Observable of void.
    */
-  deleteVisit(id: string): Observable<void> {
+  deleteVisit(id: number): Observable<void> {
     return this.visitEndpoint.delete(id);
   }
 }

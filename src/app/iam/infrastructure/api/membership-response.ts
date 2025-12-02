@@ -17,7 +17,7 @@ export interface MembershipResource extends BaseResource {
   /**
    * Unique identifier for the membership
    */
-  id_membership: string;
+  id: number;
   /**
    * Description of the membership
    */

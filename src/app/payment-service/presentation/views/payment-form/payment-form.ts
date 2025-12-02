@@ -44,11 +44,11 @@ export class PaymentForm {
    * Reactive form for payment details.
    */
   form = this.fb.group({
-    card_number: new FormControl<number | null>(null, { nonNullable: true, validators: [Validators.required, Validators.minLength(16), Validators.maxLength(16)] }),
+    card_number: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(16), Validators.maxLength(16)] }),
     card_type: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     month: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     year: new FormControl<number | null>(null, { validators: [Validators.required] }),
-    cvv: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(100), Validators.max(999)] }),
+    ccv: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(100), Validators.max(999)] }),
     doc_type: new FormControl<string>('', { nonNullable: true }),
     doc_number: new FormControl<string>('', { nonNullable: true }),
   });
@@ -64,13 +64,13 @@ export class PaymentForm {
     }
 
     const payment = new Payment({
-      id_payment: 'PAY' + Math.floor(Math.random() * 10000).toString().padStart(4, '0'),
+      id: 0, // This will be set by the backend
       card_number: this.form.value.card_number!,
       card_type: this.form.value.card_type!,
       month: this.monthToNumber(this.form.value.month!),
       year: this.form.value.year!,
-      cvv: this.form.value.cvv!,
-      id_user_account: this.userAccountId()!
+      ccv: this.form.value.ccv!,
+      user_account_id: this.userAccountId()!
     });
   }
 

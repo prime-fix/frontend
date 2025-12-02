@@ -24,14 +24,14 @@ export class Login {
 
   // Reactive form
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   private _autoRedirect = effect(() => {
     if (!this.store.isAuthenticated()) return;
     const redirect = this.route.snapshot.queryParamMap.get('redirect');
-    const byRole = this.store.roleId() === 'R001' ? '/layout-owner' : '/layout-workshop';
+    const byRole = this.store.roleId() === 1 ? '/layout-owner' : '/layout-workshop';
     const target = redirect || byRole;
     if (this.router.url !== target) {
       void this.router.navigateByUrl(target);
@@ -47,8 +47,8 @@ export class Login {
       this.loginForm.markAllAsTouched();
       return;
     }
-    const { email, password } = this.loginForm.getRawValue();
-    this.store.login(email, password);
+    const { username, password } = this.loginForm.getRawValue();
+    this.store.login(username, password);
   }
 
   navigateToRegister() {

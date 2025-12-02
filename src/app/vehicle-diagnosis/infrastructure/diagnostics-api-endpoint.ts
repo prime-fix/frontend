@@ -21,7 +21,16 @@ export class DiagnosticsApiEndpoint extends BaseApiEndpoint<Diagnostic, Diagnost
    * @param http - The HttpClient instance for making HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixDiagnosticsEndpointPath}`,
-      new DiagnosticAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixDiagnosticsEndpointPath}`,
+      new DiagnosticAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

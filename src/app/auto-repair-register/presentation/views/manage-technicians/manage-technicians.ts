@@ -44,7 +44,7 @@ export class ManageTechnicians {
        return undefined;
      }
      const autoRepairs = this.registerStore.autoRepairs();
-    return autoRepairs.find(ar => ar.id_user_account === userAccount.id);
+    return autoRepairs.find(ar => ar.user_account_id === userAccount.id);
    });
 
   /**
@@ -56,17 +56,17 @@ export class ManageTechnicians {
        return [];
      }
      const allTechnicians = this.registerStore.technicians();
-    return allTechnicians.filter(t => t.id_auto_repair === autoRepair.id);
+    return allTechnicians.filter(t => t.auto_repair_id === autoRepair.id);
    });
 
   /**
    * Gets the schedules for a specific technician.
    * @param technicianId - The ID of the technician.
    */
-  getTechnicianSchedules(technicianId: string) {
+  getTechnicianSchedules(technicianId: number) {
     return computed(() => {
       const allSchedules = this.registerStore.techniciansSchedules();
-      return allSchedules.filter(schedule => schedule.id_technician === technicianId);
+      return allSchedules.filter(schedule => schedule.technician_id === technicianId);
     });
   }
 

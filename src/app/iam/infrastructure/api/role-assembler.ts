@@ -22,9 +22,8 @@ export class RoleAssembler implements BaseAssembler<Role, RoleResource, RoleResp
    */
   toEntityFromResource(resource: RoleResource): Role {
     return new Role({
-      id_role: resource.id_role,
+      id: resource.id,
       name: resource.name,
-      description: resource.description
     });
   }
 
@@ -35,9 +34,8 @@ export class RoleAssembler implements BaseAssembler<Role, RoleResource, RoleResp
    */
   toResourceFromEntity(entity: Role): RoleResource {
     return {
-      id_role: entity.id,
+      id: entity.id,
       name: entity.name,
-      description: entity.description
     } as RoleResource;
   }
 }

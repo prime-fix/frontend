@@ -46,7 +46,7 @@
           </h2>
           <div class="notifications-list">
             @for (notification of unreadNotifications(); track notification.id) {
-              <div class="notification-card unread" (click)="markAsRead(notification)">
+              <div class="notification-card unread" (click)="onNotificationClick(notification)">
                 <div class="notification-indicator"></div>
                 <div class="notification-body">
                   <div class="notification-icon">
@@ -58,7 +58,7 @@
                     <p class="notification-message">{{ notification.message }}</p>
                     <div class="notification-meta">
                       <span class="notification-time">{{ formatDate(notification.sent) }}</span>
-                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.id_vehicle }}</span>
+                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.vehicle_id }}</span>
                     </div>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
           <h2 class="section-title">{{ 'notification-view.read' | translate }}</h2>
           <div class="notifications-list">
             @for (notification of readNotifications(); track notification.id) {
-              <div class="notification-card read" (click)="markAsUnread(notification)">
+              <div class="notification-card read" (click)="onNotificationClick(notification)">
                 <div class="notification-body">
                   <div class="notification-icon">
                     <svg>
@@ -85,7 +85,7 @@
                     <p class="notification-message">{{ notification.message }}</p>
                     <div class="notification-meta">
                       <span class="notification-time">{{ formatDate(notification.sent) }}</span>
-                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.id_vehicle }}</span>
+                      <span class="notification-vehicle">{{ 'notification-view.vehicle' | translate }} {{ notification.vehicle_id }}</span>
                     </div>
                   </div>
                 </div>

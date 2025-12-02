@@ -9,7 +9,7 @@ export class Technician implements BaseEntity {
    * The unique identifier for the technician.
    * @private
    */
-  private _id_technician: string;
+  private _id: number;
 
   /**
    * The first name of the technician.
@@ -27,34 +27,30 @@ export class Technician implements BaseEntity {
    * The identifier of the auto repair shop the technician is associated with.
    * @private
    */
-  private _id_auto_repair: string;
+  private _auto_repair_id: number;
 
   /**
-   * Creates an instance of Technician.
-   * @param {Object} technician - An object containing the properties of the technician.
-   * @property {string} technician.id_technician - The unique identifier for the technician.
-   * @property {string} technician.name - The first name of the technician.
-   * @property {string} technician.last_name - The last name of the technician.
-   * @property {string} technician.id_auto_repair - The auto repair shop ID.
+   * Creates a new Technician instance.
+   * @param technician - An object containing technician properties.
    */
   constructor(technician: {
-    id_technician: string;
+    id: number;
     name: string;
     last_name: string;
-    id_auto_repair: string;
+    auto_repair_id: number;
   }) {
-    this._id_technician = technician.id_technician;
+    this._id = technician.id;
     this._name = technician.name;
     this._last_name = technician.last_name;
-    this._id_auto_repair = technician.id_auto_repair;
+    this._auto_repair_id = technician.auto_repair_id;
   }
 
   /* --- Getters & Setters --- */
-  get id(): string {
-    return this._id_technician;
+  get id(): number {
+    return this._id;
   }
-  set id(value: string) {
-    this._id_technician = value;
+  set id(value: number) {
+    this._id = value;
   }
 
   get name(): string {
@@ -72,11 +68,11 @@ export class Technician implements BaseEntity {
     this._last_name = value;
   }
 
-  get id_auto_repair(): string {
-    return this._id_auto_repair;
+  get auto_repair_id(): number {
+    return this._auto_repair_id;
   }
-  set id_auto_repair(value: string) {
-    this._id_auto_repair = value;
+  set auto_repair_id(value: number) {
+    this._auto_repair_id = value;
   }
 }
 

@@ -27,7 +27,7 @@ export class VisitList {
 
   // Modal state
   isCancelModalOpen = signal(false);
-  selectedVisitId = signal<string | null>(null);
+  selectedVisitId = signal<number | null>(null);
   modalLoading = signal(false);
 
   /**
@@ -47,33 +47,35 @@ export class VisitList {
     // Create a map of vehicles by id for faster lookup
     const vehicleMap = new Map(allVehicles.map(v => [v.id, v]));
     return allVisits.filter(visit => {
-      const vehicle = vehicleMap.get(visit.id_vehicle);
+      const vehicle = vehicleMap.get(visit.vehicle_id);
 
       if (!vehicle) {
         return false;
       }
 
       // Filter by user ownership using IamStore helper method
-      if (!this.iamStore.isCurrentUser(vehicle.id_user)) {
+      if (!this.iamStore.isCurrentUser(vehicle.user_id)) {
         return false;
       }
 
       // Filter by maintenance state
       if (isScheduled) {
         // Scheduled visits: state_maintenance < 6 (before collected)
-        return vehicle.state_maintenance < 6;
+        return vehicle.maintenance_status < 6;
       } else {
         // History: state_maintenance === 6 (collected)
-        return vehicle.state_maintenance === 6;
+        return vehicle.maintenance_status === 6;
       }
     });
   });
 
-  countPriceDiagnosticByExpectedVisitId(visitId: string) {
+  countPriceDiagnosticByExpectedVisitId(visitId: number) {
     return computed(() => {
-      const expectedVisit = this.diagnosisStore.expectedVisits().find(ev => ev.id_visit === visitId);
+      const expectedVisit = this.diagnosisStore.expectedVisits().find(ev => ev.visit_id === visitId);
+      if (!expectedVisit) return 0;
+
       return this.diagnosisStore.diagnostics()
-        .filter(diagnostic => diagnostic.id_expected === expectedVisit?.id)
+        .filter(diagnostic => diagnostic.vehicle_id === expectedVisit.vehicle_id)
         .map(diagnostic => diagnostic.price)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     });
@@ -83,7 +85,7 @@ export class VisitList {
    * Open cancel confirmation modal
    * @param visitId - ID of the visit to cancel
    */
-  openCancelModal(visitId: string) {
+  openCancelModal(visitId: number) {
     this.selectedVisitId.set(visitId);
     this.isCancelModalOpen.set(true);
   }
@@ -99,6 +101,7 @@ export class VisitList {
 
   /**
    * Confirm and execute visit cancellation
+   * Updates state_visit to CANCELLED_VISIT
    */
   confirmCancelVisit() {
     const visitId = this.selectedVisitId();
@@ -106,7 +109,7 @@ export class VisitList {
 
     this.modalLoading.set(true);
 
-    const expectedVisit = this.diagnosisStore.expectedVisits().find(v => v.id_visit === visitId);
+    const expectedVisit = this.diagnosisStore.expectedVisits().find(v => v.visit_id === visitId);
 
     if (!expectedVisit) {
       this.modalLoading.set(false);
@@ -115,10 +118,11 @@ export class VisitList {
     }
 
     const updatedExpectedVisit = new ExpectedVisit({
-      id_expected: expectedVisit.id,
-      state_visit: 'Visit Cancelled',
-      id_visit: visitId,
-      is_scheduled: false
+      id: expectedVisit.id,
+      state_visit: 'CANCELLED_VISIT',
+      visit_id: visitId,
+      is_scheduled: false,
+      vehicle_id: expectedVisit.vehicle_id
     });
 
     this.diagnosisStore.updateExpectedVisit(updatedExpectedVisit);
@@ -132,18 +136,19 @@ export class VisitList {
 
   /**
    * Check if a visit is cancelled
+   * Checks if state_visit is CANCELLED_VISIT (matches backend enum)
    * @param visitId - ID of the visit
    */
-  isVisitCancelled(visitId: string) {
-    const expectedVisit = this.diagnosisStore.expectedVisits().find(v => v.id_visit === visitId);
-    return expectedVisit?.state_visit === 'Visit Cancelled' && !expectedVisit.is_scheduled;
+  isVisitCancelled(visitId: number) {
+    const expectedVisit = this.diagnosisStore.expectedVisits().find(v => v.visit_id === visitId);
+    return expectedVisit?.state_visit === 'CANCELLED_VISIT' && !expectedVisit.is_scheduled;
   }
 
   /**
    * Get auto repair by ID
    * @param autoRepairID - ID of the auto repair
    */
-  getAutoRepair(autoRepairID: string | undefined) {
+  getAutoRepair(autoRepairID: number | undefined) {
     return this.dataStore.getAutoRepairById(autoRepairID);
   }
 
@@ -151,7 +156,7 @@ export class VisitList {
    * Get user account by ID
    * @param userAccountId - ID of the user account
    */
-  getUserAccountById(userAccountId: string | undefined) {
+  getUserAccountById(userAccountId: number | undefined) {
     return this.iamStore.getUserAccountById(userAccountId);
   }
 
@@ -159,7 +164,7 @@ export class VisitList {
    * Get user by ID
    * @param userId - ID of the user
    */
-  getUserById(userId: string | undefined) {
+  getUserById(userId: number | undefined) {
     return this.iamStore.getUserById(userId);
   }
 
@@ -167,22 +172,22 @@ export class VisitList {
    * Get location by ID
    * @param locationId - ID of the location
    */
-  getLocationById(locationId: string) {
+  getLocationById(locationId: number) {
     return this.iamStore.getLocationById(locationId);
   }
 
   /** Get address associated with an auto repair
    * @param autoRepairId - ID of the auto repair
    */
-  getAddressByAutoRepair(autoRepairId: string | null) {
+  getAddressByAutoRepair(autoRepairId: number | null) {
     return computed(() => {
       const autoRepair = this.getAutoRepair(autoRepairId!)();
       if (!autoRepair) return 'Unkown Location';
-      const userAccount = this.getUserAccountById(autoRepair.id_user_account)();
+      const userAccount = this.getUserAccountById(autoRepair.user_account_id)();
       if (!userAccount) return 'Unkown Location';
-      const user = this.getUserById(userAccount.id_user)();
+      const user = this.getUserById(userAccount.user_id)();
       if (!user) return 'Unkown Location';
-      const location = this.getLocationById(user.id_location)();
+      const location = this.getLocationById(user.location_id)();
       return location ? location.address : 'Unkown Location';
     });
   }

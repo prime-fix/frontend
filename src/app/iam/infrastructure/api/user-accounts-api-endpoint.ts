@@ -20,7 +20,16 @@ export class UserAccountsApiEndpoint extends BaseApiEndpoint<UserAccount, UserAc
    * @param http - The HttpClient instance for making HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderUserAccountsEndpointPath}`,
-      new UserAccountAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderUserAccountsEndpointPath}`,
+      new UserAccountAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

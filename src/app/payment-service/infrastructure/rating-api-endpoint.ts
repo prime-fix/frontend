@@ -20,7 +20,16 @@ export class RatingApiEndpoint  extends BaseApiEndpoint<Rating, RatingResource, 
    * @param http - The HttpClient instance to use for HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderRatingsEndpointPath}`,
-      new RatingAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderRatingsEndpointPath}`,
+      new RatingAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

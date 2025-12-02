@@ -21,7 +21,16 @@ export class MembershipsApiEndpoint extends BaseApiEndpoint<Membership, Membersh
    * @param http - The HttpClient for making HTTP requests.
    */
   constructor(http: HttpClient)  {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderMembershipsEndpointPath}`,
-      new MembershipAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderMembershipsEndpointPath}`,
+      new MembershipAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

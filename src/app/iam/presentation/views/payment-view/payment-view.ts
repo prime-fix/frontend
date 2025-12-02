@@ -42,7 +42,7 @@ export class PaymentView{
   AmountSelected: string;
 
   paymentForm = this.fb.group({
-    card_number: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    card_number: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     month: new FormControl<number>(1, { nonNullable: true, validators: [Validators.required] }),
     year: new FormControl<number>(new Date().getFullYear(), { nonNullable: true, validators: [Validators.required] }),
     cvv: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
@@ -52,10 +52,10 @@ export class PaymentView{
 
   constructor() {
     const planId = this.planInfo();
-    if(planId === "M001") {
+    if(planId === 1) {
       this.planSelected = PlanDetails.M001;
       this.AmountSelected = AmountDetails.M001;
-    } else if(planId === "M002") {
+    } else if(planId === 2) {
       this.planSelected = PlanDetails.M002;
       this.AmountSelected = AmountDetails.M002;
     } else {

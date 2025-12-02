@@ -20,8 +20,16 @@ export class VisitApiEndpoint extends BaseApiEndpoint<Visit,VisitResource,Visits
    * @param http
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixVisitsEndpointPath}`,
-      new VisitAssembler(),{ usePathParams: environment.usePathParams}
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixVisitsEndpointPath}`,
+      new VisitAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
     );
   }
 }

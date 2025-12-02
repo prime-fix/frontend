@@ -17,7 +17,7 @@ export interface VisitResource extends BaseResource{
   /**
    * The unique identifier for the visit.
    */
-  id_visit:string;
+  id: number;
   /**
    * The description of the failure reported during the visit.
    */
@@ -25,7 +25,7 @@ export interface VisitResource extends BaseResource{
   /**
    * The unique identifier for the vehicle associated with the visit.
    */
-  id_vehicle:string;
+  vehicle_id: number;
   /**
    * The date and time of the visit in string format.
    */
@@ -33,9 +33,9 @@ export interface VisitResource extends BaseResource{
   /**
    * The unique identifier for the auto repair associated with the visit.
    */
-  id_auto_repair:string;
+  auto_repair_id: number;
   /**
    * The unique identifier for the service associated with the visit.
    */
-  id_service:string;
+  service_id: number;
 }

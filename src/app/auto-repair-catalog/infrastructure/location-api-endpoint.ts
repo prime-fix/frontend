@@ -20,7 +20,16 @@ export class LocationApiEndpoint extends BaseApiEndpoint<Location, LocationResou
    * @param http - The HttpClient used for making HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderLocationsEndpointPath}`,
-      new LocationAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderLocationsEndpointPath}`,
+      new LocationAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

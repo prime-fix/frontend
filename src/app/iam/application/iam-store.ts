@@ -3,6 +3,7 @@ import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {User} from '@iam/domain/model/user.entity';
 import {IamApi} from '@iam/infrastructure/api/iam-api';
+import {AuthApi} from '@iam/infrastructure/api/auth-api';
 import {retry} from 'rxjs';
 import {Location} from '@catalog/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
@@ -150,7 +151,7 @@ export class IamStore {
   /**
    * Computed property to get the role ID of the authenticated user.
    */
-  readonly roleId = computed(() => this.sessionUserAccount()?.id_role ?? '');
+  readonly roleId = computed(() => this.sessionUserAccount()?.role_id ?? '');
   /**
    * Computed property to get the full name of the authenticated user.
    */
@@ -199,7 +200,7 @@ export class IamStore {
    * Signal to hold the membership type selected during registration.
    * @private
    */
-  private readonly registerMemberShipTypeSignal = signal<string | null>(null);
+  private readonly registerMemberShipTypeSignal = signal<number | null>(null);
 
   /**
    * Readonly versions of registration signals for external access.
@@ -228,16 +229,43 @@ export class IamStore {
 
   /**
    * Constructor to initialize the IAM store and load initial data.
+   * Only loads data if there's an active session (JWT exists)
    * @param iamApi
+   * @param authApi
    */
-  constructor(private iamApi: IamApi) {
-    this.loadUserAccounts();
-    this.loadUsers();
-    this.loadRoles();
-    this.loadMemberships();
-
-    // Restore session from localStorage on app initialization
+  constructor(private iamApi: IamApi, private authApi: AuthApi) {
+    // Restore session from localStorage first
     this.restoreSessionFromStorage();
+
+    // Only load data if we have a valid session with JWT
+    // This prevents unnecessary API calls and fallback activation on app init
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ Valid JWT found, loading user data...');
+      this.loadUserAccounts();
+      this.loadUsers();
+      this.loadRoles();
+      this.loadMemberships();
+    } else {
+      console.log('⚠️ No valid JWT, skipping data load on init');
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**
@@ -246,12 +274,12 @@ export class IamStore {
    * @param userId - The user ID to check
    * @returns true if the user ID matches the current session user ID
    */
-  isCurrentUser(userId: string | null | undefined): boolean {
+  isCurrentUser(userId: number | null | undefined): boolean {
     const currentUserId = this.sessionUserId();
     if (!currentUserId || !userId) {
       return false;
     }
-    return String(userId) === String(currentUserId);
+    return userId === currentUserId;
   }
 
   /**
@@ -259,12 +287,12 @@ export class IamStore {
    * @param userAccountId - The user account ID to check
    * @returns true if the user account ID matches the current session user account ID
    */
-  isCurrentUserAccount(userAccountId: string | null | undefined): boolean {
+  isCurrentUserAccount(userAccountId: number | null | undefined): boolean {
     const currentUserAccountId = this.sessionUserAccountId();
     if (!currentUserAccountId || !userAccountId) {
       return false;
     }
-    return String(userAccountId) === String(currentUserAccountId);
+    return userAccountId === currentUserAccountId;
   }
 
   /**
@@ -273,88 +301,134 @@ export class IamStore {
    */
   private restoreSessionFromStorage(): void {
     if (typeof localStorage === 'undefined') {
-      console.warn("localStorage is not available in this environment.");
+      console.warn("⚠️ localStorage is not available in this environment.");
       return;
     }
 
     try {
       const sessionData = localStorage.getItem('prime-fix-session');
-      if (sessionData) {
-        const parsed = JSON.parse(sessionData);
-        const {userAccount: rawUserAccount, user: rawUser} = parsed;
-        const hasUserAccountData = rawUserAccount
-          && typeof rawUserAccount._id_role === 'string'
-          && rawUserAccount._id_role.length > 0
-          && (rawUserAccount._id_role === 'R001' || rawUserAccount._id_role === 'R002');
+      if (!sessionData) {
+        console.log('ℹ️ No session found in localStorage');
+        return;
+      }
 
-        const hasUserData = rawUser
-          && typeof rawUser._id_user === 'string'
-          && rawUser._id_user.length > 0;
+      const parsed = JSON.parse(sessionData);
+      const {userAccount: rawUserAccount, user: rawUser, timestamp} = parsed;
 
-        if (hasUserAccountData && hasUserData) {
-          const userAccount = new UserAccount({
-            id_user_account: rawUserAccount._id_user_account,
-            username: rawUserAccount._username,
-            email: rawUserAccount._email,
-            id_user: rawUserAccount._id_user,
-            id_role: rawUserAccount._id_role,
-            id_membership: rawUserAccount._id_membership,
-            password: rawUserAccount._password,
-            is_new: rawUserAccount._is_new
-          });
+      // Check session expiration (7 days)
+      const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+      if (timestamp && (Date.now() - timestamp > SESSION_MAX_AGE)) {
+        console.warn('⚠️ Session expired, clearing...');
+        this.clearSessionStorage();
+        return;
+      }
 
-          const user = new User({
-            id_user: rawUser._id_user,
-            name: rawUser._name,
-            last_name: rawUser._last_name,
-            dni: rawUser._dni,
-            phone_number: rawUser._phone_number,
-            id_location: rawUser._id_location
-          });
+      // Validate user account data
+      const hasUserAccountData = rawUserAccount
+        && typeof rawUserAccount._role_id === 'number'
+        && (rawUserAccount._role_id === 1 || rawUserAccount._role_id === 2)
+        && rawUserAccount._username
+        && rawUserAccount._id;
 
-          this.sessionUserAccountSignal.set(userAccount);
-          this.sessionUserSignal.set(user);
-          const roleName = userAccount.id_role === 'R001' ? 'Vehicle Owner' : 'Auto Repair Workshop';
-          console.log(`Session restored: User ${userAccount.username || userAccount.email || user.name || 'Unknown'} with role ${userAccount.id_role} (${roleName})`);
-        } else {
-          console.error('NOT LOGGED - Corrupted session detected and cleared:', {
-            hasUserAccount: !!rawUserAccount,
-            hasValidRole: hasUserAccountData,
-            roleValue: rawUserAccount?._id_role,
-            hasUser: !!rawUser,
-            hasValidUserId: hasUserData
-          });
-          console.error('Corrupted session data:', parsed);
-          this.clearSessionStorage();
-          console.log('Please login again to create a new valid session');
-        }
+      // Validate user data
+      const hasUserData = rawUser
+        && typeof rawUser._id === 'number'
+        && rawUser._id > 0
+        && rawUser._name;
+
+      if (hasUserAccountData && hasUserData) {
+        const userAccount = new UserAccount({
+          id: rawUserAccount._id,
+          username: rawUserAccount._username,
+          email: rawUserAccount._email,
+          user_id: rawUserAccount._user_id,
+          role_id: rawUserAccount._role_id,
+          membership_id: rawUserAccount._membership_id,
+          password: rawUserAccount._password,
+          is_new: rawUserAccount._is_new
+        });
+
+        const user = new User({
+          id: rawUser._id,
+          name: rawUser._name,
+          last_name: rawUser._last_name,
+          dni: rawUser._dni,
+          phone_number: rawUser._phone_number,
+          location_id: rawUser._location_id
+        });
+
+        this.sessionUserAccountSignal.set(userAccount);
+        this.sessionUserSignal.set(user);
+
+        const roleName = userAccount.role_id === 1 ? 'Vehicle Owner' : 'Auto Repair Workshop';
+        const sessionAge = timestamp ? Math.floor((Date.now() - timestamp) / (1000 * 60 * 60)) : 0;
+
+        console.log('✅ Session restored:', {
+          username: userAccount.username,
+          role: roleName,
+          userId: user.id,
+          sessionAge: sessionAge > 0 ? `${sessionAge} hours ago` : 'just now'
+        });
       } else {
-        console.log('NOT LOGGED - No session found in localStorage');
+        console.error('❌ Corrupted session detected:', {
+          hasUserAccount: !!rawUserAccount,
+          hasValidRole: hasUserAccountData,
+          roleValue: rawUserAccount?._role_id,
+          hasUsername: !!rawUserAccount?._username,
+          hasUser: !!rawUser,
+          hasValidUserId: hasUserData,
+          hasUserName: !!rawUser?._name
+        });
+        this.clearSessionStorage();
+        console.log('ℹ️ Please login again to create a new valid session');
       }
     } catch (error) {
-      console.warn('NOT LOGGED - Failed to restore session from localStorage:', error);
+      console.error('❌ Failed to restore session from localStorage:', error);
       this.clearSessionStorage();
     }
   }
 
   /**
-   * Saves current session to localStorage
+   * Saves current session to localStorage with JWT token
+   * @param jwt - Optional JWT token from AWS sign-in
    */
-  private saveSessionToStorage(): void {
+  private saveSessionToStorage(jwt?: string): void {
     try {
       const userAccount = this.sessionUserAccount();
       const user = this.sessionUser();
 
-      if (userAccount && user) {
-        const sessionData = {
-          userAccount,
-          user,
-          timestamp: Date.now()
-        };
-        localStorage.setItem('prime-fix-session', JSON.stringify(sessionData));
+      if (!userAccount || !user) {
+        console.warn('⚠️ Cannot save session: userAccount or user is null', {
+          hasUserAccount: !!userAccount,
+          hasUser: !!user
+        });
+        return;
+      }
+
+      const sessionData = {
+        userAccount,
+        user,
+        token: jwt ? { accessToken: jwt } : undefined,
+        timestamp: Date.now()
+      };
+
+      localStorage.setItem('prime-fix-session', JSON.stringify(sessionData));
+      console.log('✅ Session saved to localStorage', {
+        username: userAccount.username,
+        userId: user.id,
+        hasJWT: !!jwt
+      });
+
+      // Also save in pf_iam_auth for interceptor compatibility
+      if (jwt) {
+        localStorage.setItem('pf_iam_auth', JSON.stringify({
+          token: { accessToken: jwt },
+          user: { id: userAccount.id, username: userAccount.username }
+        }));
+        console.log('✅ JWT saved for interceptor');
       }
     } catch (error) {
-      console.warn('Failed to save session to localStorage:', error);
+      console.error('❌ Failed to save session to localStorage:', error);
     }
   }
 
@@ -378,7 +452,7 @@ export class IamStore {
    * Gets a location by its ID.
    * @param id
    */
-  getLocationById(id: string | null | undefined): Signal<Location | undefined> {
+  getLocationById(id: number | null | undefined): Signal<Location | undefined> {
     // delegate to CatalogStore
     return this.catalogStore.getLocationById(id);
   }
@@ -408,7 +482,7 @@ export class IamStore {
    * @param id - The ID of the location to delete.
    * @returns void
    */
-  deleteLocation(id: string): void {
+  deleteLocation(id: number): void {
     // delegate to CatalogStore
     this.catalogStore.deleteLocation(id);
   }
@@ -418,19 +492,19 @@ export class IamStore {
    * @param id - The ID of the user to retrieve.
    * @return A signal containing the user or undefined if not found.
    */
-  getUserById(id: string | null | undefined): Signal<User | undefined> {
+  getUserById(id: number | null | undefined): Signal<User | undefined> {
     return computed(() => id ? this.users().find(u => u.id === id) : undefined);
   }
 
-  getUserAccountById(id: string | null | undefined): Signal<UserAccount | undefined> {
+  getUserAccountById(id: number | null | undefined): Signal<UserAccount | undefined> {
     return computed(() => id ? this.userAccounts().find(ua => ua.id === id) : undefined);
   }
 
-  getRoleById(id: string | null | undefined): Signal<Role | undefined> {
+  getRoleById(id: number | null | undefined): Signal<Role | undefined> {
     return computed(() => id ? this.roles().find(r => r.id === id) : undefined);
   }
 
-  getMembershipById(id: string | null | undefined): Signal<Membership | undefined> {
+  getMembershipById(id: number | null | undefined): Signal<Membership | undefined> {
     return computed(() => id ? this.memberships().find(m => m.id === id) : undefined);
   }
 
@@ -481,7 +555,7 @@ export class IamStore {
    * Deletes a user account by ID.
    * @param id - The ID of the user account to delete.
    */
-  deleteUserAccount(id: string): void {
+  deleteUserAccount(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteUserAccount(id).pipe(retry(2)).subscribe({
@@ -543,7 +617,7 @@ export class IamStore {
    * Deletes a user by ID.
    * @param id - The ID of the user to delete.
    */
-  deleteUser(id: string): void {
+  deleteUser(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteUser(id).pipe(retry(2)).subscribe({
@@ -589,7 +663,7 @@ export class IamStore {
     });
   }
 
-  deleteRole(id: string): void {
+  deleteRole(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteRole(id).pipe(retry(2)).subscribe({
@@ -636,7 +710,7 @@ export class IamStore {
     })
   }
 
-  deleteMembership(id: string): void {
+  deleteMembership(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.iamApi.deleteMembership(id).pipe(retry(2)).subscribe({
@@ -673,7 +747,7 @@ export class IamStore {
    * Deletes a payment by ID.
    * @param id - The ID of the payment to delete.
    */
-  deletePayment(id: string): void {
+  deletePayment(id: number): void {
     // delegate to PaymentServiceStore
     this.paymentServiceStore.deletePayment(id);
   }
@@ -759,78 +833,241 @@ export class IamStore {
   }
 
   /**
-   * Simulates user login by checking credentials against stored user accounts and users.
-   * @param email - The email of the user trying to log in.
-   * @param password - The password of the user trying to log in.
+   * Forces all stores to load their data.
+   * Used after Supabase login when there's no JWT.
+   * This method temporarily sets a fake JWT to allow stores to load data.
    */
-  login(email: string, password: string): void {
+  forceLoadAllStoresData(): void {
+    console.log('📤 Force loading all stores data (for Supabase login)...');
+
+    // Temporarily set a fake JWT for Supabase to allow stores to load
+    const fakeAuth = {
+      token: { accessToken: 'supabase-fallback-no-jwt' },
+      user: {
+        id: this.sessionUserAccount()?.id || 0,
+        username: this.sessionUserAccount()?.username || 'unknown'
+      }
+    };
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('pf_iam_auth', JSON.stringify(fakeAuth));
+    }
+
+    // Load IamStore data
+    this.loadUserAccounts();
+    this.loadUsers();
+    this.loadRoles();
+    this.loadMemberships();
+
+    // Trigger other stores to load by dispatching a custom event
+    // This will be caught by stores that listen to it
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('force-load-stores'));
+    }
+
+    console.log('✅ All stores triggered to load data');
+  }
+
+  /**
+   * Login with AWS API (sign-in) using username and password.
+   * AWS API returns: { id, username, token }
+   * Then loads user account and user data from API (with fallback to Supabase)
+   * @param username - The username of the user trying to log in
+   * @param password - The password of the user trying to log in
+   */
+  login(username: string, password: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
+    // Sign in with AWS API
+    this.authApi.signIn(username, password).subscribe({
+      next: (response) => {
+        console.log('✅ AWS Sign-in successful:', response);
+
+        // Save JWT token IMMEDIATELY for interceptor to use in subsequent requests
+        const jwt = response.token;
+        localStorage.setItem('pf_iam_auth', JSON.stringify({
+          token: { accessToken: jwt },
+          user: { id: response.id, username: response.username }
+        }));
+
+        // Load user account by ID from API with JWT
+        this.iamApi.getUserAccount(response.id).subscribe({
+          next: (userAccount) => {
+            console.log('✅ User account loaded:', userAccount);
+            this.sessionUserAccountSignal.set(userAccount);
+
+            // Load user by user_id from API
+            if (userAccount.user_id) {
+              this.iamApi.getUser(userAccount.user_id).subscribe({
+                next: (user) => {
+                  console.log('✅ User loaded:', user);
+                  this.sessionUserSignal.set(user);
+
+                  // Now save complete session with JWT
+                  this.saveSessionToStorage(jwt);
+
+                  // Load all data now that we have JWT
+                  console.log('📤 Loading all store data with JWT...');
+                  this.loadUserAccounts();
+                  this.loadUsers();
+                  this.loadRoles();
+                  this.loadMemberships();
+
+                  this.loadingSignal.set(false);
+                },
+                error: (err) => {
+                  console.error('❌ Failed to load user:', err);
+                  this.errorSignal.set(this.formatError(err, 'Failed to load user data'));
+                  this.loadingSignal.set(false);
+                }
+              });
+            } else {
+              this.errorSignal.set('User account does not have associated user');
+              this.loadingSignal.set(false);
+            }
+          },
+          error: (err) => {
+            console.error('❌ Failed to load user account:', err);
+            this.errorSignal.set(this.formatError(err, 'Failed to load user account'));
+            this.loadingSignal.set(false);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('❌ AWS Sign-in failed:', err);
+
+        // Fallback: Try to login from Supabase data (for testing)
+        console.warn('⚠️ Attempting fallback login with Supabase data...');
+        this.loginFallbackSupabase(username, password);
+      }
+    });
+  }
+
+  /**
+   * Fallback login method using Supabase data (for testing only)
+   * Loads data from Supabase first, then searches in memory for user account by username and validates password
+   * @private
+   * @param username - The username to search for
+   * @param password - The password to validate
+   */
+  private loginFallbackSupabase(username: string, password: string): void {
     const tryFromMemory = () => {
-      const account = this.userAccounts().find(a => a.email?.toLowerCase() === email.toLowerCase());
+      // Normalize input
+      const normalizedUsername = username.trim().toLowerCase();
+      const normalizedPassword = password.trim();
+
+      // Find user account
+      const account = this.userAccounts().find(a =>
+        a.username?.toLowerCase() === normalizedUsername ||
+        a.email?.toLowerCase() === normalizedUsername
+      );
+
       if (!account) {
-        this.errorSignal.set('User or password incorrect');
+        console.warn('⚠️ User not found:', normalizedUsername);
+        this.errorSignal.set('Username or email not found');
         this.loadingSignal.set(false);
         return;
       }
 
-      if (!password || password.length < 1) {
+      // Validate password
+      if (!normalizedPassword || normalizedPassword.length < 1) {
+        console.warn('⚠️ Password is empty');
         this.errorSignal.set('Password is required');
         this.loadingSignal.set(false);
         return;
       }
 
-      const storedPassword = account.password ?? '';
-      if (storedPassword !== password) {
-        this.errorSignal.set('User or password incorrect');
+      // Note: Supabase stores plain password (only for testing)
+      const storedPassword = (account.password ?? '').trim();
+      if (storedPassword !== normalizedPassword) {
+        console.warn('⚠️ Password mismatch for user:', account.username);
+        this.errorSignal.set('Incorrect password');
         this.loadingSignal.set(false);
         return;
       }
 
-      const user = this.users().find(u => u.id === account.id_user);
+      // Find related user
+      const user = this.users().find(u => u.id === account.user_id);
       if (!user) {
-        this.errorSignal.set('User or password incorrect');
+        console.error('❌ User data not found for user_id:', account.user_id);
+        this.errorSignal.set('User data incomplete. Please contact support.');
         this.loadingSignal.set(false);
         return;
       }
+
+      // ✅ Login successful
+      console.log('✅ Fallback Supabase login successful', {
+        username: account.username,
+        role_id: account.role_id,
+        user_id: user.id
+      });
+
       this.sessionUserAccountSignal.set(account);
       this.sessionUserSignal.set(user);
-      this.saveSessionToStorage(); // Save session to localStorage
+      this.saveSessionToStorage(); // Sin JWT para Supabase
+
+      // Force load all stores data (including other bounded contexts)
+      this.forceLoadAllStoresData();
+
       this.loadingSignal.set(false);
     };
 
-    if (!this.userAccounts().length || !this.users().length) {
-      this.iamApi.getUserAccounts().pipe(takeUntilDestroyed()).subscribe({
-        next: userAccounts => {
-          this.userAccountsSignal.set(userAccounts);
-          this.iamApi.getUsers().pipe(takeUntilDestroyed()).subscribe({
-            next: users => {
-              this.usersSignal.set(users);
-              tryFromMemory();
-            },
-            error: err => {
-              this.errorSignal.set(this.formatError(err, 'Failed to load users'));
-              this.loadingSignal.set(false);
-            }
-          });
-        },
-        error: err => {
-          this.errorSignal.set(this.formatError(err, 'Failed to load user accounts'));
-          this.loadingSignal.set(false);
-        }})
-    } else {
-      tryFromMemory();
-    }
+    // Load data from Supabase
+    console.log('📤 Loading user data from Supabase for fallback login...');
+    this.iamApi.getUserAccounts().pipe(retry(1)).subscribe({
+      next: userAccounts => {
+        console.log(`✅ Loaded ${userAccounts.length} user accounts from Supabase`);
+        this.userAccountsSignal.set(userAccounts);
+
+        this.iamApi.getUsers().pipe(retry(1)).subscribe({
+          next: users => {
+            console.log(`✅ Loaded ${users.length} users from Supabase`);
+            this.usersSignal.set(users);
+            tryFromMemory();
+          },
+          error: err => {
+            console.error('❌ Failed to load users from Supabase:', err);
+            this.errorSignal.set('Failed to load user data. Please check your connection.');
+            this.loadingSignal.set(false);
+          }
+        });
+      },
+      error: err => {
+        console.error('❌ Failed to load user accounts from Supabase:', err);
+        this.errorSignal.set('Failed to connect to authentication server. Please check your connection.');
+        this.loadingSignal.set(false);
+      }
+    });
   }
 
   /**
-   * Logs out the current user by clearing session-related signals.
+   * Logs out the current user by clearing session-related signals and storage.
    */
   logout(): void {
+    const currentUsername = this.sessionUserAccount()?.username;
+
+    console.log('🚪 Logging out user:', currentUsername || 'unknown');
+
+    // Clear session signals
     this.sessionUserAccountSignal.set(null);
     this.sessionUserSignal.set(null);
-    this.clearSessionStorage(); // Clear session from localStorage on logout
+
+    // Clear session from localStorage
+    this.clearSessionStorage();
+
+    // Clear JWT auth for interceptor
+    try {
+      localStorage.removeItem('pf_iam_auth');
+      console.log('✅ Cleared authentication data');
+    } catch (error) {
+      console.error('❌ Failed to clear pf_iam_auth from localStorage:', error);
+    }
+
+    // Clear error state
+    this.errorSignal.set(null);
+
+    console.log('✅ Logout successful');
   }
 
   /**
@@ -854,28 +1091,28 @@ export class IamStore {
       string; department: string; district: string; address: string; email: string; password: string }): void {
 
     const newLocation = new Location({
-      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       department: form.department,
       district: form.district,
       address: form.address
     })
 
     const newUser = new User({
-      id_user: 'U0' + (this.userCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       name: form.fullName.split(' ')[0] || '',
       last_name: form.fullName.split(' ').slice(1).join(' '),
       dni: form.dni,
       phone_number: form.phone_number,
-      id_location: newLocation.id,
+      location_id: newLocation.id,
     })
 
     const newUserAccount = new UserAccount({
-      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       username: form.username.trim(),
       email: form.email.trim(),
-      id_user: newUser.id,
-      id_role: 'R001',
-      id_membership: '', // No membership at registration
+      user_id: newUser.id,
+      role_id: 1, // Vehicle Owner role
+      membership_id: 0, // No membership at registration
       password: form.password,
       is_new: true // Mark as new user
     });
@@ -893,28 +1130,28 @@ export class IamStore {
       string; phone_number: string; department: string; district: string; address: string; email: string; password: string }): void {
 
     const newLocation = new Location({
-      id_location: 'L0' + (this.locationCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       department: form.department,
       district: form.district,
       address: form.address
     })
 
     const newUser = new User({
-      id_user: 'U0' + (this.userCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       name: form.name_workshop,
       last_name: '',
       dni: form.ruc,
       phone_number: form.phone_number,
-      id_location: newLocation.id,
+      location_id: newLocation.id,
     })
 
     const newUserAccount = new UserAccount({
-      id_user_account: 'UA' + (this.userAccountCount() + 1).toString(),
+      id: 0, // Assign ID in the Backend
       username: form.username.trim(),
       email: form.email.trim(),
-      id_user: newUser.id,
-      id_role: 'R002',
-      id_membership: '', // No membership at registration
+      user_id: newUser.id,
+      role_id: 2,  // Auto Repair Workshop role
+      membership_id: 0, // No membership at registration
       password: form.password,
       is_new: true // Mark as new user
     });
@@ -934,7 +1171,7 @@ export class IamStore {
 
     const userAccountNoMembership = this.registerUserAccountSignal();
     if (userAccountNoMembership) {
-      userAccountNoMembership.id_membership = membershipId;
+      userAccountNoMembership.membership_id = membershipId;
       this.registerUserAccountSignal.set(userAccountNoMembership);
     }
   }
@@ -943,7 +1180,7 @@ export class IamStore {
    * Finalizes the registration process by creating and storing all related entities.
    * @param payment - The payment information provided during registration.
    */
-  finishRegister(payment: { card_number: number; month: number; year:number; cvv: number; card_type: string; }): void {
+  finishRegister(payment: { card_number: string; month: number; year:number; cvv: number; card_type: string; }): void {
     const role = this.registerRoleSignal();
     const user = this.registerUserSignal();
     const userAccount = this.registerUserAccountSignal();
@@ -951,29 +1188,58 @@ export class IamStore {
     const membershipId = this.registerMemberShipTypeSignal();
 
     if(!role || !user || !userAccount || !location || !membershipId || !payment) {
+      console.error('❌ Incomplete registration flow:', {
+        hasRole: !!role,
+        hasUser: !!user,
+        hasUserAccount: !!userAccount,
+        hasLocation: !!location,
+        hasMembershipId: !!membershipId,
+        hasPayment: !!payment
+      });
       this.errorSignal.set('Incomplete registration flow');
       return;
     }
 
-    const newPayment = new Payment({
-      id_payment: 'PY0' + (this.paymentCount() + 1).toString(),
-      card_number: payment.card_number,
-      card_type: payment.card_type,
-      month: payment.month,
-      year: payment.year,
-      cvv: payment.cvv,
-      id_user_account: userAccount.id
+    console.log('📋 Registration data collected:', {
+      role,
+      user: `${user.name} ${user.last_name}`,
+      userAccount: userAccount.username,
+      location: `${location.district}, ${location.department}`,
+      membershipId,
+      payment: payment.card_type
     });
 
-    console.log(location);
-    console.log(user);
-    console.log(userAccount);
-    console.log(newPayment);
-
-    this.addLocation(location);
-    this.addUser(user);
-    this.addUserAccount(userAccount);
-    this.addPayment(newPayment);
+    // Call the appropriate sign-up endpoint based on role
+    // If AWS is available, it will create everything in one request
+    // If AWS fails, the methods will fallback to Supabase and create entities individually
+    if (role === 'Vehicle Owner') {
+      this.registerVehicleOwner({
+        fullName: `${user.name} ${user.last_name}`,
+        username: userAccount.username,
+        dni: user.dni,
+        phone_number: user.phone_number,
+        department: location.department,
+        district: location.district,
+        address: location.address,
+        email: userAccount.email,
+        password: userAccount.password
+      });
+    } else if (role === 'Auto Repair Shop') {
+      this.registerAutoRepair({
+        name_workshop: user.name, // Workshop name is stored in user.name
+        username: userAccount.username,
+        ruc: user.dni, // RUC is stored in user.dni for workshops
+        phone_number: user.phone_number,
+        department: location.department,
+        district: location.district,
+        address: location.address,
+        email: userAccount.email,
+        password: userAccount.password
+      });
+    } else {
+      console.error('❌ Invalid role:', role);
+      this.errorSignal.set('Invalid user role');
+    }
   }
 
   /**
@@ -987,6 +1253,428 @@ export class IamStore {
     this.registerLocationSignal.set(null);
     this.registerMemberShipTypeSignal.set(null);
     this.errorSignal.set(null);
+  }
+
+  /**
+   * Register a new vehicle owner with AWS API
+   * Creates User + UserAccount, returns JWT and auto-login
+   * If AWS fails, falls back to Supabase with FK order: Location → User → UserAccount → Payment
+   * @param formData - Registration form data from register-owner component
+   */
+  registerVehicleOwner(formData: {
+    fullName: string;
+    username: string;
+    dni: string;
+    phone_number: string;
+    department: string;
+    district: string;
+    address: string;
+    email: string;
+    password: string;
+  }): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    // Split fullName into name and lastName
+    const nameParts = formData.fullName.trim().split(' ');
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+    const name = nameParts[0];
+
+    const signUpRequest = {
+      user: {
+        name: name,
+        lastName: lastName,
+        dni: formData.dni,
+        phoneNumber: formData.phone_number,
+        department: formData.department,
+        district: formData.district,
+        address: formData.address
+      },
+      userAccount: {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      }
+    };
+
+    console.log('📤 Registering vehicle owner with AWS:', signUpRequest);
+
+    this.authApi.signUpVehicleOwner(signUpRequest).subscribe({
+      next: (response) => {
+        console.log('✅ Vehicle owner registration successful (AWS):', response);
+
+        // Save JWT and auto-login
+        const jwt = response.token;
+
+        // Load user account and user data
+        this.iamApi.getUserAccount(response.id).subscribe({
+          next: (userAccount) => {
+            console.log('✅ User account loaded after registration:', userAccount);
+            this.sessionUserAccountSignal.set(userAccount);
+
+            if (userAccount.user_id) {
+              this.iamApi.getUser(userAccount.user_id).subscribe({
+                next: (user) => {
+                  console.log('✅ User loaded after registration:', user);
+                  this.sessionUserSignal.set(user);
+                  this.saveSessionToStorage(jwt);
+                  this.loadingSignal.set(false);
+                  // Auto-redirect to plan-owner will be handled by component effect
+                },
+                error: (err) => {
+                  console.error('❌ Failed to load user after registration:', err);
+                  this.errorSignal.set(this.formatError(err, 'Failed to load user data'));
+                  this.loadingSignal.set(false);
+                }
+              });
+            }
+          },
+          error: (err) => {
+            console.error('❌ Failed to load user account after registration:', err);
+            this.errorSignal.set(this.formatError(err, 'Failed to load user account'));
+            this.loadingSignal.set(false);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('❌ AWS Vehicle owner registration failed:', err);
+        console.warn('⚠️ Attempting fallback registration with Supabase...');
+
+        // Fallback: Register with Supabase (FK order: Location → User → UserAccount → Payment)
+        this.registerVehicleOwnerFallbackSupabase(formData);
+      }
+    });
+  }
+
+  /**
+   * Fallback registration for vehicle owner using Supabase
+   * This is called from finishRegister() when AWS is not available
+   * Creates all entities in one batch to avoid dirty data
+   * @private
+   */
+  private registerVehicleOwnerFallbackSupabase(formData: {
+    fullName: string;
+    username: string;
+    dni: string;
+    phone_number: string;
+    department: string;
+    district: string;
+    address: string;
+    email: string;
+    password: string;
+  }): void {
+    console.log('📤 Registering vehicle owner with Supabase (fallback)...');
+
+    // Split fullName into name and lastName
+    const nameParts = formData.fullName.trim().split(' ');
+    const name = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ');
+
+    // Get payment and membership data from registration signals
+    const membershipId = this.registerMemberShipTypeSignal();
+
+    // Step 1: Create Location
+    const newLocation = new Location({
+      id: 0,
+      department: formData.department,
+      district: formData.district,
+      address: formData.address
+    });
+
+    console.log('📤 Creating Location (Supabase):', newLocation);
+    this.catalogStore.addLocation(newLocation);
+
+    // Wait for location creation
+    setTimeout(() => {
+      const createdLocation = this.catalogStore.locations().find(l =>
+        l.department === formData.department &&
+        l.district === formData.district &&
+        l.address === formData.address
+      );
+
+      if (!createdLocation) {
+        console.error('❌ Failed to create location');
+        this.errorSignal.set('Failed to create location');
+        this.loadingSignal.set(false);
+        return;
+      }
+
+      console.log('✅ Location created:', createdLocation);
+
+      // Step 2: Create User
+      const newUser = new User({
+        id: 0,
+        name: name,
+        last_name: lastName,
+        dni: formData.dni,
+        phone_number: formData.phone_number,
+        location_id: createdLocation.id
+      });
+
+      console.log('📤 Creating User (Supabase):', newUser);
+      this.addUser(newUser);
+
+      // Wait for user creation
+      setTimeout(() => {
+        const createdUser = this.users().find(u =>
+          u.dni === formData.dni &&
+          u.location_id === createdLocation.id
+        );
+
+        if (!createdUser) {
+          console.error('❌ Failed to create user');
+          this.errorSignal.set('Failed to create user');
+          this.loadingSignal.set(false);
+          return;
+        }
+
+        console.log('✅ User created:', createdUser);
+
+        // Step 3: Create UserAccount
+        const newUserAccount = new UserAccount({
+          id: 0,
+          username: formData.username.trim(),
+          email: formData.email.trim(),
+          user_id: createdUser.id,
+          role_id: 1, // Vehicle Owner
+          membership_id: membershipId || 1,
+          password: formData.password,
+          is_new: true
+        });
+
+        console.log('📤 Creating UserAccount (Supabase):', newUserAccount);
+        this.addUserAccount(newUserAccount);
+
+        // Wait for user account creation
+        setTimeout(() => {
+          const createdUserAccount = this.userAccounts().find(ua =>
+            ua.username === formData.username.trim()
+          );
+
+          if (!createdUserAccount) {
+            console.error('❌ Failed to create user account');
+            this.errorSignal.set('Failed to create user account');
+            this.loadingSignal.set(false);
+            return;
+          }
+
+          console.log('✅ UserAccount created:', createdUserAccount);
+          console.log('✅ Vehicle owner registration successful (Supabase fallback)');
+
+          // Set session without JWT (Supabase fallback)
+          this.sessionUserAccountSignal.set(createdUserAccount);
+          this.sessionUserSignal.set(createdUser);
+          this.saveSessionToStorage(); // No JWT for Supabase
+
+          // Force load all stores data
+          this.forceLoadAllStoresData();
+
+          this.loadingSignal.set(false);
+        }, 500);
+      }, 500);
+    }, 500);
+  }
+
+  /**
+   * Register a new auto repair workshop with AWS API
+   * Creates AutoRepair + Location + User + UserAccount, returns JWT and auto-login
+   * If AWS fails, falls back to Supabase with FK order: Location → AutoRepair → User → UserAccount → Payment
+   * @param formData - Registration form data from register-workshop component
+   */
+  registerAutoRepair(formData: {
+    name_workshop: string;
+    username: string;
+    ruc: string;
+    phone_number: string;
+    department: string;
+    district: string;
+    address: string;
+    email: string;
+    password: string;
+  }): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    // For auto repair, we need user data (workshop representative)
+    // Using workshop name as placeholder for username
+    const signUpRequest = {
+      autoRepair: {
+        name: formData.name_workshop,
+        ruc: formData.ruc
+      },
+      location: {
+        department: formData.department,
+        district: formData.district,
+        address: formData.address
+      },
+      user: {
+        name: formData.name_workshop, // Using workshop name as username
+        lastName: 'Workshop', // Default lastName (you can add a field for this)
+        dni: '00000000', // Placeholder DNI (you can add a field for this)
+        phoneNumber: formData.phone_number
+      },
+      userAccount: {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      }
+    };
+
+    console.log('📤 Registering auto repair with AWS:', signUpRequest);
+
+    this.authApi.signUpAutoRepair(signUpRequest).subscribe({
+      next: (response) => {
+        console.log('✅ Auto repair registration successful (AWS):', response);
+
+        // Save JWT and auto-login
+        const jwt = response.token;
+
+        // Load user account and user data
+        this.iamApi.getUserAccount(response.id).subscribe({
+          next: (userAccount) => {
+            console.log('✅ User account loaded after registration:', userAccount);
+            this.sessionUserAccountSignal.set(userAccount);
+
+            if (userAccount.user_id) {
+              this.iamApi.getUser(userAccount.user_id).subscribe({
+                next: (user) => {
+                  console.log('✅ User loaded after registration:', user);
+                  this.sessionUserSignal.set(user);
+                  this.saveSessionToStorage(jwt);
+                  this.loadingSignal.set(false);
+                  // Auto-redirect to plan-workshop will be handled by component effect
+                },
+                error: (err) => {
+                  console.error('❌ Failed to load user after registration:', err);
+                  this.errorSignal.set(this.formatError(err, 'Failed to load user data'));
+                  this.loadingSignal.set(false);
+                }
+              });
+            }
+          },
+          error: (err) => {
+            console.error('❌ Failed to load user account after registration:', err);
+            this.errorSignal.set(this.formatError(err, 'Failed to load user account'));
+            this.loadingSignal.set(false);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('❌ AWS Auto repair registration failed:', err);
+        console.warn('⚠️ Attempting fallback registration with Supabase...');
+
+        // Fallback: Register with Supabase (FK order: Location → AutoRepair → User → UserAccount → Payment)
+        this.registerAutoRepairFallbackSupabase(formData);
+      }
+    });
+  }
+
+  /**
+   * Fallback registration for auto repair using Supabase
+   * Creates entities in FK order: Location → User → UserAccount
+   * @private
+   */
+  private registerAutoRepairFallbackSupabase(formData: {
+    name_workshop: string;
+    username: string;
+    ruc: string;
+    phone_number: string;
+    department: string;
+    district: string;
+    address: string;
+    email: string;
+    password: string;
+  }): void {
+    // Step 1: Create Location
+    const newLocation = new Location({
+      id: 0,
+      department: formData.department,
+      district: formData.district,
+      address: formData.address
+    });
+
+    console.log('📤 Creating Location (Supabase):', newLocation);
+    this.catalogStore.addLocation(newLocation);
+
+    // Wait for location creation, then create user
+    setTimeout(() => {
+      const createdLocation = this.catalogStore.locations().find(l =>
+        l.department === formData.department &&
+        l.district === formData.district &&
+        l.address === formData.address
+      );
+
+      if (!createdLocation) {
+        this.errorSignal.set('Failed to create location');
+        this.loadingSignal.set(false);
+        return;
+      }
+
+      // Step 2: Create User
+      const newUser = new User({
+        id: 0,
+        name: formData.name_workshop,
+        last_name: '',
+        dni: formData.ruc,
+        phone_number: formData.phone_number,
+        location_id: createdLocation.id
+      });
+
+      console.log('📤 Creating User (Supabase):', newUser);
+      this.addUser(newUser);
+
+      // Wait for user creation, then create user account
+      setTimeout(() => {
+        const createdUser = this.users().find(u =>
+          u.dni === formData.ruc &&
+          u.location_id === createdLocation.id
+        );
+
+        if (!createdUser) {
+          this.errorSignal.set('Failed to create user');
+          this.loadingSignal.set(false);
+          return;
+        }
+
+        // Step 3: Create UserAccount
+        const newUserAccount = new UserAccount({
+          id: 0,
+          username: formData.username.trim(),
+          email: formData.email.trim(),
+          user_id: createdUser.id,
+          role_id: 2, // Auto Repair role
+          membership_id: 0,
+          password: formData.password,
+          is_new: true
+        });
+
+        console.log('📤 Creating UserAccount (Supabase):', newUserAccount);
+        this.addUserAccount(newUserAccount);
+
+        // Wait for user account creation
+        setTimeout(() => {
+          const createdUserAccount = this.userAccounts().find(ua =>
+            ua.username === formData.username.trim()
+          );
+
+          if (!createdUserAccount) {
+            this.errorSignal.set('Failed to create user account');
+            this.loadingSignal.set(false);
+            return;
+          }
+
+          console.log('✅ Auto repair registration successful (Supabase fallback)');
+
+          // Set session without JWT (Supabase fallback)
+          this.sessionUserAccountSignal.set(createdUserAccount);
+          this.sessionUserSignal.set(createdUser);
+          this.saveSessionToStorage(); // No JWT for Supabase
+          this.loadingSignal.set(false);
+
+          // Auto-redirect to plan-workshop will be handled by component effect
+        }, 500);
+      }, 500);
+    }, 500);
   }
 
   /**

@@ -17,7 +17,7 @@ export interface UserResource extends BaseResource {
   /**
    * Unique identifier for the user.
    */
-  id_user: string;
+  id: number;
   /**
    * User's first name.
    */
@@ -37,5 +37,5 @@ export interface UserResource extends BaseResource {
   /**
    * Identifier for the user's location.
    */
-  id_location: string;
+  location_id: number;
 }

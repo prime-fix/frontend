@@ -20,7 +20,16 @@ export class PaymentApiEndpoint extends BaseApiEndpoint<Payment, PaymentResource
    * @param http - The HttpClient instance to use for HTTP requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderPaymentsEndpointPath}`,
-      new PaymentAssembler(), { usePathParams: environment.usePathParams });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderPaymentsEndpointPath}`,
+      new PaymentAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

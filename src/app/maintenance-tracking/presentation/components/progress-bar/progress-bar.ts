@@ -18,7 +18,7 @@ export class ProgressBar {
   private paymentServiceStore = inject(PaymentServiceStore);
   // Input to receive the current step from parent component
   currentStep = input<number>(1);
-  currentVehicle = input.required<Vehicle | undefined>();
+  currentVehicle = input<Vehicle | undefined>();
 
   // Definition of progress steps
   steps: ProgressStep[] = [

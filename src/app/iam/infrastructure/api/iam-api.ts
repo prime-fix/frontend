@@ -64,7 +64,7 @@ export class IamApi extends BaseApi {
    * Fetches a specific user account by its ID.
    * @param id
    */
-  getUserAccount(id: string): Observable<UserAccount> {
+  getUserAccount(id: number): Observable<UserAccount> {
     return this.userAccountsEndpoint.getById(id);
   }
 
@@ -88,7 +88,7 @@ export class IamApi extends BaseApi {
    * Deletes a user account by its ID.
    * @param id - The ID of the user account to be deleted.
    */
-  deleteUserAccount(id: string): Observable<void> {
+  deleteUserAccount(id: number): Observable<void> {
     return this.userAccountsEndpoint.delete(id);
   }
 
@@ -105,7 +105,7 @@ export class IamApi extends BaseApi {
    * @param id - The ID of the user to be fetched.
    * @return An Observable emitting the User entity.
    */
-  getUser(id: string): Observable<User> {
+  getUser(id: number): Observable<User> {
     return this.usersEndpoint.getById(id);
   }
 
@@ -132,7 +132,7 @@ export class IamApi extends BaseApi {
    * @param id - The ID of the user to be deleted.
    * @return An Observable emitting void upon successful deletion.
    */
-  deleteUser(id: string): Observable<void> {
+  deleteUser(id: number): Observable<void> {
     return this.usersEndpoint.delete(id);
   }
 
@@ -149,7 +149,7 @@ export class IamApi extends BaseApi {
    * @param id - The ID of the role to be fetched.
    * @return An Observable emitting the Role entity.
    */
-  getRole(id: string): Observable<Role> {
+  getRole(id: number): Observable<Role> {
     return this.rolesEndpoint.getById(id);
   }
 
@@ -173,7 +173,7 @@ export class IamApi extends BaseApi {
    * Deletes a role by its ID.
    * @param id - The ID of the role to be deleted.
    */
-  deleteRole(id: string): Observable<void> {
+  deleteRole(id: number): Observable<void> {
     return this.rolesEndpoint.delete(id);
   }
 
@@ -190,7 +190,7 @@ export class IamApi extends BaseApi {
    * @param id - The ID of the membership to be fetched.
    * @return An Observable emitting the Membership entity.
    */
-  getMembership(id: string): Observable<Membership> {
+  getMembership(id: number): Observable<Membership> {
     return this.membershipsEndpoint.getById(id);
   }
 
@@ -217,7 +217,7 @@ export class IamApi extends BaseApi {
    * @param id - The ID of the membership to be deleted.
    * @return An Observable emitting void upon successful deletion.
    */
-  deleteMembership(id: string): Observable<void> {
+  deleteMembership(id: number): Observable<void> {
     return this.membershipsEndpoint.delete(id);
   }
 }

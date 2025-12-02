@@ -12,21 +12,27 @@ interface SessionShape {
 
 /**
  * An HTTP interceptor that adds authentication headers to outgoing requests.
- * It attaches an API key and, if available, a Bearer token from local storage.
+ * - For AWS API: Uses JWT Bearer token authentication
+ * - For Supabase API: Uses apiKey header authentication
  * Requests to asset URLs are excluded from this interception.
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   /**
-   * The API key used for authentication.
+   * The API key used for Supabase authentication.
    * @private
    */
-  private readonly API_KEY = environment.primeFixProviderApiKey;
+  private readonly SUPABASE_API_KEY = environment.primeFixProviderApiKey;
   /**
-   * The base URL of the API to which the interceptor applies.
+   * The base URL of the AWS API (primary).
    * @private
    */
-  private readonly API_BASE = environment.primeFixProviderApiBaseUrl;
+  private readonly AWS_API_BASE = environment.primeFixProviderApiBaseUrlAWS;
+  /**
+   * The base URL of the Supabase API (fallback).
+   * @private
+   */
+  private readonly SUPABASE_API_BASE = environment.primeFixProviderApiBaseUrlSupabase;
   /**
    * The key used to store authentication data in local storage.
    * @private
@@ -39,19 +45,36 @@ export class AuthInterceptor implements HttpInterceptor {
    * @param next - The next handler in the HTTP request chain.
    */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.isAssetsRequest(request.url) || !this.matchesApiBase(request.url)) {
+    if (this.isAssetsRequest(request.url)) {
+      return next.handle(request);
+    }
+
+    const isAwsApi = this.matchesApiBase(request.url, this.AWS_API_BASE);
+    const isSupabaseApi = this.matchesApiBase(request.url, this.SUPABASE_API_BASE);
+
+    if (!isAwsApi && !isSupabaseApi) {
       return next.handle(request);
     }
 
     const accessToken = this.readAccessToken();
-    const setHeaders: Record<string, string> = {
-      'apiKey': this.API_KEY,
-    };
+    const setHeaders: Record<string, string> = {};
 
-    if (!request.headers.has('Authorization')) {
-      if (accessToken) {
+    // AWS API: Use JWT Bearer token (required for all except sign-in/sign-up)
+    if (isAwsApi) {
+      if (accessToken && !request.headers.has('Authorization')) {
         setHeaders['Authorization'] = `Bearer ${accessToken}`;
-      } else {
+      }
+      // AWS might also need Content-Type
+      if (!request.headers.has('Content-Type') && request.method !== 'GET') {
+        setHeaders['Content-Type'] = 'application/json';
+      }
+    }
+
+    // Supabase API: Use API Key
+    if (isSupabaseApi) {
+      setHeaders['apikey'] = this.SUPABASE_API_KEY;
+      if (accessToken && !request.headers.has('Authorization')) {
+        setHeaders['Authorization'] = `Bearer ${accessToken}`;
       }
     }
 
@@ -86,18 +109,19 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Checks if the request URL matches the API base URL.
+   * Checks if the request URL matches the given API base URL.
    * @param url - The request URL.
+   * @param baseUrl - The base URL to match against.
    * @private - This method is intended for internal use only.
    * @returns True if the URL matches the API base, otherwise false.
    */
-  private matchesApiBase(url: string): boolean {
+  private matchesApiBase(url: string, baseUrl: string): boolean {
     try {
       const req = new URL(url, window.location.origin);
-      const api = new URL(this.API_BASE, window.location.origin);
+      const api = new URL(baseUrl, window.location.origin);
       return req.origin === api.origin && req.pathname.startsWith(api.pathname);
     } catch {
-      return true;
+      return url.startsWith(baseUrl);
     }
   }
 }

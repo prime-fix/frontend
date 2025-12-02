@@ -17,7 +17,7 @@ export interface DiagnosticResource extends BaseResource {
   /**
    * The unique identifier of the diagnostic.
    */
-  id_diagnostic: string;
+  id: number;
   /**
    * The price of the diagnostic.
    */
@@ -25,13 +25,9 @@ export interface DiagnosticResource extends BaseResource {
   /**
    * The vehicle ID associated with the diagnostic.
    */
-  id_vehicle: string;
+  vehicle_id: number;
   /**
    * The diagnosis details.
    */
   diagnosis: string;
-  /**
-   * The expected ID associated with the diagnostic.
-   */
-  id_expected: string;
 }

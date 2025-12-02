@@ -6,7 +6,7 @@
     @for (expectedVisit of pendingExpectedVisits(); track expectedVisit.id) {
       <div class="request-card">
         <div class="request-info">
-          <h3 class="customer-name">{{ getUserFullNameByVisitId(expectedVisit.id_visit)() }}</h3>
+          <h3 class="customer-name">{{ getUserFullNameByVisitId(expectedVisit.visit_id)() }}</h3>
           <div class="request-details">
             <p class="detail-item">
               <span class="detail-label">{{ 'manage-requests.date' | translate }}:</span>
@@ -61,12 +61,12 @@
       <div class="modal-details">
         <div class="detail-group">
           <label class="detail-label">{{ 'manage-requests.customerName' | translate }}</label>
-          <p class="detail-value">{{ getUserFullNameByVisitId(selectedExpectedVisitAndVisit()?.expectedVisit?.id_visit!)() }}</p>
+          <p class="detail-value">{{ getUserFullNameByVisitId(selectedExpectedVisitAndVisit()?.expectedVisit?.visit_id!)() }}</p>
         </div>
 
         <div class="detail-group">
           <label class="detail-label">{{ 'manage-requests.vehicleModel' | translate }}</label>
-          <p class="detail-value">{{ getVehicleByVehicleId(selectedExpectedVisitAndVisit()?.visit?.id_vehicle!)()?.model }}</p>
+          <p class="detail-value">{{ getVehicleByVehicleId(selectedExpectedVisitAndVisit()?.visit?.vehicle_id!)()?.model }}</p>
         </div>
 
         <div class="detail-group">

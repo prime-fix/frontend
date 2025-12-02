@@ -11,11 +11,11 @@ export interface PaymentResponse extends BaseResponse {
  * Resource interface representing a payment entity.
  */
 export interface PaymentResource extends BaseResource {
-  id_payment: string;
-  card_number: number;
+  id: number;
+  card_number: string;
   card_type: string;
   month: number;
   year: number;
-  cvv: number;
-  id_user_account: string;
+  ccv: number;
+  user_account_id: number;
 }

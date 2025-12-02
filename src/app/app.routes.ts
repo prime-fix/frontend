@@ -63,7 +63,7 @@ export const routes: Routes = [
   },
   {
     path: 'layout-owner',
-    canActivate: [roleGuard(['R001'])],
+    canActivate: [roleGuard([1])],
     loadComponent: layoutOwner,
     children: [
       {
@@ -119,7 +119,7 @@ export const routes: Routes = [
   },
   {
     path: 'layout-workshop',
-    canActivate: [roleGuard(['R002'])],
+    canActivate: [roleGuard([2])],
     loadComponent: layoutWorkshop,
     children: [
       {

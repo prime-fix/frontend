@@ -34,10 +34,16 @@ export class RegisterWorkshop {
   });
 
   private _autoRedirect = effect(() => {
-    if (!this.store.isAuthenticated()) return;
-    const target = '/plan-workshop';
-    if (this.router.url !== target) {
-      void this.router.navigateByUrl(target);
+    // Check if registration data is saved (not authenticated yet, just data collected)
+    const user = this.store.registerUser();
+    const userAccount = this.store.registerUserAccount();
+
+    if (user && userAccount) {
+      const target = '/plan-workshop';
+      if (this.router.url !== target) {
+        console.log('✅ Registration data saved, navigating to plan selection');
+        void this.router.navigateByUrl(target);
+      }
     }
   });
 
@@ -52,11 +58,12 @@ export class RegisterWorkshop {
     }
 
     const formData = this.registerForm.getRawValue();
-    console.log('Register workshop data:', formData);
+    console.log('📝 Register workshop form data (saving to signals):', formData);
 
-    this.store.startRegistrationFlow('Auto Repair Shop');
+    // Save registration data to signals (NO POST yet, just in memory)
     this.store.saveRegisterWorkshop(formData);
-    this.navigateToPlanWorkshop();
+
+    // Auto-redirect to plan-workshop will be handled by _autoRedirect effect
   }
 
   navigateToLogin() {

@@ -28,8 +28,14 @@ export class AutoRepairApiEndpoint extends BaseApiEndpoint<
   constructor(http: HttpClient) {
     super(
       http,
-      `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderAutoRepairsEndpointPath}`,
-      new AutoRepairAssembler(), { usePathParams: environment.usePathParams }
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderAutoRepairsEndpointPath}`,
+      new AutoRepairAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
     );
   }
 }

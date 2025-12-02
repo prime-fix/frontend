@@ -7,7 +7,7 @@ export class ExpectedVisit implements BaseEntity {
   /**
    * The unique identifier of the expected visit.
    */
-  _id_expected: string;
+  _id: number;
   /**
    * The state of the visit.
    */
@@ -15,34 +15,34 @@ export class ExpectedVisit implements BaseEntity {
   /**
    * The identifier of the visit.
    */
-  _id_visit: string;
+  _visit_id: number;
   /**
    * Indicates whether the visit is scheduled.
    */
   _is_scheduled: boolean;
-
   /**
-   * Creates an instance of ExpectedVisit.
-   * @param {Object} expectedVisit - The expected visit data.
-   * @param {string} expectedVisit.id_expected - The unique identifier of the expected visit.
-   * @param {string} expectedVisit.state_visit - The state of the visit.
-   * @param {string} expectedVisit.id_visit - The identifier of the visit.
-   * @param {boolean} expectedVisit.is_scheduled - Indicates whether the visit is scheduled.
+   * The vehicle ID associated with the expected visit.
    */
-  constructor(expectedVisit: { id_expected: string; state_visit: string; id_visit: string; is_scheduled: boolean }) {
-    this._id_expected = expectedVisit.id_expected;
+  _vehicle_id: number;
+
+
+  constructor(expectedVisit: { id: number; state_visit: string; visit_id: number; is_scheduled: boolean; vehicle_id: number }) {
+    this._id = expectedVisit.id;
     this._state_visit = expectedVisit.state_visit;
-    this._id_visit = expectedVisit.id_visit;
+    this._visit_id = expectedVisit.visit_id;
     this._is_scheduled = expectedVisit.is_scheduled;
+    this._vehicle_id = expectedVisit.vehicle_id;
   }
 
   /** Getters and Setters */
-  get id(): string { return this._id_expected };
-  set id(value: string) { this._id_expected = value; }
+  get id(): number { return this._id };
+  set id(value: number) { this._id = value; }
   get state_visit(): string { return this._state_visit }
   set state_visit(value: string) { this._state_visit = value; }
-  get id_visit(): string { return this._id_visit }
-  set id_visit(value: string) { this._id_visit = value; }
+  get visit_id(): number { return this._visit_id }
+  set visit_id(value: number) { this._visit_id = value; }
   get is_scheduled(): boolean { return this._is_scheduled }
   set is_scheduled(value: boolean) { this._is_scheduled = value; }
+  get vehicle_id(): number { return this._vehicle_id }
+  set vehicle_id(value: number) { this._vehicle_id = value; }
 }

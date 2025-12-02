@@ -30,8 +30,7 @@
           <select
             id="district"
             formControlName="district"
-            class="form-select"
-            [disabled]="!searchForm.value.department">
+            class="form-select">
             <option value="" disabled selected></option>
             @for (district of districts(); track district) {
               <option [value]="district">{{ district }}</option>

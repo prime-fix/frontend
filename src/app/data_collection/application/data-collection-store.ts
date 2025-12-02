@@ -86,11 +86,45 @@ export class DataCollectionStore {
 
   /**
    * Constructs a new instance of the DataCollectionStore and loads initial data.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param dataCollectionApi - The API service for data collection operations.
    */
   constructor(private dataCollectionApi : DataCollectionApi) {
-    this.loadServices();
-    this.loadVisits()
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [DataCollectionStore] Valid JWT found, loading services and visits...');
+      this.loadServices();
+      this.loadVisits();
+    } else {
+      console.log('⚠️ [DataCollectionStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [DataCollectionStore] Force loading data...');
+        this.loadServices();
+        this.loadVisits();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**
@@ -107,7 +141,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Auto Repair register.
    * @returns A signal containing the Auto Repair register or undefined if not found.
    */
-  getAutoRepairById(id: string | number | null | undefined): Signal<AutoRepair | undefined> {
+  getAutoRepairById(id: number | null | undefined): Signal<AutoRepair | undefined> {
     // Delegate to CatalogStore
     return this.catalogStore.getAutoRepairById(id);
   }
@@ -174,7 +208,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Visit to delete.
    * @returns void
    */
-  deleteVisit(id: string): void {
+  deleteVisit(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.dataCollectionApi.deleteVisit(id).pipe(retry(2)).subscribe({
@@ -209,7 +243,7 @@ export class DataCollectionStore {
    * Deletes an Auto Repair register by its ID.
    * @param id - The ID of the Auto Repair register to delete.
    */
-  deleteAutoRepair(id: string): void {
+  deleteAutoRepair(id: number): void {
     // Delegate to CatalogStore
     this.catalogStore.deleteAutoRepair(id);
   }
@@ -239,7 +273,7 @@ export class DataCollectionStore {
    * @param id - The ID of the Vehicle to delete.
    * @returns void
    */
-  deleteVehicle(id: number| string): void {
+  deleteVehicle(id: number): void {
     // Delegate to TrackingStore
     this.trackingStore.deleteVehicle(id);
   }

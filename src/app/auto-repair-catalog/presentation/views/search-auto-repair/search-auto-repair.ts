@@ -30,11 +30,23 @@ export class SearchAutoRepair {
   });
 
   constructor() {
+    // Disable district field initially
+    this.searchForm.get('district')?.disable();
+
     // Watch for changes in the department field
     this.searchForm.get('department')?.valueChanges.subscribe(value => {
       this.selectedDepartmentSignal.set(value || '');
+      const districtControl = this.searchForm.get('district');
+
       // Reset district when department changes
-      this.searchForm.get('district')?.setValue('');
+      districtControl?.setValue('');
+
+      // Enable or disable district based on department selection
+      if (value) {
+        districtControl?.enable();
+      } else {
+        districtControl?.disable();
+      }
     });
   }
 
@@ -60,15 +72,15 @@ export class SearchAutoRepair {
     return autoRepairs
       .map(autoRepair => {
         // Get the user_account associated with the auto_repair
-        const userAccount = userAccounts.find(ua => ua.id === autoRepair.id_user_account);
+        const userAccount = userAccounts.find(ua => ua.id === autoRepair.user_account_id);
         if (!userAccount) return null;
 
         // Get the user associated with the user_account
-        const user = users.find(u => u.id === userAccount.id_user);
+        const user = users.find(u => u.id === userAccount.user_id);
         if (!user) return null;
 
         // Get the location associated with the user
-        const location = locations.find(loc => loc.id === user.id_location);
+        const location = locations.find(loc => loc.id === user.location_id);
         if (!location) return null;
 
         // Verify if the location matches the selected department and district

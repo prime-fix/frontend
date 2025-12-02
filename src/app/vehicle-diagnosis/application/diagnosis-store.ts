@@ -87,20 +87,53 @@ export class DiagnosisStore {
   readonly vehicleCount = computed(() => this.trackingStore.vehicleCount());
 
   /**
-   * Constructor for DiagnosisStore.
+   * Constructs a new DiagnosisStore instance and loads initial data.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param diagnosisApi - The DiagnosisApi service for API interactions.
    */
   constructor(private diagnosisApi: DiagnosisApi) {
-    this.loadExpectedVisits();
-    this.loadDiagnostics();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [DiagnosisStore] Valid JWT found, loading expected visits and diagnostics...');
+      this.loadExpectedVisits();
+      this.loadDiagnostics();
+    } else {
+      console.log('⚠️ [DiagnosisStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [DiagnosisStore] Force loading data...');
+        this.loadExpectedVisits();
+        this.loadDiagnostics();
+      });
+    }
   }
 
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
+  }
 
   /**
    * Gets an expected visit by its ID.
    * @param id
    */
-  getExpectedVisitById(id: string | null | undefined): Signal<ExpectedVisit | undefined> {
+  getExpectedVisitById(id: number | null | undefined): Signal<ExpectedVisit | undefined> {
     return computed(() => id ? this.expectedVisits().find(v => v.id === id) : undefined);
   }
 
@@ -150,7 +183,7 @@ export class DiagnosisStore {
    * @param id - The ID of the expected visit to delete.
    * @returns void
    */
-  deleteExpectedVisit(id: string): void {
+  deleteExpectedVisit(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.diagnosisApi.deleteExpectedVisit(id).pipe(retry(2)).subscribe({
@@ -171,7 +204,7 @@ export class DiagnosisStore {
    * @param id - The ID of the diagnostic to retrieve.
    * @returns A Signal emitting the Diagnostic or undefined if not found.
    */
-  getDiagnosticById(id: string | null | undefined): Signal<Diagnostic | undefined> {
+  getDiagnosticById(id: number | null | undefined): Signal<Diagnostic | undefined> {
     return computed(() => id ? this.diagnostics().find(v => v.id === id) : undefined);
   }
 
@@ -221,7 +254,7 @@ export class DiagnosisStore {
    * @param id - The ID of the diagnostic to delete.
    * @returns void
    */
-  deleteDiagnostic(id: string): void {
+  deleteDiagnostic(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.diagnosisApi.deleteDiagnostic(id).pipe(retry(2)).subscribe({
@@ -237,7 +270,7 @@ export class DiagnosisStore {
     });
   }
 
-  getVehicleById(id: string | null | undefined): Signal<Vehicle | undefined> {
+  getVehicleById(id: number | null | undefined): Signal<Vehicle | undefined> {
     return this.trackingStore.getVehicleById(id);
   }
 
@@ -251,7 +284,7 @@ export class DiagnosisStore {
     this.trackingStore.updateVehicle(updatedVehicle);
   }
 
-  deleteVehicle(id: string): void {
+  deleteVehicle(id: number): void {
     // Delegate to TrackingStore
     this.trackingStore.deleteVehicle(id);
   }

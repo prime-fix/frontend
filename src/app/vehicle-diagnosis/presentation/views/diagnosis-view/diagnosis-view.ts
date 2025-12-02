@@ -48,7 +48,7 @@ export class DiagnosisView {
   /**
    * Signal for selected vehicle ID
    */
-  readonly selectedVehicleId = signal<string | null>(null);
+  readonly selectedVehicleId = signal<number | null>(null);
 
   /**
    * Progress steps for vehicle maintenance
@@ -68,7 +68,7 @@ export class DiagnosisView {
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.id_user_account === userAccountId);
+    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -77,7 +77,7 @@ export class DiagnosisView {
   visitsByAutoRepair = computed(() => {
     const autoRepairId = this.currentAutoRepair()?.id;
     if (!autoRepairId) return [];
-    return this.dataCollectionStore.visits().filter(visit => visit.id_auto_repair === autoRepairId);
+    return this.dataCollectionStore.visits().filter(visit => visit.auto_repair_id === autoRepairId);
   });
 
   /**
@@ -88,7 +88,7 @@ export class DiagnosisView {
     if (visits.length === 0) return [];
 
     const vehicles = this.dataCollectionStore.vehicles();
-    const vehicleIds = new Set(visits.map(visit => visit.id_vehicle));
+    const vehicleIds = new Set(visits.map(visit => visit.vehicle_id));
 
     return vehicles.filter(vehicle => vehicleIds.has(vehicle.id));
   });
@@ -103,12 +103,12 @@ export class DiagnosisView {
   /**
    * Get user (owner) information by vehicle ID
    */
-  getUserByVehicleId(vehicleId: string) {
+  getUserByVehicleId(vehicleId: number) {
     return computed(() => {
       const vehicle = this.dataCollectionStore.vehicles().find(v => v.id === vehicleId);
       if (!vehicle) return null;
 
-      const user = this.iamStore.users().find(u => u.id === vehicle.id_user);
+      const user = this.iamStore.users().find(u => u.id === vehicle.user_id);
       return user || null;
     });
   }
@@ -116,9 +116,9 @@ export class DiagnosisView {
   /**
    * Get visit by vehicle ID
    */
-  getVisitByVehicleId(vehicleId: string) {
+  getVisitByVehicleId(vehicleId: number) {
     return computed(() => {
-      return this.visitsByAutoRepair().find(v => v.id_vehicle === vehicleId) || null;
+      return this.visitsByAutoRepair().find(v => v.vehicle_id === vehicleId) || null;
     });
   }
 
@@ -126,7 +126,7 @@ export class DiagnosisView {
    * Navigate to modify diagnosis page for adding a new diagnostic
    * @param vehicleId - ID of the vehicle
    */
-  addDiagnostic(vehicleId: string): void {
+  addDiagnostic(vehicleId: number): void {
     void this.router.navigate(['layout-workshop/vehicle-diagnosis/modify-diagnosis/edit', vehicleId]);
   }
 
@@ -136,14 +136,14 @@ export class DiagnosisView {
   updateVehicleState(): void {
     const oldVehicle = this.diagnosisStore.getVehicleById(this.selectedVehicleId());
     const updatedVehicle = new Vehicle({
-      id_vehicle: oldVehicle()?.id!,
+      id: oldVehicle()?.id!,
       color: oldVehicle()?._color!,
       model: oldVehicle()?._model!,
-      id_user: oldVehicle()?._id_user!,
+      user_id: oldVehicle()?.user_id!,
       vehicle_brand: oldVehicle()?._vehicle_brand!,
       vehicle_plate: oldVehicle()?._vehicle_plate!,
       vehicle_type: oldVehicle()?._vehicle_type!,
-      state_maintenance: this.selectedState()!
+      maintenance_status: this.selectedState()!
     });
 
     this.diagnosisStore.updateVehicle(updatedVehicle);
@@ -153,7 +153,7 @@ export class DiagnosisView {
   /**
    * Navigate to check diagnostics page for the vehicle
    */
-  checkDiagnostics(vehicleId: string): void {
+  checkDiagnostics(vehicleId: number): void {
     void this.router.navigate(['layout-workshop/vehicle-diagnosis/check-diagnostics', vehicleId]);
   }
 
@@ -162,7 +162,7 @@ export class DiagnosisView {
    * @param vehicleId - ID of the vehicle
    * @param currentState - Current state of the vehicle
    */
-  openStateModal(vehicleId: string, currentState: number): void {
+  openStateModal(vehicleId: number, currentState: number): void {
     this.selectedVehicleId.set(vehicleId);
     this.selectedState.set(currentState);
     this.isStateModalOpen.set(true);

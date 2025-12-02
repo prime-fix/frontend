@@ -45,24 +45,125 @@
 .modal-content {
   background-color: var(--color-second-complementary);
   border-radius: 16px;
-  padding: 3rem 2.5rem;
-  text-align: center;
+  padding: 2rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .modal-title {
   font-family: var(--font-bold);
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   color: var(--color-dark);
-  margin: 0 0 1.5rem 0;
+  margin: 0;
 }
 
-.modal-message {
-  font-family: var(--font-regular);
-  font-size: 1.25rem;
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--color-dark);
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
   color: var(--color-primary);
-  line-height: 1.6;
-  margin: 0 0 2rem 0;
+}
+
+.close-icon {
+  display: block;
+}
+
+/* Notifications List */
+.notifications-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+  max-height: 400px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.notification-item:hover {
+  border-color: var(--color-first-complementary);
+  box-shadow: 0 4px 12px rgba(242, 170, 31, 0.2);
+  transform: translateX(4px);
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bell-icon {
+  fill: white;
+}
+
+.notification-content {
+  flex: 1;
+  text-align: left;
+}
+
+.notification-message {
+  font-family: var(--font-medium);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
+}
+
+.notification-time {
+  font-family: var(--font-regular);
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.notification-arrow {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+/* No Notifications */
+.no-notifications {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.no-notifications p {
+  font-family: var(--font-regular);
+  font-size: 1.125rem;
+  color: #666;
+  margin: 0;
 }
 
 .modal-button {

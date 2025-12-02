@@ -28,9 +28,9 @@ export class VisitForm {
    */
   form = this.fb.group({
     failure: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    id_vehicle: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    vehicle_id: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
     time_visit: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    id_service: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    service_id: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
   });
 
 
@@ -42,7 +42,7 @@ export class VisitForm {
   /**
    * Auto repair ID from route parameters
    */
-  autoRepairId = signal<string>('');
+  autoRepairId = signal<number>(0);
 
   /**
    * Vehicles filtered by the current user
@@ -51,7 +51,7 @@ export class VisitForm {
     const vehicles = this.dataCollectionStore.vehicles;
     const currentUserId = this.iamStore.sessionUserId();
     if (!currentUserId) return [];
-    return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.id_user));
+    return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.user_id));
   })
 
   /**
@@ -76,23 +76,15 @@ export class VisitForm {
     if (this.form.invalid) return;
 
     const visit = new Visit({
-      id_visit: `V${Date.now()}`,
+      id: 0, // ID will be set by backend or store
       failure: formValue.failure ?? '',
-      id_vehicle: formValue.id_vehicle ?? '',
+      vehicle_id: formValue.vehicle_id ?? 0,
       time_visit: formValue.time_visit!,
-      id_auto_repair: this.autoRepairId(),
-      id_service: formValue.id_service ?? '',
+      auto_repair_id: this.autoRepairId(),
+      service_id: formValue.service_id ?? 0,
     });
 
-    const expectedVisit = new ExpectedVisit({
-      id_expected: `EV${Date.now()}`,
-      state_visit: 'Pending Visit',
-      id_visit: visit.id,
-      is_scheduled: false,
-    })
-
     this.dataCollectionStore.addVisit(visit);
-    this.diagnosisStore.addExpectedVisit(expectedVisit);
     this.router.navigate(['layout-owner/data-collection/visit-alert']).then();
   }
 

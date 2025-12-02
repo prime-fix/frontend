@@ -229,6 +229,14 @@
   margin-top: 1.5rem;
 }
 
+/* Diagnostics Section */
+.diagnostics-section {
+  margin-top: 2rem;
+  padding: 2rem 1rem;
+  background: rgba(100, 145, 164, 0.05);
+  border-radius: 12px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .track-vehicle-container {
@@ -295,6 +303,11 @@
 
   .progress-section {
     padding: 1.5rem 0.75rem;
+  }
+
+  .diagnostics-section {
+    padding: 1.5rem 0.75rem;
+    margin-top: 1.5rem;
   }
 
   .progress-bar-content {
@@ -368,6 +381,11 @@
   }
 
   .progress-section {
+    padding: 1.25rem 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .diagnostics-section {
     padding: 1.25rem 0.5rem;
     margin-top: 1rem;
   }

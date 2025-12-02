@@ -9,7 +9,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 
 interface ScheduleForm {
-  id_schedule: FormControl<string | null>;
+  id_schedule: FormControl<number | null>;
   day_of_week: FormControl<string>;
   start_time: FormControl<string>;
   end_time: FormControl<string>;
@@ -38,7 +38,7 @@ export class TechnicianForm implements OnInit {
    * The technician ID being edited
    * @protected
    */
-  protected technicianId = signal<string | null>(null);
+  protected technicianId = signal<number | null>(null);
   /**
    * The current technician being edited
    * @protected
@@ -101,7 +101,7 @@ export class TechnicianForm implements OnInit {
     if (!userAccount) return undefined;
 
     const autoRepairs = this.registerStore.autoRepairs();
-    return autoRepairs.find(ar => ar.id_user_account === userAccount.id);
+    return autoRepairs.find(ar => ar.user_account_id === userAccount.id);
   });
 
   /**
@@ -114,7 +114,7 @@ export class TechnicianForm implements OnInit {
   /**
    * Component initialization
    */
-  ngOnInit() {
+  ngOnInit(): void {
     // initialize language and days map
     this.currentLang.set(this.translate.getCurrentLang());
     this.daysMap = this.buildDaysMap();
@@ -127,11 +127,17 @@ export class TechnicianForm implements OnInit {
 
     // Check if we are in edit mode
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.isEdit.set(true);
-        this.technicianId.set(id);
-        this.loadTechnicianData(id);
+      const idParam = params.get('id');
+      if (idParam) {
+        const parsedId = Number(idParam);
+        if (!isNaN(parsedId)) {
+          this.isEdit.set(true);
+          this.technicianId.set(parsedId);
+          this.loadTechnicianData(parsedId);
+        } else {
+          this.isEdit.set(false);
+          this.addScheduleRow();
+        }
       } else {
         this.isEdit.set(false);
         this.addScheduleRow(); // Add one empty row for new technician
@@ -169,12 +175,12 @@ export class TechnicianForm implements OnInit {
   /**
    * Loads technician data when in edit mode
    */
-  private loadTechnicianData(id: string) {
+  private loadTechnicianData(id: number) {
     const technician = this.registerStore.getTechnicianById(id)();
 
     if (!technician) {
       console.error('Technician not found');
-      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
+      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']).then();
       return;
     }
 
@@ -188,7 +194,7 @@ export class TechnicianForm implements OnInit {
 
     // Load technician schedules
     const allSchedules = this.registerStore.techniciansSchedules();
-    const technicianSchedules = allSchedules.filter(s => s.id_technician === id && s.is_active);
+    const technicianSchedules = allSchedules.filter(s => s.technician_id === id && s.is_active);
 
     // Sort schedules chronologically
     const sortedSchedules = technicianSchedules.sort((a, b) => {
@@ -216,7 +222,7 @@ export class TechnicianForm implements OnInit {
    */
   private createScheduleFormGroup(schedule?: TechnicianSchedule): FormGroup<ScheduleForm> {
     return this.fb.group({
-      id_schedule: new FormControl<string | null>(schedule?.id || null),
+      id_schedule: new FormControl<number | null>(schedule?.id || null),
       day_of_week: new FormControl<string>(schedule?.day_of_week || 'Monday', {
         nonNullable: true,
         validators: [Validators.required]
@@ -279,25 +285,23 @@ export class TechnicianForm implements OnInit {
    * @private
    * @returns void
    */
-  private createTechnician(formValue: any, autoRepairId: string) {
-    // Generate a unique ID for the technician
-    const technicianId = `T${Date.now()}`;
+  private createTechnician(formValue: any, autoRepairId: number) {
 
     const technician = new Technician({
-      id_technician: technicianId,
+      id: 0, // assuming ID will be set by backend
       name: formValue.name,
       last_name: formValue.last_name,
-      id_auto_repair: autoRepairId
+      auto_repair_id: autoRepairId
     });
 
     // Add technician to store
     this.registerStore.addTechnician(technician);
 
     // Add schedules
-    formValue.schedules.forEach((schedule: any, index: number) => {
+    formValue.schedules.forEach((schedule: any) => {
       const technicianSchedule = new TechnicianSchedule({
-        id_schedule: `TS${Date.now()}_${index}`,
-        id_technician: technicianId,
+        id: 0, // assuming ID will be set by backend
+        technician_id: technician.id,
         day_of_week: schedule.day_of_week,
         start_time: schedule.start_time,
         end_time: schedule.end_time,
@@ -309,7 +313,7 @@ export class TechnicianForm implements OnInit {
 
     // Navigate back to manage technicians
     setTimeout(() => {
-      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']);
+      this.router.navigate(['/layout-workshop/auto-repair-register/technicians']).then();
     }, 500);
   }
 
@@ -320,23 +324,23 @@ export class TechnicianForm implements OnInit {
    * @private
    * @returns void
    */
-  private updateTechnician(formValue: any, autoRepairId: string) {
+  private updateTechnician(formValue: any, autoRepairId: number) {
     const technicianId = this.technicianId();
     if (!technicianId) return;
 
     // Update technician basic info
     const technician = new Technician({
-      id_technician: technicianId,
+      id: technicianId,
       name: formValue.name,
       last_name: formValue.last_name,
-      id_auto_repair: autoRepairId
+      auto_repair_id: autoRepairId
     });
 
     this.registerStore.updateTechnician(technician);
 
     // Get existing schedules from the store
     const existingSchedules = this.registerStore.techniciansSchedules()
-      .filter(s => s.id_technician === technicianId);
+      .filter(s => s.technician_id === technicianId);
 
     // Get schedules from form
     const formSchedules = formValue.schedules;
@@ -362,8 +366,8 @@ export class TechnicianForm implements OnInit {
     // Execute updates
     schedulesToUpdate.forEach((scheduleForm: any) => {
       const updatedSchedule = new TechnicianSchedule({
-        id_schedule: scheduleForm.id_schedule,
-        id_technician: technicianId,
+        id: scheduleForm.id_schedule,
+        technician_id: technicianId,
         day_of_week: scheduleForm.day_of_week,
         start_time: scheduleForm.start_time,
         end_time: scheduleForm.end_time,
@@ -373,11 +377,10 @@ export class TechnicianForm implements OnInit {
     });
 
     // Execute additions
-    const baseTs = Date.now();
-    schedulesToAdd.forEach((scheduleForm: any, index: number) => {
+    schedulesToAdd.forEach((scheduleForm: any) => {
       const newSchedule = new TechnicianSchedule({
-        id_schedule: `TS${baseTs}_${index}`,
-        id_technician: technicianId,
+        id: 0, // assuming ID will be set by backend
+        technician_id: technicianId,
         day_of_week: scheduleForm.day_of_week,
         start_time: scheduleForm.start_time,
         end_time: scheduleForm.end_time,

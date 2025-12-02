@@ -1,0 +1,252 @@
+.diagnostics-container {
+  padding: 2rem 0;
+  width: 100%;
+}
+
+/* Header Section */
+.diagnostics-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.diagnostics-title {
+  font-family: var(--font-bold);
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+}
+
+.vehicle-info {
+  font-family: var(--font-semibold);
+  font-size: 1.1rem;
+  color: var(--color-tertiary-complementary);
+  margin: 0;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  color: var(--color-tertiary-complementary);
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-message {
+  font-family: var(--font-medium);
+  font-size: 1.2rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Diagnostics List */
+.diagnostics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Diagnostic Card */
+.diagnostic-card {
+  background: var(--color-light);
+  border: 2px solid var(--color-second-complementary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.diagnostic-card:hover {
+  border-color: var(--color-first-complementary);
+  box-shadow: 0 4px 12px rgba(242, 170, 31, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-second-complementary);
+}
+
+.diagnostic-number {
+  font-family: var(--font-bold);
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  background: var(--color-second-complementary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.diagnostic-price {
+  font-family: var(--font-bold);
+  font-size: 1.5rem;
+  color: var(--color-first-complementary);
+  font-weight: 700;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.diagnostic-label {
+  font-family: var(--font-semibold);
+  font-size: 1rem;
+  color: var(--color-primary);
+  margin: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.diagnostic-description {
+  font-family: var(--font-regular);
+  font-size: 1.05rem;
+  color: var(--color-dark);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Total Section */
+.total-section {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--color-second-complementary);
+  border-radius: 12px;
+  border: 2px solid var(--color-first-complementary);
+}
+
+.total-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-family: var(--font-bold);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.total-price {
+  font-family: var(--font-extrabold);
+  font-size: 2rem;
+  color: var(--color-first-complementary);
+  font-weight: 800;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .diagnostics-container {
+    padding: 1.5rem 0;
+  }
+
+  .diagnostics-title {
+    font-size: 1.75rem;
+  }
+
+  .vehicle-info {
+    font-size: 1rem;
+  }
+
+  .diagnostic-card {
+    padding: 1.25rem;
+  }
+
+  .diagnostic-number {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .diagnostic-price {
+    font-size: 1.3rem;
+  }
+
+  .diagnostic-description {
+    font-size: 1rem;
+  }
+
+  .total-label {
+    font-size: 1.3rem;
+  }
+
+  .total-price {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .diagnostics-container {
+    padding: 1rem 0;
+  }
+
+  .diagnostics-title {
+    font-size: 1.5rem;
+  }
+
+  .vehicle-info {
+    font-size: 0.95rem;
+  }
+
+  .diagnostic-card {
+    padding: 1rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .diagnostic-number {
+    font-size: 0.9rem;
+  }
+
+  .diagnostic-price {
+    font-size: 1.2rem;
+  }
+
+  .diagnostic-label {
+    font-size: 0.9rem;
+  }
+
+  .diagnostic-description {
+    font-size: 0.95rem;
+  }
+
+  .total-section {
+    padding: 1.5rem;
+  }
+
+  .total-content {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .total-label {
+    font-size: 1.2rem;
+  }
+
+  .total-price {
+    font-size: 1.5rem;
+  }
+}
+

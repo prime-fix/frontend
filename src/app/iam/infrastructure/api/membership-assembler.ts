@@ -22,7 +22,7 @@ export class MembershipAssembler implements BaseAssembler<Membership, Membership
    */
   toEntityFromResource(resource: MembershipResource): Membership {
     return new Membership({
-      id_membership: resource.id_membership,
+      id: resource.id,
       description: resource.description,
       started: resource.started,
       over: resource.over
@@ -36,7 +36,7 @@ export class MembershipAssembler implements BaseAssembler<Membership, Membership
    */
   toResourceFromEntity(entity: Membership): MembershipResource {
     return {
-      id_membership: entity.id,
+      id: entity.id,
       description: entity.description,
       started: entity.started,
       over: entity.over

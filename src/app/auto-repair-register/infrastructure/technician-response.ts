@@ -14,8 +14,8 @@ export interface TechnicianResponse extends BaseResponse {
  * Represents a Technician resource.
  */
 export interface TechnicianResource extends BaseResource {
-  id_technician: string;
+  id: number;
   name: string;
   last_name: string;
-  id_auto_repair: string;
+  auto_repair_id: number;
 }

@@ -26,20 +26,36 @@ export class HomeOwner {
    * Handles the click event for the start button.
    */
   onStartClick(): void {
-    if (!this.sessionUserAccount()) {
+    const currentUserAccount = this.sessionUserAccount();
+
+    if (!currentUserAccount) {
+      console.warn('⚠️ No user account in session');
       return;
     }
+
+    // Update is_new flag to false
     const updatedUserAccount = new UserAccount({
-      id_user_account: this.sessionUserAccount()?._id_user_account!,
-      username: this.sessionUserAccount()?._username!,
-      email: this.sessionUserAccount()?._email!,
-      id_user: this.sessionUserAccount()?._id_user!,
-      id_role: this.sessionUserAccount()?._id_role!,
-      id_membership: this.sessionUserAccount()?._id_membership!,
-      password: this.sessionUserAccount()?._password!,
-      is_new: false,
-    })
+      id: currentUserAccount.id,
+      username: currentUserAccount.username,
+      email: currentUserAccount.email,
+      user_id: currentUserAccount.user_id,
+      role_id: currentUserAccount.role_id,
+      membership_id: currentUserAccount.membership_id,
+      password: currentUserAccount.password, // Keep existing password
+      is_new: false, // Mark as not new anymore
+    });
+
+    console.log('📤 Updating user account to mark as not new:', {
+      id: updatedUserAccount.id,
+      username: updatedUserAccount.username,
+      is_new: updatedUserAccount.is_new
+    });
+
     this.iamStore.updateUserAccount(updatedUserAccount);
-    this.router.navigate(['/layout-owner/dashboard-owner']).then();
+
+    // Navigate to dashboard
+    this.router.navigate(['/layout-owner/dashboard-owner']).then(() => {
+      console.log('✅ Navigated to dashboard-owner');
+    });
   }
 }

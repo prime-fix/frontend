@@ -16,7 +16,16 @@ export class NotificationApiEndpoint extends BaseApiEndpoint<Notification, Notif
    * @param http - The HTTP client to be used for making API requests.
    */
   constructor(http: HttpClient) {
-    super(http, `${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderNotificationsEndpointPath}`,
-      new NotificationAssembler(), { usePathParams: true });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderNotificationsEndpointPath}`,
+      new NotificationAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

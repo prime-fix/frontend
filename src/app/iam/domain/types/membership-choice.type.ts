@@ -2,9 +2,9 @@
  * Maps membership duration strings to their corresponding membership codes.
  */
 export const MembershipChoiceType = {
-  '3m': 'M001',
-  '12m': 'M002',
-  '1m': 'M003',
+  '3m': 1,
+  '12m': 2,
+  '1m': 3,
 }
 
 /**

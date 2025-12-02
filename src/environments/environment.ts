@@ -1,10 +1,18 @@
 export const environment = {
   production: true,
-  usePathParams: true,
-  // Provider API configuration
-  primeFixProviderApiBaseUrl: "https://klrtzcjehbkfckohrvvu.supabase.co/rest/v1",
+  usePathParams: true, // AWS uses path params
+  // Provider API configuration - AWS is primary, Supabase is fallback
+  primeFixProviderApiBaseUrl: "https://cadw4v2ry8.us-east-2.awsapprunner.com/api/v1", // AWS Primary
+  primeFixProviderApiBaseUrlAWS: "https://cadw4v2ry8.us-east-2.awsapprunner.com/api/v1", // AWS (explicit)
+  primeFixProviderApiBaseUrlSupabase: "https://klrtzcjehbkfckohrvvu.supabase.co/rest/v1", // Supabase Fallback
+
+  // API Strategy: 'aws-primary' means AWS first, fallback to Supabase if needed
+  apiStrategy: 'aws-primary' as const,
 
   // Endpoints Paths
+  primeFixProviderSignUpVehicleOwnerEndpointPath: "/authentication/sign-up/vehicle-owner",
+  primeFixProviderSignUpAutoRepairEndpointPath: "/authentication/sign-up/auto-repair",
+  primeFixProviderSignInEndpointPath: "/authentication/sign-in",
   primeFixProviderAutoRepairsEndpointPath: "/auto_repairs",
   primeFixProviderTechniciansEndpointPath: "/technicians",
   primeFixProviderTechnicianSchedulesEndpointPath: "/technician_schedules",

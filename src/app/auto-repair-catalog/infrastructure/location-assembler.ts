@@ -22,7 +22,7 @@ export class LocationAssembler implements BaseAssembler<Location, LocationResour
    */
   toEntityFromResource(resource: LocationResource): Location {
     return new Location({
-      id_location: resource.id_location,
+      id: resource.id,
       address: resource.address,
       district: resource.district,
       department: resource.department
@@ -36,7 +36,7 @@ export class LocationAssembler implements BaseAssembler<Location, LocationResour
    */
   toResourceFromEntity(entity: Location): LocationResource {
     return {
-      id_location: entity.id,
+      id: entity.id,
       address: entity.address,
       district: entity.district,
       department: entity.department

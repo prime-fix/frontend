@@ -22,12 +22,12 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
    */
   toEntityFromResource(resource: UserResource): User {
     return new User({
-      id_user: resource.id_user,
+      id: resource.id,
       name: resource.name,
       last_name: resource.last_name,
       dni: resource.dni,
       phone_number: resource.phone_number,
-      id_location: resource.id_location
+      location_id: resource.location_id
     });
   }
 
@@ -38,12 +38,12 @@ export class UserAssembler implements BaseAssembler<User, UserResource, UserResp
    */
   toResourceFromEntity(entity: User): UserResource {
     return {
-      id_user: entity.id,
+      id: entity.id,
       name: entity.name,
       last_name: entity.last_name,
       dni: entity.dni,
       phone_number: entity.phone_number,
-      id_location: entity.id_location
+      location_id: entity.location_id
     } as UserResource;
   }
 

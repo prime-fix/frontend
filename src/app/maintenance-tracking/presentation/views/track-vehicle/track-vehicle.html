@@ -1,21 +1,6 @@
 <div class="track-vehicle-container">
   <div class="track-header">
     <h1 class="track-title">{{ 'track-vehicle.title' | translate }}</h1>
-
-    <!-- Notification Bell Icon -->
-    <button
-      class="notification-button"
-      (click)="openNotificationModal()"
-      [class.has-notification]="hasNotification()"
-      type="button"
-      aria-label="Notifications">
-      <svg class="bell-icon">
-        <use href="assets/icons/sprite.symbol.svg#bell"></use>
-      </svg>
-      @if (hasNotification()) {
-        <span class="notification-badge"></span>
-      }
-    </button>
   </div>
 
   <div class="track-content">
@@ -25,14 +10,14 @@
         <label for="vehicle" class="form-label">{{ 'track-vehicle.selectVehicle' | translate }}</label>
         <select
           id="vehicle"
-          formControlName="selectedVehicle"
+          formControlName="selectedVehicleId"
           class="form-select">
-          <option value="" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
+          <option [ngValue]="null" disabled selected>{{ 'track-vehicle.selectVehiclePlaceholder' | translate }}</option>
           @for (vehicle of vehiclesByUserId(); track vehicle.id) {
-            <option [value]="vehicle.id">{{ vehicle.vehicle_brand }} [{{ vehicle.vehicle_plate }}]</option>
+            <option [ngValue]="vehicle.id">{{ vehicle.vehicle_brand }} [{{ vehicle.vehicle_plate }}]</option>
           }
         </select>
-        @if (trackForm.get('selectedVehicle')?.invalid && trackForm.get('selectedVehicle')?.touched) {
+        @if (trackForm.get('selectedVehicleId')?.invalid && trackForm.get('selectedVehicleId')?.touched) {
           <span class="error-message">
             {{ 'track-vehicle.vehicleRequired' | translate }}
           </span>
@@ -63,14 +48,13 @@
           </p>
         </div>
         <div class="progress-section">
-          <app-progress-bar [currentStep]="selectedVehicle()?.state_maintenance || 1" [currentVehicle]="selectedVehicle()"></app-progress-bar>
+          <app-progress-bar [currentStep]="selectedVehicle()?.maintenance_status || 1" [currentVehicle]="selectedVehicle()"></app-progress-bar>
+        </div>
+        <div class="diagnostics-section">
+          <app-list-diagnostics [currentVehicle]="selectedVehicle()"></app-list-diagnostics>
         </div>
       </div>
     }
   </div>
 </div>
 
-<!-- Notification Modal -->
-@if (showNotificationModal()) {
-  <app-state-notification (close)="closeNotificationModal()"></app-state-notification>
-}

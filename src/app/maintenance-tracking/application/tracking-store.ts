@@ -62,17 +62,65 @@ export class TrackingStore {
   readonly notificationCount = computed(() => this.notifications.length);
 
   /**
+   * Computed signal for unread notifications only.
+   */
+  readonly unreadNotifications = computed(() =>
+    this.notifications().filter(n => !n.read)
+  );
+
+  /**
+   * Computed signal for the count of unread notifications.
+   */
+  readonly unreadNotificationCount = computed(() =>
+    this.unreadNotifications().length
+  );
+
+  /**
    * Signal exposing the count of Vehicles, Auto Repairs, Services, and Visits.
    */
   readonly vehicleCount = computed(() => this.vehicles().length);
 
   /**
    * Constructor for TrackingStore.
+   * Only loads data if there's a valid JWT session to prevent unnecessary fallback activation
    * @param trackingApi - An instance of TrackingApi to interact with the backend API.
    */
   constructor(private trackingApi: TrackingApi) {
-    this.loadNotifications();
-    this.loadVehicles();
+    // Only load data if we have a valid session with JWT
+    const hasValidSession = this.hasValidJWT();
+
+    if (hasValidSession) {
+      console.log('✅ [TrackingStore] Valid JWT found, loading notifications and vehicles...');
+      this.loadNotifications();
+      this.loadVehicles();
+    } else {
+      console.log('⚠️ [TrackingStore] No valid JWT, skipping data load on init');
+    }
+
+    // Listen for force-load event (triggered after Supabase login)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('force-load-stores', () => {
+        console.log('📤 [TrackingStore] Force loading data...');
+        this.loadNotifications();
+        this.loadVehicles();
+      });
+    }
+  }
+
+  /**
+   * Check if there's a valid JWT in localStorage
+   * @private
+   */
+  private hasValidJWT(): boolean {
+    try {
+      const authData = localStorage.getItem('pf_iam_auth');
+      if (!authData) return false;
+
+      const parsed = JSON.parse(authData);
+      return !!parsed?.token?.accessToken;
+    } catch {
+      return false;
+    }
   }
 
   /**
@@ -80,7 +128,7 @@ export class TrackingStore {
    * @param id - The ID of the notification to retrieve.
    * @returns A computed signal that resolves to the notification with the given ID, or undefined if not found.
    */
-  getNotificationById(id: string | null | undefined): Signal<Notification | undefined> {
+  getNotificationById(id: number | null | undefined): Signal<Notification | undefined> {
     return computed(() => this.notifications().find(n => n.id === id) || undefined);
   }
 
@@ -126,7 +174,7 @@ export class TrackingStore {
    * Delete a notification by its ID.
    * @param id - The ID of the notification to delete.
    */
-  deleteNotification(id: string): void {
+  deleteNotification(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.trackingApi.deleteNotification(id).pipe(retry(2)).subscribe({
@@ -197,7 +245,7 @@ export class TrackingStore {
    * @param id - The ID of the Vehicle to delete.
    * @returns void
    */
-  deleteVehicle(id: number| string): void {
+  deleteVehicle(id: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.trackingApi.deleteVehicle(id).pipe(retry(2)).subscribe({

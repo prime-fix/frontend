@@ -28,8 +28,16 @@ export class TechnicianScheduleApiEndpoint extends BaseApiEndpoint<
    * Constructs a new instance of the TechnicianScheduleApiEndpoint.
    */
   constructor(http: HttpClient) {
-    super(http,`${environment.primeFixProviderApiBaseUrl}${environment.primeFixProviderTechnicianSchedulesEndpointPath}`, new TechnicianScheduleAssembler(), {
-      usePathParams: environment.usePathParams,
-    });
+    super(
+      http,
+      `${environment.primeFixProviderApiBaseUrlAWS}${environment.primeFixProviderTechnicianSchedulesEndpointPath}`,
+      new TechnicianScheduleAssembler(),
+      {
+        usePathParams: environment.usePathParams,
+        enableFallback: true,
+        primaryBaseUrl: environment.primeFixProviderApiBaseUrlAWS,
+        fallbackBaseUrl: environment.primeFixProviderApiBaseUrlSupabase
+      }
+    );
   }
 }

@@ -7,7 +7,7 @@ export class User implements BaseEntity{
   /**
    * Unique identifier for the user
    */
-  _id_user: string;
+  _id: number;
   /**
    * User's first name
    */
@@ -27,31 +27,25 @@ export class User implements BaseEntity{
   /**
    * Identifier for the user's location
    */
-  _id_location: string;
+  _location_id: number;
 
 
   /**
    * Creates a new User instance.
-   * @param {Object} user - An object containing user details.
-   * @param {string} user.id_user - Unique identifier for the user.
-   * @param {string} user.name - User's first name.
-   * @param {string} user.last_name - User's last name.
-   * @param {string} user.dni - User's DNI (National Identity Card).
-   * @param {string} user.phone_number - User's phone number.
-   * @param {string} user.id_location - Identifier for the user's location.
+   * @param user - An object containing user details.
    */
-  constructor(user: { id_user: string; name: string; last_name: string; dni: string; phone_number: string; id_location: string; }) {
-    this._id_user = user.id_user;
+  constructor(user: { id: number; name: string; last_name: string; dni: string; phone_number: string; location_id: number; }) {
+    this._id = user.id;
     this._name = user.name;
     this._last_name = user.last_name;
     this._dni = user.dni;
     this._phone_number = user.phone_number;
-    this._id_location = user.id_location;
+    this._location_id = user.location_id;
   }
 
   /** Getters and Setters */
-  get id (): string { return this._id_user; }
-  set id (value: string) { this._id_user = value; }
+  get id (): number { return this._id; }
+  set id (value: number) { this._id = value; }
   get name (): string { return this._name; }
   set name (value: string) { this._name = value; }
   get last_name (): string { return this._last_name; }
@@ -60,6 +54,6 @@ export class User implements BaseEntity{
   set dni (value: string) { this._dni = value; }
   get phone_number (): string { return this._phone_number; }
   set phone_number (value: string) { this._phone_number = value; }
-  get id_location (): string { return this._id_location; }
-  set id_location (value: string) { this._id_location = value; }
+  get location_id (): number { return this._location_id; }
+  set location_id (value: number) { this._location_id = value; }
 }
