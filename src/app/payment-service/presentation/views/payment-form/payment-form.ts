@@ -48,7 +48,7 @@ export class PaymentForm {
     card_type: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     month: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     year: new FormControl<number | null>(null, { validators: [Validators.required] }),
-    cvv: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(100), Validators.max(999)] }),
+    ccv: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(100), Validators.max(999)] }),
     doc_type: new FormControl<string>('', { nonNullable: true }),
     doc_number: new FormControl<string>('', { nonNullable: true }),
   });
@@ -69,7 +69,7 @@ export class PaymentForm {
       card_type: this.form.value.card_type!,
       month: this.monthToNumber(this.form.value.month!),
       year: this.form.value.year!,
-      cvv: this.form.value.cvv!,
+      ccv: this.form.value.ccv!,
       user_account_id: this.userAccountId()!
     });
   }
