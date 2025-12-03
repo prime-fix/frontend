@@ -204,8 +204,8 @@
             }
           </div>
 
-          <button type="submit" class="submit" [disabled]="registerForm.invalid || store.loading()" (submit)="onSubmit()">
-            @if (store.loading()) {
+          <button type="submit" class="submit" [disabled]="registerForm.invalid || iamStore.loading()" (submit)="onSubmit()">
+            @if (iamStore.loading()) {
               {{ 'register-owner.registering' | translate }}
             } @else {
               {{ 'register-owner.register' | translate }}

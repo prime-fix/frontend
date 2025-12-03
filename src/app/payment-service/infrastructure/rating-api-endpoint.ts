@@ -10,12 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class RatingApiEndpoint  extends BaseApiEndpoint<Rating, RatingResource, RatingResponse, RatingAssembler>{
   /**
-   * Key for the rating ID query parameter.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.ratingIdQueryParamKey;
-
-  /**
    * Constructor for RatingApiEndpoint.
    * @param http - The HttpClient instance to use for HTTP requests.
    */

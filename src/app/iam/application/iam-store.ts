@@ -8,10 +8,10 @@ import {retry} from 'rxjs';
 import {Location} from '@catalog/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
 import {CatalogStore} from '@catalog/application/catalog-store';
-import {PaymentServiceStore} from '@payment/application/payment-service-store';
 import {Payment} from '@payment/domain/model/payment.entity';
 import {Membership} from '@iam/domain/model/membership.entity';
 import {Role} from '@iam/domain/model/role.entity';
+import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 /**
  * State management service for Identity and Access Management (IAM).
@@ -20,18 +20,6 @@ import {Role} from '@iam/domain/model/role.entity';
   providedIn: 'root'
 })
 export class IamStore {
-  /**
-   * Reference to the CatalogStore for accessing catalog-related data.
-   * @private
-   */
-  private readonly catalogStore = inject(CatalogStore);
-
-  /**
-   * Reference to the PaymentServiceStore for accessing payment-related data.
-   * @private
-   */
-  private readonly paymentServiceStore = inject(PaymentServiceStore);
-
   /**
    * Signals to hold the state of user accounts, users, payments, and locations.
    * @private
@@ -71,14 +59,7 @@ export class IamStore {
    * Readonly version of memberships signal.
    */
   readonly memberships = this.membershipsSignal.asReadonly();
-  /**
-   * Readonly version of payments signal.
-   */
-  readonly payments = this.paymentServiceStore.payments;
-  /**
-   * Readonly version of locations signal.
-   */
-  readonly locations = this.catalogStore.locations;
+
   /**
    * Signal to track loading state.
    * @private
@@ -114,14 +95,6 @@ export class IamStore {
    * Computed property to get the count of memberships.
    */
   readonly membershipCount = computed(() => this.memberships().length);
-  /**
-   * Computed property to get the count of payments.
-   */
-  readonly paymentCount = computed(() => this.paymentServiceStore.paymentCount());
-  /**
-   * Computed property to get the count of locations.
-   */
-  readonly locationCount = computed(() => this.catalogStore.locationCount());
 
   // Session-related signals
   /**
@@ -449,45 +422,6 @@ export class IamStore {
   }
 
   /**
-   * Gets a location by its ID.
-   * @param id
-   */
-  getLocationById(id: number | null | undefined): Signal<Location | undefined> {
-    // delegate to CatalogStore
-    return this.catalogStore.getLocationById(id);
-  }
-
-  /**
-   * Adds a new location.
-   * @param location - The location to add.
-   * @returns void
-   */
-  addLocation(location: Location): void {
-    // delegate to CatalogStore
-    this.catalogStore.addLocation(location);
-  }
-
-  /**
-   * Updates an existing location.
-   * @param location - The location to update.
-   * @returns void
-   */
-  updateLocation(location: Location): void {
-    // delegate to CatalogStore
-    this.catalogStore.updateLocation(location);
-  }
-
-  /**
-   * Deletes a location by ID.
-   * @param id - The ID of the location to delete.
-   * @returns void
-   */
-  deleteLocation(id: number): void {
-    // delegate to CatalogStore
-    this.catalogStore.deleteLocation(id);
-  }
-
-  /**
    * Gets a user by their ID.
    * @param id - The ID of the user to retrieve.
    * @return A signal containing the user or undefined if not found.
@@ -496,14 +430,29 @@ export class IamStore {
     return computed(() => id ? this.users().find(u => u.id === id) : undefined);
   }
 
+  /**
+   * Gets a user account by its ID.
+   *
+   * @param id - The ID of the user account to retrieve.
+   */
   getUserAccountById(id: number | null | undefined): Signal<UserAccount | undefined> {
     return computed(() => id ? this.userAccounts().find(ua => ua.id === id) : undefined);
   }
 
+  /**
+   * Gets a role by its ID.
+   *
+   * @param id - The ID of the role to retrieve.
+   */
   getRoleById(id: number | null | undefined): Signal<Role | undefined> {
     return computed(() => id ? this.roles().find(r => r.id === id) : undefined);
   }
 
+  /**
+   * Gets a membership by its ID.
+   *
+   * @param id - The ID of the membership to retrieve.
+   */
   getMembershipById(id: number | null | undefined): Signal<Membership | undefined> {
     return computed(() => id ? this.memberships().find(m => m.id === id) : undefined);
   }
@@ -723,33 +672,6 @@ export class IamStore {
         this.loadingSignal.set(false);
       }
     })
-  }
-
-  /**
-   * Gets a payment by its ID.
-   * @param payment - The ID of the payment to retrieve.
-   */
-  addPayment(payment: Payment): void {
-    // delegate to PaymentServiceStore
-    this.paymentServiceStore.addPayment(payment);
-  }
-
-  /**
-   * Updates an existing payment.
-   * @param updatedPayment - The payment with updated information.
-   */
-  updatePayment(updatedPayment: Payment): void {
-    // delegate to PaymentServiceStore
-    this.paymentServiceStore.updatePayment(updatedPayment);
-  }
-
-  /**
-   * Deletes a payment by ID.
-   * @param id - The ID of the payment to delete.
-   */
-  deletePayment(id: number): void {
-    // delegate to PaymentServiceStore
-    this.paymentServiceStore.deletePayment(id);
   }
 
   /**
@@ -1338,142 +1260,14 @@ export class IamStore {
       },
       error: (err) => {
         console.error('❌ AWS Vehicle owner registration failed:', err);
-        console.warn('⚠️ Attempting fallback registration with Supabase...');
-
-        // Fallback: Register with Supabase (FK order: Location → User → UserAccount → Payment)
-        this.registerVehicleOwnerFallbackSupabase(formData);
-      }
-    });
-  }
-
-  /**
-   * Fallback registration for vehicle owner using Supabase
-   * This is called from finishRegister() when AWS is not available
-   * Creates all entities in one batch to avoid dirty data
-   * @private
-   */
-  private registerVehicleOwnerFallbackSupabase(formData: {
-    fullName: string;
-    username: string;
-    dni: string;
-    phone_number: string;
-    department: string;
-    district: string;
-    address: string;
-    email: string;
-    password: string;
-  }): void {
-    console.log('📤 Registering vehicle owner with Supabase (fallback)...');
-
-    // Split fullName into name and lastName
-    const nameParts = formData.fullName.trim().split(' ');
-    const name = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ');
-
-    // Get payment and membership data from registration signals
-    const membershipId = this.registerMemberShipTypeSignal();
-
-    // Step 1: Create Location
-    const newLocation = new Location({
-      id: 0,
-      department: formData.department,
-      district: formData.district,
-      address: formData.address
-    });
-
-    console.log('📤 Creating Location (Supabase):', newLocation);
-    this.catalogStore.addLocation(newLocation);
-
-    // Wait for location creation
-    setTimeout(() => {
-      const createdLocation = this.catalogStore.locations().find(l =>
-        l.department === formData.department &&
-        l.district === formData.district &&
-        l.address === formData.address
-      );
-
-      if (!createdLocation) {
-        console.error('❌ Failed to create location');
-        this.errorSignal.set('Failed to create location');
+        console.warn('⚠️ Fallback registration with Supabase should be handled by component');
+        this.errorSignal.set(this.formatError(err, 'Registration failed. Please try again.'));
         this.loadingSignal.set(false);
-        return;
       }
-
-      console.log('✅ Location created:', createdLocation);
-
-      // Step 2: Create User
-      const newUser = new User({
-        id: 0,
-        name: name,
-        last_name: lastName,
-        dni: formData.dni,
-        phone_number: formData.phone_number,
-        location_id: createdLocation.id
-      });
-
-      console.log('📤 Creating User (Supabase):', newUser);
-      this.addUser(newUser);
-
-      // Wait for user creation
-      setTimeout(() => {
-        const createdUser = this.users().find(u =>
-          u.dni === formData.dni &&
-          u.location_id === createdLocation.id
-        );
-
-        if (!createdUser) {
-          console.error('❌ Failed to create user');
-          this.errorSignal.set('Failed to create user');
-          this.loadingSignal.set(false);
-          return;
-        }
-
-        console.log('✅ User created:', createdUser);
-
-        // Step 3: Create UserAccount
-        const newUserAccount = new UserAccount({
-          id: 0,
-          username: formData.username.trim(),
-          email: formData.email.trim(),
-          user_id: createdUser.id,
-          role_id: 1, // Vehicle Owner
-          membership_id: membershipId || 1,
-          password: formData.password,
-          is_new: true
-        });
-
-        console.log('📤 Creating UserAccount (Supabase):', newUserAccount);
-        this.addUserAccount(newUserAccount);
-
-        // Wait for user account creation
-        setTimeout(() => {
-          const createdUserAccount = this.userAccounts().find(ua =>
-            ua.username === formData.username.trim()
-          );
-
-          if (!createdUserAccount) {
-            console.error('❌ Failed to create user account');
-            this.errorSignal.set('Failed to create user account');
-            this.loadingSignal.set(false);
-            return;
-          }
-
-          console.log('✅ UserAccount created:', createdUserAccount);
-          console.log('✅ Vehicle owner registration successful (Supabase fallback)');
-
-          // Set session without JWT (Supabase fallback)
-          this.sessionUserAccountSignal.set(createdUserAccount);
-          this.sessionUserSignal.set(createdUser);
-          this.saveSessionToStorage(); // No JWT for Supabase
-
-          // Force load all stores data
-          this.forceLoadAllStoresData();
-
-          this.loadingSignal.set(false);
-        }, 500);
-      }, 500);
-    }, 500);
+    });
   }
+
+
 
   /**
    * Register a new auto repair workshop with AWS API
@@ -1561,120 +1355,11 @@ export class IamStore {
       },
       error: (err) => {
         console.error('❌ AWS Auto repair registration failed:', err);
-        console.warn('⚠️ Attempting fallback registration with Supabase...');
-
-        // Fallback: Register with Supabase (FK order: Location → AutoRepair → User → UserAccount → Payment)
-        this.registerAutoRepairFallbackSupabase(formData);
-      }
-    });
-  }
-
-  /**
-   * Fallback registration for auto repair using Supabase
-   * Creates entities in FK order: Location → User → UserAccount
-   * @private
-   */
-  private registerAutoRepairFallbackSupabase(formData: {
-    name_workshop: string;
-    username: string;
-    ruc: string;
-    phone_number: string;
-    department: string;
-    district: string;
-    address: string;
-    email: string;
-    password: string;
-  }): void {
-    // Step 1: Create Location
-    const newLocation = new Location({
-      id: 0,
-      department: formData.department,
-      district: formData.district,
-      address: formData.address
-    });
-
-    console.log('📤 Creating Location (Supabase):', newLocation);
-    this.catalogStore.addLocation(newLocation);
-
-    // Wait for location creation, then create user
-    setTimeout(() => {
-      const createdLocation = this.catalogStore.locations().find(l =>
-        l.department === formData.department &&
-        l.district === formData.district &&
-        l.address === formData.address
-      );
-
-      if (!createdLocation) {
-        this.errorSignal.set('Failed to create location');
+        console.warn('⚠️ Fallback registration with Supabase should be handled by component');
+        this.errorSignal.set(this.formatError(err, 'Registration failed. Please try again.'));
         this.loadingSignal.set(false);
-        return;
       }
-
-      // Step 2: Create User
-      const newUser = new User({
-        id: 0,
-        name: formData.name_workshop,
-        last_name: '',
-        dni: formData.ruc,
-        phone_number: formData.phone_number,
-        location_id: createdLocation.id
-      });
-
-      console.log('📤 Creating User (Supabase):', newUser);
-      this.addUser(newUser);
-
-      // Wait for user creation, then create user account
-      setTimeout(() => {
-        const createdUser = this.users().find(u =>
-          u.dni === formData.ruc &&
-          u.location_id === createdLocation.id
-        );
-
-        if (!createdUser) {
-          this.errorSignal.set('Failed to create user');
-          this.loadingSignal.set(false);
-          return;
-        }
-
-        // Step 3: Create UserAccount
-        const newUserAccount = new UserAccount({
-          id: 0,
-          username: formData.username.trim(),
-          email: formData.email.trim(),
-          user_id: createdUser.id,
-          role_id: 2, // Auto Repair role
-          membership_id: 0,
-          password: formData.password,
-          is_new: true
-        });
-
-        console.log('📤 Creating UserAccount (Supabase):', newUserAccount);
-        this.addUserAccount(newUserAccount);
-
-        // Wait for user account creation
-        setTimeout(() => {
-          const createdUserAccount = this.userAccounts().find(ua =>
-            ua.username === formData.username.trim()
-          );
-
-          if (!createdUserAccount) {
-            this.errorSignal.set('Failed to create user account');
-            this.loadingSignal.set(false);
-            return;
-          }
-
-          console.log('✅ Auto repair registration successful (Supabase fallback)');
-
-          // Set session without JWT (Supabase fallback)
-          this.sessionUserAccountSignal.set(createdUserAccount);
-          this.sessionUserSignal.set(createdUser);
-          this.saveSessionToStorage(); // No JWT for Supabase
-          this.loadingSignal.set(false);
-
-          // Auto-redirect to plan-workshop will be handled by component effect
-        }, 500);
-      }, 500);
-    }, 500);
+    });
   }
 
   /**

@@ -110,7 +110,7 @@ export class Profile {
       is_new: this.sessionUserAccount()?.is_new!,
     });
 
-    this.iamStore.updateLocation(locationEdit);
+    this.catalogStore.updateLocation(locationEdit);
     this.iamStore.updateUserAccount(updatedUserAccount);
     this.isEditMode.set(false);
   }

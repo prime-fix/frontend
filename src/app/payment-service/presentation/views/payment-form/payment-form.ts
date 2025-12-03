@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { Payment } from '../../../domain/model/payment.entity';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
+import {PaymentServiceStore} from '@payment/application/payment-service-store';
 
 @Component({
   selector: 'app-payment-form',
@@ -13,6 +14,7 @@ import {IamStore} from '@iam/application/iam-store';
 export class PaymentForm {
   private fb = inject(FormBuilder);
   private iamStore = inject(IamStore);
+  private paymentServiceStore = inject(PaymentServiceStore);
 
   /**
    * Gets the user account ID from the IAM store.
@@ -72,6 +74,9 @@ export class PaymentForm {
       ccv: this.form.value.ccv!,
       user_account_id: this.userAccountId()!
     });
+
+    // Call the store to add the payment
+    this.paymentServiceStore.addPayment(payment);
   }
 
   /**

@@ -10,12 +10,6 @@ import {environment} from '@env/environment';
  */
 export class UserAccountsApiEndpoint extends BaseApiEndpoint<UserAccount, UserAccountResource, UserAccountResponse, UserAccountAssembler>{
   /**
-   * The key used for the user account ID in query parameters.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.userAccountIdQueryParamKey;
-
-  /**
    * Constructor for UserAccountsApiEndpoint.
    * @param http - The HttpClient instance for making HTTP requests.
    */

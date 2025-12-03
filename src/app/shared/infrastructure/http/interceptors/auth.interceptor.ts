@@ -70,12 +70,11 @@ export class AuthInterceptor implements HttpInterceptor {
       }
     }
 
-    // Supabase API: Use API Key
+    // Supabase API: Use API Key only (don't send AWS JWT as it will be rejected with 401)
     if (isSupabaseApi) {
       setHeaders['apikey'] = this.SUPABASE_API_KEY;
-      if (accessToken && !request.headers.has('Authorization')) {
-        setHeaders['Authorization'] = `Bearer ${accessToken}`;
-      }
+      // For Supabase, always use the API key as the Bearer token, not AWS JWT
+      setHeaders['Authorization'] = `Bearer ${this.SUPABASE_API_KEY}`;
     }
 
     const authReq = request.clone({ setHeaders });

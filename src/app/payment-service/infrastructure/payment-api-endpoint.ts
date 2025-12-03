@@ -10,12 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class PaymentApiEndpoint extends BaseApiEndpoint<Payment, PaymentResource, PaymentResponse, PaymentAssembler> {
   /**
-   * Key for the payment ID query parameter.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.paymentIdQueryParamKey;
-
-  /**
    * Constructor for PaymentApiEndpoint.
    * @param http - The HttpClient instance to use for HTTP requests.
    */

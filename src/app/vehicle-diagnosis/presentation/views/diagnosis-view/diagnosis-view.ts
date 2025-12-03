@@ -4,10 +4,10 @@ import {Router} from '@angular/router';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
 import {IamStore} from '@iam/application/iam-store';
-import {RegisterStore} from '@register/application/register-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {Vehicle} from '@tracking/domain/model/vehicle.entity';
-import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Component({
   selector: 'app-diagnosis',
@@ -20,8 +20,8 @@ export class DiagnosisView {
   private readonly router = inject(Router);
   private readonly iamStore = inject(IamStore);
   private readonly dataCollectionStore = inject(DataCollectionStore);
-  private readonly registerStore = inject(RegisterStore);
-  private readonly diagnosisStore = inject(DiagnosisStore);
+  private readonly trackingStore = inject(TrackingStore);
+  private readonly catalogStore = inject(CatalogStore);
   readonly translate = inject(TranslateService);
 
   /**
@@ -68,7 +68,7 @@ export class DiagnosisView {
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
+    return this.catalogStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -87,7 +87,7 @@ export class DiagnosisView {
     const visits = this.visitsByAutoRepair();
     if (visits.length === 0) return [];
 
-    const vehicles = this.dataCollectionStore.vehicles();
+    const vehicles = this.trackingStore.vehicles();
     const vehicleIds = new Set(visits.map(visit => visit.vehicle_id));
 
     return vehicles.filter(vehicle => vehicleIds.has(vehicle.id));
@@ -105,7 +105,7 @@ export class DiagnosisView {
    */
   getUserByVehicleId(vehicleId: number) {
     return computed(() => {
-      const vehicle = this.dataCollectionStore.vehicles().find(v => v.id === vehicleId);
+      const vehicle = this.trackingStore.vehicles().find(v => v.id === vehicleId);
       if (!vehicle) return null;
 
       const user = this.iamStore.users().find(u => u.id === vehicle.user_id);
@@ -134,7 +134,7 @@ export class DiagnosisView {
    * Navigate to modify diagnosis page for the vehicle
    */
   updateVehicleState(): void {
-    const oldVehicle = this.diagnosisStore.getVehicleById(this.selectedVehicleId());
+    const oldVehicle = this.trackingStore.getVehicleById(this.selectedVehicleId());
     const updatedVehicle = new Vehicle({
       id: oldVehicle()?.id!,
       color: oldVehicle()?._color!,
@@ -146,7 +146,7 @@ export class DiagnosisView {
       maintenance_status: this.selectedState()!
     });
 
-    this.diagnosisStore.updateVehicle(updatedVehicle);
+    this.trackingStore.updateVehicle(updatedVehicle);
     this.closeStateModal();
   }
 

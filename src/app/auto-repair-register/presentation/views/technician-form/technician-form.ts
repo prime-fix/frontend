@@ -7,6 +7,7 @@ import {IamStore} from '@iam/application/iam-store';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 interface ScheduleForm {
   id_schedule: FormControl<number | null>;
@@ -27,6 +28,7 @@ export class TechnicianForm implements OnInit {
   private router = inject(Router);
   private registerStore = inject(RegisterStore);
   private iamStore = inject(IamStore);
+  private catalogStore = inject(CatalogStore);
   private translate = inject(TranslateService);
 
   /**
@@ -100,7 +102,7 @@ export class TechnicianForm implements OnInit {
     const userAccount = this.iamStore.sessionUserAccount();
     if (!userAccount) return undefined;
 
-    const autoRepairs = this.registerStore.autoRepairs();
+    const autoRepairs = this.catalogStore.autoRepairs();
     return autoRepairs.find(ar => ar.user_account_id === userAccount.id);
   });
 

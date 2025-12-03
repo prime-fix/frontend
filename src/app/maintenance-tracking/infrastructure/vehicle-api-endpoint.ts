@@ -10,12 +10,6 @@ import {environment} from '@env/environment';
  */
 export class VehicleApiEndpoint extends BaseApiEndpoint<Vehicle,VehicleResource,VehiclesResponse,VehicleAssembler>{
   /**
-   * The query parameter key used to identify the vehicle ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.registeredVehicleIdQueryParamKey;
-
-  /**
    * Constructs a new instance of the VehicleApiEndpoint.
    * @param http - The HttpClient used for making HTTP requests.
    */

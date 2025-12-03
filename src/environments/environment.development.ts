@@ -32,22 +32,4 @@ export const environment = {
 
   // API Key
   primeFixProviderApiKey: 'API_KEY',
-
-  // Query Param Keys
-  autoRepairIdQueryParamKey: "id_auto_repair",
-  technicianIdQueryParamKey: "id_technician",
-  technicianScheduleIdQueryParamKey: "id_schedule",
-  locationIdQueryParamKey: "id_location",
-  membershipIdQueryParamKey: "id_membership",
-  notificationIdQueryParamKey: "id_notification",
-  paymentIdQueryParamKey: "id_payment",
-  registeredVehicleIdQueryParamKey: "id_vehicle",
-  roleIdQueryParamKey: "id_role",
-  serviceIdQueryParamKey: "id_service",
-  userAccountIdQueryParamKey: "id_user_account",
-  userIdQueryParamKey: "id_user",
-  visitIdQueryParamKey: "id_visit",
-  expectedVisitIdQueryParamKey: "id_expected",
-  diagnosticIdQueryParamKey: "id_diagnostic",
-  ratingIdQueryParamKey: "id_rating"
 };

@@ -2,12 +2,12 @@ import {Component, inject, signal, computed} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
-import {RegisterStore} from '@register/application/register-store';
 import {IamStore} from '@iam/application/iam-store';
 import {Router} from '@angular/router';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 import {User} from '@iam/domain/model/user.entity';
 import {Location} from '@catalog/domain/model/location.entity';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-manage-auto-repair',
@@ -17,7 +17,7 @@ import {Location} from '@catalog/domain/model/location.entity';
 })
 export class ManageAutoRepair {
   private fb = inject(FormBuilder);
-  private registerStore = inject(RegisterStore);
+  private catalogStore = inject(CatalogStore);
   private iamStore = inject(IamStore);
   private router = inject(Router);
 
@@ -49,7 +49,7 @@ export class ManageAutoRepair {
   currentAutoRepair = computed(() => {
     const userAccountId = this.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
+    return this.catalogStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -58,7 +58,7 @@ export class ManageAutoRepair {
   currentLocation = computed(() => {
     const user = this.sessionUser();
     if (!user) return undefined;
-    return this.iamStore.getLocationById(user.location_id)();
+    return this.catalogStore.getLocationById(user.location_id)();
   });
 
   /**
@@ -160,7 +160,7 @@ export class ManageAutoRepair {
         district: formData.district,
         address: formData.address
       });
-      this.iamStore.updateLocation(updatedLocation);
+      this.catalogStore.updateLocation(updatedLocation);
 
       // Update AutoRepair
       const updatedAutoRepair = new AutoRepair({
@@ -170,7 +170,7 @@ export class ManageAutoRepair {
         technicians_count: autoRepair.technicians_count,
         user_account_id: autoRepair.user_account_id
       });
-      this.registerStore.updateAutoRepair(updatedAutoRepair);
+      this.catalogStore.updateAutoRepair(updatedAutoRepair);
 
       // Wait a bit for the updates to complete
       setTimeout(() => {

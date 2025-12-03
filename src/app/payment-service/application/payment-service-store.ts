@@ -1,12 +1,9 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, Injectable, Signal, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Payment} from '../domain/model/payment.entity';
 import {Rating} from '../domain/model/rating.entity';
 import {PaymentServiceApi} from '../infrastructure/payment-service-api';
-import {DataCollectionStore} from '@collections/application/data-collection-store';
-import {Visit} from '@collections/domain/model/visit.entity';
-import {Vehicle} from '@tracking/domain/model/vehicle.entity';
 
 /**
  * State management service for Payment Service
@@ -15,11 +12,6 @@ import {Vehicle} from '@tracking/domain/model/vehicle.entity';
   providedIn: 'root'
 })
 export class PaymentServiceStore {
-  /**
-   * DataCollectionStore instance for managing related data.
-   * @private
-   */
-  private readonly dataCollectionStore = inject(DataCollectionStore);
   /**
    * Signal to hold the state of payments.
    * @private
@@ -35,14 +27,6 @@ export class PaymentServiceStore {
    * Readonly versions of the state signals for external access.
    */
   readonly payments = this.paymentsSignal.asReadonly();
-  /**
-   * Readonly versions of the state signals for external access.
-   */
-  readonly visits = this.dataCollectionStore.visits;
-  /**
-   * Readonly versions of the state signals for external access.
-   */
-  readonly vehicles = this.dataCollectionStore.vehicles;
   /**
    * Readonly versions of the state signals for external access.
    */
@@ -71,14 +55,6 @@ export class PaymentServiceStore {
    * Computed property to get the count of payments.
    */
   readonly paymentCount = computed(() => this.payments().length);
-  /**
-   * Computed property to get the count of visits.
-   */
-  readonly visitCount = computed(() => this.dataCollectionStore.visitCount());
-  /**
-   * Computed property to get the count of vehicles.
-   */
-  readonly vehicleCount = computed(() => this.dataCollectionStore.vehicleCount());
   /**
    * Computed property to get the count of ratings.
    */
@@ -304,27 +280,6 @@ export class PaymentServiceStore {
         this.loadingSignal.set(false);
       }
     })
-  }
-
-
-  /**
-   * Gets a visit by their ID.
-   * @param id - The ID of the visit to retrieve.
-   * @return A signal containing the payment or undefined if not found.
-   */
-  getVisitById(id: string | null | undefined): Signal<Visit | undefined> {
-    // Delegate to DataCollectionStore
-    return this.dataCollectionStore.getVisitById(id);
-  }
-
-  /**
-   * Gets a vehicle by their ID.
-   * @param id - The ID of the vehicle to retrieve.
-   * @return A signal containing the payment or undefined if not found.
-   */
-  getVehicleById(id: string | null | undefined): Signal<Vehicle | undefined> {
-    // Delegate to DataCollectionStore
-    return this.dataCollectionStore.getVehicleById(id);
   }
 
   /**

@@ -10,12 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class ExpectedVisitsApiEndpoint extends BaseApiEndpoint<ExpectedVisit, ExpectedVisitResource, ExpectedVisitResponse, ExpectedVisitAssembler> {
   /**
-   * The key used for the expected visit ID in query parameters.
-   * @protected
-   */
-  protected readonly idQueryParamKey = environment.expectedVisitIdQueryParamKey;
-
-  /**
    * Constructor for ExpectedVisitsApiEndpoint.
    * @param http - The HttpClient instance for making HTTP requests.
    */

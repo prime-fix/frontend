@@ -108,8 +108,4 @@ export class ManageVehicles {
 
     this.onCloseModal();
   }
-
-  generateVehicleId(): string {
-    return `RV${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-  }
 }

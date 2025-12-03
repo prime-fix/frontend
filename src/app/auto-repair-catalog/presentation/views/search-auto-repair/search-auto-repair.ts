@@ -130,20 +130,36 @@ export class SearchAutoRepair {
       'Surquillo'
     ];
 
-    const districtsFromLocations = [...new Set(
-      locations
-        .filter(loc => loc.department === selectedDepartment)
-        .map(loc => loc.district)
-    )];
+    const districtsFromLocations = locations
+      .filter(loc => loc.department === selectedDepartment)
+      .map(loc => loc.district?.trim())
+      .filter(district => district && district.length > 0);
 
     // If the selected department is Lima, combine default districts with those from the backend
     if (selectedDepartment === 'Lima') {
-      const allDistricts = [...new Set([...defaultLimaDistricts, ...districtsFromLocations])];
-      return allDistricts.sort();
+      // Use a Map to handle case-insensitive and normalized duplicates
+      const districtMap = new Map<string, string>();
+
+      // Add default districts first (these are the "canonical" versions)
+      defaultLimaDistricts.forEach(district => {
+        const normalized = district.toLowerCase().trim();
+        districtMap.set(normalized, district);
+      });
+
+      // Add districts from backend (only if not already present in normalized form)
+      districtsFromLocations.forEach(district => {
+        const normalized = district.toLowerCase().trim();
+        if (!districtMap.has(normalized)) {
+          districtMap.set(normalized, district);
+        }
+      });
+
+      return Array.from(districtMap.values()).sort();
     }
 
-    // For other departments, return only districts from the backend
-    return districtsFromLocations.sort();
+    // For other departments, return only unique districts from the backend
+    const uniqueDistricts = [...new Set(districtsFromLocations)];
+    return uniqueDistricts.sort();
   });
 
   onSearch(): void {

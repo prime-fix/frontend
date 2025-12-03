@@ -1,11 +1,9 @@
-import {Injectable, computed, signal, Signal, inject} from '@angular/core';
+import {Injectable, computed, signal, Signal} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { retry, forkJoin } from 'rxjs';
 import {Technician} from '@register/domain/model/technician.entity';
 import {RegisterApi} from '@register/infrastructure/register-api';
 import {TechnicianSchedule} from '@register/domain/model/technician-schedule.entity';
-import {DataCollectionStore} from '@collections/application/data-collection-store';
-import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +12,6 @@ import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
  * Store for managing Technician and Technician Schedule data.
  */
 export class RegisterStore {
-  private readonly dataCollectionStore = inject(DataCollectionStore);
-
-  /**
-   * The Auto Repair registers as a readonly signal.
-   * @readonly
-   */
-  readonly autoRepairs = this.dataCollectionStore.autoRepairs;
 
   /**
    * The Technicians signal.
@@ -115,46 +106,6 @@ export class RegisterStore {
     } catch {
       return false;
     }
-  }
-
-  /**
-   * Gets an Auto Repair by ID.
-   * @param id - The ID of the Auto Repair.
-   * @returns A signal containing the Auto Repair or undefined if not found.
-   */
-  getAutoRepairById(id: number | undefined): Signal<AutoRepair | undefined> {
-    // Delegates to the DataCollectionStore to get the Auto Repair by ID.
-    return this.dataCollectionStore.getAutoRepairById(id);
-  }
-
-  /**
-   * Adds a new Auto Repair.
-   * @param autoRepair - The Auto Repair to add.
-   * @returns void
-   */
-  addAutoRepair(autoRepair: AutoRepair): void {
-    // Delegates to the DataCollectionStore to add the Auto Repair.
-    this.dataCollectionStore.addAutoRepair(autoRepair);
-  }
-
-  /**
-   * Updates an existing Auto Repair.
-   * @param autoRepair - The Auto Repair to update.
-   * @returns void
-   */
-  updateAutoRepair(autoRepair: AutoRepair): void {
-    // Delegates to the DataCollectionStore to update the Auto Repair.
-    this.dataCollectionStore.updateAutoRepair(autoRepair);
-  }
-
-  /**
-   * Deletes an Auto Repair by ID.
-   * @param id - The ID of the Auto Repair to delete.
-   * @returns void
-   */
-  deleteAutoRepair(id: number): void {
-    // Delegates to the DataCollectionStore to delete the Auto Repair.
-    this.dataCollectionStore.deleteAutoRepair(id);
   }
 
   /**
