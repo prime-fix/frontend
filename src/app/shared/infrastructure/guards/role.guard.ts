@@ -1,16 +1,20 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
+import { inject, Injector } from '@angular/core';
 import { IamStore } from '@iam/application/iam-store';
 
 /**
  * Role-based route guard
+ * Uses lazy injection to avoid circular dependency issues (NG0203)
  * @param allowedRoles - Array of roles allowed to access the route
  * @returns CanActivateFn - Function to determine if route can be activated
  */
 export const roleGuard = (allowedRoles: number[]): CanActivateFn => {
   return (_r, state) => {
+    const injector = inject(Injector);
     const router = inject(Router);
-    const iamStore = inject(IamStore);
+
+    // Lazy get IamStore to avoid NG0203 during route initialization
+    const iamStore = injector.get(IamStore);
 
     // Get the session user account directly
     const sessionUserAccount = iamStore.sessionUserAccount();

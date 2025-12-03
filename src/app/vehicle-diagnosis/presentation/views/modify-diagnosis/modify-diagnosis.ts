@@ -5,10 +5,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {ProgressStep} from '@tracking/domain/interfaces/progress-step.interface';
 import {IamStore} from '@iam/application/iam-store';
-import {RegisterStore} from '@register/application/register-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 import {Diagnostic} from '@diagnosis/domain/model/diagnostic.entity';
+import {CatalogStore} from '@catalog/application/catalog-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Component({
   selector: 'app-modify-diagnosis',
@@ -24,8 +25,9 @@ export class ModifyDiagnosis implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly iamStore = inject(IamStore);
   private readonly dataCollectionStore = inject(DataCollectionStore);
-  private readonly registerStore = inject(RegisterStore);
   private readonly diagnosisStore = inject(DiagnosisStore);
+  private readonly catalogStore = inject(CatalogStore);
+  private readonly trackingStore = inject(TrackingStore);
 
   /**
    * Signal for vehicle ID from route params
@@ -58,7 +60,7 @@ export class ModifyDiagnosis implements OnInit {
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
+    return this.catalogStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -67,7 +69,7 @@ export class ModifyDiagnosis implements OnInit {
   currentVehicle = computed(() => {
     const id = this.vehicleId();
     if (!id) return null;
-    return this.dataCollectionStore.vehicles().find(v => v.id === id) || null;
+    return this.trackingStore.vehicles().find(v => v.id === id) || null;
   });
 
   /**

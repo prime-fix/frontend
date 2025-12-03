@@ -10,12 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class UserApiEndpoint extends BaseApiEndpoint<User, UserResource, UserResponse, UserAssembler>{
   /**
-   * The query parameter key for user ID.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.userIdQueryParamKey;
-
-  /**
    * Constructor of the UserApiEndpoint.
    * @param http - The HTTP client.
    */

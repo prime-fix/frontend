@@ -4,9 +4,10 @@ import {CommonModule} from '@angular/common';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 import {IamStore} from '@iam/application/iam-store';
-import {RegisterStore} from '@register/application/register-store';
 import {Visit} from '@collections/domain/model/visit.entity';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
+import {CatalogStore} from '@catalog/application/catalog-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Component({
   selector: 'app-manage-requests',
@@ -17,8 +18,9 @@ import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 export class ManageRequests {
   private dataCollectionStore = inject(DataCollectionStore);
   private diagnosisStore = inject(DiagnosisStore);
+  private catalogStore = inject(CatalogStore);
+  private trackingStore = inject(TrackingStore);
   private iamStore = inject(IamStore);
-  private registerStore = inject(RegisterStore);
 
   /**
    * Signal to control the visibility of the details modal
@@ -46,7 +48,7 @@ export class ManageRequests {
   currentAutoRepair = computed(() => {
     const userAccountId = this.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
+    return this.catalogStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   /**
@@ -85,7 +87,7 @@ export class ManageRequests {
       const visit = this.dataCollectionStore.visits().find(v => v.id === visit_id);
       if (!visit) return 'Unknown User';
 
-      const vehicles = this.dataCollectionStore.vehicles();
+      const vehicles = this.trackingStore.vehicles();
       const vehicle = vehicles.find(veh => veh.id === visit.vehicle_id);
       if (!vehicle) return 'Unknown User';
 
@@ -100,7 +102,7 @@ export class ManageRequests {
    */
   getVehicleByVehicleId(vehicle_id: number) {
     return computed(() => {
-      return this.dataCollectionStore.vehicles().find(v => v.id === vehicle_id) || null;
+      return this.trackingStore.vehicles().find(v => v.id === vehicle_id) || null;
     });
   }
 

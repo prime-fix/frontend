@@ -10,13 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class DiagnosticsApiEndpoint extends BaseApiEndpoint<Diagnostic, DiagnosticResource, DiagnosticResponse, DiagnosticAssembler> {
   /**
-   * The key used for the diagnostic ID in query parameters.
-   * @protected
-   * @readonly
-   */
-  protected readonly idQueryParamKey = environment.diagnosticIdQueryParamKey;
-
-  /**
    * Constructor for DiagnosticsApiEndpoint.
    * @param http - The HttpClient instance for making HTTP requests.
    */

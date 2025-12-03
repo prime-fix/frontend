@@ -19,12 +19,6 @@ export class TechnicianApiEndpoint extends BaseApiEndpoint<
   TechnicianAssembler
 > {
   /**
-   * The query parameter key used to identify the technician ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey = environment.technicianIdQueryParamKey;
-
-  /**
    * Constructs a new instance of the TechnicianApiEndpoint.
    * @param http - The HttpClient used for making HTTP requests.
    */

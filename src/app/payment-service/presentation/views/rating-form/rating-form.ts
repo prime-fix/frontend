@@ -6,6 +6,7 @@ import {Rating} from '../../../domain/model/rating.entity';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-rating-form',
@@ -17,6 +18,7 @@ export class RatingForm {
   private fb = inject(FormBuilder);
   private paymentServiceStore = inject(PaymentServiceStore);
   private dataCollectionStore = inject(DataCollectionStore);
+  private catalogStore = inject(CatalogStore);
   private iamStore = inject(IamStore);
   private router = inject(Router);
 
@@ -28,7 +30,7 @@ export class RatingForm {
    * Visits filtered by the selected vehicle ID
    */
   public visitsByVehicleId = computed(() => {
-    return this.paymentServiceStore.visits().filter(v => v.vehicle_id === this.paymentServiceStore.vehicleIdFilter());
+    return this.dataCollectionStore.visits().filter(v => v.vehicle_id === this.paymentServiceStore.vehicleIdFilter());
   })
   /**
    * Auto repair associated with the visits of the selected vehicle
@@ -38,7 +40,7 @@ export class RatingForm {
     if (visits.length === 0) {
       return null;
     }
-    const autoRepairs = this.dataCollectionStore.autoRepairs();
+    const autoRepairs = this.catalogStore.autoRepairs();
     return autoRepairs.find(ar => ar.id === visits[0].auto_repair_id) || null;
   })
 

@@ -3,8 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
-import {RegisterStore} from '@register/application/register-store';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-check-diagnostics',
@@ -17,8 +18,9 @@ export class CheckDiagnostics implements OnInit{
   private readonly route = inject(ActivatedRoute);
   private readonly iamStore = inject(IamStore);
   private readonly dataCollectionStore = inject(DataCollectionStore);
-  private readonly registerStore = inject(RegisterStore);
   private readonly diagnosisStore = inject(DiagnosisStore);
+  private readonly catalogStore = inject(CatalogStore);
+  private readonly trackingStore = inject(TrackingStore);
 
   readonly vehicleId = signal<number | null>(null);
   readonly loading = signal(false);
@@ -26,13 +28,13 @@ export class CheckDiagnostics implements OnInit{
   currentAutoRepair = computed(() => {
     const userAccountId = this.iamStore.sessionUserAccount()?.id;
     if (!userAccountId) return undefined;
-    return this.registerStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
+    return this.catalogStore.autoRepairs().find(ar => ar.user_account_id === userAccountId);
   });
 
   currentVehicle = computed(() => {
     const id = this.vehicleId();
     if (!id) return null;
-    return this.dataCollectionStore.vehicles().find(v => v.id === id) || null;
+    return this.trackingStore.vehicles().find(v => v.id === id) || null;
   });
 
   /**

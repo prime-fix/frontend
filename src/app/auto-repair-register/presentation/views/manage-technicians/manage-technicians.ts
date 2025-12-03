@@ -4,7 +4,7 @@ import {IamStore} from '@iam/application/iam-store';
 import {TechnicianCard} from '@register/presentation/components/technician-card/technician-card';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Router} from '@angular/router';
-
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-manage-technicians',
@@ -31,6 +31,12 @@ export class ManageTechnicians {
   private readonly iamStore = inject(IamStore);
 
   /**
+   * The Catalog Store.
+   * @private
+   */
+  private readonly catalogStore = inject(CatalogStore);
+
+  /**
    * The current session user account.
    */
   private readonly sessionUserAccount = this.iamStore.sessionUserAccount;
@@ -43,7 +49,7 @@ export class ManageTechnicians {
      if (!userAccount) {
        return undefined;
      }
-     const autoRepairs = this.registerStore.autoRepairs();
+     const autoRepairs = this.catalogStore.autoRepairs();
     return autoRepairs.find(ar => ar.user_account_id === userAccount.id);
    });
 

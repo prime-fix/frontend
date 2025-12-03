@@ -10,12 +10,6 @@ import {environment} from '@env/environment';
  */
 export class VisitApiEndpoint extends BaseApiEndpoint<Visit,VisitResource,VisitsResponse,VisitAssembler> {
   /**
-   * The query parameter key used to identify the visit ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey:string = environment.visitIdQueryParamKey;
-
-  /**
    * Constructs a new instance of the VisitApiEndpoint.
    * @param http
    */

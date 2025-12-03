@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, computed, inject, input, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, Injector, input, signal} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
 import {DataCollectionStore} from '@collections/application/data-collection-store';
 import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
-
+import {TrackingStore} from '@tracking/application/tracking-store';
+import {CatalogStore} from '@catalog/application/catalog-store';
 
 @Component({
   selector: 'app-visit-list',
@@ -14,9 +15,28 @@ import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VisitList {
-  readonly dataStore = inject(DataCollectionStore);
-  private readonly diagnosisStore = inject(DiagnosisStore);
-  private readonly iamStore = inject(IamStore);
+  private readonly injector = inject(Injector);
+
+  // Lazy getters using runInInjectionContext
+  get dataStore() {
+    return this.injector.get(DataCollectionStore);
+  }
+
+  get diagnosisStore() {
+    return this.injector.get(DiagnosisStore);
+  }
+
+  get trackingStore() {
+    return this.injector.get(TrackingStore);
+  }
+
+  get iamStore() {
+    return this.injector.get(IamStore);
+  }
+
+  get catalogStore() {
+    return this.injector.get(CatalogStore);
+  }
 
   /**
    * Input to determine if showing scheduled visits (true) or history (false)
@@ -41,7 +61,7 @@ export class VisitList {
     }
 
     const allVisits = this.dataStore.visits();
-    const allVehicles = this.dataStore.vehicles();
+    const allVehicles = this.trackingStore.vehicles();
     const isScheduled = this.isNewVisits();
 
     // Create a map of vehicles by id for faster lookup
@@ -149,7 +169,7 @@ export class VisitList {
    * @param autoRepairID - ID of the auto repair
    */
   getAutoRepair(autoRepairID: number | undefined) {
-    return this.dataStore.getAutoRepairById(autoRepairID);
+    return this.catalogStore.getAutoRepairById(autoRepairID);
   }
 
   /**
@@ -173,7 +193,7 @@ export class VisitList {
    * @param locationId - ID of the location
    */
   getLocationById(locationId: number) {
-    return this.iamStore.getLocationById(locationId);
+    return this.catalogStore.getLocationById(locationId);
   }
 
   /** Get address associated with an auto repair

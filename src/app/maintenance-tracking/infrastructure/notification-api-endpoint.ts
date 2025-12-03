@@ -9,8 +9,6 @@ import {environment} from '@env/environment';
  * API endpoint for managing notifications.
  */
 export class NotificationApiEndpoint extends BaseApiEndpoint<Notification, NotificationResource, NotificationResponse, NotificationAssembler> {
-  protected readonly idQueryParamKey: string = environment.notificationIdQueryParamKey;
-
   /**
    * Creates an instance of NotificationApiEndpoint.
    * @param http - The HTTP client to be used for making API requests.

@@ -14,13 +14,6 @@ export class AutoRepairApiEndpoint extends BaseApiEndpoint<
   AutoRepairResponse,
   AutoRepairAssembler
 > {
-
-  /**
-   * The query parameter key used to identify the auto repair ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey = environment.autoRepairIdQueryParamKey;
-
   /**
    * Constructs a new instance of the AutoRepairApiEndpoint.
    * @param http - The HttpClient used for making HTTP requests.

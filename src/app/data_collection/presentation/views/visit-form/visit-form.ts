@@ -6,8 +6,7 @@ import {DataCollectionStore} from '../../../application/data-collection-store';
 import {Visit} from '../../../domain/model/visit.entity';
 import {TranslatePipe} from '@ngx-translate/core';
 import {IamStore} from '@iam/application/iam-store';
-import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
-import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
+import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Component({
   selector: 'app-visit-form',
@@ -19,9 +18,9 @@ export class VisitForm {
   private fb=inject(FormBuilder);
   private router=inject(Router)
   private route=inject(ActivatedRoute);
-  private dataCollectionStore=inject(DataCollectionStore);
-  private diagnosisStore = inject(DiagnosisStore);
-  private iamStore = inject(IamStore);
+  private readonly dataCollectionStore=inject(DataCollectionStore);
+  private readonly iamStore = inject(IamStore);
+  private readonly trackingStore = inject(TrackingStore);
 
   /**
    * Form group for visit submission
@@ -48,7 +47,7 @@ export class VisitForm {
    * Vehicles filtered by the current user
    */
   vehiclesFilteredByCurrentUser = computed(() => {
-    const vehicles = this.dataCollectionStore.vehicles;
+    const vehicles = this.trackingStore.vehicles;
     const currentUserId = this.iamStore.sessionUserId();
     if (!currentUserId) return [];
     return vehicles().filter(vehicle => this.iamStore.isCurrentUser(vehicle.user_id));

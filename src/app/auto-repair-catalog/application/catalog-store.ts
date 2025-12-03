@@ -1,28 +1,14 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
-import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
+import {computed, Injectable, Signal, signal} from '@angular/core';
 import {Location} from '@catalog/domain/model/location.entity';
 import {CatalogApi} from '@catalog/infrastructure/catalog-api';
 import {retry} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {DiagnosisStore} from '@diagnosis/application/diagnosis-store';
 import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogStore {
-  /**
-   * DiagnosisView store instance for managing expected visits.
-   * @private
-   */
-  private readonly diagnosisStore = inject(DiagnosisStore);
-
-  /**
-   * Readonly version of expected visits signal.
-   * @readonly
-   */
-  readonly expectedVisits = this.diagnosisStore.expectedVisits;
-
   /**
    * Signal to track locations.
    * @private
@@ -67,12 +53,6 @@ export class CatalogStore {
    * @readonly
    */
   readonly error = this.errorSignal.asReadonly();
-
-  /**
-   * Computed signal for the count of expected visits.
-   * @readonly
-   */
-  readonly expectedVisitCount = computed(() => this.diagnosisStore.expectedVisitCount());
 
   /**
    * Computed signal for the count of locations.
@@ -126,45 +106,6 @@ export class CatalogStore {
     } catch {
       return false;
     }
-  }
-
-  /**
-   * Gets an expected visit by its ID.
-   * @param id
-   */
-  getExpectedVisitById(id: number | null | undefined): Signal<ExpectedVisit | undefined> {
-    // Delegate to DiagnosisStore
-    return this.diagnosisStore.getExpectedVisitById(id);
-  }
-
-  /**
-   * Adds a new expected visit.
-   * @param expectedVisit - The expected visit to add.
-   * @returns void
-   */
-  addExpectedVisit(expectedVisit: ExpectedVisit): void {
-    // Delegate to DiagnosisStore
-    this.diagnosisStore.addExpectedVisit(expectedVisit);
-  }
-
-  /**
-   * Updates an existing expected visit.
-   * @param updatedExpectedVisit - The expected visit with updated data.
-   * @returns void
-   */
-  updatedExpectedVisit(updatedExpectedVisit: ExpectedVisit): void {
-    // Delegate to DiagnosisStore
-    this.diagnosisStore.updateExpectedVisit(updatedExpectedVisit);
-  }
-
-  /**
-   * Deletes an expected visit by its ID.
-   * @param id - The ID of the expected visit to delete.
-   * @returns void
-   */
-  deleteExpectedVisit(id: number): void {
-    // Delegate to DiagnosisStore
-    this.diagnosisStore.deleteExpectedVisit(id);
   }
 
   /**

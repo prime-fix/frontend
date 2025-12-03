@@ -17,13 +17,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class TechnicianScheduleApiEndpoint extends BaseApiEndpoint<
   TechnicianSchedule, TechnicianScheduleResource, TechnicianScheduleResponse, TechnicianScheduleAssembler>{
-
-  /**
-   * The query parameter key used to identify the technician schedule ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey = environment.technicianScheduleIdQueryParamKey;
-
   /**
    * Constructs a new instance of the TechnicianScheduleApiEndpoint.
    */

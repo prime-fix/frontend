@@ -5,6 +5,7 @@ import {CommonModule} from '@angular/common';
 import {IamStore} from '@iam/application/iam-store';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
+import {PaymentServiceStore} from '@payment/application/payment-service-store';
 
 @Component({
   selector: 'app-settings',
@@ -15,6 +16,7 @@ import {UserAccount} from '@iam/domain/model/user-account.entity';
 export class Settings {
   private fb = inject(FormBuilder);
   private iamStore = inject(IamStore);
+  private paymentServiceStore = inject(PaymentServiceStore);
 
   /**
    * Password visibility signal
@@ -47,7 +49,7 @@ export class Settings {
     const userAccount = this.sessionUserAccount();
     if (!userAccount) return [];
 
-    return this.iamStore.payments().filter(payment => payment.user_account_id === userAccount.id);
+    return this.paymentServiceStore.payments().filter(payment => payment.user_account_id === userAccount.id);
   })
 
   /**
@@ -213,7 +215,7 @@ export class Settings {
    */
   onDeletePayment(paymentId: number): void {
     if (confirm('¿Está seguro de eliminar este método de pago?')) {
-      this.iamStore.deletePayment(paymentId);
+      this.paymentServiceStore.deletePayment(paymentId);
     }
   }
 

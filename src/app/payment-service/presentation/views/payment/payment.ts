@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
 import {PaymentServiceStore} from '@payment/application/payment-service-store';
+import {DataCollectionStore} from '@collections/application/data-collection-store';
 
 @Component({
   selector: 'app-payment',
@@ -13,7 +14,8 @@ import {PaymentServiceStore} from '@payment/application/payment-service-store';
 })
 
 export class Payment {
-  readonly paymentStore = inject(PaymentServiceStore);
+  private readonly paymentStore = inject(PaymentServiceStore);
+  private readonly dataCollectionStore = inject(DataCollectionStore);
   protected router = inject(Router);
 
   /**
@@ -25,7 +27,7 @@ export class Payment {
    * Visits filtered by vehicle ID
    */
   public visitsByVehicleId = computed(() => {
-    return this.paymentStore.visits().filter(v => v.vehicle_id === this.paymentStore.vehicleIdFilter());
+    return this.dataCollectionStore.visits().filter(v => v.vehicle_id === this.paymentStore.vehicleIdFilter());
   })
 
   /**

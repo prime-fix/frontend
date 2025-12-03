@@ -10,12 +10,6 @@ import {environment} from '@env/environment';
  */
 export class LocationApiEndpoint extends BaseApiEndpoint<Location, LocationResource, LocationResponse, LocationAssembler>{
   /**
-   * The query parameter key used to identify the location ID in API requests.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.locationIdQueryParamKey;
-
-  /**
    * Constructs a new instance of the LocationApiEndpoint.
    * @param http - The HttpClient used for making HTTP requests.
    */

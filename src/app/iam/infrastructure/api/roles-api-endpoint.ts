@@ -10,12 +10,6 @@ import {HttpClient} from '@angular/common/http';
  */
 export class RolesApiEndpoint extends BaseApiEndpoint<Role, RoleResource, RoleResponse, RoleAssembler> {
   /**
-   * The query parameter key for role ID.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.roleIdQueryParamKey;
-
-  /**
    * Constructor of the RolesApiEndpoint.
    * @param http - The HTTP client.
    */

@@ -1,13 +1,9 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
-import {Vehicle} from '@tracking/domain/model/vehicle.entity';
+import {computed, Injectable, Signal, signal} from '@angular/core';
 import {Service} from '../domain/model/service.entity';
 import {Visit} from '../domain/model/visit.entity';
 import {DataCollectionApi} from '../infrastructure/data-collection-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
-import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
-import {CatalogStore} from '@catalog/application/catalog-store';
-import {TrackingStore} from '@tracking/application/tracking-store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +12,6 @@ import {TrackingStore} from '@tracking/application/tracking-store';
  * Store for managing data related to Vehicles, Auto Repairs, Services, and Visits.
  */
 export class DataCollectionStore {
-  private readonly catalogStore = inject(CatalogStore);
-  private readonly trackingStore = inject(TrackingStore);
-
   /**
    * Signal holding the list of Services.
    * @private
@@ -29,15 +22,6 @@ export class DataCollectionStore {
    * @private
    */
   private readonly visitSignal= signal<Visit[]>([]);
-
-  /**
-   * Signal exposing the list of Vehicles.
-   */
-  readonly vehicles = this.trackingStore.vehicles;
-  /**
-   * Signal exposing the list of Auto Repair registers.
-   */
-  readonly autoRepairs = this.catalogStore.autoRepairs;
   /**
    * Signal exposing the list of Services.
    */
@@ -66,15 +50,6 @@ export class DataCollectionStore {
    * Signal exposing error messages.
    */
   readonly error = this.errorSignal.asReadonly();
-
-  /**
-   * Signal exposing the count of Vehicles, Auto Repairs, Services, and Visits.
-   */
-  readonly vehicleCount = computed(() => this.trackingStore.vehicleCount());
-  /**
-   * Signal exposing the count of Auto Repair registers.
-   */
-  readonly autoRepairCount = computed(() => this.catalogStore.autoRepairCount());
   /**
    * Signal exposing the count of Services.
    */
@@ -134,26 +109,6 @@ export class DataCollectionStore {
    */
   getServiceById(id: number |string| null | undefined): Signal<Service | undefined> {
     return computed(() => id ? this.services().find(s => s.id === id) : undefined);
-  }
-
-  /**
-   * Gets an Auto Repair register by its ID.
-   * @param id - The ID of the Auto Repair register.
-   * @returns A signal containing the Auto Repair register or undefined if not found.
-   */
-  getAutoRepairById(id: number | null | undefined): Signal<AutoRepair | undefined> {
-    // Delegate to CatalogStore
-    return this.catalogStore.getAutoRepairById(id);
-  }
-
-  /**
-   * Gets a Vehicle by its ID.
-   * @param id - The ID of the Vehicle.
-   * @returns A signal containing the Vehicle or undefined if not found.
-   */
-  getVehicleById(id: number | string | null | undefined): Signal<Vehicle | undefined> {
-    // Delegate to TrackingStore
-    return this.trackingStore.getVehicleById(id);
   }
 
   /**
@@ -217,65 +172,6 @@ export class DataCollectionStore {
         this.loadingSignal.set(false);
       }
     })
-  }
-
-  /**
-   * Adds a new Auto Repair register.
-   * @param autoRepair - The Auto Repair register to add.
-   * @returns void
-   */
-  addAutoRepair(autoRepair: AutoRepair): void {
-    // Delegate to CatalogStore
-    this.catalogStore.addAutoRepair(autoRepair);
-  }
-
-  /**
-   * Updates an existing Auto Repair register.
-   * @param updatedAutoRepair - The Auto Repair register to update.
-   * @returns void
-   */
-  updateAutoRepair(updatedAutoRepair: AutoRepair): void {
-    // Delegate to CatalogStore
-    this.catalogStore.updateAutoRepair(updatedAutoRepair);
-  }
-
-  /**
-   * Deletes an Auto Repair register by its ID.
-   * @param id - The ID of the Auto Repair register to delete.
-   */
-  deleteAutoRepair(id: number): void {
-    // Delegate to CatalogStore
-    this.catalogStore.deleteAutoRepair(id);
-  }
-
-  /**
-   * Adds a new Vehicle.
-   * @param vehicle - The Vehicle to add.
-   * @returns void
-   */
-  addVehicle(vehicle: Vehicle): void {
-    // Delegate to TrackingStore
-    this.trackingStore.addVehicle(vehicle);
-  }
-
-  /**
-   * Updates an existing Vehicle.
-   * @param vehicle - The Vehicle to update.
-   * @returns void
-   */
-  updateVehicle(vehicle: Vehicle): void {
-    // Delegate to TrackingStore
-    this.trackingStore.updateVehicle(vehicle);
-  }
-
-  /**
-   * Deletes a Vehicle by its ID.
-   * @param id - The ID of the Vehicle to delete.
-   * @returns void
-   */
-  deleteVehicle(id: number): void {
-    // Delegate to TrackingStore
-    this.trackingStore.deleteVehicle(id);
   }
 
   /**

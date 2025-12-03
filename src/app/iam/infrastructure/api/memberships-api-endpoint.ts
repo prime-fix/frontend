@@ -9,13 +9,6 @@ import {HttpClient} from '@angular/common/http';
  * API endpoint for managing memberships.
  */
 export class MembershipsApiEndpoint extends BaseApiEndpoint<Membership, MembershipResource, MembershipResponse, MembershipAssembler> {
-
-  /**
-   * Key used for identifying membership ID in query parameters.
-   * @protected
-   */
-  protected readonly idQueryParamKey: string = environment.membershipIdQueryParamKey;
-
   /**
    * Constructs the MembershipsApiEndpoint.
    * @param http - The HttpClient for making HTTP requests.
