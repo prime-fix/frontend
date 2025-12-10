@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {Location} from '@catalog/domain/model/location.entity';
 import {CatalogApi} from '@catalog/infrastructure/catalog-api';
 import {retry} from 'rxjs';
@@ -9,6 +9,11 @@ import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
   providedIn: 'root'
 })
 export class CatalogStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signal to track locations.
    * @private
@@ -251,7 +256,7 @@ export class CatalogStore {
   private loadLocations(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.catalogApi.getLocations().pipe(takeUntilDestroyed()).subscribe({
+    this.catalogApi.getLocations().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: locations => {
         console.log(locations);
         this.locationsSignal.set(locations);
@@ -273,7 +278,7 @@ export class CatalogStore {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.catalogApi.getAutoRepairs()
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (autoRepairs) => {
           this.autoRepairsSignal.set(autoRepairs);

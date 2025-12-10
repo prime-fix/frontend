@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Payment} from '../domain/model/payment.entity';
@@ -12,6 +12,11 @@ import {PaymentServiceApi} from '../infrastructure/payment-service-api';
   providedIn: 'root'
 })
 export class PaymentServiceStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signal to hold the state of payments.
    * @private
@@ -181,7 +186,7 @@ export class PaymentServiceStore {
   private loadPayments(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.paymentServiceClosureApi.getPayments().pipe(takeUntilDestroyed()).subscribe({
+    this.paymentServiceClosureApi.getPayments().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: payments => {
         console.log(payments);
         this.paymentsSignal.set(payments);
@@ -269,7 +274,7 @@ export class PaymentServiceStore {
   private loadRatings(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.paymentServiceClosureApi.getRatings().pipe(takeUntilDestroyed()).subscribe({
+    this.paymentServiceClosureApi.getRatings().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: ratings => {
         console.log(ratings);
         this.ratingsSignal.set(ratings);
