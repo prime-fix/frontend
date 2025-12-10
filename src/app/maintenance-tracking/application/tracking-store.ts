@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {Notification} from '@tracking/domain/model/notification.entity';
 import {TrackingApi} from '@tracking/infrastructure/tracking-api';
 import {retry} from 'rxjs';
@@ -14,6 +14,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   providedIn: 'root',
 })
 export class TrackingStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signal to hold the list of notifications.
    * @private
@@ -267,7 +272,7 @@ export class TrackingStore {
   private loadNotifications(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.trackingApi.getNotifications().pipe(takeUntilDestroyed()).subscribe({
+    this.trackingApi.getNotifications().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (notifications) => {
         this.notificationsSignal.set(notifications);
         this.loadingSignal.set(false);
@@ -287,7 +292,7 @@ export class TrackingStore {
   private loadVehicles(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.trackingApi.getVehicles().pipe(takeUntilDestroyed()).subscribe({
+    this.trackingApi.getVehicles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: vehicles => {
         this.vehicleSignal.set(vehicles);
         this.loadingSignal.set(false);

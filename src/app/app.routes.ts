@@ -1,12 +1,6 @@
 import { Routes } from '@angular/router';
 import {Login} from '@iam/presentation/views/login/login';
-import {autoRepairRegisterRoutes} from '@register/presentation/views/auto-repair-register.routes';
-import {autoRepairCatalogRoutes} from '@catalog/presentation/views/auto-repair-catalog-routes';
-import {maintenanceTrackingRoutes} from '@tracking/presentation/views/maintenance-tracking.routes';
-import {VehicleDiagnosisRoutes} from '@diagnosis/presentation/views/vehicle-diagnosis.routes';
 import {roleGuard} from '@shared/infrastructure/guards/role.guard';
-import {dataCollectionRoutes} from '@collections/presentation/views/data-collection.routes';
-import {paymentServiceRoutes} from '@payment/presentation/views/payment-service.routes';
 
 const userRole = () => import('@iam/presentation/views/user-role/user-role').then(m => m.UserRole);
 const registerOwner = () => import('@iam/presentation/views/register-owner/register-owner').then(m => m.RegisterOwner);
@@ -88,22 +82,22 @@ export const routes: Routes = [
       },
       {
         path: 'auto-repair-catalog',
-        loadChildren : () => autoRepairCatalogRoutes,
+        loadChildren: () => import('@catalog/presentation/views/auto-repair-catalog-routes').then(m => m.autoRepairCatalogRoutes),
         title: `${baseTitle} -  Auto Repair Catalog`,
       },
       {
         path: 'maintenance-tracking',
-        loadChildren : () => maintenanceTrackingRoutes,
+        loadChildren: () => import('@tracking/presentation/views/maintenance-tracking.routes').then(m => m.maintenanceTrackingRoutes),
         title: `${baseTitle} -  Track Vehicle`,
       },
       {
         path:'data-collection',
-        loadChildren:()=> dataCollectionRoutes,
+        loadChildren: () => import('@collections/presentation/views/data-collection.routes').then(m => m.dataCollectionRoutes),
         title:`${baseTitle} - Visit Management`
       },
       {
         path: 'payment-service',
-        loadChildren: () => paymentServiceRoutes,
+        loadChildren: () => import('@payment/presentation/views/payment-service.routes').then(m => m.paymentServiceRoutes),
         title: `${baseTitle} -  Payment Service`,
       },
       {
@@ -144,12 +138,12 @@ export const routes: Routes = [
       },
       {
         path: 'auto-repair-register',
-        loadChildren: () => autoRepairRegisterRoutes,
+        loadChildren: () => import('@register/presentation/views/auto-repair-register.routes').then(m => m.autoRepairRegisterRoutes),
         title: `${baseTitle} -  Manage Technicians`,
       },
       {
         path: 'vehicle-diagnosis',
-        loadChildren: () => VehicleDiagnosisRoutes,
+        loadChildren: () => import('@diagnosis/presentation/views/vehicle-diagnosis.routes').then(m => m.VehicleDiagnosisRoutes),
         title: `${baseTitle} -  Vehicle Diagnosis`,
       },
       {

@@ -9,6 +9,13 @@
 
   <!-- Notification Modal (automatically opens when new notifications arrive) -->
   @if (showNotificationModal()) {
-    <app-state-notification (close)="closeNotificationModal()"></app-state-notification>
+    @defer (on immediate) {
+      <app-state-notification
+        (close)="closeNotificationModal()">
+      </app-state-notification>
+    } @placeholder {
+    } @error {
+      <p>An error has happened</p>
+    }
   }
 </div>

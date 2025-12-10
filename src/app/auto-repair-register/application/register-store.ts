@@ -1,4 +1,4 @@
-import {Injectable, computed, signal, Signal} from '@angular/core';
+import {Injectable, computed, signal, Signal, inject, DestroyRef} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { retry, forkJoin } from 'rxjs';
 import {Technician} from '@register/domain/model/technician.entity';
@@ -12,7 +12,11 @@ import {TechnicianSchedule} from '@register/domain/model/technician-schedule.ent
  * Store for managing Technician and Technician Schedule data.
  */
 export class RegisterStore {
-
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * The Technicians signal.
    * @private
@@ -123,7 +127,7 @@ export class RegisterStore {
   private loadTechnicians(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.autoRepairApi.getTechnicians().pipe(takeUntilDestroyed()).subscribe({
+    this.autoRepairApi.getTechnicians().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (technicians) => {
         this.techniciansSignal.set(technicians);
         this.loadingSignal.set(false);
@@ -251,7 +255,7 @@ export class RegisterStore {
   private loadTechniciansSchedules(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.autoRepairApi.getTechnicianSchedules().pipe(takeUntilDestroyed()).subscribe({
+    this.autoRepairApi.getTechnicianSchedules().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (schedules) => {
         this.techniciansSchedulesSignal.set(schedules);
         this.loadingSignal.set(false);

@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {Service} from '../domain/model/service.entity';
 import {Visit} from '../domain/model/visit.entity';
 import {DataCollectionApi} from '../infrastructure/data-collection-api';
@@ -12,6 +12,11 @@ import {retry} from 'rxjs';
  * Store for managing data related to Vehicles, Auto Repairs, Services, and Visits.
  */
 export class DataCollectionStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signal holding the list of Services.
    * @private
@@ -182,7 +187,7 @@ export class DataCollectionStore {
   private loadVisits(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dataCollectionApi.getVisits().pipe(takeUntilDestroyed()).subscribe({
+    this.dataCollectionApi.getVisits().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: visits => {
         this.visitSignal.set(visits);
         this.loadingSignal.set(false);
@@ -202,7 +207,7 @@ export class DataCollectionStore {
   private loadServices(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.dataCollectionApi.getServices().pipe(takeUntilDestroyed()).subscribe({
+    this.dataCollectionApi.getServices().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: mainServices => {
         this.serviceSignal.set(mainServices);
         this.loadingSignal.set(false);

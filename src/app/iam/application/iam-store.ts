@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {UserAccount} from '@iam/domain/model/user-account.entity';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {User} from '@iam/domain/model/user.entity';
@@ -7,11 +7,9 @@ import {AuthApi} from '@iam/infrastructure/api/auth-api';
 import {retry} from 'rxjs';
 import {Location} from '@catalog/domain/model/location.entity';
 import {MembershipChoiceType} from '@iam/domain/types/membership-choice.type';
-import {CatalogStore} from '@catalog/application/catalog-store';
 import {Payment} from '@payment/domain/model/payment.entity';
 import {Membership} from '@iam/domain/model/membership.entity';
 import {Role} from '@iam/domain/model/role.entity';
-import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
 
 /**
  * State management service for Identity and Access Management (IAM).
@@ -20,6 +18,11 @@ import {AutoRepair} from '@catalog/domain/model/auto-repair.entity';
   providedIn: 'root'
 })
 export class IamStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signals to hold the state of user accounts, users, payments, and locations.
    * @private
@@ -681,7 +684,7 @@ export class IamStore {
   private loadUserAccounts(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.getUserAccounts().pipe(takeUntilDestroyed()).subscribe({
+    this.iamApi.getUserAccounts().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: userAccounts => {
         console.log(userAccounts);
         this.userAccountsSignal.set(userAccounts);
@@ -701,7 +704,7 @@ export class IamStore {
   private loadUsers(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.getUsers().pipe(takeUntilDestroyed()).subscribe({
+    this.iamApi.getUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: users => {
         console.log(users);
         this.usersSignal.set(users);
@@ -721,7 +724,7 @@ export class IamStore {
   private loadRoles(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.getRoles().pipe(takeUntilDestroyed()).subscribe({
+    this.iamApi.getRoles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: roles => {
         console.log(roles);
         this.rolesSignal.set(roles);
@@ -741,7 +744,7 @@ export class IamStore {
   private loadMemberships(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.getMemberships().pipe(takeUntilDestroyed()).subscribe({
+    this.iamApi.getMemberships().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: memberships => {
         console.log(memberships);
         this.membershipsSignal.set(memberships);

@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, signal} from '@angular/core';
+import {computed, DestroyRef, inject, Injectable, Signal, signal} from '@angular/core';
 import {ExpectedVisit} from '@diagnosis/domain/model/expected-visit.entity';
 import {DiagnosisApi} from '@diagnosis/infrastructure/diagnosis-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -9,6 +9,11 @@ import {Diagnostic} from '@diagnosis/domain/model/diagnostic.entity';
   providedIn: 'root',
 })
 export class DiagnosisStore {
+  /**
+   * DestroyRef to clean up subscriptions on destroy.
+   * @private
+   */
+  private destroyRef = inject(DestroyRef);
   /**
    * Signal to track expected visits.
    * @private
@@ -263,7 +268,7 @@ export class DiagnosisStore {
   private loadExpectedVisits(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.diagnosisApi.getExpectedVisits().pipe(takeUntilDestroyed()).subscribe({
+    this.diagnosisApi.getExpectedVisits().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: expectedVisits => {
         console.log(expectedVisits);
         this.expectedVisitsSignal.set(expectedVisits);
@@ -284,7 +289,7 @@ export class DiagnosisStore {
   private loadDiagnostics(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.diagnosisApi.getDiagnostics().pipe(takeUntilDestroyed()).subscribe({
+    this.diagnosisApi.getDiagnostics().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: diagnostics => {
         console.log(diagnostics);
         this.diagnosticsSignal.set(diagnostics);
